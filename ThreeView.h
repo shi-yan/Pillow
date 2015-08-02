@@ -1,6 +1,6 @@
 #pragma once
 #include "Global.h"
-#include "splitedview.h"
+#include "SplitedView.h"
 
 class ThreeView:public SplitedView
 {

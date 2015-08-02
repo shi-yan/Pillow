@@ -7,9 +7,8 @@
 #include "TopCamera.h"
 #include "PerspectiveCamera.h"
 
-#include <windows.h>
-#include <gl/gl.h>
-#include <gl/glu.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 class SplitedView
 {
@@ -256,7 +255,7 @@ public:
 		return false;
 	};
 
-	SplitedView(size_t splitX,size_t splitY,size_t width,size_t height);
+    SplitedView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 
 public:
 	~SplitedView(void)

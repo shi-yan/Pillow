@@ -1,6 +1,6 @@
 #pragma once
 #include "Global.h"
-#include "splitedview.h"
+#include "SplitedView.h"
 
 class FourView:public SplitedView
 {
@@ -38,11 +38,8 @@ public:
 
 					bool onAxisDrag(size_t x,size_t y)
 	{
-		//if((selected==0 && x<splitX)||(selected==1 && x>splitX)){
-		//这里要计算向量的点乘
 		if(isAxisMode)
 		{camera[selected]->setCamera();
-			//这里必须强制转换
 			Vector m((float)((int)x-(int)axisDragSX),(float)((int)y-(int)axisDragSY),0.0f);
 			float work=psVECDOT(cursorDir,m);
 			theScene->axisDrag(work,cursorMode,cursorDir.x,cursorDir.y);

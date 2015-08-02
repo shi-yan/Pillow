@@ -1,11 +1,11 @@
 #pragma once
 #include "Global.h"
-#include "splitedview.h"
+#include "SplitedView.h"
 
 class TwoView:public SplitedView
 {
 public:
-	TwoView(size_t splitX,size_t splitY,size_t width,size_t height);
+    TwoView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 	
 	void onPaint();
 

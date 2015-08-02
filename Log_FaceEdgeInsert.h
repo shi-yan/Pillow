@@ -1,5 +1,5 @@
 #pragma once
-#include "historylog.h"
+#include "HistoryLog.h"
 
 class Log_FaceEdgeInsert :
 	public HistoryLog
@@ -12,7 +12,7 @@ public:
 	std::string toString()
 	{
 		char temp[256];
-		sprintf_s(temp,"\t\t\t<Log Type=\"FaceEdgeInsert\" Target=\"%d\" Index=\"%d\" EdgeIndex=\"%d\" />\n",target,index,edgeIndex);
+        sprintf(temp,"\t\t\t<Log Type=\"FaceEdgeInsert\" Target=\"%d\" Index=\"%d\" EdgeIndex=\"%d\" />\n",target,index,edgeIndex);
 		std::string out(temp);
 		return out;
 	};

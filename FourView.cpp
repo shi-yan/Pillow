@@ -1,10 +1,9 @@
 #include "FourView.h"
 #include "Global.h"
-#include <windows.h>
-#include <gl/gl.h>
-#include <gl/glu.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 
-FourView::FourView(size_t splitX,size_t splitY,size_t width,size_t height):SplitedView(splitX,splitY,width,height)
+FourView::FourView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height):SplitedView(splitX,splitY,width,height)
 {
 	this->viewCount=4;
 	this->selected=3;
@@ -14,7 +13,7 @@ FourView::FourView(size_t splitX,size_t splitY,size_t width,size_t height):Split
 	camera[3]=new PerspectiveCamera(25.0f,(float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
 }
 
-bool FourView::onLeftDown(size_t x,size_t y)
+bool FourView::onLeftDown(unsigned int x,unsigned int y)
 {
 //	int tempView;
 	if(x<this->splitX&&y<this->splitY)

@@ -1,5 +1,5 @@
 #pragma once
-#include "camera.h"
+#include "Camera.h"
 
 class TopCamera :
 	public Camera

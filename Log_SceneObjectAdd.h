@@ -1,5 +1,5 @@
 #pragma once
-#include "historylog.h"
+#include "HistoryLog.h"
 
 class Log_SceneObjectAdd :
 	public HistoryLog
@@ -9,7 +9,7 @@ public:
 	std::string toString()
 	{
 		char temp[256];
-		sprintf_s(temp,"\t\t\t<Log Type=\"SceneObjectAdd\" Target=\"%d\" />\n",target);
+        sprintf(temp,"\t\t\t<Log Type=\"SceneObjectAdd\" Target=\"%d\" />\n",target);
 		std::string out(temp);
 		return out;
 	};

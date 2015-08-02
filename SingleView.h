@@ -1,12 +1,12 @@
 #pragma once
 #include "Global.h"
-#include "splitedview.h"
+#include "SplitedView.h"
 #include <time.h>
 
 class SingleView:public SplitedView
 {
 public:
-	SingleView(size_t splitX,size_t splitY,size_t width,size_t height);
+    SingleView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 	
 	CameraMode::__Enum setView(size_t index)
 	{

@@ -1,5 +1,5 @@
 #pragma once
-#include "historylog.h"
+#include "HistoryLog.h"
 
 class Log_EdgeStartChange :
 	public HistoryLog
@@ -15,7 +15,7 @@ public:
 	std::string toString()
 	{
 		char temp[256];
-		sprintf_s(temp,"\t\t\t<Log Type=\"EdgeStartChange\" Target=\"%d\" Index=\"%d\" Start=\"%d\" />\n",target,index,start);
+        sprintf(temp,"\t\t\t<Log Type=\"EdgeStartChange\" Target=\"%d\" Index=\"%d\" Start=\"%d\" />\n",target,index,start);
 		std::string out(temp);
 		return out;
 	};

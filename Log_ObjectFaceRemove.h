@@ -1,5 +1,5 @@
 #pragma once
-#include "historylog.h"
+#include "HistoryLog.h"
 #include "Face.h"
 
 class Log_ObjectFaceRemove :
@@ -14,7 +14,7 @@ public:
 	std::string toString()
 	{
 		char temp[256];
-		sprintf_s(temp,"\t\t\t<Log Type=\"ObjectFaceRemove\" Target=\"%d\" Index=\"%d\" />\n",target,index);
+        sprintf(temp,"\t\t\t<Log Type=\"ObjectFaceRemove\" Target=\"%d\" Index=\"%d\" />\n",target,index);
 		std::string out(temp);
 		return out;
 	};

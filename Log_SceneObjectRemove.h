@@ -1,5 +1,5 @@
 #pragma once
-#include "historylog.h"
+#include "HistoryLog.h"
 #include "Object.h"
 
 class Log_SceneObjectRemove :

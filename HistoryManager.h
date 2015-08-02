@@ -167,7 +167,7 @@ public:
 	void testOut(char *fileName)
 	{
 		FILE *fp;
-		fopen_s(&fp,fileName,"w");
+        fp = fopen(fileName,"w");
 		fprintf(fp,"<History>\n");
 		size_t undoSize=undoList.size();
 		if(undoSize)

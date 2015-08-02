@@ -1,6 +1,6 @@
 #pragma once
 #include "Vertex.h"
-#include "historylog.h"
+#include "HistoryLog.h"
 
 class Log_VertexAdjacentPop :
 	public HistoryLog
@@ -14,7 +14,7 @@ public:
 	std::string toString()
 	{
 		char temp[256];
-		sprintf_s(temp,"\t\t\t<Log Type=\"VertexAdjacentPop\" Target=\"%d\" Index=\"%d\" O=\"%d\" />\n",target,index,o);
+        sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentPop\" Target=\"%d\" Index=\"%d\" O=\"%d\" />\n",target,index,o);
 		std::string out(temp);
 		return out;
 	};

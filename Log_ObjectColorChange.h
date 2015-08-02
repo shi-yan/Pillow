@@ -1,5 +1,5 @@
 #pragma once
-#include "historylog.h"
+#include "HistoryLog.h"
 
 class Log_ObjectColorChange :
 	public HistoryLog
@@ -14,7 +14,7 @@ public:
 	std::string toString()
 	{
 		char temp[256];
-		sprintf_s(temp,"\t\t\t<Log Type=\"ObjectColorChange\" Target=\"%d\" R=\"%d\" G=\"%d\" B=\"%d\" A=\"%d\" />\n",target,r,g,b,a);
+        sprintf(temp,"\t\t\t<Log Type=\"ObjectColorChange\" Target=\"%d\" R=\"%d\" G=\"%d\" B=\"%d\" A=\"%d\" />\n",target,r,g,b,a);
 		std::string out(temp);
 		return out;
 	};

@@ -1,5 +1,5 @@
 #pragma once
-#include "historylog.h"
+#include "HistoryLog.h"
 
 class Log_ObjectVertexAdd :
 	public HistoryLog
@@ -11,7 +11,7 @@ public:
 	std::string toString()
 	{
 		char temp[256];
-		sprintf_s(temp,"\t\t\t<Log Type=\"ObjectVertexAdd\" Target=\"%d\" Index=\"%d\" />\n",target,index);
+        sprintf(temp,"\t\t\t<Log Type=\"ObjectVertexAdd\" Target=\"%d\" Index=\"%d\" />\n",target,index);
 		std::string out(temp);
 		return out;
 	};

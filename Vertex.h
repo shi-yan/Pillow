@@ -1,6 +1,6 @@
 #pragma once
 #include<vector>
-#include "elementbase.h"
+#include "ElementBase.h"
 #include "SubdivideVertex.h"
 
 struct VertexInfo

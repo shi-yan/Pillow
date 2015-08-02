@@ -1,9 +1,8 @@
 #pragma once
 #include "Enum.h"
-#include <windows.h>
-#include <gl/gl.h>
-#include <gl/glu.h>
-#include "vector.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include "Vector.h"
 #include "Camera.h"
 
 DECLARE_ENUM(AxisCursorMode)

@@ -5,10 +5,10 @@ class SubdivideEdge:public ElementBase
 {
 	friend class Object;
 public:
-	size_t start;
-	size_t end;
-	size_t left;
-	size_t right;
+    unsigned int start;
+    unsigned int end;
+    unsigned int left;
+    unsigned int right;
 
 private:
 	int subdivideId;
@@ -21,7 +21,7 @@ private:
 
 public:
 	SubdivideEdge(void);
-	SubdivideEdge(size_t theStart,size_t theEnd);
+    SubdivideEdge(unsigned int theStart,unsigned int theEnd);
 
 public:
 	~SubdivideEdge(void);

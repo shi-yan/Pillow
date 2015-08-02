@@ -9,7 +9,8 @@
 extern Scene *theScene;
 Gird *theGird;
 
-Screen::Screen(wxWindow *theMain):mainFrame(theMain),isSelectionMode(false),isAxisMode(false),isAltMode(false),isCtrlMode(false),isExtrude(false)
+Screen::Screen(/*wxWindow *theMain*/)
+    :/*mainFrame(theMain),*/isSelectionMode(false),isAxisMode(false),isAltMode(false),isCtrlMode(false),isExtrude(false)
 {
 };
 
@@ -28,7 +29,7 @@ void Screen::initialize()
 		uiLayer=new UILayer(width,height);
 }
 
-void Screen::updateScreen(size_t theWidth,size_t theHeight)
+void Screen::updateScreen(unsigned int theWidth,unsigned int theHeight)
 {
 	width=theWidth;
 	height=theHeight;
@@ -81,7 +82,7 @@ bool Screen::onMiddleDrag(int x,int y)
 
 void Screen::screenShot(const char *fileName)
 	{
-		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+        /*glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 		for(int i=0;i<(int)this->currentView->viewCount;++i)
 		{
 			CameraMode::__Enum cameraMode=currentView->setView(i);	
@@ -95,7 +96,7 @@ void Screen::screenShot(const char *fileName)
 		wxImage theScreenShot(width,height,true);
 		theScreenShot.SetData(pixel);
 		theScreenShot=theScreenShot.Mirror(false);
-		theScreenShot.SaveFile(_T(fileName),wxBITMAP_TYPE_JPEG);
+        theScreenShot.SaveFile(_T(fileName),wxBITMAP_TYPE_JPEG);*/
 		//delete pixel;
 	};
 

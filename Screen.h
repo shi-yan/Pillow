@@ -4,9 +4,7 @@
 #include "TwoView.h"
 #include "SingleView.h"
 #include "UILayer.h"
-#include "wx/utils.h"
-#include <wx/datetime.h>
-#include "AboutDialog.h"
+//#include "AboutDialog.h"
 enum
 {
 	Four=32,
@@ -29,12 +27,12 @@ private:
 	bool isAltMode;
 	bool isCtrlMode;
 	bool isExtrude;
-	wxWindow *mainFrame;
+    //wxWindow *mainFrame;
 public:
 
 	int width;
 	int height;
-Screen(wxWindow *theMain);
+Screen(/*wxWindow *theMain*/);
 void updateScreen(unsigned int width,unsigned int height);
 	void refresh(){};
 	void onPaint();
@@ -266,7 +264,7 @@ void updateScreen(unsigned int width,unsigned int height);
 				}
 				else if(eventType==ButtonEventType::Help)
 				{
-					wxLaunchDefaultBrowser(_T("http://billconan.blogspot.com"));
+//					wxLaunchDefaultBrowser(_T("http://billconan.blogspot.com"));
 				}
 				else if(eventType==ButtonEventType::CreateCube)
 				{
@@ -314,15 +312,15 @@ void updateScreen(unsigned int width,unsigned int height);
 				}
 				else if(eventType==ButtonEventType::Screenshot)
 				{
-					wxString filename;
-					filename<<wxDateTime::GetTimeNow()<<_T(".jpg");
-					screenShot(filename.c_str());
+//					wxString filename;
+    //				filename<<wxDateTime::GetTimeNow()<<_T(".jpg");
+        //			screenShot(filename.c_str());
 				}
 				else if(eventType==ButtonEventType::About)
 				{
-					AboutDialog *aboutDialog=new AboutDialog(mainFrame);
-					aboutDialog->ShowModal();
-					aboutDialog->Destroy();
+                    //AboutDialog *aboutDialog=new AboutDialog(mainFrame);
+                    //aboutDialog->ShowModal();
+                    //aboutDialog->Destroy();
 				}
 				else if(eventType==ButtonEventType::New)
 				{
@@ -330,7 +328,7 @@ void updateScreen(unsigned int width,unsigned int height);
 				}
 				else if(eventType==ButtonEventType::Open)
 				{
-					wxString wildcards=wxString::Format(_T("PWB files (*.pwb)|*.pwb"),wxFileSelectorDefaultWildcardStr,wxFileSelectorDefaultWildcardStr);
+                /*	wxString wildcards=wxString::Format(_T("PWB files (*.pwb)|*.pwb"),wxFileSelectorDefaultWildcardStr,wxFileSelectorDefaultWildcardStr);
 					wxFileDialog dialog(mainFrame, _T("Open file:"),wxEmptyString, wxEmptyString, wildcards,wxOPEN);
 					if(dialog.ShowModal()==wxID_OK)
 					{
@@ -342,13 +340,13 @@ void updateScreen(unsigned int width,unsigned int height);
 							theScene->clearScene();
 							theScene->loadFromPWB(paths[0].c_str());
 						}
-					}
+                    }*/
 				}
 				else if(eventType==ButtonEventType::Save)
 				{
 					if(theScene->fileName=="")
 					{
-						wxFileDialog dialog(mainFrame,_T("Save file:"),wxEmptyString,_T("untitle"),_T("Pillow Binary Files (*.pwb)|*.pwb"),wxSAVE|wxOVERWRITE_PROMPT);
+                    /*	wxFileDialog dialog(mainFrame,_T("Save file:"),wxEmptyString,_T("untitle"),_T("Pillow Binary Files (*.pwb)|*.pwb"),wxSAVE|wxOVERWRITE_PROMPT);
 						dialog.SetFilterIndex(1);
 						if (dialog.ShowModal() == wxID_OK)
 						{
@@ -358,7 +356,7 @@ void updateScreen(unsigned int width,unsigned int height);
 								theScene->fileName=dialog.GetPath().c_str();
 								theScene->saveToFilePWB(dialog.GetPath().c_str());
 							}
-						}
+                        }*/
 					}
 					else
 					{
@@ -367,7 +365,7 @@ void updateScreen(unsigned int width,unsigned int height);
 				}
 				else if(eventType==ButtonEventType::SaveAs)
 				{
-					wxFileDialog dialog(mainFrame,_T("Save file:"),wxEmptyString,_T("untitle"),_T("Pillow Binary Files (*.pwb)|*.pwb|OBJ Files (*.obj)|*.obj"),wxSAVE|wxOVERWRITE_PROMPT);
+                    /*wxFileDialog dialog(mainFrame,_T("Save file:"),wxEmptyString,_T("untitle"),_T("Pillow Binary Files (*.pwb)|*.pwb|OBJ Files (*.obj)|*.obj"),wxSAVE|wxOVERWRITE_PROMPT);
 					dialog.SetFilterIndex(0);
 					if (dialog.ShowModal() == wxID_OK)
 					{
@@ -382,7 +380,7 @@ void updateScreen(unsigned int width,unsigned int height);
 			theScene->fileName=dialog.GetPath().c_str();
 			theScene->saveToFileOBJ(dialog.GetPath().c_str());
 		}
-					}
+                    }*/
 				}
 				else if(eventType==ButtonEventType::DeleteVertex)
 				{

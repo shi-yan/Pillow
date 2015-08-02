@@ -1,7 +1,6 @@
 #pragma once
-#include <windows.h>
-#include <gl/gl.h>
-#include <gl/glu.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include "Vector.h"
 #include "Enum.h"
 #include <string>

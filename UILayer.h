@@ -1,6 +1,5 @@
 #pragma once
 #include "ToolStrip.h"
-#include "wx/image.h"
 
 class UILayer
 {
@@ -252,7 +251,7 @@ public:
 
 	GLuint loadTexture(char *fileName)
 	{
-		GLuint txtnumber;
+    /*	GLuint txtnumber;
 		wxImage texture(_T(fileName),wxBITMAP_TYPE_PNG,-1);
 		int theHeight=texture.GetHeight();
 		int theWidth=texture.GetWidth();
@@ -274,7 +273,8 @@ public:
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 		delete data;
-		return txtnumber;
+        return txtnumber;*/
+        return 1;
 	};
 
 
