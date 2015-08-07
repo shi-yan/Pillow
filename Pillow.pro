@@ -1,4 +1,5 @@
-Qt += core gui widgets
+QT += core gui widgets
+
 CONFIG += C++11
 
 TARGET = "Pillow"
@@ -74,7 +75,9 @@ HEADERS += \
     UILayer.h \
     Vector.h \
     Vertex.h \
-    ViewportImage.h
+    ViewportImage.h \
+    MainWindow.h \
+    GLCanvas.h
 
 SOURCES += \
     AxisCursor.cpp \
@@ -143,6 +146,12 @@ SOURCES += \
     UILayer.cpp \
     Vector.cpp \
     Vertex.cpp \
-    ViewportImage.cpp
+    ViewportImage.cpp \
+    main.cpp \
+    MainWindow.cpp \
+    GLCanvas.cpp
 
 LIBS += -lGLU
+
+FORMS += \
+    MainWindow.ui
