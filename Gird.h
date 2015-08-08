@@ -102,7 +102,7 @@ public:
 		glEndList();
 	}
 
-	void drawXY()
+    void drawXY() const
 	{
 		glDisable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D);
@@ -111,7 +111,8 @@ public:
 		glCallList(xy);
 		glEnable(GL_LIGHTING);
 	}
-	void drawXZ()
+
+    void drawXZ() const
 	{
 		glDisable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D);
@@ -120,7 +121,8 @@ public:
 		glCallList(xz);
 		glEnable(GL_LIGHTING);
 	}
-	void drawYZ()
+
+    void drawYZ() const
 	{
 		glDisable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D);

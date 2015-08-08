@@ -4,7 +4,7 @@
 #include <OpenGL/glu.h>
 
 #include "Vector.h"
-#include "Camera.h"
+#include "Camera/Camera.h"
 
 DECLARE_ENUM(AxisCursorMode)
 	MoveAxis=982,

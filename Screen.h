@@ -1,9 +1,9 @@
 #pragma once
-#include "FourView.h"
-#include "ThreeView.h"
-#include "TwoView.h"
-#include "SingleView.h"
-#include "UILayer.h"
+#include "View/FourView.h"
+#include "View/ThreeView.h"
+#include "View/TwoView.h"
+#include "View/SingleView.h"
+#include "UI/UILayer.h"
 //#include "AboutDialog.h"
 enum
 {

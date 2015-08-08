@@ -291,7 +291,7 @@ void Object::subdivide()
 	{
 		subdivideLevel[0]=new SubdivideLevel(vertexArray.size()+edgeArray.size()+faceArray.size(),edgeArray.size()*4,edgeArray.size()*2);
 		++subdivideLevelSize;
-		size_t faceCount=this->faceArray.size();
+        size_t faceCount=  faceArray.size();
 		for(size_t i=1;i<faceCount;++i)
 		{
 			if(faceArray[i]==NULL)

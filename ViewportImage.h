@@ -7,13 +7,13 @@
 #include <string>
 
 DECLARE_ENUM(CameraMode)
-	Front=1,
-	Back,
-	Top,
-	Bottom,
-	Left,
-	Right,
-	Perspective
+    Front=1,
+    Back,
+    Top,
+    Bottom,
+    Left,
+    Right,
+    Perspective
 END_ENUM()
 
 class ViewportImage

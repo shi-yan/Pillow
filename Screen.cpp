@@ -1,10 +1,15 @@
 #include "Screen.h"
 #include "Scene.h"
-#include "SingleView.h"
-#include "FourView.h"
-#include "ThreeView.h"
-#include "TwoView.h"
-#include "Camera.h"
+#include "View/SingleView.h"
+#include "View/FourView.h"
+#include "View/ThreeView.h"
+#include "View/TwoView.h"
+#include "Camera/Camera.h"
+#include "Gird.h"
+#include "Matrix.h"
+#include "Vector.cpp"
+#include "Quaternion.h"
+#include "ViewportImage.h"
 
 extern Scene *theScene;
 Gird *theGird;
@@ -19,8 +24,8 @@ void Screen::initialize()
 	theGird=new Gird();
 		theGird->initialize();
 		theScene->initialize();
-		this->width=0;
-		this->height=0;
+          width=0;
+          height=0;
 		glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);
 		fourView=new FourView(2,2,4,4);
 		threeView=new ThreeView(2,2,4,4);
@@ -83,7 +88,7 @@ bool Screen::onMiddleDrag(int x,int y)
 void Screen::screenShot(const char *fileName)
 	{
         /*glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-		for(int i=0;i<(int)this->currentView->viewCount;++i)
+        for(int i=0;i<(int)  currentView->viewCount;++i)
 		{
 			CameraMode::__Enum cameraMode=currentView->setView(i);	
 			theScene->onPaint();
@@ -109,7 +114,7 @@ void Screen::onPaint()
 		theScene->onPaint();
 		theScene->drawCursor(cameraMode,currentView->getEye(i));
 	}
-	glViewport(0,0,(GLint)this->width,(GLint)this->height);
+    glViewport(0,0,(GLint)  width,(GLint)  height);
 	Begin2D();
 	glColor3ub(255,255,255);
 	glLineWidth(3);
