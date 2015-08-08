@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Camera.h"
-
+#include <QDebug>
 
 class PerspectiveCamera:public Camera
 {
@@ -15,7 +15,10 @@ public:
 		cameraDirection=this->target-this->eye;
 		cameraDirection.normalize();
 		//this->target+=cameraDirection*step;
+        qDebug() << "dir" << cameraDirection.x << cameraDirection.y << cameraDirection.z << step;
 		this->eye+=cameraDirection*step;
+
+        qDebug() << "zoom" << this->eye.x << this->eye.y << this->eye.z;
 	};
 
 	void onPanPress(int x,int y)

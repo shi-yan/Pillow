@@ -53,7 +53,6 @@ void GLCanvas::paintGL()
 
 void GLCanvas::mouseMoveEvent(QMouseEvent *e)
 {
-    qDebug() << e->buttons();
     if (e->buttons() == Qt::NoButton)
     {
         theScreen->onMoving(e->x(), e->y());
@@ -92,7 +91,6 @@ void GLCanvas::resizeGL(int w, int h)
 
 void GLCanvas::keyPressEvent(QKeyEvent *e)
 {
-        qDebug() << "keyevent" ;
     if(e->key() == Qt::Key_Alt)
     {
         theScreen->onAltDown();
@@ -109,7 +107,6 @@ void GLCanvas::keyPressEvent(QKeyEvent *e)
 
 void GLCanvas::keyReleaseEvent(QKeyEvent *e)
 {
-    qDebug() << "keyevent" ;
     int keyCode=e->key();
     if(keyCode==Qt::Key_Alt)
     {
@@ -187,8 +184,7 @@ void GLCanvas::enterEvent(QEvent *e)
 
 void GLCanvas::wheelEvent(QWheelEvent *e)
 {
- //   qDebug() << e->pixelDelta() << e->angleDelta();
-  if( theScreen->onWheel(e->angleDelta().y()*0.01,e->x(),e->y()))
+  if( theScreen->onWheel(((float)e->angleDelta().x())*0.1,e->x(),e->y()))
   {
       update();
   }
