@@ -117,7 +117,8 @@ void updateScreen(unsigned int width,unsigned int height);
 			return true;
 		}
 		else
-		{
+        {
+            qDebug() << "dual side selection";
 			currentView->onDualSideSelectionRelease(isAppend);
 			isSelectionMode=false;
 			return true;
@@ -164,7 +165,9 @@ void updateScreen(unsigned int width,unsigned int height);
 							return true;
 						}
 						else
-						{
+                        {
+                            qDebug() << "single side selection";
+
 							currentView->onSelectionPress(x,y);
 							isSelectionMode=true;
 							isAxisMode=false;

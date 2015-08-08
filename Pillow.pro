@@ -7,23 +7,23 @@ TEMPLATE = app
 
 HEADERS += \
     AxisCursor.h \
-    BackCamera.h \
-    BottomCamera.h \
-    Button.h \
-    Camera.h \
+    Camera/BackCamera.h \
+    Camera/BottomCamera.h \
+    UI/Button.h \
+    Camera/Camera.h \
     Edge.h \
     ElementBase.h \
     Enum.h \
     Face.h \
-    FourView.h \
-    FrontCamera.h \
+    View/FourView.h \
+    Camera/FrontCamera.h \
     Gird.h \
     Global.h \
     HistoryLog.h \
     HistoryManager.h \
     HistoryRecord.h \
     IndexArray.h \
-    LeftCamera.h \
+    Camera/LeftCamera.h \
     Log_EdgeEndChange.h \
     Log_EdgeLeftChange.h \
     Log_EdgeRightChange.h \
@@ -56,23 +56,23 @@ HEADERS += \
     Log_VertexPositionChange.h \
     Matrix.h \
     Object.h \
-    PerspectiveCamera.h \
+    Camera/PerspectiveCamera.h \
     Quaternion.h \
-    RightCamera.h \
+    Camera/RightCamera.h \
     Scene.h \
     Screen.h \
-    SingleView.h \
-    SplitedView.h \
+    View/SingleView.h \
+    View/SplitedView.h \
     SubdivideEdge.h \
     SubdivideFace.h \
     SubdivideLevel.h \
     SubdivideVertex.h \
     TheMath.h \
-    ThreeView.h \
-    ToolStrip.h \
-    TopCamera.h \
-    TwoView.h \
-    UILayer.h \
+    View/ThreeView.h \
+    UI/ToolStrip.h \
+    Camera/TopCamera.h \
+    View/TwoView.h \
+    UI/UILayer.h \
     Vector.h \
     Vertex.h \
     ViewportImage.h \
@@ -81,21 +81,21 @@ HEADERS += \
 
 SOURCES += \
     AxisCursor.cpp \
-    BackCamera.cpp \
-    BottomCamera.cpp \
-    Button.cpp \
-    Camera.cpp \
+    Camera/BackCamera.cpp \
+    Camera/BottomCamera.cpp \
+    UI/Button.cpp \
+    Camera/Camera.cpp \
     Edge.cpp \
     ElementBase.cpp \
     Face.cpp \
-    FourView.cpp \
-    FrontCamera.cpp \
+    View/FourView.cpp \
+    Camera/FrontCamera.cpp \
     Gird.cpp \
     HistoryLog.cpp \
     HistoryManager.cpp \
     HistoryRecord.cpp \
     IndexArray.cpp \
-    LeftCamera.cpp \
+    Camera/LeftCamera.cpp \
     Log_EdgeEndChange.cpp \
     Log_EdgeLeftChange.cpp \
     Log_EdgeRightChange.cpp \
@@ -128,22 +128,22 @@ SOURCES += \
     Log_VertexPositionChange.cpp \
     Matrix.cpp \
     Object.cpp \
-    PerspectiveCamera.cpp \
+    Camera/PerspectiveCamera.cpp \
     Quaternion.cpp \
-    RightCamera.cpp \
+    Camera/RightCamera.cpp \
     Scene.cpp \
     Screen.cpp \
-    SingleView.cpp \
-    SplitedView.cpp \
+    View/SingleView.cpp \
+    View/SplitedView.cpp \
     SubdivideEdge.cpp \
     SubdivideFace.cpp \
     SubdivideLevel.cpp \
     SubdivideVertex.cpp \
-    ThreeView.cpp \
-    ToolStrip.cpp \
-    TopCamera.cpp \
-    TwoView.cpp \
-    UILayer.cpp \
+    View/ThreeView.cpp \
+    UI/ToolStrip.cpp \
+    Camera/TopCamera.cpp \
+    View/TwoView.cpp \
+    UI/UILayer.cpp \
     Vector.cpp \
     Vertex.cpp \
     ViewportImage.cpp \

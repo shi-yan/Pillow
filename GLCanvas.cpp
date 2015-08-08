@@ -81,7 +81,11 @@ void GLCanvas::mousePressEvent(QMouseEvent *e)
 void GLCanvas::mouseReleaseEvent(QMouseEvent *e)
 {
     isDragging = false;
-    theScreen->onLeftRelease(true);
+
+    makeCurrent();
+    theScreen->onLeftRelease(false);
+
+
     update();
 }
 

@@ -10,7 +10,11 @@
 #include <fstream>
 #include "Matrix.h"
 #include "Quaternion.h"
-//#include <boost/spirit/core.hpp>
+
+#include <QImage>
+
+#include <QDebug>
+
 DECLARE_ENUM(SelectionMode)
 	Object=234,
 	Face,
@@ -3004,6 +3008,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void selectSingleSideObject(size_t x1,size_t y1,size_t x2,size_t y2,size_t height,bool isAppend=false)
 	{
+        qDebug() << "single side object select";
 		if(!isAppend)
 		{
 			clearSelection();
@@ -3033,6 +3038,10 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			size_t length=sw*sh;
 			struct ColorID *pixel=new struct ColorID[length];
 			glReadPixels(x1,height-y2,sw,sh, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+
+         //   QImage image((uchar*) pixel, sw, sh,QImage::Format_RGBA8888);
+         //   image.save("haha.png");
+
 			for(size_t e=0;e<length;e+=2)
 			{
 				pixel[e].a=0;
