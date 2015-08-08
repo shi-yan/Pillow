@@ -503,8 +503,12 @@ void updateScreen(unsigned int width,unsigned int height);
 		{
 			currentView->onWheel(step,x,y);
 			return true;
-		}else return false;
-	};
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 	private:
 		void Begin2D()

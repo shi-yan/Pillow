@@ -1,5 +1,6 @@
 #pragma once
 #include "ToolStrip.h"
+#include <QImage>
 
 class UILayer
 {
@@ -251,30 +252,18 @@ public:
 
 	GLuint loadTexture(char *fileName)
 	{
-    /*	GLuint txtnumber;
-		wxImage texture(_T(fileName),wxBITMAP_TYPE_PNG,-1);
-		int theHeight=texture.GetHeight();
-		int theWidth=texture.GetWidth();
-		unsigned char *RGBData=texture.GetData();
-		unsigned char *alphaData=texture.GetAlpha();
-		size_t pixelCount=theHeight*theWidth;
-		size_t dataSize=pixelCount*4;
-		unsigned char *data=new unsigned char[dataSize];
-		for(size_t i=0;i<pixelCount;++i)
-		{
-			data[i*4]=RGBData[i*3];
-			data[i*4+1]=RGBData[i*3+1];
-			data[i*4+2]=RGBData[i*3+2];
-			data[i*4+3]=alphaData[i];
-		}
+        GLuint txtnumber;
+        QImage texture(fileName);
+        texture = texture.convertToFormat(QImage::Format_RGBA8888);
+        int theHeight=texture.height();
+        int theWidth=texture.width();
 		glGenTextures(1, &txtnumber);
 		glBindTexture(GL_TEXTURE_2D, txtnumber);
-		glTexImage2D(GL_TEXTURE_2D, 0, 4, theWidth, theHeight, 0,GL_RGBA,GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, 4, theWidth, theHeight, 0,GL_RGBA,GL_UNSIGNED_BYTE, texture.bits());
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-		delete data;
-        return txtnumber;*/
-        return 1;
+        return txtnumber;
+
 	};
 
 
