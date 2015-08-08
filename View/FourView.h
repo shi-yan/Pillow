@@ -12,7 +12,7 @@ public:
 	CameraMode::__Enum setView(size_t index)
 	{
 		camera[index]->setCamera();
-		return camera[index]->type._value;
+        return camera[index]->m_type._value;
 	};
 
 						bool onAxisPress(size_t x,size_t y)
@@ -20,7 +20,7 @@ public:
 		//if((selected==0 && x<splitX)||(selected==1 && x>splitX)){
 		camera[selected]->setCameraForSelectionS();
 		cursorDir.z=0;
-		bool result=theScene->isAxisSelected(camera[selected]->type._value,camera[selected]->getEye(),height,x,y,cursorDir.x,cursorDir.y,cursorMode);
+        bool result=theScene->isAxisSelected(camera[selected]->m_type._value,camera[selected]->getEye(),height,x,y,cursorDir.x,cursorDir.y,cursorMode);
 		if(result)
 		{
 			axisDragSX=x;
@@ -71,7 +71,7 @@ public:
 		{
 			camera[selected]->setCamera();
 			Vector horizontalDir(camera[selected]->getHorizontalDir());
-			theScene->ctrlDrag(horizontalDir,camera[selected]->up,x-ctrlSX,y-ctrlSY,isExtrude);
+            theScene->ctrlDrag(horizontalDir,camera[selected]->m_up,x-ctrlSX,y-ctrlSY,isExtrude);
 			isExtrude=false;
 			ctrlSX=x;
 			ctrlSY=y;
@@ -127,7 +127,7 @@ public:
 	bool onPanDrag(size_t x,size_t y)
 	{
 		//这里要判断一下当前选择的pan区域
-		this->camera[this->selected]->pan(x,y);
+          camera[  selected]->pan(x,y);
 		return true;
 	};
 
@@ -218,7 +218,7 @@ public:
 
 	bool onRotateDrag(size_t x,size_t y)
 	{
-		this->camera[selected]->rotate(x,y);
+          camera[selected]->rotate(x,y);
 		return true;
 	};
 	

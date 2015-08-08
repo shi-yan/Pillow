@@ -12,7 +12,7 @@ public:
 	{
 		index;
 		camera[0]->setCamera();
-		return camera[0]->type._value;
+        return camera[0]->m_type._value;
 		//camera[0]->setCameraForSelectionS();
 	};
 
@@ -77,7 +77,7 @@ public:
 		{
 			camera[selected]->setCamera();
 			Vector horizontalDir(camera[selected]->getHorizontalDir());
-			theScene->ctrlDrag(horizontalDir,camera[selected]->up,x-ctrlSX,y-ctrlSY,isExtrude);
+            theScene->ctrlDrag(horizontalDir,camera[selected]->m_up,x-ctrlSX,y-ctrlSY,isExtrude);
 			isExtrude=false;
 			ctrlSX=x;
 			ctrlSY=y;
@@ -209,7 +209,7 @@ public:
 	{
 		camera[selected]->setCameraForSelectionS();
 		cursorDir.z=0;
-		bool result=theScene->isAxisSelected(camera[selected]->type._value,camera[selected]->getEye(),height,x,y,cursorDir.x,cursorDir.y,cursorMode);
+        bool result=theScene->isAxisSelected(camera[selected]->m_type._value,camera[selected]->getEye(),height,x,y,cursorDir.x,cursorDir.y,cursorMode);
 		if(result)
 		{
 			axisDragSX=x;

@@ -1,11 +1,11 @@
 #pragma once
-#include "LeftCamera.h"
-#include "RightCamera.h"
-#include "BackCamera.h"
-#include "FrontCamera.h"
-#include "BottomCamera.h"
-#include "TopCamera.h"
-#include "PerspectiveCamera.h"
+#include "../Camera/LeftCamera.h"
+#include "../Camera/RightCamera.h"
+#include "../Camera/BackCamera.h"
+#include "../Camera/FrontCamera.h"
+#include "../Camera/BottomCamera.h"
+#include "../Camera/TopCamera.h"
+#include "../Camera/PerspectiveCamera.h"
 
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -45,11 +45,11 @@ public:
 public:
 	void changeCamera(CameraMode::__Enum type)
 	{
-		size_t cameraWidth=(size_t)camera[selected]->width;
-		size_t cameraHeight=(size_t)camera[selected]->height;
-		size_t cameraStartX=(size_t)camera[selected]->startX;
-		size_t cameraStartY=(size_t)camera[selected]->startY;
-		delete camera[this->selected];
+        size_t cameraWidth=(size_t)camera[selected]->m_width;
+        size_t cameraHeight=(size_t)camera[selected]->m_height;
+        size_t cameraStartX=(size_t)camera[selected]->m_startX;
+        size_t cameraStartY=(size_t)camera[selected]->m_startY;
+        delete camera[  selected];
 		camera[selected]=NULL;
 		if(type==CameraMode::Perspective)
 		{
@@ -108,7 +108,7 @@ public:
 
 	void switchGird()
 	{
-		camera[selected]->showGird=!(camera[selected]->showGird);
+        camera[selected]->m_showGird=!(camera[selected]->m_showGird);
 	};
 
 	virtual bool onCtrlPress(size_t x,size_t y)
@@ -261,9 +261,9 @@ public:
 public:
 	~SplitedView(void)
 	{
-		delete this->camera[0];
-		delete this->camera[1];
-		delete this->camera[2];
-		delete this->camera[3];
+        delete   camera[0];
+        delete   camera[1];
+        delete   camera[2];
+        delete   camera[3];
 	}
 };

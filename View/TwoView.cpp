@@ -13,36 +13,36 @@ void TwoView::onPaint(void)
 {
 	glColor3ub(255,255,255);
 	glBegin(GL_QUADS);
-		glVertex2i(this->splitX-1,0);
-		glVertex2i(this->splitX+1,0);
-		glVertex2i(this->splitX+1,this->height);
-		glVertex2i(this->splitX-1,this->height);
+        glVertex2i(splitX-1,0);
+        glVertex2i(splitX+1,0);
+        glVertex2i(splitX+1, height);
+        glVertex2i( splitX-1, height);
 	glEnd();
 	glColor3ub(255,255,0);
-	if(this->selected==0)
+    if( selected==0)
 	{		glBegin(GL_LINES);
 			glVertex2i(2,2);
-			glVertex2i(this->splitX-2,2);
-			glVertex2i(this->splitX-2,2);
-			glVertex2i(this->splitX-2,this->height-2);
-			glVertex2i(this->splitX-2,this->height-2);
-			glVertex2i(2,this->height-2);
-			glVertex2i(2,this->height-2);
+            glVertex2i( splitX-2,2);
+            glVertex2i( splitX-2,2);
+            glVertex2i( splitX-2, height-2);
+            glVertex2i( splitX-2, height-2);
+            glVertex2i(2, height-2);
+            glVertex2i(2, height-2);
 			glVertex2i(2,2);
 		glEnd();		
 	}
 	else
-	if(this->selected==1)
+    if( selected==1)
 	{
 		glBegin(GL_LINES);
-			glVertex2i(this->splitX+2,2);
-			glVertex2i(this->width-2,2);
-			glVertex2i(this->width-2,2);
-			glVertex2i(this->width-2,this->height-2);
-			glVertex2i(this->width-2,this->height-2);
-			glVertex2i(this->splitX+2,this->height-2);
-			glVertex2i(this->splitX+2,this->height-2);
-			glVertex2i(this->splitX+2,2);
+            glVertex2i( splitX+2,2);
+            glVertex2i( width-2,2);
+            glVertex2i( width-2,2);
+            glVertex2i( width-2, height-2);
+            glVertex2i( width-2, height-2);
+            glVertex2i( splitX+2, height-2);
+            glVertex2i( splitX+2, height-2);
+            glVertex2i( splitX+2,2);
 		glEnd();		
 	}
 //	glColor3ub(255,255,255);
