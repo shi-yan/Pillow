@@ -1,7 +1,8 @@
 #pragma once
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
 #include "SubdivideLevel.h"
 #include "IndexArray.h"
 #include "Vertex.h"

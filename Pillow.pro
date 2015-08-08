@@ -151,7 +151,11 @@ SOURCES += \
     MainWindow.cpp \
     GLCanvas.cpp
 
-LIBS += -lGLU
+
+
+#LIBS += -lGLU
+
+LIBS += -framework OpenGL
 
 FORMS += \
     MainWindow.ui

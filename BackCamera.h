@@ -1,7 +1,9 @@
 #pragma once
 #include "Camera.h"
 #include <iostream>
-#include <GL/glu.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
 
 class BackCamera :
 	public Camera

@@ -1,6 +1,7 @@
 #pragma once
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
 #include "Enum.h"
 
 DECLARE_ENUM(ButtonEventType)
@@ -45,19 +46,19 @@ END_ENUM()
 class Button
 {
 	ButtonEventType type;
-	size_t callID;
+    unsigned int callID;
 	bool isIn;
 	int x;
 	int y;
-	size_t sx;
-	size_t sy;
+    unsigned int sx;
+    unsigned int sy;
 	float texCx1;
 	float texCx2;
 	float texCy1;
 	float texCy2;
 	bool isPressed;
 public:
-	Button(ButtonEventType::__Enum theType,float theTexCx1,float theTexCy1,float theTexCx2,float theTexCy2,size_t theSX,size_t theSY):type(theType),texCx1(theTexCx1),texCy1(theTexCy1),texCx2(theTexCx2),texCy2(theTexCy2),isIn(false),x(0),y(0),sx(theSX),sy(theSY),isPressed(false)
+    Button(ButtonEventType::__Enum theType,float theTexCx1,float theTexCy1,float theTexCx2,float theTexCy2,unsigned int theSX,unsigned int theSY):type(theType),texCx1(theTexCx1),texCy1(theTexCy1),texCx2(theTexCx2),texCy2(theTexCy2),isIn(false),x(0),y(0),sx(theSX),sy(theSY),isPressed(false)
 	{
 		callID=glGenLists(1);	
 	};
@@ -66,7 +67,7 @@ public:
 		x=theX;
 		y=theY;
 	};
-	void updateSize(size_t theSx,size_t theSy)
+    void updateSize(unsigned int theSx,unsigned int theSy)
 	{
 		sx=theSx;
 		sy=theSy;

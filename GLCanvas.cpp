@@ -8,15 +8,16 @@ Screen *theScreen;
 
 GLCanvas::GLCanvas(QWidget *parent) : QOpenGLWidget(parent),isDragging(false)
 {
-    theScene=new Scene();
-    theScene->initialize();
-
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 }
 
 void GLCanvas::initializeGL()
 {
+
+    theScene=new Scene();
+    theScene->initialize();
+
 
 
     theScreen=new Screen();
@@ -55,17 +56,17 @@ void GLCanvas::mouseMoveEvent(QMouseEvent *e)
 {
     if (e->buttons() == Qt::NoButton)
     {
-        theScreen->onMoving(e->x(), e->y());
+        theScreen->onMoving(e->x()*2.0, e->y()*2.0);
     }
     else
     {
         if (e->buttons() == Qt::LeftButton)
         {
-            theScreen->onLeftDrag(e->x(), e->y());
+            theScreen->onLeftDrag(e->x()*2.0,e->y()*2.0);
         }
         else if (e->buttons() == Qt::MiddleButton)
         {
-            theScreen->onMiddleDrag(e->x(), e->y());
+            theScreen->onMiddleDrag(e->x()*2.0, e->y()*2.0);
         }
     }
     update();
@@ -74,7 +75,7 @@ void GLCanvas::mouseMoveEvent(QMouseEvent *e)
 void GLCanvas::mousePressEvent(QMouseEvent *e)
 {
     isDragging = true;
-    theScreen->onLeftPress(e->x(), e->y());
+    theScreen->onLeftPress(e->x()*2.0, e->y()*2.0);
 }
 
 void GLCanvas::mouseReleaseEvent(QMouseEvent *e)
@@ -86,7 +87,7 @@ void GLCanvas::mouseReleaseEvent(QMouseEvent *e)
 
 void GLCanvas::resizeGL(int w, int h)
 {
-    theScreen->updateScreen(w, h);
+    theScreen->updateScreen(w*2.0, h*2.0);
 }
 
 void GLCanvas::keyPressEvent(QKeyEvent *e)
@@ -184,7 +185,8 @@ void GLCanvas::enterEvent(QEvent *e)
 
 void GLCanvas::wheelEvent(QWheelEvent *e)
 {
-  if( theScreen->onWheel(((float)e->angleDelta().x())*0.1,e->x(),e->y()))
+    qDebug() << e->angleDelta();
+  if( theScreen->onWheel(((float)e->angleDelta().y())*0.1,e->x()*2.0,e->y()*2.0))
   {
       update();
   }

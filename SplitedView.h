@@ -7,8 +7,9 @@
 #include "TopCamera.h"
 #include "PerspectiveCamera.h"
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
 
 class SplitedView
 {
