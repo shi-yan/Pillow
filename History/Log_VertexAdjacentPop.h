@@ -1,5 +1,5 @@
 #pragma once
-#include "Vertex.h"
+#include "Core/Vertex.h"
 #include "HistoryLog.h"
 
 class Log_VertexAdjacentPop :

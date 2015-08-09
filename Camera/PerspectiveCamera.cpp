@@ -1,8 +1,8 @@
 #include "PerspectiveCamera.h"
-#include "Gird.h"
-#include "Matrix.h"
-#include "Vector.cpp"
-#include "Quaternion.h"
+#include "../UI/Grid.h"
+#include "../Core/Matrix.h"
+#include "../Core/Vector.cpp"
+#include "../Core/Quaternion.h"
 
 PerspectiveCamera::PerspectiveCamera(float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
     :Camera(CameraMode::Perspective, width, height, nearPlane, farPlane, startX, startY, target, eye, up),

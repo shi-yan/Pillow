@@ -21,7 +21,7 @@ public:
 	UILayer(size_t theWidth,size_t theHeight):currentIn(NULL),width(theWidth),height(theHeight)
 	{
 		//wxImage::AddHandler(new wxPNGHandler);
-		textureID=loadTexture("ui.dat");
+        textureID=loadTexture("://ui.dat");
 		modifyModeStrip=new ToolStrip(1,1,42,42,false,4,0,0,42.0f/256.0f,11.0f/256.0f,0,12.0f/256.0f,0,30.0f/256.0f,0,31.0f/256.0f,42.0f/256.0f,42.0f/256.0f);
 		Button *vertexButton=new Button(ButtonEventType::VertexSelectionMode,109.0f/256.0f,117.0f/256.0f,141.0f/256.0f,149.0f/256.0f,32,32);
 		Button *edgeButton=new Button(ButtonEventType::EdgeSelectionMode,73.0f/256.0f,117.0f/256.0f,105.0f/256.0f,149.0f/256.0f,32,32);

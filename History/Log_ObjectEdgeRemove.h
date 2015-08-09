@@ -1,6 +1,6 @@
 #pragma once
 #include "HistoryLog.h"
-#include "Edge.h"
+#include "../Core/Edge.h"
 
 class Log_ObjectEdgeRemove :
 	public HistoryLog

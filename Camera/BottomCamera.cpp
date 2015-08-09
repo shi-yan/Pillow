@@ -1,8 +1,8 @@
 #include "BottomCamera.h"
-#include "Gird.h"
-#include "Matrix.h"
-#include "Vector.cpp"
-#include "Quaternion.h"
+#include "../UI/Grid.h"
+#include "../Core/Matrix.h"
+#include "../Core/Vector.cpp"
+#include "../Core/Quaternion.h"
 
 ViewportImage *bottomReference=NULL;
 

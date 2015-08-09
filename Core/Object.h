@@ -12,43 +12,41 @@
 #include <iostream>
 #include <string>
 
-#include "Log_VertexPositionChange.h"
-#include "Log_VertexNormalChange.h"
-#include "Log_VertexAdjacentPush.h"
-#include "Log_VertexAdjacentChange.h"
-#include "Log_VertexAdjacentPop.h"
-#include "Log_VertexAdjacentSwap.h"
-#include "Log_VertexAdjacentRemove.h"
-#include "Log_VertexAdjacentInsert.h"
+#include "History/Log_VertexPositionChange.h"
+#include "History/Log_VertexNormalChange.h"
+#include "History/Log_VertexAdjacentPush.h"
+#include "History/Log_VertexAdjacentChange.h"
+#include "History/Log_VertexAdjacentPop.h"
+#include "History/Log_VertexAdjacentSwap.h"
+#include "History/Log_VertexAdjacentRemove.h"
+#include "History/Log_VertexAdjacentInsert.h"
 
-#include "Log_EdgeStartChange.h"
-#include "Log_EdgeEndChange.h"
-#include "Log_EdgeLeftChange.h"
-#include "Log_EdgeRightChange.h"
+#include "History/Log_EdgeStartChange.h"
+#include "History/Log_EdgeEndChange.h"
+#include "History/Log_EdgeLeftChange.h"
+#include "History/Log_EdgeRightChange.h"
 
-#include "Log_FaceEdgePush.h"
-#include "Log_FaceEdgeChange.h"
-#include "Log_FaceEdgePop.h"
-#include "Log_FaceEdgeSwap.h"
-#include "Log_FaceEdgeRemove.h"
-#include "Log_FaceEdgeInsert.h"
+#include "History/Log_FaceEdgePush.h"
+#include "History/Log_FaceEdgeChange.h"
+#include "History/Log_FaceEdgePop.h"
+#include "History/Log_FaceEdgeSwap.h"
+#include "History/Log_FaceEdgeRemove.h"
+#include "History/Log_FaceEdgeInsert.h"
 
-#include "Log_ObjectPositionChange.h"
-#include "Log_ObjectRotationChange.h"
-#include "Log_ObjectScaleChange.h"
-#include "Log_ObjectColorChange.h"
-#include "Log_ObjectVertexAdd.h"
-#include "Log_ObjectVertexRemove.h"
-#include "Log_ObjectEdgeAdd.h"
-#include "Log_ObjectEdgeRemove.h"
-#include "Log_ObjectFaceAdd.h"
-#include "Log_ObjectFaceRemove.h"
-#include "HistoryManager.h"
+#include "History/Log_ObjectPositionChange.h"
+#include "History/Log_ObjectRotationChange.h"
+#include "History/Log_ObjectScaleChange.h"
+#include "History/Log_ObjectColorChange.h"
+#include "History/Log_ObjectVertexAdd.h"
+#include "History/Log_ObjectVertexRemove.h"
+#include "History/Log_ObjectEdgeAdd.h"
+#include "History/Log_ObjectEdgeRemove.h"
+#include "History/Log_ObjectFaceAdd.h"
+#include "History/Log_ObjectFaceRemove.h"
+#include "History/HistoryManager.h"
 
-//历史记录管理器
 extern HistoryManager *historyManager;
 
-//渲染类型
 DECLARE_ENUM(RenderType)
 	//带线框平滑渲染
 	Wireframe=234,

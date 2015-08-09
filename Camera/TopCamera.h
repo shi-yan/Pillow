@@ -1,10 +1,8 @@
 #pragma once
 #include "Camera.h"
 
-class TopCamera :
-	public Camera
+class TopCamera : public Camera
 {
-//private:float scale;
 public:
 	TopCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
 

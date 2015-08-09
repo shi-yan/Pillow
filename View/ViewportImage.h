@@ -2,7 +2,7 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
-#include "Vector.h"
+#include "../Core/Vector.h"
 #include "Enum.h"
 #include <string>
 

@@ -1,8 +1,8 @@
 #include "Camera.h"
-#include "Gird.h"
-#include "Matrix.h"
-#include "Vector.cpp"
-#include "Quaternion.h"
+#include "../UI/Grid.h"
+#include "../Core/Matrix.h"
+#include "../Core/Vector.cpp"
+#include "../Core/Quaternion.h"
 
 Camera::Camera(CameraMode::__Enum type, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up)
     : m_old(0),

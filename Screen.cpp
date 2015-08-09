@@ -5,11 +5,11 @@
 #include "View/ThreeView.h"
 #include "View/TwoView.h"
 #include "Camera/Camera.h"
-#include "Gird.h"
-#include "Matrix.h"
-#include "Vector.cpp"
-#include "Quaternion.h"
-#include "ViewportImage.h"
+#include "UI/Grid.h"
+#include "Core/Matrix.h"
+#include "Core/Vector.cpp"
+#include "Core/Quaternion.h"
+#include "View/ViewportImage.h"
 
 extern Scene *theScene;
 Gird *theGird;

@@ -2,7 +2,7 @@
 #include "Global.h"
 #include "SplitedView.h"
 
-class TwoView:public SplitedView
+class TwoView : public SplitedView
 {
 public:
     TwoView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);

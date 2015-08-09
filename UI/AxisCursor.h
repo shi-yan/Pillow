@@ -3,7 +3,7 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
-#include "Vector.h"
+#include "../Core/Vector.h"
 #include "Camera/Camera.h"
 
 DECLARE_ENUM(AxisCursorMode)

@@ -1,9 +1,9 @@
 #pragma once
 #include "Enum.h"
 #include <string>
-#include "Vector.h"
+#include "../Core/Vector.h"
 #include <OpenGL/gl.h>
-#include "ViewportImage.h"
+#include "../View/ViewportImage.h"
 
 #define Epsilon 1.0e-5
 

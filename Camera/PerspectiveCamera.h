@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include <QDebug>
 
-class PerspectiveCamera:public Camera
+class PerspectiveCamera : public Camera
 {
 public:
     float m_angle;

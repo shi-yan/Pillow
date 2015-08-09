@@ -2,14 +2,14 @@
  #pragma warning(disable : 4996)
 
 #include "Enum.h"
-#include "IndexArray.h"
-#include "Object.h"
-#include "Log_SceneObjectAdd.h"
-#include "Log_SceneObjectRemove.h"
-#include "AxisCursor.h"
+#include "Core/IndexArray.h"
+#include "Core/Object.h"
+#include "History/Log_SceneObjectAdd.h"
+#include "History/Log_SceneObjectRemove.h"
+#include "UI/AxisCursor.h"
 #include <fstream>
-#include "Matrix.h"
-#include "Quaternion.h"
+#include "Core/Matrix.h"
+#include "Core/Quaternion.h"
 
 #include <QImage>
 

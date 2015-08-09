@@ -3,7 +3,7 @@
 #include "SplitedView.h"
 #include <time.h>
 
-class SingleView:public SplitedView
+class SingleView : public SplitedView
 {
 public:
     SingleView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);

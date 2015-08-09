@@ -1,6 +1,6 @@
 #pragma once
 #include "HistoryLog.h"
-#include "Vertex.h"
+#include "../Core/Vertex.h"
 
 class Log_ObjectVertexRemove :
 	public HistoryLog

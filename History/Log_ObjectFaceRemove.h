@@ -1,6 +1,6 @@
 #pragma once
 #include "HistoryLog.h"
-#include "Face.h"
+#include "../Core/Face.h"
 
 class Log_ObjectFaceRemove :
 	public HistoryLog

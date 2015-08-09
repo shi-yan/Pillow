@@ -6,147 +6,147 @@ TARGET = "Pillow"
 TEMPLATE = app
 
 HEADERS += \
-    AxisCursor.h \
+    UI/AxisCursor.h \
     Camera/BackCamera.h \
     Camera/BottomCamera.h \
     UI/Button.h \
     Camera/Camera.h \
-    Edge.h \
-    ElementBase.h \
+    Core/Edge.h \
+    Core/ElementBase.h \
     Enum.h \
-    Face.h \
+    Core/Face.h \
     View/FourView.h \
     Camera/FrontCamera.h \
-    Gird.h \
+    UI/Grid.h \
     Global.h \
-    HistoryLog.h \
-    HistoryManager.h \
-    HistoryRecord.h \
-    IndexArray.h \
+    History/HistoryLog.h \
+    History/HistoryManager.h \
+    History/HistoryRecord.h \
+    Core/IndexArray.h \
     Camera/LeftCamera.h \
-    Log_EdgeEndChange.h \
-    Log_EdgeLeftChange.h \
-    Log_EdgeRightChange.h \
-    Log_EdgeStartChange.h \
-    Log_FaceEdgeChange.h \
-    Log_FaceEdgeInsert.h \
-    Log_FaceEdgePop.h \
-    Log_FaceEdgePush.h \
-    Log_FaceEdgeRemove.h \
-    Log_FaceEdgeSwap.h \
-    Log_ObjectColorChange.h \
-    Log_ObjectEdgeAdd.h \
-    Log_ObjectEdgeRemove.h \
-    Log_ObjectFaceAdd.h \
-    Log_ObjectFaceRemove.h \
-    Log_ObjectPositionChange.h \
-    Log_ObjectRotationChange.h \
-    Log_ObjectScaleChange.h \
-    Log_ObjectVertexAdd.h \
-    Log_ObjectVertexRemove.h \
-    Log_SceneObjectAdd.h \
-    Log_SceneObjectRemove.h \
-    Log_VertexAdjacentChange.h \
-    Log_VertexAdjacentInsert.h \
-    Log_VertexAdjacentPop.h \
-    Log_VertexAdjacentPush.h \
-    Log_VertexAdjacentRemove.h \
-    Log_VertexAdjacentSwap.h \
-    Log_VertexNormalChange.h \
-    Log_VertexPositionChange.h \
-    Matrix.h \
-    Object.h \
+    History/Log_EdgeEndChange.h \
+    History/Log_EdgeLeftChange.h \
+    History/Log_EdgeRightChange.h \
+    History/Log_EdgeStartChange.h \
+    History/Log_FaceEdgeChange.h \
+    History/Log_FaceEdgeInsert.h \
+    History/Log_FaceEdgePop.h \
+    History/Log_FaceEdgePush.h \
+    History/Log_FaceEdgeRemove.h \
+    History/Log_FaceEdgeSwap.h \
+    History/Log_ObjectColorChange.h \
+    History/Log_ObjectEdgeAdd.h \
+    History/Log_ObjectEdgeRemove.h \
+    History/Log_ObjectFaceAdd.h \
+    History/Log_ObjectFaceRemove.h \
+    History/Log_ObjectPositionChange.h \
+    History/Log_ObjectRotationChange.h \
+    History/Log_ObjectScaleChange.h \
+    History/Log_ObjectVertexAdd.h \
+    History/Log_ObjectVertexRemove.h \
+    History/Log_SceneObjectAdd.h \
+    History/Log_SceneObjectRemove.h \
+    History/Log_VertexAdjacentChange.h \
+    History/Log_VertexAdjacentInsert.h \
+    History/Log_VertexAdjacentPop.h \
+    History/Log_VertexAdjacentPush.h \
+    History/Log_VertexAdjacentRemove.h \
+    History/Log_VertexAdjacentSwap.h \
+    History/Log_VertexNormalChange.h \
+    History/Log_VertexPositionChange.h \
+    Core/Matrix.h \
+    Core/Object.h \
     Camera/PerspectiveCamera.h \
-    Quaternion.h \
+    Core/Quaternion.h \
     Camera/RightCamera.h \
     Scene.h \
     Screen.h \
     View/SingleView.h \
     View/SplitedView.h \
-    SubdivideEdge.h \
-    SubdivideFace.h \
-    SubdivideLevel.h \
-    SubdivideVertex.h \
-    TheMath.h \
+    Core/SubdivideEdge.h \
+    Core/SubdivideFace.h \
+    Core/SubdivideLevel.h \
+    Core/SubdivideVertex.h \
+    Core/TheMath.h \
     View/ThreeView.h \
     UI/ToolStrip.h \
     Camera/TopCamera.h \
     View/TwoView.h \
     UI/UILayer.h \
-    Vector.h \
-    Vertex.h \
-    ViewportImage.h \
+    Core/Vector.h \
+    Core/Vertex.h \
+    View/ViewportImage.h \
     MainWindow.h \
     GLCanvas.h
 
 SOURCES += \
-    AxisCursor.cpp \
+    UI/AxisCursor.cpp \
     Camera/BackCamera.cpp \
     Camera/BottomCamera.cpp \
     UI/Button.cpp \
     Camera/Camera.cpp \
-    Edge.cpp \
-    ElementBase.cpp \
-    Face.cpp \
+    Core/Edge.cpp \
+    Core/ElementBase.cpp \
+    Core/Face.cpp \
     View/FourView.cpp \
     Camera/FrontCamera.cpp \
-    Gird.cpp \
-    HistoryLog.cpp \
-    HistoryManager.cpp \
-    HistoryRecord.cpp \
-    IndexArray.cpp \
+    UI/Grid.cpp \
+    History/HistoryLog.cpp \
+    History/HistoryManager.cpp \
+    History/HistoryRecord.cpp \
+    Core/IndexArray.cpp \
     Camera/LeftCamera.cpp \
-    Log_EdgeEndChange.cpp \
-    Log_EdgeLeftChange.cpp \
-    Log_EdgeRightChange.cpp \
-    Log_EdgeStartChange.cpp \
-    Log_FaceEdgeChange.cpp \
-    Log_FaceEdgeInsert.cpp \
-    Log_FaceEdgePop.cpp \
-    Log_FaceEdgePush.cpp \
-    Log_FaceEdgeRemove.cpp \
-    Log_FaceEdgeSwap.cpp \
-    Log_ObjectColorChange.cpp \
-    Log_ObjectEdgeAdd.cpp \
-    Log_ObjectEdgeRemove.cpp \
-    Log_ObjectFaceAdd.cpp \
-    Log_ObjectFaceRemove.cpp \
-    Log_ObjectPositionChange.cpp \
-    Log_ObjectRotationChange.cpp \
-    Log_ObjectScaleChange.cpp \
-    Log_ObjectVertexAdd.cpp \
-    Log_ObjectVertexRemove.cpp \
-    Log_SceneObjectAdd.cpp \
-    Log_SceneObjectRemove.cpp \
-    Log_VertexAdjacentChange.cpp \
-    Log_VertexAdjacentInsert.cpp \
-    Log_VertexAdjacentPop.cpp \
-    Log_VertexAdjacentPush.cpp \
-    Log_VertexAdjacentRemove.cpp \
-    Log_VertexAdjacentSwap.cpp \
-    Log_VertexNormalChange.cpp \
-    Log_VertexPositionChange.cpp \
-    Matrix.cpp \
-    Object.cpp \
+    History/Log_EdgeEndChange.cpp \
+    History/Log_EdgeLeftChange.cpp \
+    History/Log_EdgeRightChange.cpp \
+    History/Log_EdgeStartChange.cpp \
+    History/Log_FaceEdgeChange.cpp \
+    History/Log_FaceEdgeInsert.cpp \
+    History/Log_FaceEdgePop.cpp \
+    History/Log_FaceEdgePush.cpp \
+    History/Log_FaceEdgeRemove.cpp \
+    History/Log_FaceEdgeSwap.cpp \
+    History/Log_ObjectColorChange.cpp \
+    History/Log_ObjectEdgeAdd.cpp \
+    History/Log_ObjectEdgeRemove.cpp \
+    History/Log_ObjectFaceAdd.cpp \
+    History/Log_ObjectFaceRemove.cpp \
+    History/Log_ObjectPositionChange.cpp \
+    History/Log_ObjectRotationChange.cpp \
+    History/Log_ObjectScaleChange.cpp \
+    History/Log_ObjectVertexAdd.cpp \
+    History/Log_ObjectVertexRemove.cpp \
+    History/Log_SceneObjectAdd.cpp \
+    History/Log_SceneObjectRemove.cpp \
+    History/Log_VertexAdjacentChange.cpp \
+    History/Log_VertexAdjacentInsert.cpp \
+    History/Log_VertexAdjacentPop.cpp \
+    History/Log_VertexAdjacentPush.cpp \
+    History/Log_VertexAdjacentRemove.cpp \
+    History/Log_VertexAdjacentSwap.cpp \
+    History/Log_VertexNormalChange.cpp \
+    History/Log_VertexPositionChange.cpp \
+    Core/Matrix.cpp \
+    Core/Object.cpp \
     Camera/PerspectiveCamera.cpp \
-    Quaternion.cpp \
+    Core/Quaternion.cpp \
     Camera/RightCamera.cpp \
     Scene.cpp \
     Screen.cpp \
     View/SingleView.cpp \
     View/SplitedView.cpp \
-    SubdivideEdge.cpp \
-    SubdivideFace.cpp \
-    SubdivideLevel.cpp \
-    SubdivideVertex.cpp \
+    Core/SubdivideEdge.cpp \
+    Core/SubdivideFace.cpp \
+    Core/SubdivideLevel.cpp \
+    Core/SubdivideVertex.cpp \
     View/ThreeView.cpp \
     UI/ToolStrip.cpp \
     Camera/TopCamera.cpp \
     View/TwoView.cpp \
     UI/UILayer.cpp \
-    Vector.cpp \
-    Vertex.cpp \
-    ViewportImage.cpp \
+    Core/Vector.cpp \
+    Core/Vertex.cpp \
+    View/ViewportImage.cpp \
     main.cpp \
     MainWindow.cpp \
     GLCanvas.cpp
@@ -159,3 +159,6 @@ LIBS += -framework OpenGL
 
 FORMS += \
     MainWindow.ui
+
+RESOURCES += \
+    resources.qrc
