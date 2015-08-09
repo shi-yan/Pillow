@@ -1,8 +1,7 @@
 #pragma once
 #include "Camera.h"
 
-class LeftCamera :
-	public Camera
+class LeftCamera : public Camera
 {
 public:
 	LeftCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);

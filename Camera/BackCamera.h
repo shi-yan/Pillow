@@ -4,7 +4,6 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
-
 class BackCamera : public Camera
 {
 public:

@@ -6,8 +6,8 @@
 
 ViewportImage *bottomReference=NULL;
 
-BottomCamera::BottomCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up):
-Camera(CameraMode::Bottom,width,height,nearPlane,farPlane,startX,startY,target,eye,up)
+BottomCamera::BottomCamera(float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up)
+    :Camera(CameraMode::Bottom, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
 {
     m_lightAmbient[0]=0.4f;
     m_lightAmbient[1]=0.4f;
@@ -36,84 +36,83 @@ BottomCamera::~BottomCamera(void)
 
 void BottomCamera::setCamera()
 {
-glMatrixMode(GL_MODELVIEW);
-glLoadIdentity();
-gluLookAt(m_eye.x,m_eye.y,-990,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
-glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-glOrtho(-m_width*(m_eye.z)*0.005f,m_width*(m_eye.z)*0.005f,-m_height*(m_eye.z)*0.005f,m_height*(m_eye.z)*0.005f,m_nearPlane,m_farPlane);
-glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
-            drawGird();
-            if(bottomReference && bottomReference->isShow)
-{
-bottomReference->onPaint();
-}
-glEnable(GL_LIGHT0);
-glLightfv(GL_LIGHT0, GL_AMBIENT, m_lightAmbient);
-glLightfv(GL_LIGHT0, GL_DIFFUSE, m_lightDiffuse);
-glLightfv(GL_LIGHT0, GL_SPECULAR, m_lightSpecular);
-glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
-};
-
-                            void BottomCamera::setCameraForSelectionS()
-{
-glMatrixMode(GL_MODELVIEW);
-glLoadIdentity();
-gluLookAt(m_eye.x,m_eye.y,-990,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
-glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-glOrtho(-m_width*(m_eye.z)*0.005f,m_width*(m_eye.z)*0.005f,-m_height*(m_eye.z)*0.005f,m_height*(m_eye.z)*0.005f,m_nearPlane,m_farPlane);
-glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
-};
-
-        void BottomCamera::setCameraForSelectionD(size_t x1,size_t y1,size_t x2,size_t y2,size_t h)
-{
-glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
-GLint viewport[4];
-glGetIntegerv (GL_VIEWPORT, viewport);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(m_eye.x,m_eye.y,-990,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
     glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-
-size_t sw=(x2-x1)>5?(x2-x1):5;
-size_t sh=(y2-y1)>5?(y2-y1):5;
-gluPickMatrix((GLdouble) (x1+x2)/2,(GLdouble) (h - (y1+y2)/2), (GLdouble)sw,(GLdouble)sh, viewport);
-glOrtho(-m_width*(m_eye.z)*0.005f,m_width*(m_eye.z)*0.005f,-m_height*(m_eye.z)*0.005f,m_height*(m_eye.z)*0.005f,m_nearPlane,m_farPlane+100);
-glMatrixMode(GL_MODELVIEW);
-glLoadIdentity();
-gluLookAt(m_eye.x,m_eye.y,-990,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
-};
-
-                void BottomCamera::setReferenceImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height)
-{
-if(bottomReference)
-{
-    delete bottomReference;
+    glLoadIdentity();
+    glOrtho(-m_width*(m_eye.z)*0.005f,m_width*(m_eye.z)*0.005f,-m_height*(m_eye.z)*0.005f,m_height*(m_eye.z)*0.005f,m_nearPlane,m_farPlane);
+    glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
+    drawGird();
+    if(bottomReference && bottomReference->isShow)
+    {
+        bottomReference->onPaint();
+    }
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, m_lightAmbient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, m_lightDiffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, m_lightSpecular);
+    glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
 }
 
-bottomReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
-bottomReference->initialize();
-bottomReference->isShow=true;
-};
+void BottomCamera::setCameraForSelectionS()
+{
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(m_eye.x,m_eye.y,-990,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-m_width*(m_eye.z)*0.005f,m_width*(m_eye.z)*0.005f,-m_height*(m_eye.z)*0.005f,m_height*(m_eye.z)*0.005f,m_nearPlane,m_farPlane);
+    glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
+}
+
+void BottomCamera::setCameraForSelectionD(size_t x1,size_t y1,size_t x2,size_t y2,size_t h)
+{
+    glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
+    GLint viewport[4];
+    glGetIntegerv (GL_VIEWPORT, viewport);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    size_t sw=(x2-x1)>5?(x2-x1):5;
+    size_t sh=(y2-y1)>5?(y2-y1):5;
+    gluPickMatrix((GLdouble) (x1+x2)/2,(GLdouble) (h - (y1+y2)/2), (GLdouble)sw,(GLdouble)sh, viewport);
+    glOrtho(-m_width*(m_eye.z)*0.005f,m_width*(m_eye.z)*0.005f,-m_height*(m_eye.z)*0.005f,m_height*(m_eye.z)*0.005f,m_nearPlane,m_farPlane+100);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(m_eye.x,m_eye.y,-990,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
+}
+
+void BottomCamera::setReferenceImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height)
+{
+    if(bottomReference)
+    {
+        delete bottomReference;
+    }
+
+    bottomReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
+    bottomReference->initialize();
+    bottomReference->isShow=true;
+}
 
 void BottomCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,size_t &width,size_t &height)
 {
-if(bottomReference)
-{
-texID=bottomReference->imageID;
-path=bottomReference->path;
-position=bottomReference->position;
-width=bottomReference->width;
-height=bottomReference->height;
+    if(bottomReference)
+    {
+        texID=bottomReference->imageID;
+        path=bottomReference->path;
+        position=bottomReference->position;
+        width=bottomReference->width;
+        height=bottomReference->height;
+    }
+    else
+    {
+        texID=0;
+        path="";
+        position.vec(0);
+        width=0;
+        height=0;
+    }
 }
-else
-{
-texID=0;
-path="";
-position.vec(0);
-width=0;
-height=0;
-}
-};
 
 void BottomCamera::disableReference()
 {
@@ -140,36 +139,35 @@ void BottomCamera::drawGird() const
 
 void BottomCamera::zoom(float step)
 {
-Vector cameraDirection(0,0,-1);
-m_eye+=cameraDirection*(float)(step*0.1f);
-if(m_eye.z<2) m_eye.z=2;
+    Vector cameraDirection(0,0,-1);
+    m_eye+=cameraDirection*(float)(step*0.1f);
+    if(m_eye.z<2) m_eye.z=2;
 }
 
 void BottomCamera::onPanPress(int x,int y)
 {
-m_isDraging=true;
-m_old.x=(float)x;
-m_old.y=(float)y;
-};
+    m_isDraging=true;
+    m_old.x=(float)x;
+    m_old.y=(float)y;
+}
 
 void BottomCamera::onPanRelease(int x,int y)
 {
-x;
-y;
-m_isDraging=false;
-m_old.null();
-};
+    x;
+    y;
+    m_isDraging=false;
+    m_old.null();
+}
 
 void BottomCamera::pan(int x,int y)
 {
-float dx=(float)(x-m_old.x)*m_eye.z*0.01f;
-float dy=(float)(y-m_old.y)*m_eye.z*0.01f;
-m_old.x=(float)x;
-m_old.y=(float)y;
-//dx=10;
-m_eye.x+=dx;
-m_eye.y+=dy;
-m_target.x+=dx;
-m_target.y+=dy;
-};
-
+    float dx=(float)(x-m_old.x)*m_eye.z*0.01f;
+    float dy=(float)(y-m_old.y)*m_eye.z*0.01f;
+    m_old.x=(float)x;
+    m_old.y=(float)y;
+    //dx=10;
+    m_eye.x+=dx;
+    m_eye.y+=dy;
+    m_target.x+=dx;
+    m_target.y+=dy;
+}

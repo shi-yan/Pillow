@@ -7,8 +7,8 @@
 ViewportImage *rightReference=NULL;
 
 
-RightCamera::RightCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up):
-Camera(CameraMode::Right,width,height,nearPlane,farPlane,startX,startY,target,eye,up)
+RightCamera::RightCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
+    :Camera(CameraMode::Right, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
 {
     m_lightAmbient[0]=0.4f;
     m_lightAmbient[1]=0.4f;
@@ -130,7 +130,7 @@ void RightCamera::setCamera()
     glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         gluLookAt(990,m_eye.y,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
-    };
+    }
 
 Vector RightCamera::getEye() const
     {

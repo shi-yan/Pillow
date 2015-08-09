@@ -10,260 +10,101 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
-
 class SplitedView
 {
 protected:
-	size_t splitX;
-	size_t splitY;
-	size_t width;
-	size_t height;
-	size_t selected;
-	int panIndex;
-	int zoomIndex;
-	int rotateIndex;
-	Camera *camera[4];
-	size_t selectionSX;
-	size_t selectionSY;
-	size_t selectionEX;
-	size_t selectionEY;
-	size_t axisDragSX;
-	size_t axisDragSY;
-	size_t axisDragEX;
-	size_t axisDragEY;
-	bool isSelectionMode;
-	bool isAxisMode;
-	bool isExtrude;
-	Vector cursorDir;
-	int cursorMode;
-	bool isCtrlMode;
-	size_t ctrlSX;
-	size_t ctrlSY;
+    size_t m_splitX;
+    size_t m_splitY;
+    size_t m_width;
+    size_t m_height;
+    size_t m_selected;
+    int m_panIndex;
+    int m_zoomIndex;
+    int m_rotateIndex;
+    Camera *m_camera[4];
+    size_t m_selectionSX;
+    size_t m_selectionSY;
+    size_t m_selectionEX;
+    size_t m_selectionEY;
+    size_t m_axisDragSX;
+    size_t m_axisDragSY;
+    size_t m_axisDragEX;
+    size_t m_axisDragEY;
+    bool m_isSelectionMode;
+    bool m_isAxisMode;
+    bool m_isExtrude;
+    Vector m_cursorDir;
+    int m_cursorMode;
+    bool m_isCtrlMode;
+    size_t m_ctrlSX;
+    size_t m_ctrlSY;
 public:
-	size_t viewCount;
+    size_t m_viewCount;
 
-public:
-	void changeCamera(CameraMode::__Enum type)
-	{
-        size_t cameraWidth=(size_t)camera[selected]->m_width;
-        size_t cameraHeight=(size_t)camera[selected]->m_height;
-        size_t cameraStartX=(size_t)camera[selected]->m_startX;
-        size_t cameraStartY=(size_t)camera[selected]->m_startY;
-        delete camera[  selected];
-		camera[selected]=NULL;
-		if(type==CameraMode::Perspective)
-		{
-			camera[selected]=new PerspectiveCamera(25,(float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(200,200,0),Vector(0,0,1));
-		}
-		else if(type==CameraMode::Top)
-		{
-			camera[selected]=new TopCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,0,200),Vector(0,1,0));
-		}
-		else if(type==CameraMode::Bottom)
-		{
-			camera[selected]=new BottomCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,0,200),Vector(0,1,0));
-		}
-		else if(type==CameraMode::Front)
-		{
-			camera[selected]=new FrontCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,200,0),Vector(0,0,1));
-		}
-		else if(type==CameraMode::Back)
-		{
-			camera[selected]=new BackCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,200,0),Vector(0,0,1));
-		}
-		else if(type==CameraMode::Left)
-		{
-			camera[selected]=new LeftCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(200,0,0),Vector(0,0,1));
-		}
-		else if(type==CameraMode::Right)
-		{
-			camera[selected]=new RightCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(200,0,0),Vector(0,0,1));
-		}
-	};
+    void changeCamera(CameraMode::__Enum type);
 
-	void getViewportImage(GLuint &texID,std::string &path,Vector &position,size_t &width,size_t &height)
-	{
-		camera[selected]->getViewportImage(texID,path,position,width,height);
-	}
+    void getViewportImage(GLuint &texID,std::string &path,Vector &position,size_t &width,size_t &height);
 
-	void setViewportImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height)
-	{
-		camera[selected]->setReferenceImage(path,imageID,position,width,height);
-	}
+    void setViewportImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height);
 
-	void disableReference()
-	{
-		camera[selected]->disableReference();
-	}
+    void disableReference();
 
-	void onExtrudeDown()
-	{
-		isExtrude=true;
-	};
+    void onExtrudeDown();
 
-	void onExtrudeRelease()
-	{
-		isExtrude=false;
-	};
+    void onExtrudeRelease();
 
-	void switchGird()
-	{
-        camera[selected]->m_showGird=!(camera[selected]->m_showGird);
-	};
+    void switchGird();
 
-	virtual bool onCtrlPress(size_t x,size_t y)
-	{
-		x;y;
-		return false;
-	};
+    virtual bool onCtrlPress(size_t x,size_t y);
 
-	virtual bool onCtrlDrag(size_t x,size_t y)
-	{
-		x;y;
-		return false;
-	};
+    virtual bool onCtrlDrag(size_t x,size_t y);
 
-	virtual bool onPanPress(size_t x,size_t y)
-	{
-		x;
-		y;
-		return false;
-	};
+    virtual bool onPanPress(size_t x,size_t y);
 
-	virtual bool onAxisPress(size_t x,size_t y)
-	{
-		x;y;
-		return false;
-	};
+    virtual bool onAxisPress(size_t x,size_t y);
 
-	virtual bool onAxisDrag(size_t x,size_t y)
-	{
-		x;y;
-		return false;
-	};
+    virtual bool onAxisDrag(size_t x,size_t y);
 
-	virtual bool onAxisRelease()
-	{
-		return false;
-	};
+    virtual bool onAxisRelease();
 
-	virtual bool onCtrlRelease()
-	{
-		return false;
-	};
+    virtual bool onCtrlRelease();
 
-	virtual bool onPanDrag(size_t x,size_t y)
-	{
-		x;
-		y;
-		return false;
-	};
+    virtual bool onPanDrag(size_t x,size_t y);
 
-	virtual bool onPanRelease()
-	{
-		return false;
-	};
+    virtual bool onPanRelease();
 
-	virtual bool onRotateDrag(size_t x,size_t y)
-	{
-		x;
-		y;
-		return false;
-	};
+    virtual bool onRotateDrag(size_t x,size_t y);
 
-	virtual bool onRotateRelease()
-	{
-		return false;
-	};
+    virtual bool onRotateRelease();
 	
-	virtual bool onRotatePress(size_t x,size_t y)
-	{
-		x;
-		y;
-		return false;
-	};
+    virtual bool onRotatePress(size_t x,size_t y);
 
-	virtual bool onSelectionPress(size_t x,size_t y)
-	{
-		x;y;
-		return false;
-	};
+    virtual bool onSelectionPress(size_t x,size_t y);
 	
-	virtual CameraMode::__Enum setView(size_t i)
-	{
-		return CameraMode::Perspective;
-		i;
-	};
+    virtual CameraMode::__Enum setView(size_t i);
 
-	Vector getEye(size_t i)
-	{
-		return camera[i]->getEye();
-	};
+    Vector getEye(size_t i) const;
 	
-	virtual void onWheel(float step,size_t x,size_t y)
-	{
-		step;
-		x;
-		y;
-	};
+    virtual void onWheel(float step,size_t x,size_t y);
 	
-	virtual void update(size_t splitX,size_t splitY,size_t width,size_t height)
-	{
-		splitX;
-		splitY;
-		width;
-		height;
-	};
+    virtual void update(size_t splitX,size_t splitY,size_t width,size_t height);
 
-	virtual void setViewport(size_t index)
-	{
-		index;
-	};
+    virtual void setViewport(size_t index);
 
-	virtual bool onDrag(size_t x,size_t y)
-	{
-		x;y;
-		return false;
-	}
+    virtual bool onDrag(size_t x,size_t y);
 
-	virtual bool onLeftDown(size_t x,size_t y)
-	{
-		x;
-		y;
-		return false;
-	}
+    virtual bool onLeftDown(size_t x,size_t y);
 
-	virtual void onPaint(void)
-	{
-	}
+    virtual void onPaint(void);
 
-	virtual bool onSelectionDrag(size_t x,size_t y)
-	{
-		x;
-		y;
-		return false;
-	};
+    virtual bool onSelectionDrag(size_t x,size_t y);
 
-	virtual bool onSingleSideSelectionRelease(bool isAppend)
-	{
-		isAppend;
-		return false;
-	};
+    virtual bool onSingleSideSelectionRelease(bool isAppend);
 
-	virtual bool onDualSideSelectionRelease(bool isAppend)
-	{
-		isAppend;
-		return false;
-	};
+    virtual bool onDualSideSelectionRelease(bool isAppend);
 
     SplitedView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 
 public:
-	~SplitedView(void)
-	{
-        delete   camera[0];
-        delete   camera[1];
-        delete   camera[2];
-        delete   camera[3];
-	}
+    virtual ~SplitedView(void);
 };

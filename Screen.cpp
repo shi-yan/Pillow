@@ -108,7 +108,7 @@ void Screen::screenShot(const char *fileName)
 void Screen::onPaint()
 { 
 	glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-	for(int i=0;i<(int)currentView->viewCount;i++)
+    for(int i=0;i<(int)currentView->m_viewCount;i++)
 	{
 		CameraMode::__Enum cameraMode=currentView->setView(i);	
 		theScene->onPaint();

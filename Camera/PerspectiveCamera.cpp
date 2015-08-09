@@ -4,8 +4,9 @@
 #include "Vector.cpp"
 #include "Quaternion.h"
 
-PerspectiveCamera::PerspectiveCamera(float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up):
-angle(angle),Camera(CameraMode::Perspective,width,height,nearPlane,farPlane,startX,startY,target,eye,up)
+PerspectiveCamera::PerspectiveCamera(float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
+    :Camera(CameraMode::Perspective, width, height, nearPlane, farPlane, startX, startY, target, eye, up),
+      m_angle(angle)
 {
     m_lightAmbient[0]=0.4f;
     m_lightAmbient[1]=0.4f;
@@ -192,7 +193,7 @@ void PerspectiveCamera::setCamera()
     gluLookAt( m_eye.x, m_eye.y, m_eye.z, m_target.x, m_target.y, m_target.z, m_up.x, m_up.y, m_up.z);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective( angle, m_width/ m_height, m_nearPlane, m_farPlane);
+    gluPerspective(m_angle, m_width/ m_height, m_nearPlane, m_farPlane);
     glViewport((GLint) m_startX,(GLint) m_startY,(GLint) m_width,(GLint) m_height);
     drawGird();
     glEnable(GL_LIGHT0);
@@ -212,7 +213,7 @@ void PerspectiveCamera::setCameraForSelectionD(size_t x1,size_t y1,size_t x2,siz
     size_t sw=(x2-x1)>5?(x2-x1):5;
     size_t sh=(y2-y1)>5?(y2-y1):5;
     gluPickMatrix((GLdouble) (x1+x2)/2,(GLdouble) (h - (y1+y2)/2), (GLdouble)sw,(GLdouble)sh, viewport);
-    gluPerspective(angle,m_width/m_height,m_nearPlane,m_farPlane);
+    gluPerspective(m_angle,m_width/m_height,m_nearPlane,m_farPlane);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(m_eye.x,m_eye.y,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
@@ -225,7 +226,7 @@ void PerspectiveCamera::setCameraForSelectionS()
     gluLookAt( m_eye.x, m_eye.y, m_eye.z, m_target.x, m_target.y, m_target.z, m_up.x, m_up.y, m_up.z);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective( angle, m_width/ m_height, m_nearPlane, m_farPlane);
+    gluPerspective(m_angle, m_width/ m_height, m_nearPlane, m_farPlane);
     glViewport((GLint) m_startX,(GLint) m_startY,(GLint) m_width,(GLint) m_height);
 }
 

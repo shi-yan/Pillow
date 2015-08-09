@@ -11,89 +11,85 @@ public:
 
 	CameraMode::__Enum setView(size_t index)
 	{
-		camera[index]->setCamera();
-        return camera[index]->m_type._value;
-	};
+        m_camera[index]->setCamera();
+        return m_camera[index]->m_type._value;
+    }
 
 	bool onPanPress(size_t x,size_t y)
 	{
-		//这里要判断一下鼠标在哪个区域中
-		if(selected==0 && x<splitX)
+        if(m_selected==0 && x<m_splitX)
 		{
-			camera[selected]->onPanPress(x,y);
+            m_camera[m_selected]->onPanPress(x,y);
 		}
-		else if(selected==1 && x>splitX)
+        else if(m_selected==1 && x>m_splitX)
 		{
-			camera[selected]->onPanPress(x,y);
+            m_camera[m_selected]->onPanPress(x,y);
 		}
 		return true;
-	};
+    }
 
 	bool onPanDrag(size_t x,size_t y)
 	{
-		//这里要判断一下当前选择的pan区域
-		camera[selected]->pan(x,y);
+        m_camera[m_selected]->pan(x,y);
 		return true;
-	};
+    }
 
 	void onWheel(float step,size_t x,size_t y)
 	{
-		//这里要判断一下鼠标在哪个区域中
-		if(selected==0 && x<splitX)
+        if(m_selected==0 && x<m_splitX)
 		{
-			camera[selected]->zoom(step);
+            m_camera[m_selected]->zoom(step);
 		}
-		else if(selected==1 && x>splitX)
+        else if(m_selected==1 && x>m_splitX)
 		{
-			camera[selected]->zoom(step);
+            m_camera[m_selected]->zoom(step);
 		}
 		y;
-	};
+    }
 
 	bool onRotateDrag(size_t x,size_t y)
 	{
-		camera[selected]->rotate(x,y);
+        m_camera[m_selected]->rotate(x,y);
 		return true;
-	};
+    }
 
 	bool onRotatePress(size_t x,size_t y)
 	{
-		//这里要判断鼠标位置
-		if(selected==0 && x<splitX)
+        if(m_selected==0 && x<m_splitX)
 		{
-			camera[selected]->onRotatePress(x,y);
+            m_camera[m_selected]->onRotatePress(x,y);
 		}
-		else if(selected==1 && x>splitX)
+        else if(m_selected==1 && x>m_splitX)
 		{
-			camera[selected]->onRotatePress(x,y);
+            m_camera[m_selected]->onRotatePress(x,y);
 		}
 		return true;
-	};
+    }
 
 	bool onLeftDown(size_t x,size_t y)
 	{
 		y;
-		if(x<splitX)
+        if(x<m_splitX)
 		{
-			if(selected==0)
+            if(m_selected==0)
 			{
 				return false;
 			}
 			else
 			{
-				selected=0;
+                m_selected=0;
 				return true;
 			}
 		}
-		else if(x>splitX)
+        else if(x>m_splitX)
 		{
-			if(selected==1)
+            if(m_selected==1)
 			{
 				return false;
 			}
 			else
 			{
-				selected=1;
+                m_selected=1;
 				return true;
 			}
 		}
@@ -101,183 +97,190 @@ public:
 		{
 			return false;
 		}
-	};
+    }
 
-		bool onCtrlPress(size_t x,size_t y)
+    bool onCtrlPress(size_t x,size_t y)
 	{
-		isCtrlMode=true;
-		ctrlSX=x;
-		ctrlSY=y;
+        m_isCtrlMode=true;
+        m_ctrlSX=x;
+        m_ctrlSY=y;
 		return true;
-	};
+    }
 
-			bool onCtrlRelease()
+    bool onCtrlRelease()
 	{
-		if(isCtrlMode)
+        if(m_isCtrlMode)
 		{
-			isCtrlMode=false;
-			ctrlSX=0;
-			ctrlSY=0;
+            m_isCtrlMode=false;
+            m_ctrlSX=0;
+            m_ctrlSY=0;
 			return true;
-		}else 
-			return false;
-	};
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-				bool onCtrlDrag(size_t x,size_t y)
+    bool onCtrlDrag(size_t x,size_t y)
 	{
-		if(isCtrlMode)
+        if(m_isCtrlMode)
 		{
-			camera[selected]->setCamera();
-			Vector horizontalDir(camera[selected]->getHorizontalDir());
-            theScene->ctrlDrag(horizontalDir,camera[selected]->m_up,x-ctrlSX,y-ctrlSY,isExtrude);
-			isExtrude=false;
-			ctrlSX=x;
-			ctrlSY=y;
+            m_camera[m_selected]->setCamera();
+            Vector horizontalDir(m_camera[m_selected]->getHorizontalDir());
+            theScene->ctrlDrag(horizontalDir,m_camera[m_selected]->m_up,x-m_ctrlSX,y-m_ctrlSY,m_isExtrude);
+            m_isExtrude=false;
+            m_ctrlSX=x;
+            m_ctrlSY=y;
 			return true;
 		}
-		else 
-			return false;
-	};
+        else
+        {
+            return false;
+        }
+    }
 
 	bool onSelectionPress(size_t x,size_t y)
 	{
-		isSelectionMode=true;
-		selectionSX=x;
-		selectionSY=y;
-		selectionEX=x;
-		selectionEY=y;
+        m_isSelectionMode=true;
+        m_selectionSX=x;
+        m_selectionSY=y;
+        m_selectionEX=x;
+        m_selectionEY=y;
 		return true;
-	};
+    }
 
-		bool onSelectionDrag(size_t x,size_t y)
+    bool onSelectionDrag(size_t x,size_t y)
 	{
-		if(isSelectionMode)
+        if(m_isSelectionMode)
 		{
-			selectionEX=x;
-			selectionEY=y;
+            m_selectionEX=x;
+            m_selectionEY=y;
 			return true;
-		}else
-			return false;
-	};
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-			bool onAxisDrag(size_t x,size_t y)
+    bool onAxisDrag(size_t x,size_t y)
 	{
-		//if((selected==0 && x<splitX)||(selected==1 && x>splitX)){
-		//这里要计算向量的点乘
-		if(isAxisMode)
+        if(m_isAxisMode)
 		{
-			camera[selected]->setCamera();
-			//这里必须强制转换
-			Vector m((float)((int)x-(int)axisDragSX),(float)((int)y-(int)axisDragSY),0.0f);
-			float work=psVECDOT(cursorDir,m);
-			theScene->axisDrag(work,cursorMode,cursorDir.x,cursorDir.y);
-			axisDragSX=x;
-			axisDragSY=y;
-			return true;
-		}
-		else 
-			return false;//}else return false;
-	};
-
-				bool onAxisRelease()
-	{
-		if(isAxisMode)
-		{
-			isAxisMode=false;
-			theScene->axisRelease();
-			axisDragSX=0;
-			axisDragSY=0;
+            m_camera[m_selected]->setCamera();
+            Vector m((float)((int)x-(int)m_axisDragSX),(float)((int)y-(int)m_axisDragSY),0.0f);
+            float work=psVECDOT(m_cursorDir,m);
+            theScene->axisDrag(work,m_cursorMode,m_cursorDir.x,m_cursorDir.y);
+            m_axisDragSX=x;
+            m_axisDragSY=y;
 			return true;
 		}
-		else
-			return false;
+        else
+        {
+            return false;
+        }
+    }
+
+    bool onAxisRelease()
+	{
+        if(m_isAxisMode)
+		{
+            m_isAxisMode=false;
+            theScene->axisRelease();
+            m_axisDragSX=0;
+            m_axisDragSY=0;
+			return true;
+		}
+        else
+        {
+            return false;
+        }
 	}
 
-					bool onAxisPress(size_t x,size_t y)
+    bool onAxisPress(size_t x,size_t y)
 	{
-		//if((selected==0 && x<splitX)||(selected==1 && x>splitX)){
-		camera[selected]->setCameraForSelectionS();
-		cursorDir.z=0;
-        bool result=theScene->isAxisSelected(camera[selected]->m_type._value,camera[selected]->getEye(),height,x,y,cursorDir.x,cursorDir.y,cursorMode);
+        m_camera[m_selected]->setCameraForSelectionS();
+        m_cursorDir.z=0;
+        bool result=theScene->isAxisSelected(m_camera[m_selected]->m_type._value,m_camera[m_selected]->getEye(),m_height,x,y,m_cursorDir.x,m_cursorDir.y,m_cursorMode);
 		if(result)
 		{
-			axisDragSX=x;
-			axisDragSY=y;
-			cursorDir.normalize();
-			isAxisMode=true;
+            m_axisDragSX=x;
+            m_axisDragSY=y;
+            m_cursorDir.normalize();
+            m_isAxisMode=true;
 		}
 		return result;		
-		/*}
-		else
-		{
-			return false;
-		}*/
-	};
+    }
 
-			bool onSingleSideSelectionRelease(bool isAppend)
+    bool onSingleSideSelectionRelease(bool isAppend)
 	{
-		if(isSelectionMode)
+        if(m_isSelectionMode)
 		{
-			size_t x1=(selectionSX>selectionEX)?selectionEX:selectionSX;
-			size_t y1=(selectionSY>selectionEY)?selectionEY:selectionSY;
-			size_t x2=(selectionSX>selectionEX)?selectionSX:selectionEX;
-			size_t y2=(selectionSY>selectionEY)?selectionSY:selectionEY;
-			camera[selected]->setCameraForSelectionS();
-			theScene->selectSingleSide(x1,y1,x2,y2,height,isAppend);
-			isSelectionMode=false;
-			selectionSX=0;
-			selectionSY=0;
-			selectionEX=0;
-			selectionEY=0;
+            size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+            size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+            size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+            size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+            m_camera[m_selected]->setCameraForSelectionS();
+            theScene->selectSingleSide(x1,y1,x2,y2,m_height,isAppend);
+            m_isSelectionMode=false;
+            m_selectionSX=0;
+            m_selectionSY=0;
+            m_selectionEX=0;
+            m_selectionEY=0;
 			return true;
 		}
-		else 
-			return false;
-	};
+        else
+        {
+            return false;
+        }
+    }
 
 	bool onDualSideSelectionRelease(bool isAppend)
 	{
-		if(isSelectionMode)
+        if(m_isSelectionMode)
 		{
-			size_t x1=(selectionSX>selectionEX)?selectionEX:selectionSX;
-			size_t y1=(selectionSY>selectionEY)?selectionEY:selectionSY;
-			size_t x2=(selectionSX>selectionEX)?selectionSX:selectionEX;
-			size_t y2=(selectionSY>selectionEY)?selectionSY:selectionEY;
-			camera[selected]->setCameraForSelectionD(x1,y1,x2,y2,height);
+            size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+            size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+            size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+            size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+            m_camera[m_selected]->setCameraForSelectionD(x1,y1,x2,y2,m_height);
 			theScene->selectDualSide(isAppend);
-			isSelectionMode=false;
-			selectionSX=0;
-			selectionSY=0;
-			selectionEX=0;
-			selectionEY=0;
+            m_isSelectionMode=false;
+            m_selectionSX=0;
+            m_selectionSY=0;
+            m_selectionEX=0;
+            m_selectionEY=0;
 			return true;
 		}
-		else 
-			return false;
-	};
+        else
+        {
+            return false;
+        }
+    }
 
 	bool onRotateRelease()
 	{
-		camera[selected]->onRotateRelease();
+        m_camera[m_selected]->onRotateRelease();
 		return true;
-	};
+    }
 	
 	bool onPanRelease()
 	{
-		camera[selected]->onPanRelease(0,0);
-		panIndex=-1;
+        m_camera[m_selected]->onPanRelease(0,0);
+        m_panIndex=-1;
 		return true;
-	};
+    }
 
 	void update(size_t theSplitX,size_t theSplitY,size_t theWidth,size_t theHeight)
 	{
-		splitX=theSplitX;
-		splitY=theSplitY;
-		width=theWidth;
-		height=theHeight;
-		camera[0]->updateSize(0.0f,0.0f,(float)splitX,(float)height);
-		camera[1]->updateSize((float)splitX,0.0f,(float)(width-splitX),(float)height);
-	};
+        m_splitX=theSplitX;
+        m_splitY=theSplitY;
+        m_width=theWidth;
+        m_height=theHeight;
+        m_camera[0]->updateSize(0.0f,0.0f,(float)m_splitX,(float)m_height);
+        m_camera[1]->updateSize((float)m_splitX,0.0f,(float)(m_width-m_splitX),(float)m_height);
+    }
 
 public:
 	~TwoView(void);

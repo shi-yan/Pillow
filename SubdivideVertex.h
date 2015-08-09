@@ -1,10 +1,9 @@
 #pragma once
-//#include <boost/pool/pool_alloc.hpp>
 #include "ElementBase.h"
 #include "Vector.h"
 #include <vector>
 
-class SubdivideVertex:public ElementBase
+class SubdivideVertex : public ElementBase
 {
 friend class Object;
 public:

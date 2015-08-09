@@ -17,9 +17,9 @@ public:
 		vertex.reserve(v);
 		edge.reserve(e);
 		face.reserve(f);
-	};
+    }
 public:
 	~SubdivideLevel(void)
 	{
-	};
+    }
 };

@@ -6,9 +6,8 @@
 class PerspectiveCamera:public Camera
 {
 public:
-	float angle;
+    float m_angle;
 
-public:
     void zoom(float step) override;
 
     void onPanPress(int x,int y) override;
