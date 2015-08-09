@@ -38,6 +38,7 @@ protected:
     bool m_isCtrlMode;
     size_t m_ctrlSX;
     size_t m_ctrlSY;
+
 public:
     size_t m_viewCount;
 
@@ -93,7 +94,7 @@ public:
 
     virtual bool onDrag(size_t x,size_t y);
 
-    virtual bool onLeftDown(size_t x,size_t y);
+    virtual bool onLeftDown(unsigned int x, unsigned int y);
 
     virtual void onPaint(void);
 

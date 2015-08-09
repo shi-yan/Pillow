@@ -217,7 +217,7 @@ bool SplitedView::onDrag(size_t x,size_t y)
     return false;
 }
 
-bool SplitedView::onLeftDown(size_t x,size_t y)
+bool SplitedView::onLeftDown(unsigned int x, unsigned int y)
 {
     x;
     y;
