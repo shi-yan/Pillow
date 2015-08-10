@@ -2,81 +2,81 @@
 #include<vector>
 #include<deque>
 
-//记录元素下标的可变长列表
+//录脟脗录脭陋脣脴脧脗卤锚碌脛驴脡卤盲鲁陇脕脨卤铆
 template<class ElementType> class IndexArray
 {
 private:
-	//存储列表中元素的列表
+	//麓忙麓垄脕脨卤铆脰脨脭陋脣脴碌脛脕脨卤铆
 	std::vector<ElementType*> theArray;
-	//保存释放空间的队列
+	//卤拢麓忙脢脥路脜驴脮录盲碌脛露脫脕脨
     std::deque<unsigned int> theSpace;
 
 public:
-	//构造函数，首先向列表中放入空数据，因为元素的下标如果是0表示还没有添加到数组，所以这里数组的0号位不能占用
+	//鹿鹿脭矛潞炉脢媒拢卢脢脳脧脠脧貌脕脨卤铆脰脨路脜脠毛驴脮脢媒戮脻拢卢脪貌脦陋脭陋脣脴碌脛脧脗卤锚脠莽鹿没脢脟0卤铆脢戮禄鹿脙禄脫脨脤铆录脫碌陆脢媒脳茅拢卢脣霉脪脭脮芒脌茂脢媒脳茅碌脛0潞脜脦禄虏禄脛脺脮录脫脙
 	IndexArray(void)
 	{
         theArray.push_back(nullptr);
 	};
 
-	//带初始空间分配的构造函数
+	//麓酶鲁玫脢录驴脮录盲路脰脜盲碌脛鹿鹿脭矛潞炉脢媒
     IndexArray(unsigned int space)
 	{
 		theArray.reserve(space+1);
         theArray.push_back(nullptr);
 	};
 
-	//清空整个列表
+	//脟氓驴脮脮没赂枚脕脨卤铆
 	void clear()
 	{
-		//遍历列表内的所有元素
+		//卤茅脌煤脕脨卤铆脛脷碌脛脣霉脫脨脭陋脣脴
         for(unsigned int i=0;i<theArray.size();++i)
 		{
-			//检查当前访问到的元素是否已经被释放过
+			//录矛虏茅碌卤脟掳路脙脦脢碌陆碌脛脭陋脣脴脢脟路帽脪脩戮颅卤禄脢脥路脜鹿媒
 			if(theArray[i])
 			{
-				//如果没有被释放过则进行删除
+				//脠莽鹿没脙禄脫脨卤禄脢脥路脜鹿媒脭貌陆酶脨脨脡戮鲁媒
 				delete theArray[i];
 			}
 		}
 		
-		//清空列表
+		//脟氓驴脮脕脨卤铆
 		theArray.clear();
-		//从新在0位填上空元素
+		//麓脫脨脗脭脷0脦禄脤卯脡脧驴脮脭陋脣脴
         theArray.push_back(nullptr);
-		//清空已经释放元素编号队列
+		//脟氓驴脮脪脩戮颅脢脥路脜脭陋脣脴卤脿潞脜露脫脕脨
 		theSpace.clear();
 	};
 
-	//为列表预留空间
+	//脦陋脕脨卤铆脭陇脕么驴脮录盲
     void reserve(unsigned int space)
 	{
 		theArray.reserve(space);
 	};
 
-	//放入空值元素
+	//路脜脠毛驴脮脰碌脭陋脣脴
 	void pushNull()
 	{
         theArray.push_back(nullptr);
 	};
 
-	//在列表的末尾放入一个空的元素并且在已释放队列中记录
-	//这个函数用于从文件中读取的时候如果出现已经删除的元素的时候
+	//脭脷脕脨卤铆碌脛脛漏脦虏路脜脠毛脪禄赂枚驴脮碌脛脭陋脣脴虏垄脟脪脭脷脪脩脢脥路脜露脫脕脨脰脨录脟脗录
+	//脮芒赂枚潞炉脢媒脫脙脫脷麓脫脦脛录镁脰脨露脕脠隆碌脛脢卤潞貌脠莽鹿没鲁枚脧脰脪脩戮颅脡戮鲁媒碌脛脭陋脣脴碌脛脢卤潞貌
 	void pushNullS()
 	{
 		theSpace.push_back(theArray.size());
         theArray.push_back(nullptr);
 	};
 
-	//以插入的方式添加一个元素
-	//ei是插入的位置
-	//这个函数用于保证复制的一致性，区别于add函数
-	//比如现在要删除一个面，之后undo恢复，如果theSpace里面记录了其它空闲的位置，这个面很可能被恢复到其它的空闲位置上造成数据不一致
+	//脪脭虏氓脠毛碌脛路陆脢陆脤铆录脫脪禄赂枚脭陋脣脴
+	//ei脢脟虏氓脠毛碌脛脦禄脰脙
+	//脮芒赂枚潞炉脢媒脫脙脫脷卤拢脰陇赂麓脰脝碌脛脪禄脰脗脨脭拢卢脟酶卤冒脫脷add潞炉脢媒
+	//卤脠脠莽脧脰脭脷脪陋脡戮鲁媒脪禄赂枚脙忙拢卢脰庐潞贸undo禄脰赂麓拢卢脠莽鹿没theSpace脌茂脙忙录脟脗录脕脣脝盲脣眉驴脮脧脨碌脛脦禄脰脙拢卢脮芒赂枚脙忙潞脺驴脡脛脺卤禄禄脰赂麓碌陆脝盲脣眉碌脛驴脮脧脨脦禄脰脙脡脧脭矛鲁脡脢媒戮脻虏禄脪禄脰脗
     unsigned int addI(unsigned int ei,ElementType *theElement)
 	{
-		//如果指定的位置没有元素
+		//脠莽鹿没脰赂露篓碌脛脦禄脰脙脙禄脫脨脭陋脣脴
         if(theArray[ei]==nullptr)
 		{
-			//在已经
+			//脭脷脪脩戮颅
             for(unsigned int e=0;e<theSpace.size();++e)
 			{
 				if(theSpace[e]==ei)
@@ -87,75 +87,75 @@ public:
 					return ei;
 				}
 			}
-			//如果没有在theSpace中找到对应的空闲下标
+			//脠莽鹿没脙禄脫脨脭脷theSpace脰脨脮脪碌陆露脭脫娄碌脛驴脮脧脨脧脗卤锚
 			return 0;	
 		}
 		else
 		{
-			//如果当前位置被占用
+			//脠莽鹿没碌卤脟掳脦禄脰脙卤禄脮录脫脙
 			return 0;
 		}
 	};	
 
-	//直接在末尾放入元素，对于已经有下标的元素，且不希望被插入到当前空闲位置的时候
+	//脰卤陆脫脭脷脛漏脦虏路脜脠毛脭陋脣脴拢卢露脭脫脷脪脩戮颅脫脨脧脗卤锚碌脛脭陋脣脴拢卢脟脪虏禄脧拢脥没卤禄虏氓脠毛碌陆碌卤脟掳驴脮脧脨脦禄脰脙碌脛脢卤潞貌
 	void directPush(ElementType *theElement)
 	{
 		theArray.push_back(theElement);
 	};
 
-	//添加一个新的元素
+	//脤铆录脫脪禄赂枚脨脗碌脛脭陋脣脴
     unsigned int add(ElementType *theElement)
 	{
-		//检查当前是否有空闲位置
+		//录矛虏茅碌卤脟掳脢脟路帽脫脨驴脮脧脨脦禄脰脙
 		if(theSpace.empty())
 		{
-			//如果当前没有空闲位
-			//得到即将插入元素的位置(末尾)
+			//脠莽鹿没碌卤脟掳脙禄脫脨驴脮脧脨脦禄
+			//碌脙碌陆录麓陆芦虏氓脠毛脭陋脣脴碌脛脦禄脰脙(脛漏脦虏)
             unsigned int tempIndex=theArray.size();
-			//末尾插入元素
+			//脛漏脦虏虏氓脠毛脭陋脣脴
 			theArray.push_back(theElement);
-			//更新元素的脚标
+			//赂眉脨脗脭陋脣脴碌脛陆脜卤锚
 			theElement->index=tempIndex;
-			//返回插入的位置
+			//路碌禄脴虏氓脠毛碌脛脦禄脰脙
 			return tempIndex;
 		}
 		else
 		{
-			//得到队列首的一个空闲位置
+			//碌脙碌陆露脫脕脨脢脳碌脛脪禄赂枚驴脮脧脨脦禄脰脙
             unsigned int tempIndex=theSpace[0];
-			//将这个空闲位置消除
+			//陆芦脮芒赂枚驴脮脧脨脦禄脰脙脧没鲁媒
 			theSpace.pop_front();
-			//复制元素到空闲位置
+			//赂麓脰脝脭陋脣脴碌陆驴脮脧脨脦禄脰脙
 			theArray[tempIndex]=theElement;
-			//更新元素的脚标
+			//赂眉脨脗脭陋脣脴碌脛陆脜卤锚
 			theElement->index=tempIndex;
-			//返回元素的脚标
+			//路碌禄脴脭陋脣脴碌脛陆脜卤锚
 			return tempIndex;
 		}
 	};
 
-	//删除一个元素
-	//这个函数并不释放元素的空间，因为要保证添加到历史记录中元素的正确性
+	//脡戮鲁媒脪禄赂枚脭陋脣脴
+	//脮芒赂枚潞炉脢媒虏垄虏禄脢脥路脜脭陋脣脴碌脛驴脮录盲拢卢脪貌脦陋脪陋卤拢脰陇脤铆录脫碌陆脌煤脢路录脟脗录脰脨脭陋脣脴碌脛脮媒脠路脨脭
     void remove(unsigned int index)
 	{
-		//如果index不是0
+		//脠莽鹿没index虏禄脢脟0
 		if(index)
 		{
-			//首先将这个位置置空
+			//脢脳脧脠陆芦脮芒赂枚脦禄脰脙脰脙驴脮
             theArray[index]= nullptr;
-			//在空闲队列里添加这个位置
+			//脭脷驴脮脧脨露脫脕脨脌茂脤铆录脫脮芒赂枚脦禄脰脙
 			theSpace.push_back(index);
 		}
 		return;
 	};
 
-	//得到指定位置的元素
+	//碌脙碌陆脰赂露篓脦禄脰脙碌脛脭陋脣脴
     ElementType* operator [](unsigned int i)
 	{
 		return theArray[i];
 	};
 
-	//得到数组的大小，这个大小是个近似值，里面包括了曾经删除的元素数目
+	//碌脙碌陆脢媒脳茅碌脛麓贸脨隆拢卢脮芒赂枚麓贸脨隆脢脟赂枚陆眉脣脝脰碌拢卢脌茂脙忙掳眉脌篓脕脣脭酶戮颅脡戮鲁媒碌脛脭陋脣脴脢媒脛驴
     unsigned int size()
 	{
 		return theArray.size();

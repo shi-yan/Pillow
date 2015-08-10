@@ -138,8 +138,8 @@ public:
 							Vertex *theVertex=theOriginal->vertex(e);
 							if(theVertex)
 							{
-								Vector theNV=transform*(theVertex->position);
-								theVertex->clone=newObject->addVertex(theNV);
+                                Vector theNV=transform*(theVertex->m_position);
+                                theVertex->m_clone=newObject->addVertex(theNV);
 							}
 						}
 						for(size_t e=1;e<theOriginal->edgeCount();++e)
@@ -147,7 +147,7 @@ public:
 							Edge *theEdge=theOriginal->edge(e);
 							if(theEdge)
 							{
-								theEdge->clone=newObject->addEdge(theOriginal->vertex(theEdge->start)->clone,theOriginal->vertex(theEdge->end)->clone);
+                                theEdge->clone=newObject->addEdge(theOriginal->vertex(theEdge->start)->m_clone,theOriginal->vertex(theEdge->end)->m_clone);
 							}
 						}
 						for(size_t e=1;e<theOriginal->faceCount();++e)
@@ -186,7 +186,7 @@ public:
 						Vertex *theVertex=theOriginal->vertex(e);
 						if(theVertex)
 						{
-							theVertex->clone=newObject->addVertex(theVertex->position);
+                            theVertex->m_clone=newObject->addVertex(theVertex->m_position);
 						}
 					}
 
@@ -195,7 +195,7 @@ public:
 						Edge *theEdge=theOriginal->edge(e);
 						if(theEdge)
 						{
-							theEdge->clone=newObject->addEdge(theOriginal->vertex(theEdge->start)->clone,theOriginal->vertex(theEdge->end)->clone);
+                            theEdge->clone=newObject->addEdge(theOriginal->vertex(theEdge->start)->m_clone,theOriginal->vertex(theEdge->end)->m_clone);
 						}
 					}
 
@@ -462,10 +462,10 @@ public:
 	{
 		if(tt && vertexID)
 		{
-			if(theObjectList[tt]->vertex(vertexID)->adjacentEdge.size()==2)
+            if(theObjectList[tt]->vertex(vertexID)->m_adjacentEdgeList.size()==2)
 			{
-				Edge *edgeA=theObjectList[tt]->edge(theObjectList[tt]->vertex(vertexID)->adjacentEdge[0]);
-				Edge *edgeB=theObjectList[tt]->edge(theObjectList[tt]->vertex(vertexID)->adjacentEdge[1]);
+                Edge *edgeA=theObjectList[tt]->edge(theObjectList[tt]->vertex(vertexID)->m_adjacentEdgeList[0]);
+                Edge *edgeB=theObjectList[tt]->edge(theObjectList[tt]->vertex(vertexID)->m_adjacentEdgeList[1]);
 				if(edgeA->start==vertexID)
 				{
 					if(edgeB->end==vertexID)
@@ -960,7 +960,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					glLoadName(i);
 					glBegin(GL_POINTS);
-					glVertex3f(theVertex->position.x,theVertex->position.y,theVertex->position.z);
+                    glVertex3f(theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z);
 					glEnd();
 				}
 				++i;
@@ -1020,8 +1020,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					glBegin(GL_LINES);
 					Vertex *start=theObject->vertex(theEdge->start);
 					Vertex *end=theObject->vertex(theEdge->end);
-					glVertex3f(start->position.x,start->position.y,start->position.z);
-					glVertex3f(end->position.x,end->position.y,end->position.z);
+                    glVertex3f(start->m_position.x,start->m_position.y,start->m_position.z);
+                    glVertex3f(end->m_position.x,end->m_position.y,end->m_position.z);
 					glEnd();
 				}
 				++i;
@@ -1108,12 +1108,12 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						if(theFace->edge[e]>0)
 						{
 							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
 							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
 					glEnd();
@@ -1232,12 +1232,12 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						if(theFace->edge[e]>0)
 						{
 							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
 							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
 					glEnd();
@@ -1254,7 +1254,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
-					glVertex3f(theVertex->position.x,theVertex->position.y,theVertex->position.z);
+                    glVertex3f(theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z);
 				}
 			}
 			glEnd();
@@ -1335,12 +1335,12 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 							if(theFace->edge[e]>0)
 							{
 								Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
-								glVertex3f(v->position.x,v->position.y,v->position.z);
+                                glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 							}
 							else
 							{
 								Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
-								glVertex3f(v->position.x,v->position.y,v->position.z);
+                                glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 							}
 						}
 						glEnd();
@@ -1358,8 +1358,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 						Vertex *start=theObject->vertex(theEdge->start);
 						Vertex *end=theObject->vertex(theEdge->end);
-						glVertex3f(start->position.x,start->position.y,start->position.z);
-						glVertex3f(end->position.x,end->position.y,end->position.z);
+                        glVertex3f(start->m_position.x,start->m_position.y,start->m_position.z);
+                        glVertex3f(end->m_position.x,end->m_position.y,end->m_position.z);
 					}
 				}
 				glEnd();
@@ -1504,12 +1504,12 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						if(theFace->edge[e]>0)
 						{
 							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
 							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
 					glEnd();
@@ -1526,7 +1526,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
-					glVertex3f(theVertex->position.x,theVertex->position.y,theVertex->position.z);
+                    glVertex3f(theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z);
 				}
 			}
 			glEnd();
@@ -1972,7 +1972,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vertex *theVertex=theObjectList[target]->vertex(selection[i]);
 			if(theVertex)
 			{
-				Vector PToC=(theVertex->position-center);
+                Vector PToC=(theVertex->m_position-center);
 				PToC=angle*PToC+center;
 				theObjectList[target]->vertexPositionChangeA(theVertex->index,PToC.x,PToC.y,PToC.z);
 			}
@@ -2013,7 +2013,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vertex *theVertex=vertexToBeRotate[i];
 			if(theVertex)
 			{
-				Vector PToC=(theVertex->position-center);
+                Vector PToC=(theVertex->m_position-center);
 				PToC=angle*PToC+center;
 				theObjectList[target]->vertexPositionChangeA(theVertex->index,PToC.x,PToC.y,PToC.z);
 			}
@@ -2063,7 +2063,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vertex *theVertex=vertexToBeRotate[i];
 			if(theVertex)
 			{
-				Vector PToC=(theVertex->position-center);
+                Vector PToC=(theVertex->m_position-center);
 				PToC=angle*PToC+center;
 				theObjectList[target]->vertexPositionChangeA(theVertex->index,PToC.x,PToC.y,PToC.z);
 			}
@@ -2078,7 +2078,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vertex *theVertex=theObjectList[target]->vertex(selection[i]);
 			if(theVertex)
 			{
-				Vector newPosition(theVertex->position-theObjectList[target]->center);
+                Vector newPosition(theVertex->m_position-theObjectList[target]->center);
 				newPosition=forward*newPosition;
 				newPosition=newPosition-(center-theObjectList[target]->center);
 				if(smode==1)
@@ -2140,7 +2140,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vertex *theVertex=vertexToBeScale[i];
 			if(theVertex)
 			{
-				Vector newPosition(theVertex->position-theObjectList[target]->center);
+                Vector newPosition(theVertex->m_position-theObjectList[target]->center);
 				newPosition=forward*newPosition;
 				newPosition=newPosition-(center-theObjectList[target]->center);
 				if(smode==1)
@@ -2211,7 +2211,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vertex *theVertex=vertexToBeScale[i];
 			if(theVertex)
 			{
-				Vector newPosition(theVertex->position-theObjectList[target]->center);
+                Vector newPosition(theVertex->m_position-theObjectList[target]->center);
 				newPosition=forward*newPosition;
 				newPosition=newPosition-(center-theObjectList[target]->center);
 				if(smode==1)
@@ -2862,12 +2862,12 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						if(theFace->edge[e]>0)
 						{
 							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
 							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
 					glEnd();
@@ -2885,8 +2885,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 					Vertex *start=theObject->vertex(theEdge->start);
 					Vertex *end=theObject->vertex(theEdge->end);
-					glVertex3f(start->position.x,start->position.y,start->position.z);
-					glVertex3f(end->position.x,end->position.y,end->position.z);
+                    glVertex3f(start->m_position.x,start->m_position.y,start->m_position.z);
+                    glVertex3f(end->m_position.x,end->m_position.y,end->m_position.z);
 				}
 			}
 			glEnd();
@@ -2961,12 +2961,12 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						if(theFace->edge[e]>0)
 						{
 							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
 							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
-							glVertex3f(v->position.x,v->position.y,v->position.z);
+                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
 					glEnd();
@@ -3295,7 +3295,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Vertex *theVertex=theObject->vertex(splitVertexID);
 				if(theVertex)
 				{
-					glVertex3f(theVertex->position.x,theVertex->position.y,theVertex->position.z);
+                    glVertex3f(theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z);
 				}
 				glEnd();
 				glEnable(GL_LIGHTING);
@@ -3346,7 +3346,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					Vertex *theVertex=theObject->vertex(selection[i]);
 					if(theVertex)
-						(*center)+=theVertex->position;
+                        (*center)+=theVertex->m_position;
 				}
 				(*center)/=(float)selectionSize;
 				//这里旋转
@@ -3356,7 +3356,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				rotateQuaternion.getMatrix(rotateMatrix);
 				*center=rotateMatrix*(*center-theObject->center);
 				//这里平移
-				theAxisCursor->position=*center+theObject->position+theObject->center;
+                theAxisCursor->position=*center+theObject->position+theObject->center;
 				delete center;
 				theAxisCursor->mode=currentACMode;
 			}
@@ -3380,13 +3380,13 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					{
 						if(!theObject->vertex(theEdge->start)->isIn)
 						{
-							(*center)+=theObject->vertex(theEdge->start)->position;
+                            (*center)+=theObject->vertex(theEdge->start)->m_position;
 							theObject->vertex(theEdge->start)->isIn=true;
 							isInCache.push_back(theObject->vertex(theEdge->start));
 						}
 						if(!theObject->vertex(theEdge->end)->isIn)
 						{
-							(*center)+=theObject->vertex(theEdge->end)->position;
+                            (*center)+=theObject->vertex(theEdge->end)->m_position;
 							theObject->vertex(theEdge->end)->isIn=true;
 							isInCache.push_back(theObject->vertex(theEdge->end));						
 						}
@@ -3432,7 +3432,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 								Vertex *theStart=theObject->vertex(theObject->edge(theFace->edge[e])->start);
 								if(!theStart->isIn)
 								{
-									(*center)+=theStart->position;
+                                    (*center)+=theStart->m_position;
 									theStart->isIn=true;
 									isInCache.push_back(theStart);						
 								}
@@ -3442,7 +3442,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 								Vertex *theEnd=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
 								if(!theEnd->isIn)
 								{
-									(*center)+=theEnd->position;
+                                    (*center)+=theEnd->m_position;
 									theEnd->isIn=true;
 									isInCache.push_back(theEnd);						
 								}																
@@ -3495,7 +3495,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					Vertex *theVertex=theObject->vertex(selection[i]);
 					if(theVertex)
 					{
-						glVertex3f(theVertex->position.x,theVertex->position.y,theVertex->position.z);
+                        glVertex3f(theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z);
 					}
 				}
 				glEnd();
@@ -3534,8 +3534,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					{
 						Vertex *start=theObject->vertex(theEdge->start);
 						Vertex *end=theObject->vertex(theEdge->end);
-						glVertex3f(start->position.x,start->position.y,start->position.z);
-						glVertex3f(end->position.x,end->position.y,end->position.z);
+                        glVertex3f(start->m_position.x,start->m_position.y,start->m_position.z);
+                        glVertex3f(end->m_position.x,end->m_position.y,end->m_position.z);
 					}
 				}
 				glEnd();
@@ -3581,12 +3581,12 @@ void drawSelectedFace()
 							if(theFace->edge[e]>0)
 							{
 								Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
-								glVertex3f(v->position.x,v->position.y,v->position.z);
+                                glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 							}
 							else
 							{
 								Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
-								glVertex3f(v->position.x,v->position.y,v->position.z);
+                                glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 							}
 						}
 						glEnd();
@@ -3654,19 +3654,19 @@ void loadFromPWB(const char *fileName)
 
 			for(size_t e=1;e<objectInfo.vertexCount;++e)
 			{
-				struct VertexInfo vertexInfo;
+                Vertex::VertexInfo vertexInfo;
 				fread(&vertexInfo,sizeof(vertexInfo),1,fp);
 				if(vertexInfo.index>0)
 				{
 					Vertex *theVertex=new Vertex();
 					theVertex->index=vertexInfo.index;
-					theVertex->position.vec(vertexInfo.x,vertexInfo.y,vertexInfo.z);
-					theVertex->normal.vec(vertexInfo.nx,vertexInfo.ny,vertexInfo.nz);
+                    theVertex->m_position.vec(vertexInfo.x,vertexInfo.y,vertexInfo.z);
+                    theVertex->m_normal.vec(vertexInfo.nx,vertexInfo.ny,vertexInfo.nz);
 					for(size_t h=0;h<vertexInfo.adjacentCount;++h)
 					{
 						size_t theAdj;
 						fread(&theAdj,sizeof(size_t),1,fp);
-						theVertex->adjacentEdge.push_back(theAdj);
+                        theVertex->m_adjacentEdgeList.push_back(theAdj);
 					}
 					theObject->directPushVertex(theVertex);
 				}
@@ -3770,7 +3770,7 @@ void saveToFileOBJ(const char *fileName)
 				else
 				{
 					Vertex *theVertex=theObject->vertex(i);
-					fprintf(fp,"v %f %f %f\n",theVertex->position.x,theVertex->position.y,theVertex->position.z);
+                    fprintf(fp,"v %f %f %f\n",theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z);
 				}
 			}
 			size_t tempBase=i-1;
@@ -3825,13 +3825,13 @@ void saveToFilePWB(const char *fileName)
 				Vertex *theVertex=theObject->vertex(e);
 				if(theVertex)
 				{
-					struct VertexInfo vertexInfo=theVertex->getVertexInfo();
+                    Vertex::VertexInfo vertexInfo=theVertex->getVertexInfo();
 					fwrite(&vertexInfo,sizeof(vertexInfo),1,fp);
-					fwrite(&(theVertex->adjacentEdge[0]),sizeof(size_t),vertexInfo.adjacentCount,fp);
+                    fwrite(&(theVertex->m_adjacentEdgeList[0]),sizeof(size_t),vertexInfo.adjacentCount,fp);
 				}
 				else
 				{
-					struct VertexInfo vertexInfo;
+                    Vertex::VertexInfo vertexInfo;
 					vertexInfo.index=0;
 					vertexInfo.adjacentCount=0;
 					fwrite(&vertexInfo,sizeof(vertexInfo),1,fp);

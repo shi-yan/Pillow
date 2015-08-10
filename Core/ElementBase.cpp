@@ -1,6 +1,6 @@
 #include "ElementBase.h"
 
-//初始化为不选择，不细分，不再临时数组中，下标为0
+//鲁玫脢录禄炉脦陋虏禄脩隆脭帽拢卢虏禄脧赂路脰拢卢虏禄脭脵脕脵脢卤脢媒脳茅脰脨拢卢脧脗卤锚脦陋0
 ElementBase::ElementBase(void):isSelected(false),isSub(false),isIn(false),index(0)
 {
 }

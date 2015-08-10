@@ -48,19 +48,19 @@
 extern HistoryManager *historyManager;
 
 DECLARE_ENUM(RenderType)
-	//带线框平滑渲染
+	//麓酶脧脽驴貌脝陆禄卢盲脰脠戮
 	Wireframe=234,
-	//带线框非平滑渲染
+	//麓酶脧脽驴貌路脟脝陆禄卢盲脰脠戮
 	WireframeFaced,
-	//线框渲染
+	//脧脽驴貌盲脰脠戮
 	Wire,
-	//无线框平滑渲染
+	//脦脼脧脽驴貌脝陆禄卢盲脰脠戮
 	Smooth,
-	//无线框非平滑渲染
+	//脦脼脧脽驴貌路脟脝陆禄卢盲脰脠戮
 	Faced
 END_ENUM()
 
-//镜像对称面
+//戮碌脧帽露脭鲁脝脙忙
 DECLARE_ENUM(MirrorMode)
 	MirrorXY=345,
 	MirrorYZ,
@@ -68,7 +68,7 @@ DECLARE_ENUM(MirrorMode)
 	Nothing
 END_ENUM()
 
-//物体类的属性,用于存储成文件
+//脦茂脤氓脌脿碌脛脢么脨脭,脫脙脫脷麓忙麓垄鲁脡脦脛录镁
 struct ObjectInfo
 {
 	size_t index;
@@ -94,229 +94,229 @@ struct ObjectInfo
 	size_t faceCount;
 };
 
-//定义物体的类
+//露篓脪氓脦茂脤氓碌脛脌脿
 class Object : public ElementBase
 {
 public:
-	//物体的名称
+	//脦茂脤氓碌脛脙没鲁脝
 	std::string name;
-	//物体的中心位置
+	//脦茂脤氓碌脛脰脨脨脛脦禄脰脙
 	Vector center;
-	//物体位置偏移量
+	//脦茂脤氓脦禄脰脙脝芦脪脝脕驴
 	Vector position;
-	//物体的旋转偏移量
+	//脦茂脤氓碌脛脨媒脳陋脝芦脪脝脕驴
 	Vector rotation;
-	//物体的缩放尺度
+	//脦茂脤氓碌脛脣玫路脜鲁脽露脠
 	Vector scale;
-	//是否需要渲染镜像物体
+	//脢脟路帽脨猫脪陋盲脰脠戮戮碌脧帽脦茂脤氓
 	bool isMirror;
-	//镜像物体的对称面
+	//戮碌脧帽脦茂脤氓碌脛露脭鲁脝脙忙
 	MirrorMode theMirrorMode;
-	//镜像物体相对原物体中心的位置
+	//戮碌脧帽脦茂脤氓脧脿露脭脭颅脦茂脤氓脰脨脨脛碌脛脦禄脰脙
 	Vector mirrorPosition;
-	//是否被隐藏了
+	//脢脟路帽卤禄脪镁虏脴脕脣
 	bool isHide;
-	//材质
+	//虏脛脰脢
 	GLfloat mat_ambient[4];
 	GLfloat mat_diffuse[4];
 	GLfloat mat_specular[4];
 	GLfloat mat_emission[4];
 	GLfloat mat_shininess[4];
-	//渲染模式
+	//盲脰脠戮脛拢脢陆
 	RenderType renderMode;
 
 private:
-	//顶点列表
+	//露楼碌茫脕脨卤铆
 	IndexArray<Vertex> vertexArray;
-	//边列表
+	//卤脽脕脨卤铆
 	IndexArray<Edge> edgeArray;
-	//面列表
+	//脙忙脕脨卤铆
 	IndexArray<Face> faceArray;
-	//局部细分面缓冲区
+	//戮脰虏驴脧赂路脰脙忙禄潞鲁氓脟酶
 	std::vector<Face*> PSFaceCache;
 	std::vector<SubdivideFace*> PSSubFaceCache[5];
 
 private:
-	//细分层次,限制在5层
+	//脧赂路脰虏茫麓脦,脧脼脰脝脭脷5虏茫
 	SubdivideLevel *subdivideLevel[5];
-	//当前有细分层次数目
+	//碌卤脟掳脫脨脧赂路脰虏茫麓脦脢媒脛驴
 	int subdivideLevelSize;
-	//当前的细分编号
+	//碌卤脟掳碌脛脧赂路脰卤脿潞脜
 	int subdivideId;
 
 public:
 	Object(char *theName);
-	//增加新的顶点,返回添加的点编号
+	//脭枚录脫脨脗碌脛露楼碌茫,路碌禄脴脤铆录脫碌脛碌茫卤脿潞脜
 	size_t addVertex(float p1,float p2,float p3);
 	size_t addVertex(float p1,float p2,float p3,float n1,float n2,float n3);
 	size_t addVertex(Vector &pos);
 	size_t addVertex(size_t ei,Vertex *theV);
 	size_t addVertex(Vector &pos,Vector &nor);
 
-	//增加新的边,返回添加的点编号
+	//脭枚录脫脨脗碌脛卤脽,路碌禄脴脤铆录脫碌脛碌茫卤脿潞脜
 	size_t addEdge(int start,int end);
-	//直接在指定的位置添加新的边
+	//脰卤陆脫脭脷脰赂露篓碌脛脦禄脰脙脤铆录脫脨脗碌脛卤脽
 	size_t addEdge(size_t ei,Edge *theE);
 
-	//得到指定位置的顶点
+	//碌脙碌陆脰赂露篓脦禄脰脙碌脛露楼碌茫
 	Vertex * vertex(size_t index);
-	//得到指定位置的边
+	//碌脙碌陆脰赂露篓脦禄脰脙碌脛卤脽
 	Edge * edge(size_t index);
-	//得到指定位置的面
+	//碌脙碌陆脰赂露篓脦禄脰脙碌脛脙忙
 	Face * face(size_t index);
 
-	//添加一个面,返回添加的面的编号
+	//脤铆录脫脪禄赂枚脙忙,路碌禄脴脤铆录脫碌脛脙忙碌脛卤脿潞脜
 	size_t addFace(size_t theEdgeArray[],size_t size);
-	//直接添加一个面
+	//脰卤陆脫脤铆录脫脪禄赂枚脙忙
 	size_t addFace(size_t ei,Face *theF);
 
-	//将文件输出成obj格式,用于测试
+	//陆芦脦脛录镁脢盲鲁枚鲁脡obj赂帽脢陆,脫脙脫脷虏芒脢脭
 	void testOut(char *fileName);
-	//将指定的细分层次输出成obj格式,用于测试
+	//陆芦脰赂露篓碌脛脧赂路脰虏茫麓脦脢盲鲁枚鲁脡obj赂帽脢陆,脫脙脫脷虏芒脢脭
 	void SubTestOut(char *fileName,int level);
-	//将最外层的细分层次输出
+	//陆芦脳卯脥芒虏茫碌脛脧赂路脰虏茫麓脦脢盲鲁枚
 	void SubTestOut(char *fileName);
-	//将当前物体细分
+	//陆芦碌卤脟掳脦茂脤氓脧赂路脰
 	void subdivide();
-	//清空局部细分面缓冲区
+	//脟氓驴脮戮脰虏驴脧赂路脰脙忙禄潞鲁氓脟酶
 	void clearPSCache();
-	//通过局部细分面集来建立局部细分缓冲区
+	//脥篓鹿媒戮脰虏驴脧赂路脰脙忙录炉脌麓陆篓脕垄戮脰虏驴脧赂路脰禄潞鲁氓脟酶
 	void buildPSCache(std::vector<Face*> &faceToBeSub);
-	//快速建立局部细分缓冲,精确性还需要探讨
+	//驴矛脣脵陆篓脕垄戮脰虏驴脧赂路脰禄潞鲁氓,戮芦脠路脨脭禄鹿脨猫脪陋脤陆脤脰
 	void buildPSCacheFast(std::vector<Face*> &faceToBeSub);
-	//局部细分
+	//戮脰虏驴脧赂路脰
 	void partialSubdivision();
-	//减少细分的层次
+	//录玫脡脵脧赂路脰碌脛虏茫麓脦
 	void unSubdivide();
 
-	//通过顶点编号集生成局部细分面缓冲
+	//脥篓鹿媒露楼碌茫卤脿潞脜录炉脡煤鲁脡戮脰虏驴脧赂路脰脙忙禄潞鲁氓
 	void buildPSCacheFromVID(std::vector<size_t> &vertexToBeSub);
-	//通过边编号集生成局部细分面缓冲
+	//脥篓鹿媒卤脽卤脿潞脜录炉脡煤鲁脡戮脰虏驴脧赂路脰脙忙禄潞鲁氓
 	void buildPSCacheFromEID(std::vector<size_t> &edgeToBeSub);
-	//通过面编号集生成局部细分面缓冲
+	//脥篓鹿媒脙忙卤脿潞脜录炉脡煤鲁脡戮脰虏驴脧赂路脰脙忙禄潞鲁氓
 	void buildPSCacheFromFID(std::vector<size_t> &faceToBeSub);
 
-	//显示镜像物体
-	//type 为镜像面类型
-	//theMirrorPosition 我镜像物体中心相对于原物体中心的位置
+	//脧脭脢戮戮碌脧帽脦茂脤氓
+	//type 脦陋戮碌脧帽脙忙脌脿脨脥
+	//theMirrorPosition 脦脪戮碌脧帽脦茂脤氓脰脨脨脛脧脿露脭脫脷脭颅脦茂脤氓脰脨脨脛碌脛脦禄脰脙
 	void mirror(MirrorMode type,Vector &theMirrorPosition);
-	//取消镜像物体
+	//脠隆脧没戮碌脧帽脦茂脤氓
 	void unMirror();
-	//更新细分
+	//赂眉脨脗脧赂路脰
 	void updateSubdivision();
 
-	//得到当前物体的属性,用于存储
+	//碌脙碌陆碌卤脟掳脦茂脤氓碌脛脢么脨脭,脫脙脫脷麓忙麓垄
 	struct ObjectInfo getObjectInfo();
-	//直接添加顶点,用于从文件中读取
+	//脰卤陆脫脤铆录脫露楼碌茫,脫脙脫脷麓脫脦脛录镁脰脨露脕脠隆
 	void directPushVertex(Vertex *theVertex);
-	//直接添加边
+	//脰卤陆脫脤铆录脫卤脽
 	void directPushEdge(Edge *theEdge);
-	//直接添加面
+	//脰卤陆脫脤铆录脫脙忙
 	void directPushFace(Face *theFace);
 	
-	//绘制线框非平滑物体
+	//禄忙脰脝脧脽驴貌路脟脝陆禄卢脦茂脤氓
 	void drawWireframeFaced();
-	//为选取绘制物体
+	//脦陋脩隆脠隆禄忙脰脝脦茂脤氓
 	void selectionRenderObject();
-	//渲染线框平滑物体
+	//盲脰脠戮脧脽驴貌脝陆禄卢脦茂脤氓
 	void drawWireframe();
-	//渲染线框
+	//盲脰脠戮脧脽驴貌
 	void drawWire(GLuint r=0,GLuint g=0,GLuint b=0);
-	//渲染平滑物体
+	//盲脰脠戮脝陆禄卢脦茂脤氓
 	void drawSmooth();
-	//绘制物体的法线,用于测试
+	//禄忙脰脝脦茂脤氓碌脛路篓脧脽,脫脙脫脷虏芒脢脭
 	void drawNormal();
-	//绘制非平滑的物体
+	//禄忙脰脝路脟脝陆禄卢碌脛脦茂脤氓
 	void drawFaced();
 	void drawWireEdgeSelected();
 	void drawWireFaceSelected();
 	void drawWireObjectSelected();
 	void drawWireVertexSelected();
-	//绘制非平滑边选择模式
+	//禄忙脰脝路脟脝陆禄卢卤脽脩隆脭帽脛拢脢陆
 	void drawFacedEdgeSelected();
-	//绘制非平滑面选择模式
+	//禄忙脰脝路脟脝陆禄卢脙忙脩隆脭帽脛拢脢陆
 	void drawFacedFaceSelected();
-	//绘制非平滑顶点选择模式
+	//禄忙脰脝路脟脝陆禄卢露楼碌茫脩隆脭帽脛拢脢陆
 	void drawFacedVertexSelected();
-	//绘制非平滑物体选择模式
+	//禄忙脰脝路脟脝陆禄卢脦茂脤氓脩隆脭帽脛拢脢陆
 	void drawFacedObjectSelected();
-	//绘制平滑物体选择模式
+	//禄忙脰脝脝陆禄卢脦茂脤氓脩隆脭帽脛拢脢陆
 	void drawSmoothObjectSelected();
-	//绘制线框物体选择模式
+	//禄忙脰脝脧脽驴貌脦茂脤氓脩隆脭帽脛拢脢陆
 //	void drawWireObjectSelected();
-	//绘制物体选择模式
+	//禄忙脰脝脦茂脤氓脩隆脭帽脛拢脢陆
 	void drawObjectSelected();
-	//绘制物体的镜像
+	//禄忙脰脝脦茂脤氓碌脛戮碌脧帽
 	void drawMirror();
-	//绘制物体
+	//禄忙脰脝脦茂脤氓
 	void draw();
-	//将所有顶点的法线单位化
+	//陆芦脣霉脫脨露楼碌茫碌脛路篓脧脽碌楼脦禄禄炉
 	void normalizeVertexNormal();
-	//更新顶点的法线
+	//赂眉脨脗露楼碌茫碌脛路篓脧脽
 	void updateVNormal(SubdivideVertex *theVertex,size_t level);
-	//更新顶点的法线
+	//赂眉脨脗露楼碌茫碌脛路篓脧脽
 	void updateVNormal(Vertex *theVertex);
-	//更新面的法线
+	//赂眉脨脗脙忙碌脛路篓脧脽
 	void updateFNormal(Face *theFace);
-	//更新面的法线
+	//赂眉脨脗脙忙碌脛路篓脧脽
 	void updateFNormal(SubdivideFace *theFace,size_t level);
-	//更新所有的法线
+	//赂眉脨脗脣霉脫脨碌脛路篓脧脽
 	void updateAllNormal();
-	//更新最外层细分面的法线
+	//赂眉脨脗脳卯脥芒虏茫脧赂路脰脙忙碌脛路篓脧脽
 	void updateAllSubNormal();
-	//得到边的数目
+	//碌脙碌陆卤脽碌脛脢媒脛驴
 	size_t edgeCount();
-	//得到顶点的数目
+	//碌脙碌陆露楼碌茫碌脛脢媒脛驴
 	size_t vertexCount();
-	//得到面的数目
+	//碌脙碌陆脙忙碌脛脢媒脛驴
 	size_t faceCount();
-	//更新顶点位置到一个绝对值
+	//赂眉脨脗露楼碌茫脦禄脰脙碌陆脪禄赂枚戮酶露脭脰碌
 	void vertexPositionChangeA(size_t vertexID,float nx,float ny,float nz);
-	//更新顶点位置到一个相对值
+	//赂眉脨脗露楼碌茫脦禄脰脙碌陆脪禄赂枚脧脿露脭脰碌
 	void vertexPositionChangeR(size_t vertexID,float nx,float ny,float nz);
-	//更新顶点法线
+	//赂眉脨脗露楼碌茫路篓脧脽
 	void vertexNormalChange(size_t vertexID,float nx,float ny,float nz);
-	//删除面
+	//脡戮鲁媒脙忙
 	void objectFaceRemove(size_t faceID);
-	//删除边
+	//脡戮鲁媒卤脽
 	void objectEdgeRemove(size_t edgeID);
-	//删除顶点
+	//脡戮鲁媒露楼碌茫
 	void objectVertexRemove(size_t vertexID);
-	//改变边的右面
+	//赂脛卤盲卤脽碌脛脫脪脙忙
 	void edgeRightChange(size_t edgeID,size_t nr);
-	//改变边的左面
+	//赂脛卤盲卤脽碌脛脳贸脙忙
 	void edgeLeftChange(size_t edgeID,size_t nl);
-	//改变边的起始点
+	//赂脛卤盲卤脽碌脛脝冒脢录碌茫
 	void edgeStartChange(size_t edgeID,size_t ns);
-	//改变边的终止点
+	//赂脛卤盲卤脽碌脛脰脮脰鹿碌茫
 	void edgeEndChange(size_t edgeID,size_t ne);
-	//删除点的一个邻接边
+	//脡戮鲁媒碌茫碌脛脪禄赂枚脕脷陆脫卤脽
 	void vertexAdjacentRemove(size_t vertexID,size_t adjID);
-	//插入点的一个邻接边
+	//虏氓脠毛碌茫碌脛脪禄赂枚脕脷陆脫卤脽
 	void vertexAdjacentInsert(size_t vertexID,size_t adjID,size_t ne);
-	//末尾插入一个面的边
+	//脛漏脦虏虏氓脠毛脪禄赂枚脙忙碌脛卤脽
 	void faceEdgePush(size_t faceID,int nEdge);
-	//弹出面的一个边
+	//碌炉鲁枚脙忙碌脛脪禄赂枚卤脽
 	void faceEdgePop(size_t faceID);
-	//改变面的一个边
+	//赂脛卤盲脙忙碌脛脪禄赂枚卤脽
 	void faceEdgeChange(size_t faceID,size_t edgeID,int nEdge);
-	//插入一个面的边
+	//虏氓脠毛脪禄赂枚脙忙碌脛卤脽
 	void faceEdgeInsert(size_t faceID,size_t edgeID,int nEdge);
-	//插入一个顶点的邻接边
+	//虏氓脠毛脪禄赂枚露楼碌茫碌脛脕脷陆脫卤脽
 	void vertexAdjacentPush(size_t vertexID,size_t ne);
-	//改变一个顶点的邻接边
+	//赂脛卤盲脪禄赂枚露楼碌茫碌脛脕脷陆脫卤脽
 	void vertexAdjacentChange(size_t vertexID,size_t edgeID,size_t ne);
-	//弹出一个顶点的邻接边
+	//碌炉鲁枚脪禄赂枚露楼碌茫碌脛脕脷陆脫卤脽
 	void vertexAdjacentPop(size_t vertexID);
-	//交换一个顶点的邻接边
+	//陆禄禄禄脪禄赂枚露楼碌茫碌脛脕脷陆脫卤脽
 	void vertexAdjacentSwap(size_t vertexID,size_t i1,size_t i2);
-	//交换一个面的邻接边
+	//陆禄禄禄脪禄赂枚脙忙碌脛脕脷陆脫卤脽
 	void faceEdgeSwap(size_t faceID,size_t i1,size_t i2);
-	//删除一个面的邻接边
+	//脡戮鲁媒脪禄赂枚脙忙碌脛脕脷陆脫卤脽
 	void faceEdgeRemove(size_t faceID,size_t edgeID);
-	//输出测试xml
+	//脢盲鲁枚虏芒脢脭xml
 	void testXMLOut(char *fileName);
-	//从新定义控制点
+	//麓脫脨脗露篓脪氓驴脴脰脝碌茫
 	void redefineControlPoint();
 
 private:

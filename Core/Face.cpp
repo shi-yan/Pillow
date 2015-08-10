@@ -1,19 +1,19 @@
 #include "Face.h"
 
-//初始化无法线
+//鲁玫脢录禄炉脦脼路篓脧脽
 Face::Face(void):ElementBase(),center(0),normal(0)
 {
-	//假定面的通常边数目小于5
+	//录脵露篓脙忙碌脛脥篓鲁拢卤脽脢媒脛驴脨隆脫脷5
 	edge.reserve(5);
 }
 
-//返回指定的边列表元素
+//路碌禄脴脰赂露篓碌脛卤脽脕脨卤铆脭陋脣脴
 const int& Face::operator [](size_t i)
 {
 	return edge[i];
 }
 
-//得到面的信息,用于存储成文件
+//碌脙碌陆脙忙碌脛脨脜脧垄,脫脙脫脷麓忙麓垄鲁脡脦脛录镁
 struct FaceInfo Face::getFaceInfo()
 {
 	struct FaceInfo result;

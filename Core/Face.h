@@ -3,7 +3,7 @@
 #include "Edge.h"
 #include "SubdivideFace.h"
 
-//面类的属性，用于存储成文件
+//脙忙脌脿碌脛脢么脨脭拢卢脫脙脫脷麓忙麓垄鲁脡脦脛录镁
 struct FaceInfo
 {
 	size_t index;
@@ -13,29 +13,29 @@ struct FaceInfo
 	float nz;
 };
 
-//面类
+//脙忙脌脿
 class Face : public ElementBase
 {
-	//允许Object类对其直接操作
+	//脭脢脨铆Object脌脿露脭脝盲脰卤陆脫虏脵脳梅
 	friend class Object;
 public:
-	//定义了面的边列表，左手系顺时针顺序排列。如果边的朝向和面的顺时针顺序一致则为正，否则为负
-	//也就是边在其左侧的面中是负，在右边的面中是正
+	//露篓脪氓脕脣脙忙碌脛卤脽脕脨卤铆拢卢脳贸脢脰脧碌脣鲁脢卤脮毛脣鲁脨貌脜脜脕脨隆拢脠莽鹿没卤脽碌脛鲁炉脧貌潞脥脙忙碌脛脣鲁脢卤脮毛脣鲁脨貌脪禄脰脗脭貌脦陋脮媒拢卢路帽脭貌脦陋赂潞
+	//脪虏戮脥脢脟卤脽脭脷脝盲脳贸虏脿碌脛脙忙脰脨脢脟赂潞拢卢脭脷脫脪卤脽碌脛脙忙脰脨脢脟脮媒
 	std::vector<int> edge;
-	//定义了面的法线方向
+	//露篓脪氓脕脣脙忙碌脛路篓脧脽路陆脧貌
 	Vector normal;
 
 private:
-	//在下一层细分中此面的中点编号
+	//脭脷脧脗脪禄虏茫脧赂路脰脰脨麓脣脙忙碌脛脰脨碌茫卤脿潞脜
 	size_t center;
-	//这个面在下一层细分中生成的所有子面
+	//脮芒赂枚脙忙脭脷脧脗脪禄虏茫脧赂路脰脰脨脡煤鲁脡碌脛脣霉脫脨脳脫脙忙
 	std::vector<int> subdivideFace;
 
 public:
 	Face(void);
-	//得到指定的边列表中的元素
+	//碌脙碌陆脰赂露篓碌脛卤脽脕脨卤铆脰脨碌脛脭陋脣脴
 	const int& operator [](size_t i);
-	//返回这个面的所有属性，用于存储成文件
+	//路碌禄脴脮芒赂枚脙忙碌脛脣霉脫脨脢么脨脭拢卢脫脙脫脷麓忙麓垄鲁脡脦脛录镁
 	struct FaceInfo getFaceInfo();
 
 public:

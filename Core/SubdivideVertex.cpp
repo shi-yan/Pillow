@@ -1,33 +1,64 @@
 #include "SubdivideVertex.h"
 
-SubdivideVertex::SubdivideVertex(void):ElementBase(),position(0),normal(0),edgeVertex(false),subdivideId(0),subdivideStep(0),nextLevel(0)
+SubdivideVertex::SubdivideVertex(void)
+    :ElementBase(),
+      m_position(0),
+      m_normal(0),
+      m_edgeVertex(false),
+      m_subdivideId(0),
+      m_subdivideStep(0),
+      m_nextLevel(0)
 {
-	adjacentEdge.reserve(5);
+    m_adjacentEdgeList.reserve(5);
 }
 
-SubdivideVertex::SubdivideVertex(Vector &pos,Vector &nor):position(pos),normal(nor),edgeVertex(false),subdivideId(0),subdivideStep(0),nextLevel(0)
+SubdivideVertex::SubdivideVertex(const Vector &pos, const Vector &nor)
+    :m_position(pos),
+      m_normal(nor),
+      m_edgeVertex(false),
+      m_subdivideId(0),
+      m_subdivideStep(0),
+      m_nextLevel(0)
 {
-	adjacentEdge.reserve(5);
+    m_adjacentEdgeList.reserve(5);
 }
 
-SubdivideVertex::SubdivideVertex(Vector &pos):position(pos),normal(0),edgeVertex(false),subdivideId(0),subdivideStep(0),nextLevel(0)
+SubdivideVertex::SubdivideVertex(const Vector &pos)
+    :m_position(pos),
+      m_normal(0),
+      m_edgeVertex(false),
+      m_subdivideId(0),
+      m_subdivideStep(0),
+      m_nextLevel(0)
 {
-	adjacentEdge.reserve(5);
+    m_adjacentEdgeList.reserve(5);
 }
 
-SubdivideVertex::SubdivideVertex(float p1,float p2,float p3):position(p1,p2,p3),normal(0),edgeVertex(false),subdivideId(0),subdivideStep(0),nextLevel(0)
+SubdivideVertex::SubdivideVertex(float p1,float p2,float p3)
+    :m_position(p1,p2,p3),
+      m_normal(0),
+      m_edgeVertex(false),
+      m_subdivideId(0),
+      m_subdivideStep(0),
+      m_nextLevel(0)
 {
-	adjacentEdge.reserve(5);
+    m_adjacentEdgeList.reserve(5);
 }
 
-SubdivideVertex::SubdivideVertex(float p1,float p2,float p3,float n1,float n2,float n3):position(p1,p2,p3),normal(n1,n2,n3),edgeVertex(false),subdivideId(0),subdivideStep(0),nextLevel(0)
+SubdivideVertex::SubdivideVertex(float p1,float p2,float p3,float n1,float n2,float n3)
+    :m_position(p1,p2,p3),
+      m_normal(n1,n2,n3),
+      m_edgeVertex(false),
+      m_subdivideId(0),
+      m_subdivideStep(0),
+      m_nextLevel(0)
 {
-	adjacentEdge.reserve(5);
+    m_adjacentEdgeList.reserve(5);
 }
 
 inline const int& SubdivideVertex::operator [](size_t i)
 {
-	return adjacentEdge[i];
+    return m_adjacentEdgeList[i];
 }
 
 SubdivideVertex::~SubdivideVertex(void)
