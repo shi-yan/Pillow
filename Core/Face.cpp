@@ -4,6 +4,7 @@
 Face::Face(void):ElementBase(),center(0),normal(0)
 {
 	//¼Ù¶¨ÃæµÄÍ¨³£±ßÊýÄ¿Ð¡ÓÚ5
+    edge.clear();
 	edge.reserve(5);
 }
 

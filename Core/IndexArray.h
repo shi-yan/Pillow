@@ -21,6 +21,7 @@ public:
 	//´ø³õÊ¼¿Õ¼ä·ÖÅäµÄ¹¹Ôìº¯Êý
     IndexArray(unsigned int space)
 	{
+        theSpace.clear();
 		theArray.reserve(space+1);
         theArray.push_back(nullptr);
 	};

@@ -17,7 +17,7 @@ Gird *theGird;
 Screen::Screen(/*wxWindow *theMain*/)
     :/*mainFrame(theMain),*/isSelectionMode(false),isAxisMode(false),isAltMode(false),isCtrlMode(false),isExtrude(false)
 {
-};
+}
 
 void Screen::initialize()
 {
@@ -39,10 +39,10 @@ void Screen::updateScreen(unsigned int theWidth,unsigned int theHeight)
 	width=theWidth;
 	height=theHeight;
 	singleView->update(width/2,height/2,width,height);
-fourView->update(width/2,height/2,width,height);
-threeView->update(width/2,height/2,width,height);
-twoView->update(width/2,height/2,width,height);
-uiLayer->updateSize(width,height);
+    fourView->update(width/2,height/2,width,height);
+    threeView->update(width/2,height/2,width,height);
+    twoView->update(width/2,height/2,width,height);
+    uiLayer->updateSize(width,height);
 }
 
 bool Screen::onLeftDrag(int x,int y)
@@ -81,12 +81,12 @@ bool Screen::onMiddleDrag(int x,int y)
 	else
 	{
 		return currentView->onSelectionDrag(x,y);
-	//	return currentView->onDrag();
+        //return currentView->onDrag();
 	}
 }
 
 void Screen::screenShot(const char *fileName)
-	{
+{
         /*glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
         for(int i=0;i<(int)  currentView->viewCount;++i)
 		{
@@ -103,7 +103,7 @@ void Screen::screenShot(const char *fileName)
 		theScreenShot=theScreenShot.Mirror(false);
         theScreenShot.SaveFile(_T(fileName),wxBITMAP_TYPE_JPEG);*/
 		//delete pixel;
-	};
+}
 
 void Screen::onPaint()
 { 
@@ -121,4 +121,4 @@ void Screen::onPaint()
 	currentView->onPaint();
 	uiLayer->onPaint();
 	End2D();
-};
+}

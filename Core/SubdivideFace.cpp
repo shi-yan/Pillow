@@ -1,6 +1,9 @@
 #include "SubdivideFace.h"
 
-SubdivideFace::SubdivideFace(int v1, int v2, int v3, int v4):ElementBase(),center(0),normal()
+SubdivideFace::SubdivideFace(int v1, int v2, int v3, int v4)
+    :ElementBase(),
+      center(0),
+      normal()
 {
 	edge[0]=v1;
 	edge[1]=v2;

@@ -1140,7 +1140,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 				theObject->buildPSCacheFromFID(selection);
 			}
-	};
+    }
 
 	void selectionPush(ElementBase *theElement)
 	{
@@ -2815,6 +2815,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				theObjectList[target]->unSubdivide();
 				if(!selection.empty())
 				{
+                    theObjectList[target]->clearPSCache();
 					theObjectList[target]->buildPSCacheFromVID(selection);
 				}
 			}
@@ -2917,8 +2918,9 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glEnable(GL_DITHER);
 			glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);
 			updateAxisCursor();
-						if(!selection.empty())
+            if(!selection.empty())
 			{
+                theObjectList[target]->clearPSCache();
 				theObject->buildPSCacheFromEID(selection);
 			}
 		}
@@ -2940,13 +2942,13 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glDisable(GL_TEXTURE_2D);
 			glDisable(GL_ALPHA_TEST);
 			glDisable(GL_BLEND);
-							glMatrixMode(GL_MODELVIEW);
-		glPushMatrix();
-		glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-				glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-		glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+            glMatrixMode(GL_MODELVIEW);
+            glPushMatrix();
+            glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
+            glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
+            glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
+            glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
+            glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
 
 			for(size_t i=1;i<theObject->faceCount();++i)
 			{
@@ -2999,12 +3001,13 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glEnable(GL_DITHER);
 			glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);
 			updateAxisCursor();
-									if(!selection.empty())
+            if(!selection.empty())
 			{
+                theObjectList[target]->clearPSCache();
 				theObject->buildPSCacheFromFID(selection);
 			}
 		}
-	};
+    }
 
 	void selectSingleSideObject(size_t x1,size_t y1,size_t x2,size_t y2,size_t height,bool isAppend=false)
 	{

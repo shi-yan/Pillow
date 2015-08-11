@@ -123,9 +123,7 @@ void updateScreen(unsigned int width,unsigned int height);
 			isSelectionMode=false;
 			return true;
 		}
-	};
-
-	
+    }
 
 	bool onLeftPress(int x,int y)
 	{
@@ -177,7 +175,7 @@ void updateScreen(unsigned int width,unsigned int height);
 				}
 			}
 		}
-	};
+    }
 
 	bool onMoving(int x,int y)
 	{
@@ -191,13 +189,13 @@ void updateScreen(unsigned int width,unsigned int height);
 			currentView->onExtrudeDown();
 			isExtrude=true;
 		}
-	};
+    }
 	
 	void onExtrudeRelease()
 	{
 		currentView->onExtrudeRelease();
 		isExtrude=false;
-	};
+    }
 
 	bool onLeftRelease(bool isAppend)
 	{
@@ -382,7 +380,7 @@ void updateScreen(unsigned int width,unsigned int height);
 		{
 			theScene->fileName=dialog.GetPath().c_str();
 			theScene->saveToFileOBJ(dialog.GetPath().c_str());
-		}
+        }
                     }*/
 				}
 				else if(eventType==ButtonEventType::DeleteVertex)

@@ -1645,7 +1645,7 @@ void Scene::extrudeEdge(float x,float y,float z)
                     theStart->m_clone=theObjectList[target]->addVertex(theStart->m_position.x+x,theStart->m_position.y+y,theStart->m_position.z+z);
                     theObjectList[target]->vertex(theStart->m_clone)->m_clone=theObjectList[target]->addEdge(theStart->index,theStart->m_clone);
 					theStart->isIn=true;
-					isInCache.push_back(theStart);
+                    isInCache.push_back(theStart);
 				}
 				//Éú³ÉÃæ
 				size_t tempEdge[4]={0};
@@ -2928,16 +2928,12 @@ void Scene::attach(size_t original,size_t toBeAttached)
 			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
 			glLoadIdentity();
-			
-			
-			
-			
+						
 			glTranslatef(-originalCenter.x,-originalCenter.y,-originalCenter.z);
-glScalef(originalScale.x,originalScale.y,originalScale.z);
-glRotatef(originalRotation.w,originalRotation.x,originalRotation.y,originalRotation.z);
-glTranslatef(originalCenter.x,originalCenter.y,originalCenter.z);
-glTranslatef(originalPosition.x,originalPosition.y,originalPosition.z);
-
+            glScalef(originalScale.x,originalScale.y,originalScale.z);
+            glRotatef(originalRotation.w,originalRotation.x,originalRotation.y,originalRotation.z);
+            glTranslatef(originalCenter.x,originalCenter.y,originalCenter.z);
+            glTranslatef(originalPosition.x,originalPosition.y,originalPosition.z);
 
 			glTranslatef(position.x,position.y,position.z);
 			glTranslatef(center.x,center.y,center.z);
@@ -3041,7 +3037,7 @@ void Scene::clearSelection()
 			}						
 		}
 		selection.clear();
-	};
+    }
 
 Scene::~Scene(void)
 {
