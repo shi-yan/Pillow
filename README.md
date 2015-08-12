@@ -1,5 +1,5 @@
 # Pillow
-a 3d modeler
+![screenshot](OldScreenshots/anim.gif)
 
 Pillow is a light-weight 3D modeler that tries to mimic what Silo is. http://www.nevercenter.com/silo/
 
