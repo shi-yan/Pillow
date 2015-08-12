@@ -29,11 +29,11 @@ Object::Object(char *theName):center(),position(),rotation(),scale(1,1,1,1),name
 	mat_shininess[2] = 10.0f;
 	mat_shininess[3] = 10.0f;
 
-    vertexArray.clear();
+    //vertexArray.clear();
 	vertexArray.reserve(5000);
-    edgeArray.clear();
+    //edgeArray.clear();
 	edgeArray.reserve(5000);
-    faceArray.clear();
+    //faceArray.clear();
 	faceArray.reserve(5000);
 	subdivideLevel[0]=NULL;
 	subdivideLevel[1]=NULL;
@@ -453,7 +453,7 @@ void Object::subdivideFace(Face *theFace)
 	//ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
 	Vertex **theVertexList=new Vertex*[edgeCount];
 	theFace->center=subdivideLevel[0]->vertex.add(new SubdivideVertex());
-    subdivideLevel[0]->vertex[theFace->center]->m_adjacentEdgeList.clear();
+    //subdivideLevel[0]->vertex[theFace->center]->m_adjacentEdgeList.clear();
     subdivideLevel[0]->vertex[theFace->center]->m_adjacentEdgeList.reserve(4);
 	for(size_t e=0;e<edgeCount;++e)
 	{
@@ -482,7 +482,7 @@ void Object::subdivideFace(Face *theFace)
             theV->m_subdivideStep=0;
 			//Éú³ÉÕâ¸öµãµÄÏ¸·Öµã
             theV->m_nextLevel=subdivideLevel[0]->vertex.add(new SubdivideVertex());
-            subdivideLevel[0]->vertex[theV->m_nextLevel]->m_adjacentEdgeList.clear();
+            //subdivideLevel[0]->vertex[theV->m_nextLevel]->m_adjacentEdgeList.clear();
             subdivideLevel[0]->vertex[theV->m_nextLevel]->m_adjacentEdgeList.reserve(theV->m_adjacentEdgeList.size());
 			//Ê×ÏÈ¼ÆËãÏàÁÚµãµÄ×ø±êºÍEv
             subdivideLevel[0]->vertex[theV->m_nextLevel]->m_position+=EAdjacentVertex(theV);
@@ -527,7 +527,7 @@ void Object::subdivideFace(Face *theFace)
 				theEdge->subdivideId=subdivideId;
                 Vector theN=vertexArray[theEdge->start]->m_position+vertexArray[theEdge->end]->m_position;
 				theEdge->middle=subdivideLevel[0]->vertex.add(new SubdivideVertex(theN));
-                subdivideLevel[0]->vertex[theEdge->middle]->m_adjacentEdgeList.clear();
+                //subdivideLevel[0]->vertex[theEdge->middle]->m_adjacentEdgeList.clear();
                 subdivideLevel[0]->vertex[theEdge->middle]->m_adjacentEdgeList.reserve(4);
 				if(theEdge->left && theEdge->right)
 				{
@@ -566,7 +566,7 @@ void Object::subdivideFace(Face *theFace)
 				theEdge->subdivideId=subdivideId;
                 Vector theN=vertexArray[theEdge->start]->m_position+vertexArray[theEdge->end]->m_position;
 				theEdge->middle=subdivideLevel[0]->vertex.add(new SubdivideVertex(theN));
-                subdivideLevel[0]->vertex[theEdge->middle]->m_adjacentEdgeList.clear();
+                //subdivideLevel[0]->vertex[theEdge->middle]->m_adjacentEdgeList.clear();
                 subdivideLevel[0]->vertex[theEdge->middle]->m_adjacentEdgeList.reserve(4);
 				if(theEdge->left!=0 && theEdge->right!=0)
 				{
@@ -598,7 +598,7 @@ void Object::subdivideFace(Face *theFace)
 		}
 	}
 	//½¨Á¢Ï¸·ÖÖ®ºóµÄÃæ
-    theFace->subdivideFace.clear();
+    //theFace->subdivideFace.clear();
 	theFace->subdivideFace.reserve(edgeCount);
 	for(size_t i=0;i<edgeCount;++i)
 	{
@@ -664,7 +664,7 @@ void Object::subdivideFace(SubdivideFace *theFace)
 	//ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
 	SubdivideVertex **theVertexList=new SubdivideVertex*[edgeCount];
 	theFace->center=target->vertex.add(new SubdivideVertex());
-    target->vertex[theFace->center]->m_adjacentEdgeList.clear();
+    //target->vertex[theFace->center]->m_adjacentEdgeList.clear();
     target->vertex[theFace->center]->m_adjacentEdgeList.reserve(4);
 	for(size_t e=0;e<edgeCount;++e)
 	{
@@ -694,7 +694,7 @@ void Object::subdivideFace(SubdivideFace *theFace)
             theV->m_subdivideStep=0;
 			//Éú³ÉÕâ¸öµãµÄÏ¸·Öµã
             theV->m_nextLevel=target->vertex.add(new SubdivideVertex());
-            target->vertex[theV->m_nextLevel]->m_adjacentEdgeList.clear();
+            //target->vertex[theV->m_nextLevel]->m_adjacentEdgeList.clear();
             target->vertex[theV->m_nextLevel]->m_adjacentEdgeList.reserve(theV->m_adjacentEdgeList.size());
 			//Ê×ÏÈ¼ÆËãÏàÁÚµãµÄ×ø±êºÍEv
             target->vertex[theV->m_nextLevel]->m_position+=EAdjacentVertex(theV);
@@ -739,7 +739,7 @@ void Object::subdivideFace(SubdivideFace *theFace)
 				theEdge->subdivideId=subdivideId;
                 Vector theN=original->vertex[theEdge->start]->m_position+original->vertex[theEdge->end]->m_position;
 				theEdge->middle=target->vertex.add(new SubdivideVertex(theN));
-                target->vertex[theEdge->middle]->m_adjacentEdgeList.clear();
+                //target->vertex[theEdge->middle]->m_adjacentEdgeList.clear();
                 target->vertex[theEdge->middle]->m_adjacentEdgeList.reserve(4);
 				if(theEdge->left && theEdge->right)
 				{
@@ -778,7 +778,7 @@ void Object::subdivideFace(SubdivideFace *theFace)
 				theEdge->subdivideId=subdivideId;
                 Vector theN=original->vertex[theEdge->start]->m_position+original->vertex[theEdge->end]->m_position;
 				theEdge->middle=target->vertex.add(new SubdivideVertex(theN));
-                target->vertex[theEdge->middle]->m_adjacentEdgeList.clear();
+                //target->vertex[theEdge->middle]->m_adjacentEdgeList.clear();
                 target->vertex[theEdge->middle]->m_adjacentEdgeList.reserve(4);
 				if(theEdge->left && theEdge->right)
 				{
@@ -1154,7 +1154,7 @@ void Object::redefineControlPoint()
 		vertexArray.~IndexArray();
 		vertexArray.pushNull();
 		size_t vertexCount=subdivideLevel[0]->vertex.size();
-        vertexArray.clear();
+        //vertexArray.clear();
 		vertexArray.reserve(vertexCount);
 		for(size_t i=1;i<vertexCount;i++)
 		{
@@ -1163,7 +1163,7 @@ void Object::redefineControlPoint()
 		edgeArray.~IndexArray();
 		edgeArray.pushNull();
 		size_t edgeCount=subdivideLevel[0]->edge.size();
-        edgeArray.clear();
+        //edgeArray.clear();
 		edgeArray.reserve(edgeCount);
 		for(size_t i=1;i<edgeCount;i++)
 		{
@@ -1174,7 +1174,7 @@ void Object::redefineControlPoint()
 		faceArray.~IndexArray();
 		faceArray.pushNull();
 		size_t faceCount=subdivideLevel[0]->face.size();
-        faceArray.clear();
+        //faceArray.clear();
 		faceArray.reserve(faceCount);
 		for(size_t i=1;i<faceCount;i++)
 		{
@@ -2996,7 +2996,7 @@ void Object::buildPSCacheFromEID(std::vector<size_t> &edgeToBeSub)
 	if(subdivideLevelSize>0)
 	{
 		std::vector<size_t> vertexToBeSub;
-        vertexToBeSub.clear();
+        //vertexToBeSub.clear();
 		vertexToBeSub.reserve(1000);
 		for(size_t i=0;i<edgeToBeSub.size();++i)
 		{
@@ -3031,7 +3031,7 @@ void Object::buildPSCacheFromFID(std::vector<size_t> &faceToBeSub)
 	if(subdivideLevelSize>0)
 	{
 		std::vector<size_t> vertexToBeSub;
-        vertexToBeSub.clear();
+        //vertexToBeSub.clear();
 		vertexToBeSub.reserve(1000);
 		for(size_t i=0;i<faceToBeSub.size();++i)
 		{
@@ -3085,7 +3085,7 @@ void Object::buildPSCacheFromVID(std::vector<size_t> &vertexToBeSub)
 	if(subdivideLevelSize>0)
 	{
 		std::vector<Face *> faceToBeSub;
-        faceToBeSub.clear();
+        //faceToBeSub.clear();
 		faceToBeSub.reserve(1000);
 		for(size_t i=0;i<vertexToBeSub.size();++i)
 		{
@@ -3128,7 +3128,7 @@ void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,size_t leve
 	SubdivideLevel *theLevel=subdivideLevel[level];
 	size_t originalCount=originalList.size();
 	std::vector<SubdivideVertex *> tempVertexList;
-    tempVertexList.clear();
+    //tempVertexList.clear();
 	tempVertexList.reserve(originalCount*4);
 	for(size_t i=0;i<originalCount;++i)
 	{
@@ -3235,7 +3235,7 @@ void Object::expandSubFace(std::vector<Face*> &originalList)
 	//originalListÖÐµÄidÓ¦¸ÃÊÇ´ýÏ¸·ÖµÄ×´Ì¬
 	size_t originalCount=originalList.size();
 	std::vector<Vertex *> tempVertexList;
-    tempVertexList.clear();
+    //tempVertexList.clear();
 	tempVertexList.reserve(originalCount*5);
 	for(size_t i=0;i<originalCount;++i)
 	{
@@ -3334,10 +3334,10 @@ void Object::buildPSCache(std::vector<Face*> &faceToBeSub)
 	{
 		size_t level=subdivideLevelSize-1;
 		size_t faceCount=faceToBeSub.size();
-        PSFaceCache.clear();
+        //PSFaceCache.clear();
 		PSFaceCache.reserve(faceCount);
 
-        PSSubFaceCache[level].clear();
+        //PSSubFaceCache[level].clear();
 		PSSubFaceCache[level].reserve(faceCount*5);
 		for(size_t i=0;i<faceCount;++i)
 		{
@@ -3357,7 +3357,7 @@ void Object::buildPSCache(std::vector<Face*> &faceToBeSub)
 			size_t e2=h;
 			size_t e1=h+1;
 			faceCount=PSSubFaceCache[e1].size();
-            PSSubFaceCache[e2].clear();
+            //PSSubFaceCache[e2].clear();
 			PSSubFaceCache[e2].reserve(faceCount*5);
 			for(size_t i=0;i<faceCount;++i)
 			{
@@ -3624,7 +3624,7 @@ void Object::buildPSCacheFast(std::vector<Face*> &faceToBeSub)
 	if(subdivideLevelSize>0)
 	{
 		size_t subCount=faceToBeSub.size();
-        PSFaceCache.clear();
+        //PSFaceCache.clear();
 		PSFaceCache.reserve(subCount*2);
 		for(size_t i=0;i<subCount;++i)
 		{
@@ -3634,7 +3634,7 @@ void Object::buildPSCacheFast(std::vector<Face*> &faceToBeSub)
 		expandSubFace(faceToBeSub);
 		subCount=PSFaceCache.size();
 		size_t level=subdivideLevelSize-1;
-        PSSubFaceCache[level].clear();
+        //PSSubFaceCache[level].clear();
 		PSSubFaceCache[level].reserve(5*subCount);
 		for(size_t i=0;i<subCount;++i)
 		{
@@ -3649,7 +3649,7 @@ void Object::buildPSCacheFast(std::vector<Face*> &faceToBeSub)
 		{
 			size_t subCount=PSSubFaceCache[e].size();
 			size_t e2=e-1;
-            PSSubFaceCache[e2].clear();
+            //PSSubFaceCache[e2].clear();
 			PSSubFaceCache[e2].reserve(subCount*2);
 			for(size_t i=0;i<subCount;++i)
 			{
