@@ -111,21 +111,21 @@ public:
 				Object *theOriginal=theObjectList[selection[i]];
 				if(theOriginal)
 				{
-					if(theOriginal->isMirror && theOriginal->theMirrorMode!=MirrorMode::Nothing)
+                    if(theOriginal->m_isMirror && theOriginal->m_mirrorMode!=MirrorMode::Nothing)
 					{
 						Matrix transform;
 						glMatrixMode(GL_MODELVIEW);
 						glPushMatrix();
 						glLoadIdentity();
-						if(theOriginal->theMirrorMode==MirrorMode::MirrorXY)
+                        if(theOriginal->m_mirrorMode==MirrorMode::MirrorXY)
 						{
 							glScalef(1,1,-1);
 						}
-						else if(theOriginal->theMirrorMode==MirrorMode::MirrorYZ)
+                        else if(theOriginal->m_mirrorMode==MirrorMode::MirrorYZ)
 						{
 							glScalef(-1,1,1);
 						}
-						else if(theOriginal->theMirrorMode==MirrorMode::MirrorXZ)
+                        else if(theOriginal->m_mirrorMode==MirrorMode::MirrorXZ)
 						{
 							glScalef(1,-1,1);
 						}
@@ -143,10 +143,10 @@ public:
 						}
                         for(unsigned int e=1;e<theOriginal->edgeCount();++e)
 						{
-							Edge *theEdge=theOriginal->edge(e);
+                            Edge *theEdge=theOriginal->edge(e);
 							if(theEdge)
 							{
-                                theEdge->clone=newObject->addEdge(theOriginal->vertex(theEdge->start)->m_clone,theOriginal->vertex(theEdge->end)->m_clone);
+                                theEdge->m_clone=newObject->addEdge(theOriginal->vertex(theEdge->m_start)->m_clone,theOriginal->vertex(theEdge->m_end)->m_clone);
 							}
 						}
                         for(unsigned int e=1;e<theOriginal->faceCount();++e)
@@ -154,12 +154,12 @@ public:
 							Face *theFace=theOriginal->face(e);
 							if(theFace)
 							{
-                                unsigned int *tempEdgeSet=new unsigned int[theFace->edge.size()];
-                                for(unsigned int h=0;h<theFace->edge.size();++h)
+                                unsigned int *tempEdgeSet=new unsigned int[theFace->m_edge.size()];
+                                for(unsigned int h=0;h<theFace->m_edge.size();++h)
 								{
-									tempEdgeSet[h]=theFace->edge[h]>0?theFace->edge[h]:-theFace->edge[h];
+                                    tempEdgeSet[h]=theFace->m_edge[h]>0?theFace->m_edge[h]:-theFace->m_edge[h];
 								}
-								newObject->addFace(tempEdgeSet,theFace->edge.size());
+                                newObject->addFace(tempEdgeSet,theFace->m_edge.size());
 								delete tempEdgeSet;
 							}
 						}
@@ -191,10 +191,10 @@ public:
 
                     for(unsigned int e=1;e<theOriginal->edgeCount();++e)
 					{
-						Edge *theEdge=theOriginal->edge(e);
+                        Edge *theEdge=theOriginal->edge(e);
 						if(theEdge)
 						{
-                            theEdge->clone=newObject->addEdge(theOriginal->vertex(theEdge->start)->m_clone,theOriginal->vertex(theEdge->end)->m_clone);
+                            theEdge->m_clone=newObject->addEdge(theOriginal->vertex(theEdge->m_start)->m_clone,theOriginal->vertex(theEdge->m_end)->m_clone);
 						}
 					}
 
@@ -203,12 +203,12 @@ public:
 						Face *theFace=theOriginal->face(e);
 						if(theFace)
 						{
-                            unsigned int *tempEdgeSet=new unsigned int[theFace->edge.size()];
-                            for(unsigned int h=0;h<theFace->edge.size();++h)
+                            unsigned int *tempEdgeSet=new unsigned int[theFace->m_edge.size()];
+                            for(unsigned int h=0;h<theFace->m_edge.size();++h)
 							{
-								tempEdgeSet[h]=theFace->edge[h]>0?theFace->edge[h]:-theFace->edge[h];
+                                tempEdgeSet[h]=theFace->m_edge[h]>0?theFace->m_edge[h]:-theFace->m_edge[h];
 							}
-							newObject->addFace(tempEdgeSet,theFace->edge.size());
+                            newObject->addFace(tempEdgeSet,theFace->m_edge.size());
 							delete tempEdgeSet;
 						}
 					}
@@ -226,7 +226,7 @@ public:
 			if(theObjectList[i])
 			{
 				vertexCount+=theObjectList[i]->vertexCount()-1;
-				edgeCount+=theObjectList[i]->edgeCount()-1;
+                edgeCount+=theObjectList[i]->edgeCount()-1;
 				faceCount+=theObjectList[i]->faceCount()-1;
 			}
 		}
@@ -306,51 +306,51 @@ public:
 			{
 				if(theObjectList[selection[0]])
 				{
-					theObjectList[selection[0]]->mat_ambient[0]=ambient[0];
-					theObjectList[selection[0]]->mat_ambient[1]=ambient[1];
-					theObjectList[selection[0]]->mat_ambient[2]=ambient[2];
-					theObjectList[selection[0]]->mat_ambient[3]=ambient[3];
-					theObjectList[selection[0]]->mat_diffuse[0]=diffuse[0];
-					theObjectList[selection[0]]->mat_diffuse[1]=diffuse[1];
-					theObjectList[selection[0]]->mat_diffuse[2]=diffuse[2];
-					theObjectList[selection[0]]->mat_diffuse[3]=diffuse[3];
-					theObjectList[selection[0]]->mat_specular[0]=specular[0];
-					theObjectList[selection[0]]->mat_specular[1]=specular[1];
-					theObjectList[selection[0]]->mat_specular[2]=specular[2];
-					theObjectList[selection[0]]->mat_specular[3]=specular[3];
-					theObjectList[selection[0]]->mat_emission[0]=emission[0];
-					theObjectList[selection[0]]->mat_emission[1]=emission[1];
-					theObjectList[selection[0]]->mat_emission[2]=emission[2];
-					theObjectList[selection[0]]->mat_emission[3]=emission[3];
-					theObjectList[selection[0]]->mat_shininess[0]=shininess;
-					theObjectList[selection[0]]->mat_shininess[1]=shininess;
-					theObjectList[selection[0]]->mat_shininess[2]=shininess;
-					theObjectList[selection[0]]->mat_shininess[3]=shininess;
+                    theObjectList[selection[0]]->m_matAmbient[0]=ambient[0];
+                    theObjectList[selection[0]]->m_matAmbient[1]=ambient[1];
+                    theObjectList[selection[0]]->m_matAmbient[2]=ambient[2];
+                    theObjectList[selection[0]]->m_matAmbient[3]=ambient[3];
+                    theObjectList[selection[0]]->m_matDiffuse[0]=diffuse[0];
+                    theObjectList[selection[0]]->m_matDiffuse[1]=diffuse[1];
+                    theObjectList[selection[0]]->m_matDiffuse[2]=diffuse[2];
+                    theObjectList[selection[0]]->m_matDiffuse[3]=diffuse[3];
+                    theObjectList[selection[0]]->m_matSpecular[0]=specular[0];
+                    theObjectList[selection[0]]->m_matSpecular[1]=specular[1];
+                    theObjectList[selection[0]]->m_matSpecular[2]=specular[2];
+                    theObjectList[selection[0]]->m_matSpecular[3]=specular[3];
+                    theObjectList[selection[0]]->m_matEmission[0]=emission[0];
+                    theObjectList[selection[0]]->m_matEmission[1]=emission[1];
+                    theObjectList[selection[0]]->m_matEmission[2]=emission[2];
+                    theObjectList[selection[0]]->m_matEmission[3]=emission[3];
+                    theObjectList[selection[0]]->m_matShininess[0]=shininess;
+                    theObjectList[selection[0]]->m_matShininess[1]=shininess;
+                    theObjectList[selection[0]]->m_matShininess[2]=shininess;
+                    theObjectList[selection[0]]->m_matShininess[3]=shininess;
 				}
 			}
 		}
 		else if(target>0 && theObjectList[target])
 		{
-			theObjectList[target]->mat_ambient[0]=ambient[0];
-			theObjectList[target]->mat_ambient[1]=ambient[1];
-			theObjectList[target]->mat_ambient[2]=ambient[2];
-			theObjectList[target]->mat_ambient[3]=ambient[3];
-			theObjectList[target]->mat_diffuse[0]=diffuse[0];
-			theObjectList[target]->mat_diffuse[1]=diffuse[1];
-			theObjectList[target]->mat_diffuse[2]=diffuse[2];
-			theObjectList[target]->mat_diffuse[3]=diffuse[3];
-			theObjectList[target]->mat_specular[0]=specular[0];
-			theObjectList[target]->mat_specular[1]=specular[1];
-			theObjectList[target]->mat_specular[2]=specular[2];
-			theObjectList[target]->mat_specular[3]=specular[3];
-			theObjectList[target]->mat_emission[0]=emission[0];
-			theObjectList[target]->mat_emission[1]=emission[1];
-			theObjectList[target]->mat_emission[2]=emission[2];
-			theObjectList[target]->mat_emission[3]=emission[3];
-			theObjectList[target]->mat_shininess[0]=shininess;
-			theObjectList[target]->mat_shininess[1]=shininess;
-			theObjectList[target]->mat_shininess[2]=shininess;
-			theObjectList[target]->mat_shininess[3]=shininess;
+            theObjectList[target]->m_matAmbient[0]=ambient[0];
+            theObjectList[target]->m_matAmbient[1]=ambient[1];
+            theObjectList[target]->m_matAmbient[2]=ambient[2];
+            theObjectList[target]->m_matAmbient[3]=ambient[3];
+            theObjectList[target]->m_matDiffuse[0]=diffuse[0];
+            theObjectList[target]->m_matDiffuse[1]=diffuse[1];
+            theObjectList[target]->m_matDiffuse[2]=diffuse[2];
+            theObjectList[target]->m_matDiffuse[3]=diffuse[3];
+            theObjectList[target]->m_matSpecular[0]=specular[0];
+            theObjectList[target]->m_matSpecular[1]=specular[1];
+            theObjectList[target]->m_matSpecular[2]=specular[2];
+            theObjectList[target]->m_matSpecular[3]=specular[3];
+            theObjectList[target]->m_matEmission[0]=emission[0];
+            theObjectList[target]->m_matEmission[1]=emission[1];
+            theObjectList[target]->m_matEmission[2]=emission[2];
+            theObjectList[target]->m_matEmission[3]=emission[3];
+            theObjectList[target]->m_matShininess[0]=shininess;
+            theObjectList[target]->m_matShininess[1]=shininess;
+            theObjectList[target]->m_matShininess[2]=shininess;
+            theObjectList[target]->m_matShininess[3]=shininess;
 		}
 
     }
@@ -363,45 +363,45 @@ public:
 			{
 				if(theObjectList[selection[0]])
 				{
-					ambient[0]=theObjectList[selection[0]]->mat_ambient[0];
-					ambient[1]=theObjectList[selection[0]]->mat_ambient[1];
-					ambient[2]=theObjectList[selection[0]]->mat_ambient[2];
-					ambient[3]=theObjectList[selection[0]]->mat_ambient[3];
-					diffuse[0]=theObjectList[selection[0]]->mat_diffuse[0];
-					diffuse[1]=theObjectList[selection[0]]->mat_diffuse[1];
-					diffuse[2]=theObjectList[selection[0]]->mat_diffuse[2];
-					diffuse[3]=theObjectList[selection[0]]->mat_diffuse[3];
-					specular[0]=theObjectList[selection[0]]->mat_specular[0];
-					specular[1]=theObjectList[selection[0]]->mat_specular[1];
-					specular[2]=theObjectList[selection[0]]->mat_specular[2];
-					specular[3]=theObjectList[selection[0]]->mat_specular[3];
-					emission[0]=theObjectList[selection[0]]->mat_emission[0];
-					emission[1]=theObjectList[selection[0]]->mat_emission[1];
-					emission[2]=theObjectList[selection[0]]->mat_emission[2];
-					emission[3]=theObjectList[selection[0]]->mat_emission[3];
-					(*shininess)=*(theObjectList[selection[0]]->mat_shininess);
+                    ambient[0]=theObjectList[selection[0]]->m_matAmbient[0];
+                    ambient[1]=theObjectList[selection[0]]->m_matAmbient[1];
+                    ambient[2]=theObjectList[selection[0]]->m_matAmbient[2];
+                    ambient[3]=theObjectList[selection[0]]->m_matAmbient[3];
+                    diffuse[0]=theObjectList[selection[0]]->m_matDiffuse[0];
+                    diffuse[1]=theObjectList[selection[0]]->m_matDiffuse[1];
+                    diffuse[2]=theObjectList[selection[0]]->m_matDiffuse[2];
+                    diffuse[3]=theObjectList[selection[0]]->m_matDiffuse[3];
+                    specular[0]=theObjectList[selection[0]]->m_matSpecular[0];
+                    specular[1]=theObjectList[selection[0]]->m_matSpecular[1];
+                    specular[2]=theObjectList[selection[0]]->m_matSpecular[2];
+                    specular[3]=theObjectList[selection[0]]->m_matSpecular[3];
+                    emission[0]=theObjectList[selection[0]]->m_matEmission[0];
+                    emission[1]=theObjectList[selection[0]]->m_matEmission[1];
+                    emission[2]=theObjectList[selection[0]]->m_matEmission[2];
+                    emission[3]=theObjectList[selection[0]]->m_matEmission[3];
+                    (*shininess)=*(theObjectList[selection[0]]->m_matShininess);
 				}
 			}
 		}
 		else if(target>0 && theObjectList[target])
 		{
-			ambient[0]=theObjectList[target]->mat_ambient[0];
-			ambient[1]=theObjectList[target]->mat_ambient[1];
-			ambient[2]=theObjectList[target]->mat_ambient[2];
-			ambient[3]=theObjectList[target]->mat_ambient[3];
-			diffuse[0]=theObjectList[target]->mat_diffuse[0];
-			diffuse[1]=theObjectList[target]->mat_diffuse[1];
-			diffuse[2]=theObjectList[target]->mat_diffuse[2];
-			diffuse[3]=theObjectList[target]->mat_diffuse[3];
-			specular[0]=theObjectList[target]->mat_specular[0];
-			specular[1]=theObjectList[target]->mat_specular[1];
-			specular[2]=theObjectList[target]->mat_specular[2];
-			specular[3]=theObjectList[target]->mat_specular[3];
-			emission[0]=theObjectList[target]->mat_emission[0];
-			emission[1]=theObjectList[target]->mat_emission[1];
-			emission[2]=theObjectList[target]->mat_emission[2];
-			emission[3]=theObjectList[target]->mat_emission[3];
-			(*shininess)=*(theObjectList[target]->mat_shininess);
+            ambient[0]=theObjectList[target]->m_matAmbient[0];
+            ambient[1]=theObjectList[target]->m_matAmbient[1];
+            ambient[2]=theObjectList[target]->m_matAmbient[2];
+            ambient[3]=theObjectList[target]->m_matAmbient[3];
+            diffuse[0]=theObjectList[target]->m_matDiffuse[0];
+            diffuse[1]=theObjectList[target]->m_matDiffuse[1];
+            diffuse[2]=theObjectList[target]->m_matDiffuse[2];
+            diffuse[3]=theObjectList[target]->m_matDiffuse[3];
+            specular[0]=theObjectList[target]->m_matSpecular[0];
+            specular[1]=theObjectList[target]->m_matSpecular[1];
+            specular[2]=theObjectList[target]->m_matSpecular[2];
+            specular[3]=theObjectList[target]->m_matSpecular[3];
+            emission[0]=theObjectList[target]->m_matEmission[0];
+            emission[1]=theObjectList[target]->m_matEmission[1];
+            emission[2]=theObjectList[target]->m_matEmission[2];
+            emission[3]=theObjectList[target]->m_matEmission[3];
+            (*shininess)=*(theObjectList[target]->m_matShininess);
 		}
     }
 
@@ -465,177 +465,177 @@ public:
 			{
                 Edge *edgeA=theObjectList[tt]->edge(theObjectList[tt]->vertex(vertexID)->m_adjacentEdgeList[0]);
                 Edge *edgeB=theObjectList[tt]->edge(theObjectList[tt]->vertex(vertexID)->m_adjacentEdgeList[1]);
-				if(edgeA->start==vertexID)
+                if(edgeA->m_start==vertexID)
 				{
-					if(edgeB->end==vertexID)
+                    if(edgeB->m_end==vertexID)
 					{//printf("@@@@@@@@1@@@@@@@@@@@@@");
-                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->start,edgeA->end);
-						if(edgeA->right>0 && edgeB->right>0 && edgeA->right==edgeB->right)
+                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->m_start,edgeA->m_end);
+                        if(edgeA->m_right>0 && edgeB->m_right>0 && edgeA->m_right==edgeB->m_right)
 						{
-							Face *theFace=theObjectList[tt]->face(edgeA->right);
-                            unsigned int edgeCount=theFace->edge.size();
+                            Face *theFace=theObjectList[tt]->face(edgeA->m_right);
+                            unsigned int edgeCount=theFace->m_edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
-								if(theFace->edge[e]==(int)(edgeB->index))
+                                if(theFace->m_edge[e]==(int)(edgeB->m_index))
 								{
-									theObjectList[tt]->faceEdgeChange(theFace->index,e,newEdge);
+                                    theObjectList[tt]->faceEdgeChange(theFace->m_index,e,newEdge);
 								}
 								else
-									if(theFace->edge[e]==(int)(edgeA->index))
+                                    if(theFace->m_edge[e]==(int)(edgeA->m_index))
 								{
-									theObjectList[tt]->faceEdgeRemove(theFace->index,e);
+                                    theObjectList[tt]->faceEdgeRemove(theFace->m_index,e);
 								}
 							}
 						}
-						if(edgeA->left>0 && edgeB->left>0 && edgeA->left==edgeB->left)
+                        if(edgeA->m_left>0 && edgeB->m_left>0 && edgeA->m_left==edgeB->m_left)
 						{
-							Face *theFace=theObjectList[tt]->face(edgeA->left);
-                            unsigned int edgeCount=theFace->edge.size();
+                            Face *theFace=theObjectList[tt]->face(edgeA->m_left);
+                            unsigned int edgeCount=theFace->m_edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
-								if(theFace->edge[e]==-(int)(edgeA->index))
+                                if(theFace->m_edge[e]==-(int)(edgeA->m_index))
 								{
-									theObjectList[tt]->faceEdgeChange(theFace->index,e,-(int)(newEdge));
+                                    theObjectList[tt]->faceEdgeChange(theFace->m_index,e,-(int)(newEdge));
 								}
 								else
-									if(theFace->edge[e]==-((int)edgeB->index))
+                                    if(theFace->m_edge[e]==-((int)edgeB->m_index))
 								{
-									theObjectList[tt]->faceEdgeRemove(theFace->index,e);
+                                    theObjectList[tt]->faceEdgeRemove(theFace->m_index,e);
 								}
 							}
 						}
-						deleteEdgeH(tt,edgeA->index);
-						deleteEdgeH(tt,edgeB->index);
+                        deleteEdgeH(tt,edgeA->m_index);
+                        deleteEdgeH(tt,edgeB->m_index);
 						return;
 					}
 					else
 					{//printf("@@@@@@@@@@2@@@@@@@@@@@");
-                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->end,edgeA->end);
-						if(edgeA->right>0 && edgeB->left>0 && edgeA->right==edgeB->left)
+                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->m_end,edgeA->m_end);
+                        if(edgeA->m_right>0 && edgeB->m_left>0 && edgeA->m_right==edgeB->m_left)
 						{
-							Face *theFace=theObjectList[tt]->face(edgeA->right);
-                            unsigned int edgeCount=theFace->edge.size();
+                            Face *theFace=theObjectList[tt]->face(edgeA->m_right);
+                            unsigned int edgeCount=theFace->m_edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
-								if(theFace->edge[e]==-((int)edgeB->index))
+                                if(theFace->m_edge[e]==-((int)edgeB->m_index))
 								{
-									theObjectList[tt]->faceEdgeChange(theFace->index,e,newEdge);
+                                    theObjectList[tt]->faceEdgeChange(theFace->m_index,e,newEdge);
 								}
 								else
-									if(theFace->edge[e]==((int)edgeA->index))
+                                    if(theFace->m_edge[e]==((int)edgeA->m_index))
 								{
-									theObjectList[tt]->faceEdgeRemove(theFace->index,e);
+                                    theObjectList[tt]->faceEdgeRemove(theFace->m_index,e);
 								}
 							}
 						}
-						if(edgeA->left>0 && edgeB->right>0 && edgeA->left==edgeB->right)
+                        if(edgeA->m_left>0 && edgeB->m_right>0 && edgeA->m_left==edgeB->m_right)
 						{
-							Face *theFace=theObjectList[tt]->face(edgeA->left);
-                            unsigned int edgeCount=theFace->edge.size();
+                            Face *theFace=theObjectList[tt]->face(edgeA->m_left);
+                            unsigned int edgeCount=theFace->m_edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
-								if(theFace->edge[e]==-((int)edgeA->index))
+                                if(theFace->m_edge[e]==-((int)edgeA->m_index))
 								{
-									theObjectList[tt]->faceEdgeChange(theFace->index,e,-((int)newEdge));
+                                    theObjectList[tt]->faceEdgeChange(theFace->m_index,e,-((int)newEdge));
 								}
 								else
-									if(theFace->edge[e]==((int)edgeB->index))
+                                    if(theFace->m_edge[e]==((int)edgeB->m_index))
 								{
-									theObjectList[tt]->faceEdgeRemove(theFace->index,e);
+                                    theObjectList[tt]->faceEdgeRemove(theFace->m_index,e);
 								}
 							}
 						}
-						deleteEdgeH(tt,edgeA->index);
-						deleteEdgeH(tt,edgeB->index);
+                        deleteEdgeH(tt,edgeA->m_index);
+                        deleteEdgeH(tt,edgeB->m_index);
 						return;
 					}
 				}
 				else
 				{
-					if(edgeB->end==vertexID)
+                    if(edgeB->m_end==vertexID)
 					{//printf("@@@@@@@@@3@@@@@@@@@@@@");
-                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->start,edgeA->start);
-						if(edgeA->left>0 && edgeB->right>0 && edgeA->left==edgeB->right)
+                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->m_start,edgeA->m_start);
+                        if(edgeA->m_left>0 && edgeB->m_right>0 && edgeA->m_left==edgeB->m_right)
 						{
-							Face *theFace=theObjectList[tt]->face(edgeA->left);
-                            unsigned int edgeCount=theFace->edge.size();
+                            Face *theFace=theObjectList[tt]->face(edgeA->m_left);
+                            unsigned int edgeCount=theFace->m_edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
-								if(theFace->edge[e]==((int)edgeB->index))
+                                if(theFace->m_edge[e]==((int)edgeB->m_index))
 								{
-									theObjectList[tt]->faceEdgeChange(theFace->index,e,newEdge);
+                                    theObjectList[tt]->faceEdgeChange(theFace->m_index,e,newEdge);
 								}
 								else
-									if(theFace->edge[e]==-((int)edgeA->index))
+                                    if(theFace->m_edge[e]==-((int)edgeA->m_index))
 								{
-									theObjectList[tt]->faceEdgeRemove(theFace->index,e);
+                                    theObjectList[tt]->faceEdgeRemove(theFace->m_index,e);
 								}
 							}
 						}
-						if(edgeA->right>0 && edgeB->left>0 && edgeA->right==edgeB->left)
+                        if(edgeA->m_right>0 && edgeB->m_left>0 && edgeA->m_right==edgeB->m_left)
 						{
-							Face *theFace=theObjectList[tt]->face(edgeA->right);
-                            unsigned int edgeCount=theFace->edge.size();
+                            Face *theFace=theObjectList[tt]->face(edgeA->m_right);
+                            unsigned int edgeCount=theFace->m_edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
-								if(theFace->edge[e]==((int)edgeA->index))
+                                if(theFace->m_edge[e]==((int)edgeA->m_index))
 								{
-									theObjectList[tt]->faceEdgeChange(theFace->index,e,-((int)newEdge));
+                                    theObjectList[tt]->faceEdgeChange(theFace->m_index,e,-((int)newEdge));
 								}
 								else
-									if(theFace->edge[e]==-((int)edgeB->index))
+                                    if(theFace->m_edge[e]==-((int)edgeB->m_index))
 								{
-									theObjectList[tt]->faceEdgeRemove(theFace->index,e);
+                                    theObjectList[tt]->faceEdgeRemove(theFace->m_index,e);
 								}
 							}
 						}
-						deleteEdgeH(tt,edgeA->index);
-						deleteEdgeH(tt,edgeB->index);
+                        deleteEdgeH(tt,edgeA->m_index);
+                        deleteEdgeH(tt,edgeB->m_index);
 						return;
 					}
 					else
 					{
 						//printf("@@@@@@@@@@@4@@@@@@@@@@");
-                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->end,edgeA->start);
-						if(edgeA->left>0 && edgeB->left>0 && edgeA->left==edgeB->left)
+                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->m_end,edgeA->m_start);
+                        if(edgeA->m_left>0 && edgeB->m_left>0 && edgeA->m_left==edgeB->m_left)
 						{
-							Face *theFace=theObjectList[tt]->face(edgeA->left);
-                            unsigned int edgeCount=theFace->edge.size();
+                            Face *theFace=theObjectList[tt]->face(edgeA->m_left);
+                            unsigned int edgeCount=theFace->m_edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
-								if(theFace->edge[e]==-((int)edgeB->index))
+                                if(theFace->m_edge[e]==-((int)edgeB->m_index))
 								{
-									theObjectList[tt]->faceEdgeChange(theFace->index,e,-((int)newEdge));
+                                    theObjectList[tt]->faceEdgeChange(theFace->m_index,e,-((int)newEdge));
 								}
 								else
-									if(theFace->edge[e]==-((int)edgeA->index))
+                                    if(theFace->m_edge[e]==-((int)edgeA->m_index))
 								{
-									theObjectList[tt]->faceEdgeRemove(theFace->index,e);
+                                    theObjectList[tt]->faceEdgeRemove(theFace->m_index,e);
 								}
 							}
 						}
-						if(edgeA->right>0 && edgeB->right>0 && edgeA->right==edgeB->right)
+                        if(edgeA->m_right>0 && edgeB->m_right>0 && edgeA->m_right==edgeB->m_right)
 						{//printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-							Face *theFace=theObjectList[tt]->face(edgeA->right);
-							int edgeCount=theFace->edge.size();
+                            Face *theFace=theObjectList[tt]->face(edgeA->m_right);
+                            int edgeCount=theFace->m_edge.size();
 							//printf("#%d#",edgeCount);
 							for(int e=edgeCount-1;e>-1;--e)
 							{
 								//printf("^^^%%%%%%%%%%%%%%%%%%%%%%%^^^^^^^^^^^^^^^^^^^");
-								if(theFace->edge[e]==(int)(edgeA->index))
+                                if(theFace->m_edge[e]==(int)(edgeA->m_index))
 								{
 									//printf("^^^^^^^^^^^^^^^^^^^^^^^^^");
-									theObjectList[tt]->faceEdgeChange(theFace->index,e,-(int)newEdge);
+                                    theObjectList[tt]->faceEdgeChange(theFace->m_index,e,-(int)newEdge);
 								}
 								else
-									if(theFace->edge[e]==(int)edgeB->index)
+                                    if(theFace->m_edge[e]==(int)edgeB->m_index)
 								{
-									theObjectList[tt]->faceEdgeRemove(theFace->index,e);
+                                    theObjectList[tt]->faceEdgeRemove(theFace->m_index,e);
 								}
 							}
 						}
-						deleteEdgeH(tt,edgeA->index);
-						deleteEdgeH(tt,edgeB->index);
+                        deleteEdgeH(tt,edgeA->m_index);
+                        deleteEdgeH(tt,edgeB->m_index);
 						return;
 					}
 				}
@@ -679,109 +679,109 @@ public:
 			if(theLog->type==LogType::Vertex_Position_Change)
 			{
 				Log_VertexPositionChange *original((Log_VertexPositionChange*)theLog);
-				theObjectList[original->target]->vertexPositionChangeA(original->index,original->x,original->y,original->z);
+                theObjectList[original->target]->vertexPositionChangeA(original->m_index,original->x,original->y,original->z);
 			}
 			else
 			if(theLog->type==LogType::Vertex_Normal_Change)
 			{
 				Log_VertexNormalChange *original((Log_VertexNormalChange*)theLog);
-				theObjectList[original->target]->vertexNormalChange(original->index,original->x,original->y,original->z);
+                theObjectList[original->target]->vertexNormalChange(original->m_index,original->x,original->y,original->z);
 			}
 			else
 			if(theLog->type==LogType::Vertex_Adjacent_Push)
 			{
 				Log_VertexAdjacentPush *original((Log_VertexAdjacentPush*)theLog);
-				theObjectList[original->target]->vertexAdjacentPop(original->index);
+                theObjectList[original->target]->vertexAdjacentPop(original->m_index);
 			}
 			else
 			if(theLog->type==LogType::Vertex_Adjacent_Change)
 			{
 				Log_VertexAdjacentChange *original((Log_VertexAdjacentChange*)theLog);
-				theObjectList[original->target]->vertexAdjacentChange(original->index,original->adjIndex,original->original);
+                theObjectList[original->target]->vertexAdjacentChange(original->m_index,original->adjIndex,original->original);
 			}
 			else
 			if(theLog->type==LogType::Vertex_Adjacent_Pop)
 			{
 				Log_VertexAdjacentPop *original((Log_VertexAdjacentPop*)theLog);
-				theObjectList[original->target]->vertexAdjacentPush(original->index,original->o);
+                theObjectList[original->target]->vertexAdjacentPush(original->m_index,original->o);
 			}
 			else
 			if(theLog->type==LogType::Vertex_Adjacent_Swap)
 			{
 				Log_VertexAdjacentSwap *original((Log_VertexAdjacentSwap*)theLog);
-				theObjectList[original->target]->vertexAdjacentSwap(original->index,original->tIndex,original->oIndex);
+                theObjectList[original->target]->vertexAdjacentSwap(original->m_index,original->tIndex,original->oIndex);
 			}
 			else
 			if(theLog->type==LogType::Vertex_Adjacent_Remove)
 			{
 				Log_VertexAdjacentRemove *original((Log_VertexAdjacentRemove*)theLog);
-				theObjectList[original->target]->vertexAdjacentInsert(original->index,original->adjIndex,original->o);
+                theObjectList[original->target]->vertexAdjacentInsert(original->m_index,original->adjIndex,original->o);
 			}
 			else
 			if(theLog->type==LogType::Vertex_Adjacent_Insert)
 			{
 				Log_VertexAdjacentInsert *original((Log_VertexAdjacentInsert*)theLog);
-				theObjectList[original->target]->vertexAdjacentRemove(original->index,original->adjIndex);
+                theObjectList[original->target]->vertexAdjacentRemove(original->m_index,original->adjIndex);
 			}
 			else
 			if(theLog->type==LogType::Edge_Start_Change)
 			{
 				Log_EdgeStartChange *original((Log_EdgeStartChange*)theLog);
-				theObjectList[original->target]->edgeStartChange(original->index,original->start);
+                theObjectList[original->target]->edgeStartChange(original->m_index,original->start);
 			}
 			else
 			if(theLog->type==LogType::Edge_End_Change)
 			{
 				Log_EdgeEndChange *original((Log_EdgeEndChange*)theLog);
-				theObjectList[original->target]->edgeEndChange(original->index,original->end);
+                theObjectList[original->target]->edgeEndChange(original->m_index, original->end);
 			}
 			else
 			if(theLog->type==LogType::Edge_Left_Change)
 			{
 				Log_EdgeLeftChange *original((Log_EdgeLeftChange*)theLog);
-				theObjectList[original->target]->edgeLeftChange(original->index,original->left);
+                theObjectList[original->target]->edgeLeftChange(original->m_index,original->left);
 			}
 			else
 			if(theLog->type==LogType::Edge_Right_Change)
 			{
 				Log_EdgeRightChange *original((Log_EdgeRightChange*)theLog);
-				theObjectList[original->target]->edgeRightChange(original->index,original->right);
+                theObjectList[original->target]->edgeRightChange(original->m_index, original->right);
 			}
 			else
 			if(theLog->type==LogType::Face_Edge_Push)
 			{
 				Log_FaceEdgePush *original((Log_FaceEdgePush*)theLog);
-				theObjectList[original->target]->faceEdgePop(original->index);
+                theObjectList[original->target]->faceEdgePop(original->m_index);
 			}
 			else
 			if(theLog->type==LogType::Face_Edge_Change)
 			{
 				Log_FaceEdgeChange *original((Log_FaceEdgeChange*)theLog);
-				theObjectList[original->target]->faceEdgeChange(original->index,original->edgeIndex,original->o);
+                theObjectList[original->target]->faceEdgeChange(original->m_index,original->edgeIndex,original->o);
 			}
 			else
 			if(theLog->type==LogType::Face_Edge_Pop)
 			{
 				Log_FaceEdgePop *original((Log_FaceEdgePop*)theLog);
-				theObjectList[original->target]->faceEdgePush(original->index,original->o);
+                theObjectList[original->target]->faceEdgePush(original->m_index,original->o);
 			}
 			else
 			if(theLog->type==LogType::Face_Edge_Swap)
 			{
 				Log_FaceEdgeSwap *original((Log_FaceEdgeSwap*)theLog);
-				theObjectList[original->target]->faceEdgeSwap(original->index,original->tIndex,original->oIndex);
+                theObjectList[original->target]->faceEdgeSwap(original->m_index,original->tIndex,original->oIndex);
 			}
 			else
 			if(theLog->type==LogType::Face_Edge_Remove)
 			{
 				Log_FaceEdgeRemove *original((Log_FaceEdgeRemove*)theLog);
-				theObjectList[original->target]->faceEdgeInsert(original->index,original->edgeIndex,original->o);
+                theObjectList[original->target]->faceEdgeInsert(original->m_index,original->edgeIndex,original->o);
 			}
 			else
 			if(theLog->type==LogType::Face_Edge_Insert)
 			{
 				Log_FaceEdgeInsert *original((Log_FaceEdgeInsert*)theLog);
-				theObjectList[original->target]->faceEdgeRemove(original->index,original->edgeIndex);
+                theObjectList[original->target]->faceEdgeRemove(original->m_index,original->edgeIndex);
 			}
 			else
 			if(theLog->type==LogType::Object_Position_Change)
@@ -811,37 +811,37 @@ public:
 			if(theLog->type==LogType::Object_Vertex_Add)
 			{
 				Log_ObjectVertexAdd *original((Log_ObjectVertexAdd*)theLog);
-				theObjectList[original->target]->objectVertexRemove(original->index);
+                theObjectList[original->target]->objectVertexRemove(original->m_index);
 			}
 			else
 			if(theLog->type==LogType::Object_Vertex_Remove)
 			{
 				Log_ObjectVertexRemove *original((Log_ObjectVertexRemove*)theLog);
-				theObjectList[original->target]->addVertex(original->index,original->o);
+                theObjectList[original->target]->addVertex(original->m_index,original->o);
 			}
 			else
 			if(theLog->type==LogType::Object_Edge_Add)
 			{
 				Log_ObjectEdgeAdd *original((Log_ObjectEdgeAdd*)theLog);
-				theObjectList[original->target]->objectEdgeRemove(original->index);
+                theObjectList[original->target]->objectEdgeRemove(original->m_index);
 			}
 			else
 			if(theLog->type==LogType::Object_Edge_Remove)
 			{
 				Log_ObjectEdgeRemove *original((Log_ObjectEdgeRemove*)theLog);
-				theObjectList[original->target]->addEdge(original->index,original->o);
+                theObjectList[original->target]->addEdge(original->m_index,original->o);
 			}
 			else
 			if(theLog->type==LogType::Object_Face_Add)
 			{
 				Log_ObjectFaceAdd *original((Log_ObjectFaceAdd*)theLog);
-				theObjectList[original->target]->objectFaceRemove(original->index);
+                theObjectList[original->target]->objectFaceRemove(original->m_index);
 			}
 			else
 			if(theLog->type==LogType::Object_Face_Remove)
 			{
 				Log_ObjectFaceRemove *original((Log_ObjectFaceRemove*)theLog);
-				theObjectList[original->target]->addFace(original->index,original->o);
+                theObjectList[original->target]->addFace(original->m_index,original->o);
 			}
 			else
 			if(theLog->type==LogType::Scene_Object_Add)
@@ -938,11 +938,11 @@ public:
 		Object *theObject=theObjectList[target];
 				glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-		glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-		glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+        glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+        glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+        glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+        glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+        glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 
         for(unsigned int i=1;i<theObject->vertexCount();++i)
 		{
@@ -996,11 +996,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		Object *theObject=theObjectList[target];
 	glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-				glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-		glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+        glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+                glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+        glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+        glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 
         for(unsigned int i=1;i<theObject->edgeCount();++i)
 		{
@@ -1010,15 +1010,15 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glInitNames();
 			glPushName(0);
             unsigned int objectCount=0;
-			while(i<theObject->edgeCount() && objectCount<512)
+            while(i<theObject->edgeCount() && objectCount<512)
 			{
-				Edge *theEdge=theObject->edge(i);
+                Edge *theEdge=theObject->edge(i);
 				if(theEdge)
 				{
 					glLoadName(i);
 					glBegin(GL_LINES);
-					Vertex *start=theObject->vertex(theEdge->start);
-					Vertex *end=theObject->vertex(theEdge->end);
+                    Vertex *start=theObject->vertex(theEdge->m_start);
+                    Vertex *end=theObject->vertex(theEdge->m_end);
                     glVertex3f(start->m_position.x,start->m_position.y,start->m_position.z);
                     glVertex3f(end->m_position.x,end->m_position.y,end->m_position.z);
 					glEnd();
@@ -1036,7 +1036,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				struct SelectionResult result=selectBuffer[e];
 				if(result.size==1)
 				{
-					selectionPush(theObject->edge(result.id));
+                    selectionPush(theObject->edge(result.id));
 				}
 				else
 				{
@@ -1081,11 +1081,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		Object *theObject=theObjectList[target];
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-				glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-		glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+        glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+                glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+        glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+        glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 
         for(unsigned int i=1;i<theObject->faceCount();++i)
 		{
@@ -1102,16 +1102,16 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					glLoadName(i);
 					glBegin(GL_POLYGON);
-                    for(unsigned int e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
 					{
-						if(theFace->edge[e]>0)
+                        if(theFace->m_edge[e]>0)
 						{
-							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
+                            Vertex *v=theObject->vertex(theObject->edge(theFace->m_edge[e])->m_start);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
-							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
+                            Vertex *v=theObject->vertex(theObject->edge(-theFace->m_edge[e])->m_end);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
@@ -1143,10 +1143,10 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void selectionPush(ElementBase *theElement)
 	{
-		if(!theElement->isSelected)
+        if(!theElement->m_isSelected)
 		{
-			theElement->isSelected=true;
-			selection.push_back(theElement->index);
+            theElement->m_isSelected=true;
+            selection.push_back(theElement->m_index);
 		}
 	}
 
@@ -1179,7 +1179,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 				if(theObjectList[selection[i]])
 				{
-					theObjectList[selection[i]]->renderMode=type;
+                    theObjectList[selection[i]]->m_renderMode=type;
 				}
 			}
 		}
@@ -1188,7 +1188,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		{
 			if(theObjectList[target])
 			{
-				theObjectList[target]->renderMode=type;
+                theObjectList[target]->m_renderMode=type;
 			}
 		}
 	}
@@ -1196,7 +1196,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
     void splitPress(unsigned int x1,unsigned int y1,unsigned int height)
 	{
 		Object *theObject=theObjectList[target];
-		if(mode==SelectionMode::Split && theObject->vertexCount()<16777215 && theObject->edgeCount()<16777215)
+        if(mode==SelectionMode::Split && theObject->vertexCount()<16777215 && theObject->edgeCount()<16777215)
 		{
             unsigned int newSplitVX;
             unsigned int newSplitVY;
@@ -1210,11 +1210,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glDisable(GL_BLEND);
 			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
-			glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-			glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-			glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-			glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-			glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+            glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+            glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+            glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+            glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+            glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 			glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
@@ -1226,16 +1226,16 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 					glBegin(GL_POLYGON);
-                    for(unsigned int e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
 					{
-						if(theFace->edge[e]>0)
+                        if(theFace->m_edge[e]>0)
 						{
-							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
+                            Vertex *v=theObject->vertex(theObject->edge(theFace->m_edge[e])->m_start);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
-							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
+                            Vertex *v=theObject->vertex(theObject->edge(-theFace->m_edge[e])->m_end);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
@@ -1313,11 +1313,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				glDisable(GL_BLEND);
 				glMatrixMode(GL_MODELVIEW);
 				glPushMatrix();
-				glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-				glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-				glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-				glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-				glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+                glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+                glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+                glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+                glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+                glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 				glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
 				glEnable(GL_POLYGON_OFFSET_FILL);
 				glPolygonOffset(1.0f,1.0f);
@@ -1329,16 +1329,16 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						struct ColorID colorID=(*(struct ColorID*)&(i));
 						glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 						glBegin(GL_POLYGON);
-                        for(unsigned int e=0;e<theFace->edge.size();++e)
+                        for(unsigned int e=0;e<theFace->m_edge.size();++e)
 						{
-							if(theFace->edge[e]>0)
+                            if(theFace->m_edge[e]>0)
 							{
-								Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
+                                Vertex *v=theObject->vertex(theObject->edge(theFace->m_edge[e])->m_start);
                                 glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 							}
 							else
 							{
-								Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
+                                Vertex *v=theObject->vertex(theObject->edge(-theFace->m_edge[e])->m_end);
                                 glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 							}
 						}
@@ -1350,13 +1350,13 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				glBegin(GL_LINES);
                 for(unsigned int i=1;i<theObject->edgeCount();++i)
 				{
-					Edge *theEdge=theObject->edge(i);
+                    Edge *theEdge=theObject->edge(i);
 					if(theEdge)
 					{
 						struct ColorID colorID=(*(struct ColorID*)&(i));
 						glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
-						Vertex *start=theObject->vertex(theEdge->start);
-						Vertex *end=theObject->vertex(theEdge->end);
+                        Vertex *start=theObject->vertex(theEdge->m_start);
+                        Vertex *end=theObject->vertex(theEdge->m_end);
                         glVertex3f(start->m_position.x,start->m_position.y,start->m_position.z);
                         glVertex3f(end->m_position.x,end->m_position.y,end->m_position.z);
 					}
@@ -1375,7 +1375,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
                     unsigned int result=(*(unsigned int*)&(pixel[e]));
 					if(result<16777215)
 					{
-						if(result<theObject->edgeCount()&&theObject->edge(result))
+                        if(result<theObject->edgeCount()&&theObject->edge(result))
 						{
 							edgeBeCuted=result;
 							break;
@@ -1481,11 +1481,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glDisable(GL_BLEND);
 						glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-				glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-		glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+        glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+                glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+        glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+        glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 
 			glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
 			glEnable(GL_POLYGON_OFFSET_FILL);
@@ -1498,16 +1498,16 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 					glBegin(GL_POLYGON);
-                    for(unsigned int e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
 					{
-						if(theFace->edge[e]>0)
+                        if(theFace->m_edge[e]>0)
 						{
-							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
+                            Vertex *v=theObject->vertex(theObject->edge(theFace->m_edge[e])->m_start);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
-							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
+                            Vertex *v=theObject->vertex(theObject->edge(-theFace->m_edge[e])->m_end);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
@@ -1627,7 +1627,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				GLdouble winx;
 				GLdouble winy;
 				GLdouble winz;
-				if(theAxisCursor->mode==AxisCursorMode::MoveAxis)
+                if(theAxisCursor->m_mode==AxisCursorMode::MoveAxis)
 				{
 					gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 					oy=viewport[3]-(GLint)oy;
@@ -1636,7 +1636,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					rx=(float)(winx-ox);
 					ry=(float)(winy-oy);
 				}
-				else if(theAxisCursor->mode==AxisCursorMode::RotateAxis)
+                else if(theAxisCursor->m_mode==AxisCursorMode::RotateAxis)
 				{
 					gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 					oy=viewport[3]-(GLint)oy;
@@ -1645,7 +1645,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					rx=(float)(winx-ox);
 					ry=(float)(winy-oy);
 				}
-				else if(theAxisCursor->mode==AxisCursorMode::ScaleAxis)
+                else if(theAxisCursor->m_mode==AxisCursorMode::ScaleAxis)
 				{
 					gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 					oy=viewport[3]-(GLint)oy;
@@ -1671,7 +1671,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				GLdouble winx;
 				GLdouble winy;
 				GLdouble winz;
-				if(theAxisCursor->mode==AxisCursorMode::MoveAxis)
+                if(theAxisCursor->m_mode==AxisCursorMode::MoveAxis)
 				{
 					gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 					oy=viewport[3]-(GLint)oy;
@@ -1680,7 +1680,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					rx=(float)(winx-ox);
 					ry=(float)(winy-oy);
 				}
-				else if(theAxisCursor->mode==AxisCursorMode::RotateAxis)
+                else if(theAxisCursor->m_mode==AxisCursorMode::RotateAxis)
 				{
 					gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 					oy=viewport[3]-(GLint)oy;
@@ -1689,7 +1689,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					rx=(float)(winx-ox);
 					ry=(float)(winy-oy);
 				}
-				else if(theAxisCursor->mode==AxisCursorMode::ScaleAxis)
+                else if(theAxisCursor->m_mode==AxisCursorMode::ScaleAxis)
 				{
 					gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 					oy=viewport[3]-(GLint)oy;
@@ -1715,7 +1715,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				GLdouble winx;
 				GLdouble winy;
 				GLdouble winz;
-				if(theAxisCursor->mode==AxisCursorMode::MoveAxis)
+                if(theAxisCursor->m_mode==AxisCursorMode::MoveAxis)
 				{
 					gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 					oy=viewport[3]-(GLint)oy;
@@ -1724,7 +1724,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					rx=(float)(winx-ox);
 					ry=(float)(winy-oy);
 				}
-				else if(theAxisCursor->mode==AxisCursorMode::RotateAxis)
+                else if(theAxisCursor->m_mode==AxisCursorMode::RotateAxis)
 				{
 					gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 					oy=viewport[3]-(GLint)oy;
@@ -1733,7 +1733,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					rx=(float)(winx-ox);
 					ry=(float)(winy-oy);
 				}
-				else if(theAxisCursor->mode==AxisCursorMode::ScaleAxis)
+                else if(theAxisCursor->m_mode==AxisCursorMode::ScaleAxis)
 				{
 					gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 					oy=viewport[3]-(GLint)oy;
@@ -1760,7 +1760,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void axisXMove(float step)
 	{
-		theAxisCursor->position.x+=step;
+        theAxisCursor->m_position.x+=step;
 		if(mode==SelectionMode::Object && target==0)
 		{
             for(unsigned int i=0;i<selection.size();++i)
@@ -1768,14 +1768,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
 				{
-					theObject->position.x+=step;
+                    theObject->m_position.x+=step;
 				}
 			}
 		}
 		else if(mode==SelectionMode::Vertex && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix rotateMatrix;
 			angle.getMatrix(rotateMatrix);
 			Vector xAxis(1,0,0);
@@ -1786,7 +1786,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		else if(mode==SelectionMode::Edge && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix rotateMatrix;
 			angle.getMatrix(rotateMatrix);
 			Vector xAxis(1,0,0);
@@ -1797,7 +1797,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		else if(mode==SelectionMode::Face && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix rotateMatrix;
 			angle.getMatrix(rotateMatrix);
 			Vector xAxis(1,0,0);
@@ -1809,11 +1809,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void axisXRotate(float step)
 	{
-		theAxisCursor->rotation*=theAxisCursor->rotation.w;
-		theAxisCursor->rotation.z+=step;
-		float angle=theAxisCursor->rotation.length();
-		theAxisCursor->rotation.normalize();
-		theAxisCursor->rotation.w=angle;
+        theAxisCursor->m_rotation*=theAxisCursor->m_rotation.w;
+        theAxisCursor->m_rotation.z+=step;
+        float angle=theAxisCursor->m_rotation.length();
+        theAxisCursor->m_rotation.normalize();
+        theAxisCursor->m_rotation.w=angle;
 
 		Vector rotateAxis=Vector(0,0,1);
 		Quaternion rotateQuaternion(step,rotateAxis);
@@ -1831,66 +1831,66 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					//Ê×ÏÈÒª¸üÐÂÎ»ÖÃ
 					//¶ÔÓÚÃ¿¸öÎïÌåÊ×ÏÈÇó³öÖÐÐÄµãµ½Ðý×ªÖáµÄÒ»¸öÏòÁ¿
 					//new position;
-					Vector CToR(theObject->center+theObject->position-theAxisCursor->position);
+                    Vector CToR(theObject->m_center+theObject->m_position-theAxisCursor->m_position);
 					//½«Õâ¸öÏòÁ¿ÑØ×ÅÐý×ªÖá½øÐÐÐý×ª
 					CToR=(rotateMatrix)*(CToR);
 					//Ðý×ªÖ®ºó»¹Ô­ÐÂµÄÖÐÐÄµã
-					theObject->position=theAxisCursor->position+CToR-theObject->center;
+                    theObject->m_position=theAxisCursor->m_position+CToR-theObject->m_center;
 					//Ö®ºóÒªÐý×ªÎïÌåµÄ½Ç¶È
-					Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
+                    Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
 					Quaternion add(step,Vector(0,0,1));
 					Quaternion result=add*original;
-					result.getRotate(theObject->rotation.w,theObject->rotation);
-					/*theObject->rotation*=theObject->rotation.w;
-					theObject->rotation.z+=step;
-					float angle=theObject->rotation.length();
-					theObject->rotation.normalize();
-					theObject->rotation.w=angle;*/
+                    result.getRotate(theObject->m_rotation.w,theObject->m_rotation);
+                    /*theObject->m_rotation*=theObject->m_rotation.w;
+                    theObject->m_rotation.z+=step;
+                    float angle=theObject->m_rotation.length();
+                    theObject->m_rotation.normalize();
+                    theObject->m_rotation.w=angle;*/
 				}
 			}
 		}
 		else if(mode==SelectionMode::Vertex)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix rotateMatrix;
 			rotateQuaternion.getMatrix(rotateMatrix);
 			original.getMatrix(originalMatrix);
-			rotateVertex(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
+            rotateVertex(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,rotateMatrix);
 			theObject->partialSubdivision();
 		}
 		else if(mode==SelectionMode::Edge)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix rotateMatrix;
 			rotateQuaternion.getMatrix(rotateMatrix);
 			original.getMatrix(originalMatrix);
-			rotateEdge(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
+            rotateEdge(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,rotateMatrix);
 			theObject->partialSubdivision();
 		}
 		else if(mode==SelectionMode::Face)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix rotateMatrix;
 			rotateQuaternion.getMatrix(rotateMatrix);
 			original.getMatrix(originalMatrix);
-			rotateFace(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
+            rotateFace(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,rotateMatrix);
 			theObject->partialSubdivision();			
 		}
     }
 
 	void axisYRotate(float step)
 	{
-		theAxisCursor->rotation*=theAxisCursor->rotation.w;
-		theAxisCursor->rotation.x+=step;
-		float angle=theAxisCursor->rotation.length();
-		theAxisCursor->rotation.normalize();
-		theAxisCursor->rotation.w=angle;
+        theAxisCursor->m_rotation*=theAxisCursor->m_rotation.w;
+        theAxisCursor->m_rotation.x+=step;
+        float angle=theAxisCursor->m_rotation.length();
+        theAxisCursor->m_rotation.normalize();
+        theAxisCursor->m_rotation.w=angle;
 
 		Vector rotateAxis=Vector(1,0,0);
 		Quaternion rotateQuaternion(step,rotateAxis);
@@ -1908,22 +1908,22 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					//Ê×ÏÈÒª¸üÐÂÎ»ÖÃ
 					//¶ÔÓÚÃ¿¸öÎïÌåÊ×ÏÈÇó³öÖÐÐÄµãµ½Ðý×ªÖáµÄÒ»¸öÏòÁ¿
 					//new position;
-					Vector CToR(theObject->center+theObject->position-theAxisCursor->position);
+                    Vector CToR(theObject->m_center+theObject->m_position-theAxisCursor->m_position);
 					//½«Õâ¸öÏòÁ¿ÑØ×ÅÐý×ªÖá½øÐÐÐý×ª
 					CToR=(rotateMatrix)*(CToR);
 					//Ðý×ªÖ®ºó»¹Ô­ÐÂµÄÖÐÐÄµã
-					theObject->position=theAxisCursor->position+CToR-theObject->center;
+                    theObject->m_position=theAxisCursor->m_position+CToR-theObject->m_center;
 					//Ö®ºóÒªÐý×ªÎïÌåµÄ½Ç¶È
-/*					theObject->rotation*=theObject->rotation.w;
-					theObject->rotation.x+=step;
-					float angle=theObject->rotation.length();
-					theObject->rotation.normalize();
-					theObject->rotation.w=angle;*/
+/*					theObject->m_rotation*=theObject->m_rotation.w;
+                    theObject->m_rotation.x+=step;
+                    float angle=theObject->m_rotation.length();
+                    theObject->m_rotation.normalize();
+                    theObject->m_rotation.w=angle;*/
 
-					Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
+                    Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
 					Quaternion add(step,Vector(1,0,0));
 					Quaternion result=add*original;
-					result.getRotate(theObject->rotation.w,theObject->rotation);
+                    result.getRotate(theObject->m_rotation.w,theObject->m_rotation);
 
 				}
 			}
@@ -1931,34 +1931,34 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		else if(mode==SelectionMode::Vertex)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix rotateMatrix;
 			rotateQuaternion.getMatrix(rotateMatrix);
 			original.getMatrix(originalMatrix);
-			rotateVertex(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
+            rotateVertex(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,rotateMatrix);
 			theObject->partialSubdivision();
 		}
 		else if(mode==SelectionMode::Edge)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix rotateMatrix;
 			rotateQuaternion.getMatrix(rotateMatrix);
 			original.getMatrix(originalMatrix);
-			rotateEdge(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
+            rotateEdge(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,rotateMatrix);
 			theObject->partialSubdivision();
 		}
 		else if(mode==SelectionMode::Face)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix rotateMatrix;
 			rotateQuaternion.getMatrix(rotateMatrix);
 			original.getMatrix(originalMatrix);
-			rotateFace(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
+            rotateFace(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,rotateMatrix);
 			theObject->partialSubdivision();		
 		}
     }
@@ -1973,7 +1973,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
                 Vector PToC=(theVertex->m_position-center);
 				PToC=angle*PToC+center;
-				theObjectList[target]->vertexPositionChangeA(theVertex->index,PToC.x,PToC.y,PToC.z);
+                theObjectList[target]->vertexPositionChangeA(theVertex->m_index,PToC.x,PToC.y,PToC.z);
 			}
 		}
     }
@@ -1985,22 +1985,22 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		vertexToBeRotate.reserve(selectionCount*2);
         for(unsigned int i=0;i<selectionCount;++i)
 		{
-			Edge *theEdge=theObjectList[target]->edge(selection[i]);
+            Edge *theEdge=theObjectList[target]->edge(selection[i]);
 			if(theEdge)
 			{
-				Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-				Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-				if(!theStart->isIn)
+                Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
+                Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
+                if(!theStart->m_isIn)
 				{
 					vertexToBeRotate.push_back(theStart);
 					isInCache.push_back(theStart);
-					theStart->isIn=true;
+                    theStart->m_isIn=true;
 				}
-				if(!theEnd->isIn)
+                if(!theEnd->m_isIn)
 				{
 					vertexToBeRotate.push_back(theEnd);
 					isInCache.push_back(theEnd);
-					theEnd->isIn=true;
+                    theEnd->m_isIn=true;
 				}
 			}
 		}
@@ -2014,7 +2014,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
                 Vector PToC=(theVertex->m_position-center);
 				PToC=angle*PToC+center;
-				theObjectList[target]->vertexPositionChangeA(theVertex->index,PToC.x,PToC.y,PToC.z);
+                theObjectList[target]->vertexPositionChangeA(theVertex->m_index,PToC.x,PToC.y,PToC.z);
 			}
 		}
     }
@@ -2027,28 +2027,28 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
         for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Face *theFace=theObjectList[target]->face(selection[i]);
-            unsigned int edgeCount=theFace->edge.size();
+            unsigned int edgeCount=theFace->m_edge.size();
             for(unsigned int e=0;e<edgeCount;++e)
 			{
-				if(theFace->edge[e]>0)
+                if(theFace->m_edge[e]>0)
 				{
-					Edge *theEdge=theObjectList[target]->edge(theFace->edge[e]);
-					Vertex *theVertex=theObjectList[target]->vertex(theEdge->end);
-					if(!theVertex->isIn)
+                    Edge *theEdge=theObjectList[target]->edge(theFace->m_edge[e]);
+                    Vertex *theVertex=theObjectList[target]->vertex(theEdge->m_end);
+                    if(!theVertex->m_isIn)
 					{
 						vertexToBeRotate.push_back(theVertex);
-						theVertex->isIn=true;
+                        theVertex->m_isIn=true;
 						isInCache.push_back(theVertex);
 					}
 				}
 				else
 				{
-					Edge *theEdge=theObjectList[target]->edge(-theFace->edge[e]);
-					Vertex *theVertex=theObjectList[target]->vertex(theEdge->start);
-					if(!theVertex->isIn)
+                    Edge *theEdge=theObjectList[target]->edge(-theFace->m_edge[e]);
+                    Vertex *theVertex=theObjectList[target]->vertex(theEdge->m_start);
+                    if(!theVertex->m_isIn)
 					{
 						vertexToBeRotate.push_back(theVertex);
-						theVertex->isIn=true;
+                        theVertex->m_isIn=true;
 						isInCache.push_back(theVertex);
 					}
 				}
@@ -2064,7 +2064,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
                 Vector PToC=(theVertex->m_position-center);
 				PToC=angle*PToC+center;
-				theObjectList[target]->vertexPositionChangeA(theVertex->index,PToC.x,PToC.y,PToC.z);
+                theObjectList[target]->vertexPositionChangeA(theVertex->m_index,PToC.x,PToC.y,PToC.z);
 			}
 		}
 	}
@@ -2077,9 +2077,9 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vertex *theVertex=theObjectList[target]->vertex(selection[i]);
 			if(theVertex)
 			{
-                Vector newPosition(theVertex->m_position-theObjectList[target]->center);
+                Vector newPosition(theVertex->m_position-theObjectList[target]->m_center);
 				newPosition=forward*newPosition;
-				newPosition=newPosition-(center-theObjectList[target]->center);
+                newPosition=newPosition-(center-theObjectList[target]->m_center);
 				if(smode==1)
 				{
 					newPosition.x*=scale;
@@ -2096,10 +2096,10 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					newPosition*=scale;
 				}
-				newPosition+=(center-theObjectList[target]->center);
+                newPosition+=(center-theObjectList[target]->m_center);
 				newPosition=backward*newPosition;
-				newPosition+=theObjectList[target]->center;
-				theObjectList[target]->vertexPositionChangeA(theVertex->index,newPosition.x,newPosition.y,newPosition.z);
+                newPosition+=theObjectList[target]->m_center;
+                theObjectList[target]->vertexPositionChangeA(theVertex->m_index,newPosition.x,newPosition.y,newPosition.z);
 			}
 		}
     }
@@ -2111,22 +2111,22 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		vertexToBeScale.reserve(selectionCount*2);
         for(unsigned int i=0;i<selectionCount;++i)
 		{
-			Edge *theEdge=theObjectList[target]->edge(selection[i]);
+            Edge *theEdge=theObjectList[target]->edge(selection[i]);
 			if(theEdge)
 			{
-				Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-				Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-				if(!theStart->isIn)
+                Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
+                Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
+                if(!theStart->m_isIn)
 				{
 					vertexToBeScale.push_back(theStart);
 					isInCache.push_back(theStart);
-					theStart->isIn=true;
+                    theStart->m_isIn=true;
 				}
-				if(!theEnd->isIn)
+                if(!theEnd->m_isIn)
 				{
 					vertexToBeScale.push_back(theEnd);
 					isInCache.push_back(theEnd);
-					theEnd->isIn=true;
+                    theEnd->m_isIn=true;
 				}
 			}
 		}
@@ -2139,9 +2139,9 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vertex *theVertex=vertexToBeScale[i];
 			if(theVertex)
 			{
-                Vector newPosition(theVertex->m_position-theObjectList[target]->center);
+                Vector newPosition(theVertex->m_position-theObjectList[target]->m_center);
 				newPosition=forward*newPosition;
-				newPosition=newPosition-(center-theObjectList[target]->center);
+                newPosition=newPosition-(center-theObjectList[target]->m_center);
 				if(smode==1)
 				{
 					newPosition.x*=scale;
@@ -2158,10 +2158,10 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					newPosition*=scale;
 				}
-				newPosition+=(center-theObjectList[target]->center);
+                newPosition+=(center-theObjectList[target]->m_center);
 				newPosition=backward*newPosition;
-				newPosition+=theObjectList[target]->center;
-				theObjectList[target]->vertexPositionChangeA(theVertex->index,newPosition.x,newPosition.y,newPosition.z);
+                newPosition+=theObjectList[target]->m_center;
+                theObjectList[target]->vertexPositionChangeA(theVertex->m_index,newPosition.x,newPosition.y,newPosition.z);
 			}
 		}
 	}
@@ -2174,28 +2174,28 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
         for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Face *theFace=theObjectList[target]->face(selection[i]);
-            unsigned int edgeCount=theFace->edge.size();
+            unsigned int edgeCount=theFace->m_edge.size();
             for(unsigned int e=0;e<edgeCount;++e)
 			{
-				if(theFace->edge[e]>0)
+                if(theFace->m_edge[e]>0)
 				{
-					Edge *theEdge=theObjectList[target]->edge(theFace->edge[e]);
-					Vertex *theVertex=theObjectList[target]->vertex(theEdge->end);
-					if(!theVertex->isIn)
+                    Edge *theEdge=theObjectList[target]->edge(theFace->m_edge[e]);
+                    Vertex *theVertex=theObjectList[target]->vertex(theEdge->m_end);
+                    if(!theVertex->m_isIn)
 					{
 						vertexToBeScale.push_back(theVertex);
-						theVertex->isIn=true;
+                        theVertex->m_isIn=true;
 						isInCache.push_back(theVertex);
 					}
 				}
 				else
 				{
-					Edge *theEdge=theObjectList[target]->edge(-theFace->edge[e]);
-					Vertex *theVertex=theObjectList[target]->vertex(theEdge->start);
-					if(!theVertex->isIn)
+                    Edge *theEdge=theObjectList[target]->edge(-theFace->m_edge[e]);
+                    Vertex *theVertex=theObjectList[target]->vertex(theEdge->m_start);
+                    if(!theVertex->m_isIn)
 					{
 						vertexToBeScale.push_back(theVertex);
-						theVertex->isIn=true;
+                        theVertex->m_isIn=true;
 						isInCache.push_back(theVertex);
 					}
 				}
@@ -2210,9 +2210,9 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vertex *theVertex=vertexToBeScale[i];
 			if(theVertex)
 			{
-                Vector newPosition(theVertex->m_position-theObjectList[target]->center);
+                Vector newPosition(theVertex->m_position-theObjectList[target]->m_center);
 				newPosition=forward*newPosition;
-				newPosition=newPosition-(center-theObjectList[target]->center);
+                newPosition=newPosition-(center-theObjectList[target]->m_center);
 				if(smode==1)
 				{
 					newPosition.x*=scale;
@@ -2229,21 +2229,21 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					newPosition*=scale;
 				}
-				newPosition+=(center-theObjectList[target]->center);
+                newPosition+=(center-theObjectList[target]->m_center);
 				newPosition=backward*newPosition;
-				newPosition+=theObjectList[target]->center;
-				theObjectList[target]->vertexPositionChangeA(theVertex->index,newPosition.x,newPosition.y,newPosition.z);
+                newPosition+=theObjectList[target]->m_center;
+                theObjectList[target]->vertexPositionChangeA(theVertex->m_index,newPosition.x,newPosition.y,newPosition.z);
 			}
 		}
 	}
 
 	void axisZRotate(float step)
 	{
-		theAxisCursor->rotation*=theAxisCursor->rotation.w;
-		theAxisCursor->rotation.y+=step;
-		float angle=theAxisCursor->rotation.length();
-		theAxisCursor->rotation.normalize();
-		theAxisCursor->rotation.w=angle;
+        theAxisCursor->m_rotation*=theAxisCursor->m_rotation.w;
+        theAxisCursor->m_rotation.y+=step;
+        float angle=theAxisCursor->m_rotation.length();
+        theAxisCursor->m_rotation.normalize();
+        theAxisCursor->m_rotation.w=angle;
 
 		Vector rotateAxis=Vector(0,1,0);
 		Quaternion rotateQuaternion(step,rotateAxis);
@@ -2261,63 +2261,63 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					//Ê×ÏÈÒª¸üÐÂÎ»ÖÃ
 					//¶ÔÓÚÃ¿¸öÎïÌåÊ×ÏÈÇó³öÖÐÐÄµãµ½Ðý×ªÖáµÄÒ»¸öÏòÁ¿
 					//new position;
-					Vector CToR(theObject->center+theObject->position-theAxisCursor->position);
+                    Vector CToR(theObject->m_center+theObject->m_position-theAxisCursor->m_position);
 					//½«Õâ¸öÏòÁ¿ÑØ×ÅÐý×ªÖá½øÐÐÐý×ª
 					CToR=(rotateMatrix)*(CToR);
 					//Ðý×ªÖ®ºó»¹Ô­ÐÂµÄÖÐÐÄµã
-					theObject->position=theAxisCursor->position+CToR-theObject->center;
+                    theObject->m_position=theAxisCursor->m_position+CToR-theObject->m_center;
 					//Ö®ºóÒªÐý×ªÎïÌåµÄ½Ç¶È
-				/*	theObject->rotation*=theObject->rotation.w;
-					theObject->rotation.y+=step;
-					float angle=theObject->rotation.length();
-					theObject->rotation.normalize();
-					theObject->rotation.w=angle;*/
+                /*	theObject->m_rotation*=theObject->m_rotation.w;
+                    theObject->m_rotation.y+=step;
+                    float angle=theObject->m_rotation.length();
+                    theObject->m_rotation.normalize();
+                    theObject->m_rotation.w=angle;*/
 
-					Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
+                    Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
 					Quaternion add(step,Vector(0,1,0));
 					Quaternion result=add*original;
-					result.getRotate(theObject->rotation.w,theObject->rotation);
+                    result.getRotate(theObject->m_rotation.w,theObject->m_rotation);
 				}
 			}
 		}
 		else if(mode==SelectionMode::Vertex)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix rotateMatrix;
 			rotateQuaternion.getMatrix(rotateMatrix);
 			original.getMatrix(originalMatrix);
-			rotateVertex(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
+            rotateVertex(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,rotateMatrix);
 			theObject->partialSubdivision();
 		}		
 		else if(mode==SelectionMode::Edge)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix rotateMatrix;
 			rotateQuaternion.getMatrix(rotateMatrix);
 			original.getMatrix(originalMatrix);
-			rotateEdge(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
+            rotateEdge(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,rotateMatrix);
 			theObject->partialSubdivision();
 		}
 		else if(mode==SelectionMode::Face)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix rotateMatrix;
 			rotateQuaternion.getMatrix(rotateMatrix);
 			original.getMatrix(originalMatrix);
-			rotateFace(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
+            rotateFace(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,rotateMatrix);
 			theObject->partialSubdivision();			
 		}
     }
 
 	void axisYMove(float step)
 	{
-		theAxisCursor->position.y+=step;
+        theAxisCursor->m_position.y+=step;
 		if(mode==SelectionMode::Object && target==0)
 		{
             for(unsigned int i=0;i<selection.size();++i)
@@ -2325,14 +2325,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
 				{
-					theObject->position.y+=step;
+                    theObject->m_position.y+=step;
 				}
 			}
 		}
 		else if(mode==SelectionMode::Vertex && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix rotateMatrix;
 			angle.getMatrix(rotateMatrix);
 			Vector xAxis(0,1,0);
@@ -2343,7 +2343,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		else if(mode==SelectionMode::Edge && target)
 		{
 						Object *theObject=theObjectList[target];
-			Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix rotateMatrix;
 			angle.getMatrix(rotateMatrix);
 			Vector xAxis(0,1,0);
@@ -2354,7 +2354,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		else if(mode==SelectionMode::Face && target)
 		{
 						Object *theObject=theObjectList[target];
-			Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix rotateMatrix;
 			angle.getMatrix(rotateMatrix);
 			Vector xAxis(0,1,0);
@@ -2366,7 +2366,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void axisZMove(float step)
 	{
-		theAxisCursor->position.z+=step;
+        theAxisCursor->m_position.z+=step;
 		if(mode==SelectionMode::Object && target==0)
 		{
             for(unsigned int i=0;i<selection.size();++i)
@@ -2374,14 +2374,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
 				{
-					theObject->position.z+=step;
+                    theObject->m_position.z+=step;
 				}
 			}
 		}
 		else if(mode==SelectionMode::Vertex && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix rotateMatrix;
 			angle.getMatrix(rotateMatrix);
 			Vector xAxis(0,0,1);
@@ -2392,7 +2392,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		else if(mode==SelectionMode::Edge && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix rotateMatrix;
 			angle.getMatrix(rotateMatrix);
 			Vector xAxis(0,0,1);
@@ -2403,7 +2403,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				else if(mode==SelectionMode::Face && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix rotateMatrix;
 			angle.getMatrix(rotateMatrix);
 			Vector xAxis(0,0,1);
@@ -2423,49 +2423,49 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
 				{
-					Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+                    Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 					Matrix rotateMatrix;
 					angle.getMatrix(rotateMatrix);
 					Vector xAxis(1,0,0);
 					xAxis=(xAxis)*(rotateMatrix);
-					theObject->scale+=step*xAxis*0.01f;
+                    theObject->m_scale+=step*xAxis*0.01f;
 				}
 			}
 		}
 		else if(mode==SelectionMode::Vertex && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
-			Quaternion back(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
+            Quaternion back(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix backMatrix;
 			original.getMatrix(originalMatrix);
 			back.getMatrix(backMatrix);
-			scaleVertex(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),1);
+            scaleVertex(theAxisCursor->m_position,originalMatrix,backMatrix,(1+step*0.1f),1);
 			theObject->partialSubdivision();
 		}
 		else if(mode==SelectionMode::Edge && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
-			Quaternion back(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
+            Quaternion back(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix backMatrix;
 			original.getMatrix(originalMatrix);
 			back.getMatrix(backMatrix);
-			scaleEdge(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),1);
+            scaleEdge(theAxisCursor->m_position,originalMatrix,backMatrix,(1+step*0.1f),1);
 			theObject->partialSubdivision();		
 		}
 		else if(mode==SelectionMode::Face && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
-			Quaternion back(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
+            Quaternion back(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix backMatrix;
 			original.getMatrix(originalMatrix);
 			back.getMatrix(backMatrix);
-			scaleFace(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),1);
+            scaleFace(theAxisCursor->m_position,originalMatrix,backMatrix,(1+step*0.1f),1);
 			theObject->partialSubdivision();					
 		}
     }
@@ -2479,52 +2479,52 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
 				{
-					Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+                    Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 					Matrix rotateMatrix;
 					angle.getMatrix(rotateMatrix);
 					Vector yAxis(0,1,0);
 					yAxis=(yAxis)*(rotateMatrix);
-					theObject->scale+=step*yAxis*0.01f;
+                    theObject->m_scale+=step*yAxis*0.01f;
 				}
 			}
 		}		
 		else if(mode==SelectionMode::Vertex && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
-			Quaternion back(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
+            Quaternion back(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix backMatrix;
 			original.getMatrix(originalMatrix);
 			back.getMatrix(backMatrix);
-			//scaleVertex(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,xAxis,(step*0.1));
-			scaleVertex(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),2);
+            //scaleVertex(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,xAxis,(step*0.1));
+            scaleVertex(theAxisCursor->m_position,originalMatrix,backMatrix,(1+step*0.1f),2);
 			theObject->partialSubdivision();
 		}
 		else if(mode==SelectionMode::Edge && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
-			Quaternion back(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
+            Quaternion back(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix backMatrix;
 			original.getMatrix(originalMatrix);
 			back.getMatrix(backMatrix);
-			//scaleVertex(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,xAxis,(step*0.1));
-			scaleEdge(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),2);
+            //scaleVertex(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,xAxis,(step*0.1));
+            scaleEdge(theAxisCursor->m_position,originalMatrix,backMatrix,(1+step*0.1f),2);
 			theObject->partialSubdivision();			
 		}
 		else if(mode==SelectionMode::Face && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
-			Quaternion back(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
+            Quaternion back(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix backMatrix;
 			original.getMatrix(originalMatrix);
 			back.getMatrix(backMatrix);
-			//scaleVertex(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,xAxis,(step*0.1));
-			scaleFace(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),2);
+            //scaleVertex(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,xAxis,(step*0.1));
+            scaleFace(theAxisCursor->m_position,originalMatrix,backMatrix,(1+step*0.1f),2);
 			theObject->partialSubdivision();						
 		}
     }
@@ -2538,62 +2538,62 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
 				{
-					Quaternion angle(-theObject->rotation.w,Vector(theObject->rotation));
+                    Quaternion angle(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 					Matrix rotateMatrix;
 					angle.getMatrix(rotateMatrix);
 					Vector zAxis(0,0,1);
 					zAxis=(zAxis)*(rotateMatrix);
-					theObject->scale+=step*zAxis*0.01f;
+                    theObject->m_scale+=step*zAxis*0.01f;
 				}
 			}
 		}		
 		else if(mode==SelectionMode::Vertex && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
-					Quaternion back(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
+                    Quaternion back(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix backMatrix;
 			original.getMatrix(originalMatrix);
 			back.getMatrix(backMatrix);
 
-			//scaleVertex(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,xAxis,(step*0.1));
-			scaleVertex(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),3);
+            //scaleVertex(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,xAxis,(step*0.1));
+            scaleVertex(theAxisCursor->m_position,originalMatrix,backMatrix,(1+step*0.1f),3);
 			theObject->partialSubdivision();
 		}
 		else if(mode==SelectionMode::Edge && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
-					Quaternion back(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
+                    Quaternion back(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix backMatrix;
 			original.getMatrix(originalMatrix);
 			back.getMatrix(backMatrix);
 
-			//scaleVertex(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,xAxis,(step*0.1));
-			scaleEdge(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),3);
+            //scaleVertex(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,xAxis,(step*0.1));
+            scaleEdge(theAxisCursor->m_position,originalMatrix,backMatrix,(1+step*0.1f),3);
 			theObject->partialSubdivision();			
 		}
 		else if(mode==SelectionMode::Face && target)
 		{
 			Object *theObject=theObjectList[target];
-			Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
-					Quaternion back(-theObject->rotation.w,Vector(theObject->rotation));
+            Quaternion original(theObject->m_rotation.w,Vector(theObject->m_rotation));
+                    Quaternion back(-theObject->m_rotation.w,Vector(theObject->m_rotation));
 			Matrix originalMatrix;
 			Matrix backMatrix;
 			original.getMatrix(originalMatrix);
 			back.getMatrix(backMatrix);
 
-			//scaleVertex(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,xAxis,(step*0.1));
-			scaleFace(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),3);
+            //scaleVertex(originalMatrix*(theAxisCursor->m_position-theObject->m_center)+theObject->m_center,xAxis,(step*0.1));
+            scaleFace(theAxisCursor->m_position,originalMatrix,backMatrix,(1+step*0.1f),3);
 			theObject->partialSubdivision();			
 		}
     }
 
 	void axisRelease()
 	{
-		theAxisCursor->rotation.null();
+        theAxisCursor->m_rotation.null();
     }
 
 	void ctrlDrag(Vector &horizontal,Vector &vertical,int x,int y,bool isExtrude)
@@ -2625,7 +2625,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
                 for(unsigned int i=0;i<selection.size();++i)
 				{
-					theObjectList[selection[i]]->position-=offset;
+                    theObjectList[selection[i]]->m_position-=offset;
 				}
 			}
 			else if(mode==SelectionMode::Vertex && target)
@@ -2673,8 +2673,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		GLdouble modelMatrix[16];
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		glTranslatef(theAxisCursor->position.x,theAxisCursor->position.y,theAxisCursor->position.z);
-		glRotatef(theAxisCursor->rotation.w,theAxisCursor->rotation.x,theAxisCursor->rotation.y,theAxisCursor->rotation.z);
+        glTranslatef(theAxisCursor->m_position.x,theAxisCursor->m_position.y,theAxisCursor->m_position.z);
+        glRotatef(theAxisCursor->m_rotation.w,theAxisCursor->m_rotation.x,theAxisCursor->m_rotation.y,theAxisCursor->m_rotation.z);
 		glGetDoublev(GL_MODELVIEW_MATRIX,modelMatrix);
 		glPopMatrix();
 		GLdouble projMatrix[16];
@@ -2688,7 +2688,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		if(cursorMode==1)
 		{
 			//xÖá
-			if(theAxisCursor->mode==AxisCursorMode::MoveAxis)
+            if(theAxisCursor->m_mode==AxisCursorMode::MoveAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 				oy=(GLdouble)viewport[3]-(GLint)oy;
@@ -2697,7 +2697,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Vector projUnit((float)(winx-ox),(float)(winy-oy),0.0f);
 				axisXMove(step/projUnit.length());
 			}
-			else if(theAxisCursor->mode==AxisCursorMode::RotateAxis)
+            else if(theAxisCursor->m_mode==AxisCursorMode::RotateAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 				oy=(GLdouble)viewport[3]-(GLint)oy;
@@ -2709,20 +2709,20 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				rx=(float)(winx-ox);
 				ry=(float)(winy-oy);
 			}
-			else if(theAxisCursor->mode==AxisCursorMode::ScaleAxis)
+            else if(theAxisCursor->m_mode==AxisCursorMode::ScaleAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 				oy=(GLdouble)viewport[3]-(GLint)oy;
 				gluProject(1,0,0,modelMatrix,projMatrix,viewport,&winx,&winy,&winz);
 				winy=(GLdouble)viewport[3]-winy;
 				Vector projUnit((float)(winx-ox),(float)(winy-oy),0.0f);
-				//theAxisCursor->position.x+=step/projUnit.length();
+                //theAxisCursor->m_position.x+=step/projUnit.length();
 				axisXScale(step/projUnit.length());
 			}
 		}
 		else if(cursorMode==2)
 		{
-			if(theAxisCursor->mode==AxisCursorMode::MoveAxis)
+            if(theAxisCursor->m_mode==AxisCursorMode::MoveAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 				oy=(GLdouble)viewport[3]-oy;
@@ -2731,7 +2731,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Vector projUnit((float)(winx-ox),(float)(winy-oy),0.0f);
 				axisYMove(step/projUnit.length());
 			}
-			else if(theAxisCursor->mode==AxisCursorMode::RotateAxis)
+            else if(theAxisCursor->m_mode==AxisCursorMode::RotateAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 				oy=(GLdouble)viewport[3]-(GLint)oy;
@@ -2743,20 +2743,20 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				rx=(float)(winx-ox);
 				ry=(float)(winy-oy);
 			}
-			else if(theAxisCursor->mode==AxisCursorMode::ScaleAxis)
+            else if(theAxisCursor->m_mode==AxisCursorMode::ScaleAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 				oy=(GLdouble)viewport[3]-(GLint)oy;
 				gluProject(0,1,0,modelMatrix,projMatrix,viewport,&winx,&winy,&winz);
 				winy=(GLdouble)viewport[3]-winy;
 				Vector projUnit((float)(winx-ox),(float)(winy-oy),0.0f);
-				//theAxisCursor->position.y+=step/projUnit.length();
+                //theAxisCursor->m_position.y+=step/projUnit.length();
 				axisYScale(step/projUnit.length());
 			}
 		}
 		else if(cursorMode==3)
 		{
-			if(theAxisCursor->mode==AxisCursorMode::MoveAxis)
+            if(theAxisCursor->m_mode==AxisCursorMode::MoveAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 				oy=(GLdouble)viewport[3]-oy;
@@ -2765,7 +2765,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Vector projUnit((float)(winx-ox),(float)(winy-oy),0.0f);
 				axisZMove(step/projUnit.length());
 			}
-			else if(theAxisCursor->mode==AxisCursorMode::RotateAxis)
+            else if(theAxisCursor->m_mode==AxisCursorMode::RotateAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 				oy=(GLdouble)viewport[3]-(GLint)oy;
@@ -2777,14 +2777,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				rx=(float)(winx-ox);
 				ry=(float)(winy-oy);
 			}
-			else if(theAxisCursor->mode==AxisCursorMode::ScaleAxis)
+            else if(theAxisCursor->m_mode==AxisCursorMode::ScaleAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
 				oy=(GLdouble)viewport[3]-(GLint)oy;
 				gluProject(0,0,1,modelMatrix,projMatrix,viewport,&winx,&winy,&winz);
 				winy=(GLdouble)viewport[3]-winy;
 				Vector projUnit((float)(winx-ox),(float)(winy-oy),0.0f);
-				//theAxisCursor->position.z+=step/projUnit.length();
+                //theAxisCursor->m_position.z+=step/projUnit.length();
 				axisZScale(step/projUnit.length());
 			}
 		}
@@ -2828,7 +2828,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			clearSelection();
 		}
 		Object *theObject=theObjectList[target];
-		if(theObject->edgeCount()<16777215)
+        if(theObject->edgeCount()<16777215)
 		{
 			glClearColor(1.0f,1.0f,1.0f,1.0f);
 			glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
@@ -2839,11 +2839,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glDisable(GL_BLEND);
 				glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-		glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-		glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-		glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+        glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+        glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+        glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+        glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+        glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 		
 			
 			glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
@@ -2857,16 +2857,16 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 					glBegin(GL_POLYGON);
-                    for(unsigned int e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
 					{
-						if(theFace->edge[e]>0)
+                        if(theFace->m_edge[e]>0)
 						{
-							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
+                            Vertex *v=theObject->vertex(theObject->edge(theFace->m_edge[e])->m_start);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
-							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
+                            Vertex *v=theObject->vertex(theObject->edge(-theFace->m_edge[e])->m_end);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
@@ -2878,13 +2878,13 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glBegin(GL_LINES);
             for(unsigned int i=1;i<theObject->edgeCount();++i)
 			{
-				Edge *theEdge=theObject->edge(i);
+                Edge *theEdge=theObject->edge(i);
 				if(theEdge)
 				{
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
-					Vertex *start=theObject->vertex(theEdge->start);
-					Vertex *end=theObject->vertex(theEdge->end);
+                    Vertex *start=theObject->vertex(theEdge->m_start);
+                    Vertex *end=theObject->vertex(theEdge->m_end);
                     glVertex3f(start->m_position.x,start->m_position.y,start->m_position.z);
                     glVertex3f(end->m_position.x,end->m_position.y,end->m_position.z);
 				}
@@ -2903,9 +2903,9 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
                 unsigned int result=(*(unsigned int*)&(pixel[e]));
 				if(result<16777215)
 				{
-					if(result<theObject->edgeCount()&&theObject->edge(result))
+                    if(result<theObject->edgeCount()&&theObject->edge(result))
 					{
-						selectionPush(theObject->edge(result));
+                        selectionPush(theObject->edge(result));
 					}
 				}
 			}
@@ -2943,11 +2943,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glDisable(GL_BLEND);
             glMatrixMode(GL_MODELVIEW);
             glPushMatrix();
-            glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-            glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-            glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-            glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
-            glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+            glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+            glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+            glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+            glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+            glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 
             for(unsigned int i=1;i<theObject->faceCount();++i)
 			{
@@ -2957,16 +2957,16 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 					glBegin(GL_POLYGON);
-                    for(unsigned int e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
 					{
-						if(theFace->edge[e]>0)
+                        if(theFace->m_edge[e]>0)
 						{
-							Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
+                            Vertex *v=theObject->vertex(theObject->edge(theFace->m_edge[e])->m_start);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 						else
 						{
-							Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
+                            Vertex *v=theObject->vertex(theObject->edge(-theFace->m_edge[e])->m_end);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 						}
 					}
@@ -3115,7 +3115,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		{
 			if(theObjectList[i])
 			{
-				theObjectList[i]->isHide=false;
+                theObjectList[i]->m_isHide=false;
 			}
 		}
 	}
@@ -3141,9 +3141,9 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		{
             for(unsigned int i=1;i<theObjectList.size();++i)
 			{
-				if(theObjectList[i] && !(theObjectList[i]->isSelected))
+                if(theObjectList[i] && !(theObjectList[i]->m_isSelected))
 				{
-					theObjectList[i]->isHide=true;
+                    theObjectList[i]->m_isHide=true;
 				}
 			}
 		}
@@ -3153,13 +3153,13 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 				if(theObjectList[i])
 				{
-					theObjectList[i]->isHide=true;
+                    theObjectList[i]->m_isHide=true;
 				}
 			}
 
 			if(theObjectList[target])
 			{
-				theObjectList[target]->isHide=false;
+                theObjectList[target]->m_isHide=false;
 			}
 		}
 	}
@@ -3172,14 +3172,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 				if(theObjectList[selection[i]])
 				{
-					theObjectList[selection[i]]->isHide=true;
+                    theObjectList[selection[i]]->m_isHide=true;
 				}
 			}
 			clearSelection();
 		}
 		else if(target>0 && theObjectList[target])
 		{
-			theObjectList[target]->isHide=true;
+            theObjectList[target]->m_isHide=true;
 			clearSelection();
 			theObjectList[target]->clearPSCache();
 			changeSelectionMode(SelectionMode::Object);
@@ -3194,7 +3194,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 				if(theObjectList[i])
 				{
-					if(theObjectList[i]->isSelected)
+                    if(theObjectList[i]->m_isSelected)
 					{
 				
 							theObjectList[i]->drawObjectSelected();
@@ -3223,7 +3223,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					{
 						if(mode==SelectionMode::Face)
 						{
-							if(theObjectList[target]->renderMode==RenderType::Wire)
+                            if(theObjectList[target]->m_renderMode==RenderType::Wire)
 							{
 								theObjectList[target]->drawWireFaceSelected();
 							}
@@ -3236,7 +3236,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						}
 						else if(mode==SelectionMode::Edge)
 						{
-							if(theObjectList[target]->renderMode==RenderType::Wire)
+                            if(theObjectList[target]->m_renderMode==RenderType::Wire)
 							{
 								theObjectList[target]->drawWireEdgeSelected();
 							}
@@ -3249,7 +3249,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						}
 						else if(mode==SelectionMode::Vertex)
 						{
-							if(theObjectList[target]->renderMode==RenderType::Wire)
+                            if(theObjectList[target]->m_renderMode==RenderType::Wire)
 							{
 								theObjectList[target]->drawWireVertexSelected();
 							}
@@ -3262,7 +3262,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						}
 						else if(mode==SelectionMode::Split)
 						{
-							if(theObjectList[target]->renderMode==RenderType::Wire)
+                            if(theObjectList[target]->m_renderMode==RenderType::Wire)
 							{
 								theObjectList[target]->drawWireVertexSelected();
 							}
@@ -3289,11 +3289,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 				glMatrixMode(GL_MODELVIEW);
 				glPushMatrix();
-				glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-				glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-				glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-				glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-				glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+                glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+                glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+                glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+                glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+                glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 				glDisable(GL_LIGHTING);
 				glColor3ub(255,0,255);
 				glPointSize(8.0f);
@@ -3312,13 +3312,13 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void updateAxisCursor()
 	{
-		theAxisCursor->rotation.null();
+        theAxisCursor->m_rotation.null();
 		if(mode==SelectionMode::Object && target==0)
 		{
 			if(selection.empty())
 			{
-				theAxisCursor->mode=AxisCursorMode::NoAxis;
-				theAxisCursor->position.null();
+                theAxisCursor->m_mode=AxisCursorMode::NoAxis;
+                theAxisCursor->m_position.null();
 			}
 			else
 			{
@@ -3328,20 +3328,20 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					Object *theObject=theObjectList[selection[i]];
 					if(theObject)
-					(*center)+=theObject->center+theObject->position;
+                    (*center)+=theObject->m_center+theObject->m_position;
 				}
 				(*center)/=(float)selectionSize;
-				theAxisCursor->position=*center;
+                theAxisCursor->m_position=*center;
 				delete center;
-				theAxisCursor->mode=currentACMode;
+                theAxisCursor->m_mode=currentACMode;
 			}
 		}
 		else if(mode==SelectionMode::Vertex && target)
 		{
 			if(selection.empty())
 			{
-				theAxisCursor->mode=AxisCursorMode::NoAxis;
-				theAxisCursor->position.null();
+                theAxisCursor->m_mode=AxisCursorMode::NoAxis;
+                theAxisCursor->m_position.null();
 			}
 			else
 			{
@@ -3356,23 +3356,23 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				}
 				(*center)/=(float)selectionSize;
 				//ÕâÀïÐý×ª
-				Vector rotateAxis=Vector(theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-				Quaternion rotateQuaternion(theObject->rotation.w,rotateAxis);
+                Vector rotateAxis=Vector(theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+                Quaternion rotateQuaternion(theObject->m_rotation.w,rotateAxis);
 				Matrix rotateMatrix;
 				rotateQuaternion.getMatrix(rotateMatrix);
-				*center=rotateMatrix*(*center-theObject->center);
+                *center=rotateMatrix*(*center-theObject->m_center);
 				//ÕâÀïÆ½ÒÆ
-                theAxisCursor->position=*center+theObject->position+theObject->center;
+                theAxisCursor->m_position=*center+theObject->m_position+theObject->m_center;
 				delete center;
-				theAxisCursor->mode=currentACMode;
+                theAxisCursor->m_mode=currentACMode;
 			}
 		}
 		else if(mode==SelectionMode::Edge && target)
 		{
 			if(selection.empty())
 			{
-				theAxisCursor->mode=AxisCursorMode::NoAxis;
-				theAxisCursor->position.null();
+                theAxisCursor->m_mode=AxisCursorMode::NoAxis;
+                theAxisCursor->m_position.null();
 			}
 			else
 			{
@@ -3381,35 +3381,35 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				Object *theObject=theObjectList[target];
                 for(unsigned int i=0;i<selectionSize;++i)
 				{
-					Edge *theEdge=theObject->edge(selection[i]);
+                    Edge *theEdge=theObject->edge(selection[i]);
 					if(theEdge)
 					{
-						if(!theObject->vertex(theEdge->start)->isIn)
+                        if(!theObject->vertex(theEdge->m_start)->m_isIn)
 						{
-                            (*center)+=theObject->vertex(theEdge->start)->m_position;
-							theObject->vertex(theEdge->start)->isIn=true;
-							isInCache.push_back(theObject->vertex(theEdge->start));
+                            (*center)+=theObject->vertex(theEdge->m_start)->m_position;
+                            theObject->vertex(theEdge->m_start)->m_isIn=true;
+                            isInCache.push_back(theObject->vertex(theEdge->m_start));
 						}
-						if(!theObject->vertex(theEdge->end)->isIn)
+                        if(!theObject->vertex(theEdge->m_end)->m_isIn)
 						{
-                            (*center)+=theObject->vertex(theEdge->end)->m_position;
-							theObject->vertex(theEdge->end)->isIn=true;
-							isInCache.push_back(theObject->vertex(theEdge->end));						
+                            (*center)+=theObject->vertex(theEdge->m_end)->m_position;
+                            theObject->vertex(theEdge->m_end)->m_isIn=true;
+                            isInCache.push_back(theObject->vertex(theEdge->m_end));
 						}
 					}
 				}
 				(*center)/=(float)isInCache.size();
 				clearIsInCache();
 				//ÕâÀïÐý×ª
-				Vector rotateAxis=Vector(theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-				Quaternion rotateQuaternion(theObject->rotation.w,rotateAxis);
+                Vector rotateAxis=Vector(theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+                Quaternion rotateQuaternion(theObject->m_rotation.w,rotateAxis);
 				Matrix rotateMatrix;
 				rotateQuaternion.getMatrix(rotateMatrix);
-				*center=rotateMatrix*(*center-theObject->center);
+                *center=rotateMatrix*(*center-theObject->m_center);
 				//ÕâÀïÆ½ÒÆ
-				theAxisCursor->position=*center+theObject->position+theObject->center;
+                theAxisCursor->m_position=*center+theObject->m_position+theObject->m_center;
 				delete center;
-				theAxisCursor->mode=currentACMode;
+                theAxisCursor->m_mode=currentACMode;
 
 			}
 		}
@@ -3417,8 +3417,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		{
 			if(selection.empty())
 			{
-				theAxisCursor->mode=AxisCursorMode::NoAxis;
-				theAxisCursor->position.null();
+                theAxisCursor->m_mode=AxisCursorMode::NoAxis;
+                theAxisCursor->m_position.null();
 			}
 			else
 			{
@@ -3430,26 +3430,26 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					Face *theFace=theObject->face(selection[i]);
 					if(theFace)
 					{
-                        unsigned int edgeCount=theFace->edge.size();
+                        unsigned int edgeCount=theFace->m_edge.size();
                         for(unsigned int e=0;e<edgeCount;++e)
 						{
-							if(theFace->edge[e]>0)
+                            if(theFace->m_edge[e]>0)
 							{
-								Vertex *theStart=theObject->vertex(theObject->edge(theFace->edge[e])->start);
-								if(!theStart->isIn)
+                                Vertex *theStart=theObject->vertex(theObject->edge(theFace->m_edge[e])->m_start);
+                                if(!theStart->m_isIn)
 								{
                                     (*center)+=theStart->m_position;
-									theStart->isIn=true;
+                                    theStart->m_isIn=true;
 									isInCache.push_back(theStart);						
 								}
 							}
 							else
 							{
-								Vertex *theEnd=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
-								if(!theEnd->isIn)
+                                Vertex *theEnd=theObject->vertex(theObject->edge(-theFace->m_edge[e])->m_end);
+                                if(!theEnd->m_isIn)
 								{
                                     (*center)+=theEnd->m_position;
-									theEnd->isIn=true;
+                                    theEnd->m_isIn=true;
 									isInCache.push_back(theEnd);						
 								}																
 							}
@@ -3459,15 +3459,15 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				(*center)/=(float)isInCache.size();
 				clearIsInCache();
 				//ÕâÀïÐý×ª
-				Vector rotateAxis=Vector(theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-				Quaternion rotateQuaternion(theObject->rotation.w,rotateAxis);
+                Vector rotateAxis=Vector(theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+                Quaternion rotateQuaternion(theObject->m_rotation.w,rotateAxis);
 				Matrix rotateMatrix;
 				rotateQuaternion.getMatrix(rotateMatrix);
-				*center=rotateMatrix*(*center-theObject->center);
+                *center=rotateMatrix*(*center-theObject->m_center);
 				//ÕâÀïÆ½ÒÆ
-				theAxisCursor->position=*center+theObject->position+theObject->center;
+                theAxisCursor->m_position=*center+theObject->m_position+theObject->m_center;
 				delete center;
-				theAxisCursor->mode=currentACMode;
+                theAxisCursor->m_mode=currentACMode;
 			}
 		}
     }
@@ -3486,11 +3486,11 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 								glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-				glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-		glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-		glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-		glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+                glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+        glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+        glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+        glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+        glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 				
 		glDisable(GL_LIGHTING);
 				glColor3ub(255,0,0);
@@ -3524,22 +3524,22 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 								glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-				glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-		glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-		glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-		glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+                glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+        glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+        glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+        glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+        glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 			
 		glDisable(GL_LIGHTING);
 				glColor3ub(255,252,0);
 				glBegin(GL_LINES);
                 for(unsigned int i=0;i<selection.size();++i)
 				{
-					Edge *theEdge=theObject->edge(selection[i]);
+                    Edge *theEdge=theObject->edge(selection[i]);
 					if(theEdge)
 					{
-						Vertex *start=theObject->vertex(theEdge->start);
-						Vertex *end=theObject->vertex(theEdge->end);
+                        Vertex *start=theObject->vertex(theEdge->m_start);
+                        Vertex *end=theObject->vertex(theEdge->m_end);
                         glVertex3f(start->m_position.x,start->m_position.y,start->m_position.z);
                         glVertex3f(end->m_position.x,end->m_position.y,end->m_position.z);
 					}
@@ -3565,11 +3565,11 @@ void drawSelectedFace()
 			{
 								glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-				glTranslatef(theObject->position.x,theObject->position.y,theObject->position.z);
-		glTranslatef(theObject->center.x,theObject->center.y,theObject->center.z);
-		glRotatef(theObject->rotation.w,theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
-		glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
-		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
+                glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
+        glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
+        glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
+        glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
+        glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
 			
 		glDisable(GL_LIGHTING);
 				glEnable(GL_POLYGON_OFFSET_FILL);
@@ -3582,16 +3582,16 @@ void drawSelectedFace()
 					if(theFace)
 					{
 						glBegin(GL_POLYGON);
-                        for(unsigned int e=0;e<theFace->edge.size();++e)
+                        for(unsigned int e=0;e<theFace->m_edge.size();++e)
 						{
-							if(theFace->edge[e]>0)
+                            if(theFace->m_edge[e]>0)
 							{
-								Vertex *v=theObject->vertex(theObject->edge(theFace->edge[e])->start);
+                                Vertex *v=theObject->vertex(theObject->edge(theFace->m_edge[e])->m_start);
                                 glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 							}
 							else
 							{
-								Vertex *v=theObject->vertex(theObject->edge(-theFace->edge[e])->end);
+                                Vertex *v=theObject->vertex(theObject->edge(-theFace->m_edge[e])->m_end);
                                 glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
 							}
 						}
@@ -3623,40 +3623,40 @@ void loadFromPWB(const char *fileName)
 	fread(&sceneInfo,sizeof(sceneInfo),1,fp);
     for(unsigned int i=1;i<sceneInfo.objectCount;++i)
 	{
-		struct ObjectInfo objectInfo;
+        Object::ObjectInfo objectInfo;
 		fread(&objectInfo,sizeof(objectInfo),1,fp);
 		if(objectInfo.index>0)
 		{
 			Object *theObject=new Object("new object");
-			theObject->index=objectInfo.index;
-			theObject->center.vec(objectInfo.centerX,objectInfo.centerY,objectInfo.centerZ);
-			theObject->position.vec(objectInfo.positionX,objectInfo.positionY,objectInfo.positionZ);
-			theObject->rotation.vec(objectInfo.rotationX,objectInfo.rotationY,objectInfo.rotationZ);
-			theObject->scale.vec(objectInfo.scaleX,objectInfo.scaleY,objectInfo.scaleZ);
-			theObject->mat_ambient[0]=objectInfo.mat_ambient[0];
-			theObject->mat_ambient[1]=objectInfo.mat_ambient[1];
-			theObject->mat_ambient[2]=objectInfo.mat_ambient[2];
-			theObject->mat_ambient[3]=objectInfo.mat_ambient[3];
+            theObject->m_index=objectInfo.index;
+            theObject->m_center.vec(objectInfo.centerX,objectInfo.centerY,objectInfo.centerZ);
+            theObject->m_position.vec(objectInfo.positionX,objectInfo.positionY,objectInfo.positionZ);
+            theObject->m_rotation.vec(objectInfo.rotationX,objectInfo.rotationY,objectInfo.rotationZ);
+            theObject->m_scale.vec(objectInfo.scaleX,objectInfo.scaleY,objectInfo.scaleZ);
+            theObject->m_matAmbient[0]=objectInfo.matAmbient[0];
+            theObject->m_matAmbient[1]=objectInfo.matAmbient[1];
+            theObject->m_matAmbient[2]=objectInfo.matAmbient[2];
+            theObject->m_matAmbient[3]=objectInfo.matAmbient[3];
 
-			theObject->mat_diffuse[0]=objectInfo.mat_diffuse[0];
-			theObject->mat_diffuse[1]=objectInfo.mat_diffuse[1];
-			theObject->mat_diffuse[2]=objectInfo.mat_diffuse[2];
-			theObject->mat_diffuse[3]=objectInfo.mat_diffuse[3];
+            theObject->m_matDiffuse[0]=objectInfo.matDiffuse[0];
+            theObject->m_matDiffuse[1]=objectInfo.matDiffuse[1];
+            theObject->m_matDiffuse[2]=objectInfo.matDiffuse[2];
+            theObject->m_matDiffuse[3]=objectInfo.matDiffuse[3];
 
-			theObject->mat_specular[0]=objectInfo.mat_specular[0];
-			theObject->mat_specular[1]=objectInfo.mat_specular[1];
-			theObject->mat_specular[2]=objectInfo.mat_specular[2];
-			theObject->mat_specular[3]=objectInfo.mat_specular[3];
+            theObject->m_matSpecular[0]=objectInfo.matSpecular[0];
+            theObject->m_matSpecular[1]=objectInfo.matSpecular[1];
+            theObject->m_matSpecular[2]=objectInfo.matSpecular[2];
+            theObject->m_matSpecular[3]=objectInfo.matSpecular[3];
 
-			theObject->mat_emission[0]=objectInfo.mat_emission[0];
-			theObject->mat_emission[1]=objectInfo.mat_emission[1];
-			theObject->mat_emission[2]=objectInfo.mat_emission[2];
-			theObject->mat_emission[3]=objectInfo.mat_emission[3];
+            theObject->m_matEmission[0]=objectInfo.matEmission[0];
+            theObject->m_matEmission[1]=objectInfo.matEmission[1];
+            theObject->m_matEmission[2]=objectInfo.matEmission[2];
+            theObject->m_matEmission[3]=objectInfo.matEmission[3];
 
-			theObject->mat_shininess[0]=objectInfo.mat_shininess[0];
-			theObject->mat_shininess[1]=objectInfo.mat_shininess[1];
-			theObject->mat_shininess[2]=objectInfo.mat_shininess[2];
-			theObject->mat_shininess[3]=objectInfo.mat_shininess[3];
+            theObject->m_matShininess[0]=objectInfo.matShininess[0];
+            theObject->m_matShininess[1]=objectInfo.matShininess[1];
+            theObject->m_matShininess[2]=objectInfo.matShininess[2];
+            theObject->m_matShininess[3]=objectInfo.matShininess[3];
 
             for(unsigned int e=1;e<objectInfo.vertexCount;++e)
 			{
@@ -3665,7 +3665,7 @@ void loadFromPWB(const char *fileName)
 				if(vertexInfo.index>0)
 				{
 					Vertex *theVertex=new Vertex();
-					theVertex->index=vertexInfo.index;
+                    theVertex->m_index=vertexInfo.index;
                     theVertex->m_position.vec(vertexInfo.x,vertexInfo.y,vertexInfo.z);
                     theVertex->m_normal.vec(vertexInfo.nx,vertexInfo.ny,vertexInfo.nz);
                     for(unsigned int h=0;h<vertexInfo.adjacentCount;++h)
@@ -3684,14 +3684,14 @@ void loadFromPWB(const char *fileName)
 
             for(unsigned int e=1;e<objectInfo.edgeCount;++e)
 			{
-				struct EdgeInfo edgeInfo;
+                Edge::EdgeInfo edgeInfo;
 				fread(&edgeInfo,sizeof(edgeInfo),1,fp);
 				if(edgeInfo.index>0)
 				{
 					Edge *theEdge=new Edge(edgeInfo.start,edgeInfo.end);
-					theEdge->index=edgeInfo.index;
-					theEdge->left=edgeInfo.left;
-					theEdge->right=edgeInfo.right;
+                    theEdge->m_index=edgeInfo.index;
+                    theEdge->m_left=edgeInfo.left;
+                    theEdge->m_right=edgeInfo.right;
 					theObject->directPushEdge(theEdge);
 				}
 				else
@@ -3702,18 +3702,18 @@ void loadFromPWB(const char *fileName)
 
             for(unsigned int e=1;e<objectInfo.faceCount;++e)
 			{
-				struct FaceInfo faceInfo;
+                Face::FaceInfo faceInfo;
 				fread(&faceInfo,sizeof(faceInfo),1,fp);
 				if(faceInfo.index>0)
 				{
 					Face *theFace=new Face();					
-					theFace->index=faceInfo.index;
-					theFace->normal.vec(faceInfo.nx,faceInfo.ny,faceInfo.nz);
+                    theFace->m_index=faceInfo.index;
+                    theFace->m_normal.vec(faceInfo.nx,faceInfo.ny,faceInfo.nz);
                     for(unsigned int h=0;h<faceInfo.edgeCount;++h)
 					{
 						int theE;
 						fread(&theE,sizeof(int),1,fp);
-						theFace->edge.push_back(theE);
+                        theFace->m_edge.push_back(theE);
 					}
 					theObject->directPushFace(theFace);
 				}
@@ -3740,7 +3740,7 @@ void invertSelection()
 		objectToBeSelected.reserve(100);
         for(unsigned int i=1;i<theObjectList.size();++i)
 		{
-			if(theObjectList[i] && !(theObjectList[i]->isSelected))
+            if(theObjectList[i] && !(theObjectList[i]->m_isSelected))
 			{
 				objectToBeSelected.push_back(i);
 			}
@@ -3787,15 +3787,15 @@ void saveToFileOBJ(const char *fileName)
 				if(theFace)
 				{
 					fprintf(fp,"f ");
-                    for(unsigned int e=0;e<theFace->edge.size();e++)
+                    for(unsigned int e=0;e<theFace->m_edge.size();e++)
 					{
-						if(theFace->edge[e]<0)
+                        if(theFace->m_edge[e]<0)
 						{
-							fprintf(fp,"%d ",theObject->edge(-theFace->edge[e])->end+vertexBase);
+                            fprintf(fp,"%d ",theObject->edge(-theFace->m_edge[e])->m_end+vertexBase);
 						}
 						else
 						{
-							fprintf(fp,"%d ",theObject->edge(theFace->edge[e])->start+vertexBase);
+                            fprintf(fp,"%d ",theObject->edge(theFace->m_edge[e])->m_start+vertexBase);
 						}
 					}
 					fprintf(fp,"\n");
@@ -3824,7 +3824,7 @@ void saveToFilePWB(const char *fileName)
 		Object *theObject=theObjectList[i];
 		if(theObject)
 		{
-			struct ObjectInfo objectInfo=theObjectList[i]->getObjectInfo();
+            Object::ObjectInfo objectInfo=theObjectList[i]->getObjectInfo();
 			fwrite(&objectInfo,sizeof(objectInfo),1,fp);
             for(unsigned int e=1;e<objectInfo.vertexCount;++e)
 			{
@@ -3846,15 +3846,15 @@ void saveToFilePWB(const char *fileName)
 
             for(unsigned int e=1;e<objectInfo.edgeCount;++e)
 			{
-				Edge *theEdge=theObject->edge(e);
+                Edge *theEdge=theObject->edge(e);
 				if(theEdge)
 				{
-					struct EdgeInfo edgeInfo=theEdge->getEdgeInfo();
+                    Edge::EdgeInfo edgeInfo=theEdge->getEdgeInfo();
 					fwrite(&edgeInfo,sizeof(edgeInfo),1,fp);
 				}
 				else
 				{
-					struct EdgeInfo edgeInfo;
+                    Edge::EdgeInfo edgeInfo;
 					edgeInfo.index=0;
 					fwrite(&edgeInfo,sizeof(edgeInfo),1,fp);
 				}
@@ -3865,13 +3865,13 @@ void saveToFilePWB(const char *fileName)
 				Face *theFace=theObject->face(e);
 				if(theFace)
 				{
-					struct FaceInfo faceInfo=theFace->getFaceInfo();
+                    Face::FaceInfo faceInfo=theFace->getFaceInfo();
 					fwrite(&faceInfo,sizeof(faceInfo),1,fp);
-                    fwrite(&(theFace->edge[0]),sizeof(unsigned int),faceInfo.edgeCount,fp);
+                    fwrite(&(theFace->m_edge[0]),sizeof(unsigned int),faceInfo.edgeCount,fp);
 				}
 				else
 				{
-					struct FaceInfo faceInfo;
+                    Face::FaceInfo faceInfo;
 					faceInfo.index=0;
 					fwrite(&faceInfo,sizeof(faceInfo),1,fp);
 				}
@@ -3879,7 +3879,7 @@ void saveToFilePWB(const char *fileName)
 		}
 		else
 		{
-			struct ObjectInfo objectInfo;
+            Object::ObjectInfo objectInfo;
 			objectInfo.index=0;
 			objectInfo.vertexCount=0;
 			objectInfo.edgeCount=0;

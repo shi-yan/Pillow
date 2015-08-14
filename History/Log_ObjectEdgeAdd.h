@@ -5,7 +5,7 @@ class Log_ObjectEdgeAdd :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
 public:
     Log_ObjectEdgeAdd(unsigned int theTarget,unsigned int theIndex);
 	std::string toString()

@@ -32,10 +32,10 @@ void Scene::initialize()
 void Scene::changeAxisCursorMode(AxisCursorMode::__Enum newMode)
 {
 	currentACMode=newMode;
-	if(theAxisCursor->mode!=AxisCursorMode::NoAxis)
+    if(theAxisCursor->m_mode!=AxisCursorMode::NoAxis)
 	{
-		theAxisCursor->rotation.null();
-		theAxisCursor->mode=currentACMode;
+        theAxisCursor->m_rotation.null();
+        theAxisCursor->m_mode=currentACMode;
 	}
 }
 
@@ -43,57 +43,56 @@ void Scene::clearDualEdge(unsigned int tt,unsigned int vertexID)
 	{
 		if(tt && vertexID)
 		{
-			//Ê×ÏÈ±éÀúÕâ¸öµãµÄÁÚ½ÓÃæ£¬½«edgeµÄ´óÐ¡Îª2µÄÉ¾³ý
 			Vertex *theVertex=theObjectList[tt]->vertex(vertexID);
             unsigned int adjEdgeCount=theVertex->m_adjacentEdgeList.size();
             for(unsigned int e=0;e<adjEdgeCount;++e)
 			{
-                if(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->start==theVertex->index)
+                if(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->m_start==theVertex->m_index)
 				{
-                    if(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->left>0 && theObjectList[tt]->face(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->left)->edge.size()<3)
+                    if(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->m_left>0 && theObjectList[tt]->face(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->m_left)->m_edge.size()<3)
 					{
-                        Face *theFace=theObjectList[tt]->face(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->left);
-						if(theFace->edge[0]>0)
+                        Face *theFace=theObjectList[tt]->face(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->m_left);
+                        if(theFace->m_edge[0]>0)
 						{
-							theObjectList[tt]->edgeRightChange(theFace->edge[0],0);
+                            theObjectList[tt]->edgeRightChange(theFace->m_edge[0],0);
 						}
 						else
 						{
-							theObjectList[tt]->edgeLeftChange(theFace->edge[0],0);
+                            theObjectList[tt]->edgeLeftChange(theFace->m_edge[0],0);
 						}
-						if(theFace->edge[1]>0)
+                        if(theFace->m_edge[1]>0)
 						{
-							theObjectList[tt]->edgeRightChange(theFace->edge[1],0);
+                            theObjectList[tt]->edgeRightChange(theFace->m_edge[1],0);
 						}
 						else
 						{
-							theObjectList[tt]->edgeLeftChange(theFace->edge[1],0);
+                            theObjectList[tt]->edgeLeftChange(theFace->m_edge[1],0);
 						}
-						theObjectList[tt]->objectFaceRemove(theFace->index);
+                        theObjectList[tt]->objectFaceRemove(theFace->m_index);
 					}
 				}
 				else
 				{
-                    if(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->right>0 && theObjectList[tt]->face(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->right)->edge.size()<3)
+                    if(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->m_right>0 && theObjectList[tt]->face(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->m_right)->m_edge.size()<3)
 					{
-                        Face *theFace=theObjectList[tt]->face(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->right);
-						if(theFace->edge[0]>0)
+                        Face *theFace=theObjectList[tt]->face(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->m_right);
+                        if(theFace->m_edge[0]>0)
 						{
-							theObjectList[tt]->edgeRightChange(theFace->edge[0],0);
+                            theObjectList[tt]->edgeRightChange(theFace->m_edge[0],0);
 						}
 						else
 						{
-							theObjectList[tt]->edgeLeftChange(theFace->edge[0],0);
+                            theObjectList[tt]->edgeLeftChange(theFace->m_edge[0],0);
 						}
-						if(theFace->edge[1]>0)
+                        if(theFace->m_edge[1]>0)
 						{
-							theObjectList[tt]->edgeRightChange(theFace->edge[1],0);
+                            theObjectList[tt]->edgeRightChange(theFace->m_edge[1],0);
 						}
 						else
 						{
-							theObjectList[tt]->edgeLeftChange(theFace->edge[1],0);
+                            theObjectList[tt]->edgeLeftChange(theFace->m_edge[1],0);
 						}
-						theObjectList[tt]->objectFaceRemove(theFace->index);
+                        theObjectList[tt]->objectFaceRemove(theFace->m_index);
 					}
 				}
 			}
@@ -102,92 +101,92 @@ void Scene::clearDualEdge(unsigned int tt,unsigned int vertexID)
             for(unsigned int e=0;e<theVertex->m_adjacentEdgeList.size()-1;++e)
 			{
                 Edge *currentEdge=theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e]);
-				if(currentEdge->start==theVertex->index)
+                if(currentEdge->m_start==theVertex->m_index)
 				{
                     for(unsigned int i=e+1;i<theVertex->m_adjacentEdgeList.size();++i)
 					{
                         Edge *tempEdge=theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[i]);
-						if(tempEdge->end==theVertex->index && currentEdge->end==tempEdge->start)
+                        if(tempEdge->m_end==theVertex->m_index && currentEdge->m_end==tempEdge->m_start)
 						{
-							if(currentEdge->left>0 && currentEdge->right==0 && tempEdge->left>0 && tempEdge->right==0)
+                            if(currentEdge->m_left>0 && currentEdge->m_right==0 && tempEdge->m_left>0 && tempEdge->m_right==0)
 							{
-								Face *theLeft=theObjectList[tt]->face(tempEdge->left);
-                                unsigned int fEdgeCount=theLeft->edge.size();
+                                Face *theLeft=theObjectList[tt]->face(tempEdge->m_left);
+                                unsigned int fEdgeCount=theLeft->m_edge.size();
                                 for(unsigned int h=0;h<fEdgeCount;++h)
 								{
-									if(theLeft->edge[h]==-((int)(tempEdge->index)))
+                                    if(theLeft->m_edge[h]==-((int)(tempEdge->m_index)))
 									{
-										theObjectList[tt]->faceEdgeChange(theLeft->index,h,currentEdge->index);
+                                        theObjectList[tt]->faceEdgeChange(theLeft->m_index,h,currentEdge->m_index);
 									}
 								}
-								deleteEdgeH(tt,tempEdge->index);
+                                deleteEdgeH(tt,tempEdge->m_index);
 							}
 							else
-							if(currentEdge->right>0 && currentEdge->left==0 && tempEdge->right>0 && tempEdge->left==0)
+                            if(currentEdge->m_right>0 && currentEdge->m_left==0 && tempEdge->m_right>0 && tempEdge->m_left==0)
 							{
-								Face *theRight=theObjectList[tt]->face(tempEdge->right);
-                                unsigned int fEdgeCount=theRight->edge.size();
+                                Face *theRight=theObjectList[tt]->face(tempEdge->m_right);
+                                unsigned int fEdgeCount=theRight->m_edge.size();
                                 for(unsigned int h=0;h<fEdgeCount;++h)
 								{
-									if(theRight->edge[h]==((int)tempEdge->index))
+                                    if(theRight->m_edge[h]==((int)tempEdge->m_index))
 									{
-										theObjectList[tt]->faceEdgeChange(theRight->index,h,-((int)currentEdge->index));
+                                        theObjectList[tt]->faceEdgeChange(theRight->m_index,h,-((int)currentEdge->m_index));
 									}
 								}
-								deleteEdgeH(tt,tempEdge->index);
-								tempEdge->index;
+                                deleteEdgeH(tt,tempEdge->m_index);
+                                tempEdge->m_index;
 							}
 							else
 							{
-								if(tempEdge->left==0 && tempEdge->right==0)
+                                if(tempEdge->m_left==0 && tempEdge->m_right==0)
 								{
-									deleteEdgeH(tt,tempEdge->index);	
+                                    deleteEdgeH(tt,tempEdge->m_index);
 								}
-								if(currentEdge->left==0 && currentEdge->left==0)
+                                if(currentEdge->m_left==0 && currentEdge->m_left==0)
 								{
-									deleteEdgeH(tt,currentEdge->index);
+                                    deleteEdgeH(tt,currentEdge->m_index);
 								}
 							}
 						}
 						else
-						if(tempEdge->start==theVertex->index && currentEdge->end==tempEdge->end)
+                        if(tempEdge->m_start==theVertex->m_index && currentEdge->m_end==tempEdge->m_end)
 						{
-							if(currentEdge->left>0 && currentEdge->right==0 && tempEdge->right>0 && tempEdge->left==0)
+                            if(currentEdge->m_left>0 && currentEdge->m_right==0 && tempEdge->m_right>0 && tempEdge->m_left==0)
 							{
-								Face *theRight=theObjectList[tt]->face(tempEdge->right);
-                                unsigned int fEdgeCount=theRight->edge.size();
+                                Face *theRight=theObjectList[tt]->face(tempEdge->m_right);
+                                unsigned int fEdgeCount=theRight->m_edge.size();
                                 for(unsigned int h=0;h<fEdgeCount;++h)
 								{
-									if(theRight->edge[h]==((int)tempEdge->index))
+                                    if(theRight->m_edge[h]==((int)tempEdge->m_index))
 									{
-										theObjectList[tt]->faceEdgeChange(theRight->index,h,-((int)currentEdge->index));
+                                        theObjectList[tt]->faceEdgeChange(theRight->m_index,h,-((int)currentEdge->m_index));
 									}
 								}
-								deleteEdgeH(tt,tempEdge->index);
+                                deleteEdgeH(tt,tempEdge->m_index);
 							}
 							else
-								if(currentEdge->right>0 && currentEdge->left==0 && tempEdge->left>0 && tempEdge->right==0)
+                                if(currentEdge->m_right>0 && currentEdge->m_left==0 && tempEdge->m_left>0 && tempEdge->m_right==0)
 							{
-								Face *theLeft=theObjectList[tt]->face(tempEdge->left);
-                                unsigned int fEdgeCount=theLeft->edge.size();
+                                Face *theLeft=theObjectList[tt]->face(tempEdge->m_left);
+                                unsigned int fEdgeCount=theLeft->m_edge.size();
                                 for(unsigned int h=0;h<fEdgeCount;++h)
 								{
-									if(theLeft->edge[h]==-((int)tempEdge->index))
+                                    if(theLeft->m_edge[h]==-((int)tempEdge->m_index))
 									{
-										theObjectList[tt]->faceEdgeChange(theLeft->index,h,-((int)currentEdge->index));
+                                        theObjectList[tt]->faceEdgeChange(theLeft->m_index,h,-((int)currentEdge->m_index));
 									}
 								}
-								deleteEdgeH(tt,tempEdge->index);
+                                deleteEdgeH(tt,tempEdge->m_index);
 							}
 							else
 							{
-								if(tempEdge->left==0 && tempEdge->right==0)
+                                if(tempEdge->m_left==0 && tempEdge->m_right==0)
 								{
-									deleteEdgeH(tt,tempEdge->index);	
+                                    deleteEdgeH(tt,tempEdge->m_index);
 								}
-								if(currentEdge->left==0 && currentEdge->left==0)
+                                if(currentEdge->m_left==0 && currentEdge->m_left==0)
 								{
-									deleteEdgeH(tt,currentEdge->index);
+                                    deleteEdgeH(tt,currentEdge->m_index);
 								}
 							}
 						}
@@ -198,87 +197,87 @@ void Scene::clearDualEdge(unsigned int tt,unsigned int vertexID)
                     for(unsigned int i=e+1;i<theVertex->m_adjacentEdgeList.size();++i)
 					{
                         Edge *tempEdge=theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[i]);
-						if(tempEdge->end==theVertex->index && currentEdge->start==tempEdge->start)
+                        if(tempEdge->m_end==theVertex->m_index && currentEdge->m_start==tempEdge->m_start)
 						{
-							if(currentEdge->right>0 && currentEdge->left==0 && tempEdge->left>0 && tempEdge->right==0)
+                            if(currentEdge->m_right>0 && currentEdge->m_left==0 && tempEdge->m_left>0 && tempEdge->m_right==0)
 							{
-								Face *theLeft=theObjectList[tt]->face(tempEdge->left);
-                                unsigned int fEdgeCount=theLeft->edge.size();
+                                Face *theLeft=theObjectList[tt]->face(tempEdge->m_left);
+                                unsigned int fEdgeCount=theLeft->m_edge.size();
                                 for(unsigned int h=0;h<fEdgeCount;++h)
 								{
-									if(theLeft->edge[h]==-((int)tempEdge->index))
+                                    if(theLeft->m_edge[h]==-((int)tempEdge->m_index))
 									{
-										theObjectList[tt]->faceEdgeChange(theLeft->index,h,currentEdge->index);
+                                        theObjectList[tt]->faceEdgeChange(theLeft->m_index,h,currentEdge->m_index);
 									}
 								}
-								deleteEdgeH(tt,tempEdge->index);
+                                deleteEdgeH(tt,tempEdge->m_index);
 							}
 							else
-								if(currentEdge->left>0 && currentEdge->right==0 && tempEdge->right>0 && tempEdge->left==0)
+                                if(currentEdge->m_left>0 && currentEdge->m_right==0 && tempEdge->m_right>0 && tempEdge->m_left==0)
 							{
-								Face *theRight=theObjectList[tt]->face(tempEdge->right);
-                                unsigned int fEdgeCount=theRight->edge.size();
+                                Face *theRight=theObjectList[tt]->face(tempEdge->m_right);
+                                unsigned int fEdgeCount=theRight->m_edge.size();
                                 for(unsigned int h=0;h<fEdgeCount;++h)
 								{
-									if(theRight->edge[h]==(int)tempEdge->index)
+                                    if(theRight->m_edge[h]==(int)tempEdge->m_index)
 									{
-										theObjectList[tt]->faceEdgeChange(theRight->index,h,currentEdge->index);
+                                        theObjectList[tt]->faceEdgeChange(theRight->m_index,h,currentEdge->m_index);
 									}
 								}
-								deleteEdgeH(tt,tempEdge->index);
+                                deleteEdgeH(tt,tempEdge->m_index);
 							}
 							else
 							{
-								if(tempEdge->left==0 && tempEdge->right==0)
+                                if(tempEdge->m_left==0 && tempEdge->m_right==0)
 								{
-									deleteEdgeH(tt,tempEdge->index);	
+                                    deleteEdgeH(tt,tempEdge->m_index);
 								}
-								if(currentEdge->left==0 && currentEdge->left==0)
+                                if(currentEdge->m_left==0 && currentEdge->m_left==0)
 								{
-									deleteEdgeH(tt,currentEdge->index);
+                                    deleteEdgeH(tt,currentEdge->m_index);
 								}
 							}
 
 						}
 						else
-						if(tempEdge->start==theVertex->index && currentEdge->start==tempEdge->end)
+                        if(tempEdge->m_start==theVertex->m_index && currentEdge->m_start==tempEdge->m_end)
 						{
-							if(currentEdge->right>0 && currentEdge->left==0 && tempEdge->right>0 && tempEdge->left==0)
+                            if(currentEdge->m_right>0 && currentEdge->m_left==0 && tempEdge->m_right>0 && tempEdge->m_left==0)
 							{
-								Face *theRight=theObjectList[tt]->face(tempEdge->right);
-                                unsigned int fEdgeCount=theRight->edge.size();
+                                Face *theRight=theObjectList[tt]->face(tempEdge->m_right);
+                                unsigned int fEdgeCount=theRight->m_edge.size();
                                 for(unsigned int h=0;h<fEdgeCount;++h)
 								{
-									if(theRight->edge[h]==(int)tempEdge->index)
+                                    if(theRight->m_edge[h]==(int)tempEdge->m_index)
 									{
-										theObjectList[tt]->faceEdgeChange(theRight->index,h,currentEdge->index);
+                                        theObjectList[tt]->faceEdgeChange(theRight->m_index,h,currentEdge->m_index);
 									}
 								}
-								deleteEdgeH(tt,tempEdge->index);
+                                deleteEdgeH(tt,tempEdge->m_index);
 							}
 							else
-								if(currentEdge->left>0 && currentEdge->right==0 && tempEdge->left>0 && tempEdge->right==0)
+                                if(currentEdge->m_left>0 && currentEdge->m_right==0 && tempEdge->m_left>0 && tempEdge->m_right==0)
 							{
-								Face *theLeft=theObjectList[tt]->face(tempEdge->left);
-                                unsigned int fEdgeCount=theLeft->edge.size();
+                                Face *theLeft=theObjectList[tt]->face(tempEdge->m_left);
+                                unsigned int fEdgeCount=theLeft->m_edge.size();
                                 for(unsigned int h=0;h<fEdgeCount;++h)
 								{
-									if(theLeft->edge[h]==-((int)tempEdge->index))
+                                    if(theLeft->m_edge[h]==-((int)tempEdge->m_index))
 									{
-										theObjectList[tt]->faceEdgeChange(theLeft->index,h,currentEdge->index);
+                                        theObjectList[tt]->faceEdgeChange(theLeft->m_index,h,currentEdge->m_index);
 									}
 								}
-								deleteEdgeH(tt,tempEdge->index);
+                                deleteEdgeH(tt,tempEdge->m_index);
 							}
 							else
 							{
-								if(tempEdge->left==0 && tempEdge->right==0)
+                                if(tempEdge->m_left==0 && tempEdge->m_right==0)
 								{
-									deleteEdgeH(tt,tempEdge->index);	
+                                    deleteEdgeH(tt,tempEdge->m_index);
 								}
-								if(currentEdge->left==0 && currentEdge->left==0)
+                                if(currentEdge->m_left==0 && currentEdge->m_left==0)
 								{
-									deleteEdgeH(tt,currentEdge->index);
+                                    deleteEdgeH(tt,currentEdge->m_index);
 								}
 							}
 						}
@@ -299,7 +298,7 @@ unsigned int Scene::newCube(float x,float y,float z,float lx,float ly,float lz,u
 	Object *theCube=new Object("Cube");
 	newCube(theCube,x,y,z,lx,ly,lz,sx,sy,sz);
 	theObjectList.add(theCube);
-	return theCube->index;
+    return theCube->m_index;
 }
 
 unsigned int Scene::newPlane(float x,float y,float z,float length,float width,AxisMode::__Enum axis,unsigned int sl,unsigned int sw)
@@ -307,14 +306,14 @@ unsigned int Scene::newPlane(float x,float y,float z,float length,float width,Ax
 	Object *thePlane=new Object("Plane");
 	newPlane(thePlane,x,y,z,length,width,axis,sl,sw);
 	theObjectList.add(thePlane);
-	return thePlane->index;
+    return thePlane->m_index;
 }
 
 void Scene::newPlane(Object *thePlane,float x,float y,float z,float length,float width,AxisMode::__Enum axis,unsigned int sl,unsigned int sw)
 {
-	thePlane->center.x=x;
-	thePlane->center.y=y;
-	thePlane->center.z=z;
+    thePlane->m_center.x=x;
+    thePlane->m_center.y=y;
+    thePlane->m_center.z=z;
 	
 	{
 		//Ê×ÏÈ¼ÆËãÆðÊ¼µãµÄÎ»ÖÃ
@@ -383,9 +382,9 @@ void Scene::newPlane(Object *thePlane,float x,float y,float z,float length,float
 
 void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,float lz,unsigned int sx,unsigned int sy,unsigned int sz)
 {
-	theCube->center.x=x;
-	theCube->center.y=y;
-	theCube->center.z=z;
+    theCube->m_center.x=x;
+    theCube->m_center.y=y;
+    theCube->m_center.z=z;
 
 	//¼ÆËã°ë±ß³¤
 	float hlx=lx/2;
@@ -917,14 +916,14 @@ unsigned int Scene::newCylinder(float x,float y,float z,float r,float h,AxisMode
 	Object *theCylinder=new Object("Clinder");
 	newCylinder(theCylinder,x,y,z,r,h,axis,sa,sr,sh);
 	theObjectList.add(theCylinder);
-	return theCylinder->index;
+    return theCylinder->m_index;
 }
 void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,float h,AxisMode::__Enum axis,unsigned int sa,unsigned int sr,unsigned int sh)
 {
 	//Ê×ÏÈÉú³ÉÒ»¸öÎïÌå
-	theCylinder->center.x=x;
-	theCylinder->center.y=y;
-	theCylinder->center.z=z;
+    theCylinder->m_center.x=x;
+    theCylinder->m_center.y=y;
+    theCylinder->m_center.z=z;
 
 	{
 		//Ê×ÏÈÉú³ÉÖáÉÏµÄÁ½¸öµã
@@ -1199,14 +1198,14 @@ unsigned int Scene::newSphere(float x,float y,float z,float r,AxisMode::__Enum a
 	Object *theSphere=new Object("Sphere");
 	newSphere(theSphere,x,y,z,r,axis,sa,sr);
 	theObjectList.add(theSphere);
-	return theSphere->index;
+    return theSphere->m_index;
 }
 
 void Scene::newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode::__Enum axis,unsigned int sa,unsigned int sr)
 {
-	theSphere->center.x=x;
-	theSphere->center.y=y;
-	theSphere->center.z=z;
+    theSphere->m_center.x=x;
+    theSphere->m_center.y=y;
+    theSphere->m_center.z=z;
 	//Ê×ÏÈ¼ÆËãÉÏÏÂÁ½¸ö¶¥µã
 	Vector positionAAxisV(positionAAxis(axis,x,y,z,0,0,r));
     unsigned int centerU=theSphere->addVertex(positionAAxisV);
@@ -1426,19 +1425,19 @@ void Scene::moveEdge(float x,float y,float z)
         unsigned int edgeCount=selection.size();
         for(unsigned int e=0;e<edgeCount;++e)
 		{
-			Vertex *theVertex=theObjectList[target]->vertex(theObjectList[target]->edge(selection[e])->end);
-			if(!theVertex->isIn)
+            Vertex *theVertex=theObjectList[target]->vertex(theObjectList[target]->edge(selection[e])->m_end);
+            if(!theVertex->m_isIn)
 			{
-				theVertex->isIn=true;
+                theVertex->m_isIn=true;
 				isInCache.push_back(theVertex);
-				theObjectList[target]->vertexPositionChangeR(theVertex->index,x,y,z);
+                theObjectList[target]->vertexPositionChangeR(theVertex->m_index,x,y,z);
 			}
-			theVertex=theObjectList[target]->vertex(theObjectList[target]->edge(selection[e])->start);
-			if(!theVertex->isIn)
+            theVertex=theObjectList[target]->vertex(theObjectList[target]->edge(selection[e])->m_start);
+            if(!theVertex->m_isIn)
 			{
-				theVertex->isIn=true;
+                theVertex->m_isIn=true;
 				isInCache.push_back(theVertex);
-				theObjectList[target]->vertexPositionChangeR(theVertex->index,x,y,z);
+                theObjectList[target]->vertexPositionChangeR(theVertex->m_index,x,y,z);
 			}
 		}
 		//ÕâÀïÒªÇå¿ÕisInCache
@@ -1456,27 +1455,27 @@ void Scene::moveFace(float x,float y,float z)
         for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Face *theFace=theObjectList[target]->face(selection[i]);
-            unsigned int edgeCount=theFace->edge.size();
+            unsigned int edgeCount=theFace->m_edge.size();
             for(unsigned int e=0;e<edgeCount;++e)
 			{
-				if(theFace->edge[e]>0)
+                if(theFace->m_edge[e]>0)
 				{
-					if(!theObjectList[target]->vertex(theObjectList[target]->edge(theFace->edge[e])->end)->isIn)
+                    if(!theObjectList[target]->vertex(theObjectList[target]->edge(theFace->m_edge[e])->m_end)->m_isIn)
 					{
-						Vertex *theVertex=theObjectList[target]->vertex(theObjectList[target]->edge(theFace->edge[e])->end);
-						theVertex->isIn=true;
+                        Vertex *theVertex=theObjectList[target]->vertex(theObjectList[target]->edge(theFace->m_edge[e])->m_end);
+                        theVertex->m_isIn=true;
 						isInCache.push_back(theVertex);
-						theObjectList[target]->vertexPositionChangeR(theVertex->index,x,y,z);
+                        theObjectList[target]->vertexPositionChangeR(theVertex->m_index,x,y,z);
 					}
 				}
 				else
 				{
-					if(!theObjectList[target]->vertex(theObjectList[target]->edge(-theFace->edge[e])->start)->isIn)
+                    if(!theObjectList[target]->vertex(theObjectList[target]->edge(-theFace->m_edge[e])->m_start)->m_isIn)
 					{
-						Vertex *theVertex=theObjectList[target]->vertex(theObjectList[target]->edge(-theFace->edge[e])->start);
-						theVertex->isIn=true;
+                        Vertex *theVertex=theObjectList[target]->vertex(theObjectList[target]->edge(-theFace->m_edge[e])->m_start);
+                        theVertex->m_isIn=true;
 						isInCache.push_back(theVertex);
-						theObjectList[target]->vertexPositionChangeR(theVertex->index,x,y,z);
+                        theObjectList[target]->vertexPositionChangeR(theVertex->m_index,x,y,z);
 					}
 				}
 			}
@@ -1489,34 +1488,34 @@ void Scene::moveFace(float x,float y,float z)
 //×¢Òâ£¬Çå³þÎÞÓÃµÄ¶Ëµãµ«Ã»ÓÐ±ßµÄ×óÓÒÃæ!!!!!!!!!!!
 void Scene::deleteEdgeH(unsigned int t,unsigned int edgeID)
 {
-	Edge *theEdge=theObjectList[t]->edge(edgeID);
-	Vertex *theStart=theObjectList[t]->vertex(theEdge->start);
+    Edge *theEdge=theObjectList[t]->edge(edgeID);
+    Vertex *theStart=theObjectList[t]->vertex(theEdge->m_start);
     unsigned int adjEdgeCount=theStart->m_adjacentEdgeList.size();
     for(unsigned int e=0;e<adjEdgeCount;++e)
 	{
-        if(theStart->m_adjacentEdgeList[e]==(int)theEdge->index)
+        if(theStart->m_adjacentEdgeList[e]==(int)theEdge->m_index)
 		{
-			theObjectList[t]->vertexAdjacentRemove(theStart->index,e);
+            theObjectList[t]->vertexAdjacentRemove(theStart->m_index,e);
 			break;
 		}
 	}
     if(theStart->m_adjacentEdgeList.empty())
 	{
-		theObjectList[t]->objectVertexRemove(theStart->index);
+        theObjectList[t]->objectVertexRemove(theStart->m_index);
 	}
-	Vertex *theEnd=theObjectList[t]->vertex(theEdge->end);
+    Vertex *theEnd=theObjectList[t]->vertex(theEdge->m_end);
     adjEdgeCount=theEnd->m_adjacentEdgeList.size();
     for(unsigned int e=0;e<adjEdgeCount;++e)
 	{
-        if(theEnd->m_adjacentEdgeList[e]==(int)theEdge->index)
+        if(theEnd->m_adjacentEdgeList[e]==(int)theEdge->m_index)
 		{
-			theObjectList[t]->vertexAdjacentRemove(theEnd->index,e);
+            theObjectList[t]->vertexAdjacentRemove(theEnd->m_index,e);
 			break;
 		}
 	}
     if(theEnd->m_adjacentEdgeList.empty())
 	{
-		theObjectList[t]->objectVertexRemove(theEnd->index);
+        theObjectList[t]->objectVertexRemove(theEnd->m_index);
 	}
 	theObjectList[t]->objectEdgeRemove(edgeID);
 }
@@ -1533,50 +1532,50 @@ void Scene::deleteVertex()
             unsigned int edgeCount=currentVertex->m_adjacentEdgeList.size();
             for(unsigned int e=0;e<edgeCount;++e)
 			{
-                if(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->end==selection[i])
+                if(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->m_end==selection[i])
 				{
-                    Face *currentFace=theObjectList[target]->face(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->right);
+                    Face *currentFace=theObjectList[target]->face(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->m_right);
 					if(currentFace==NULL) 
 						continue;
-                    unsigned int edgeSize=currentFace->edge.size();
+                    unsigned int edgeSize=currentFace->m_edge.size();
                     for(unsigned int h=0;h<edgeSize;++h)
 					{
-						if(currentFace->edge[h]>0)
+                        if(currentFace->m_edge[h]>0)
 						{
-							theObjectList[target]->edgeRightChange(currentFace->edge[h],0);
+                            theObjectList[target]->edgeRightChange(currentFace->m_edge[h],0);
 						}
 						else
 						{
-							theObjectList[target]->edgeLeftChange(-currentFace->edge[h],0);
+                            theObjectList[target]->edgeLeftChange(-currentFace->m_edge[h],0);
 						}
 					}
-					theObjectList[target]->objectFaceRemove(currentFace->index);
+                    theObjectList[target]->objectFaceRemove(currentFace->m_index);
 				}
 				else
-                if(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->start==selection[i])
+                if(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->m_start==selection[i])
 				{
-                    Face *currentFace=theObjectList[target]->face(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->left);
+                    Face *currentFace=theObjectList[target]->face(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->m_left);
 					if(currentFace==NULL) 
 						continue;
-                    unsigned int edgeSize=currentFace->edge.size();
+                    unsigned int edgeSize=currentFace->m_edge.size();
                     for(unsigned int h=0;h<edgeSize;++h)
 					{
-						if(currentFace->edge[h]>0)
+                        if(currentFace->m_edge[h]>0)
 						{
-							theObjectList[target]->edgeRightChange(currentFace->edge[h],0);
+                            theObjectList[target]->edgeRightChange(currentFace->m_edge[h],0);
 						}
 						else
 						{
-							theObjectList[target]->edgeLeftChange(-currentFace->edge[h],0);
+                            theObjectList[target]->edgeLeftChange(-currentFace->m_edge[h],0);
 						}
 					}
-					theObjectList[target]->objectFaceRemove(currentFace->index);
+                    theObjectList[target]->objectFaceRemove(currentFace->m_index);
 				}
 			}
 			for(int e=edgeCount-1;e>-1;--e)
 			{
                 Edge *theEdge=theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e]);
-				deleteEdgeH(target,theEdge->index);
+                deleteEdgeH(target,theEdge->m_index);
 			}
 		}
 		clearSelection();
@@ -1594,27 +1593,27 @@ void Scene::deleteFace()
         for(unsigned int i=0;i<faceCount;++i)
 		{
 			Face *theFace=theObjectList[target]->face(selection[i]);
-            unsigned int edgeCount=theFace->edge.size();
+            unsigned int edgeCount=theFace->m_edge.size();
             for(unsigned int e=0;e<edgeCount;++e)
 			{
-				if(theFace->edge[e]>0)
+                if(theFace->m_edge[e]>0)
 				{
-					theObjectList[target]->edgeRightChange(theFace->edge[e],0);
-					if(theObjectList[target]->edge(theFace->edge[e])->left==0)
+                    theObjectList[target]->edgeRightChange(theFace->m_edge[e],0);
+                    if(theObjectList[target]->edge(theFace->m_edge[e])->m_left==0)
 					{
-						deleteEdgeH(target,theFace->edge[e]);
+                        deleteEdgeH(target,theFace->m_edge[e]);
 					}
 				}
 				else
 				{
-					theObjectList[target]->edgeLeftChange(-theFace->edge[e],0);
-					if(theObjectList[target]->edge(-theFace->edge[e])->right==0)
+                    theObjectList[target]->edgeLeftChange(-theFace->m_edge[e],0);
+                    if(theObjectList[target]->edge(-theFace->m_edge[e])->m_right==0)
 					{
-						deleteEdgeH(target,-theFace->edge[e]);
+                        deleteEdgeH(target,-theFace->m_edge[e]);
 					}
 				}
 			}
-			theObjectList[target]->objectFaceRemove(theFace->index);
+            theObjectList[target]->objectFaceRemove(theFace->m_index);
 		}
 	}
 }
@@ -1628,30 +1627,30 @@ void Scene::extrudeEdge(float x,float y,float z)
 		newSelection.reserve(edgeCount);
         for(unsigned int e=0;e<edgeCount;++e)
 		{
-			Edge *theEdge=theObjectList[target]->edge(selection[e]);
-			if(theEdge->left==0 || theEdge->right==0)
+            Edge *theEdge=theObjectList[target]->edge(selection[e]);
+            if(theEdge->m_left==0 || theEdge->m_right==0)
 			{
-				Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-				if(!theEnd->isIn)
+                Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
+                if(!theEnd->m_isIn)
 				{
                     theEnd->m_clone=theObjectList[target]->addVertex(theEnd->m_position.x+x,theEnd->m_position.y+y,theEnd->m_position.z+z);
-                    theObjectList[target]->vertex(theEnd->m_clone)->m_clone=theObjectList[target]->addEdge(theEnd->index,theEnd->m_clone);
-					theEnd->isIn=true;
+                    theObjectList[target]->vertex(theEnd->m_clone)->m_clone=theObjectList[target]->addEdge(theEnd->m_index,theEnd->m_clone);
+                    theEnd->m_isIn=true;
 					isInCache.push_back(theEnd);
 				}
-				Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-				if(!theStart->isIn)
+                Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
+                if(!theStart->m_isIn)
 				{
                     theStart->m_clone=theObjectList[target]->addVertex(theStart->m_position.x+x,theStart->m_position.y+y,theStart->m_position.z+z);
-                    theObjectList[target]->vertex(theStart->m_clone)->m_clone=theObjectList[target]->addEdge(theStart->index,theStart->m_clone);
-					theStart->isIn=true;
+                    theObjectList[target]->vertex(theStart->m_clone)->m_clone=theObjectList[target]->addEdge(theStart->m_index,theStart->m_clone);
+                    theStart->m_isIn=true;
                     isInCache.push_back(theStart);
 				}
 				//Éú³ÉÃæ
                 unsigned int tempEdge[4]={0};
-				if(theEdge->right==0)
+                if(theEdge->m_right==0)
 				{
-					tempEdge[0]=theEdge->index;
+                    tempEdge[0]=theEdge->m_index;
                     tempEdge[1]=theObjectList[target]->vertex(theEnd->m_clone)->m_clone;
                     tempEdge[2]=theObjectList[target]->addEdge(theEnd->m_clone,theStart->m_clone);
 					newSelection.push_back(tempEdge[2]);
@@ -1659,7 +1658,7 @@ void Scene::extrudeEdge(float x,float y,float z)
 				}
 				else
 				{
-					tempEdge[0]=theEdge->index;
+                    tempEdge[0]=theEdge->m_index;
                     tempEdge[1]=theObjectList[target]->vertex(theStart->m_clone)->m_clone;
                     tempEdge[2]=theObjectList[target]->addEdge(theEnd->m_clone,theStart->m_clone);
 					newSelection.push_back(tempEdge[2]);
@@ -1672,59 +1671,59 @@ void Scene::extrudeEdge(float x,float y,float z)
 		clearSelection();
         for(unsigned int i=0;i<newSelection.size();++i)
 		{
-			selectionPush(theObjectList[target]->edge(newSelection[i]));
+            selectionPush(theObjectList[target]->edge(newSelection[i]));
 		}
 	}
 }
 
 unsigned int Scene::insertVertex(int edgeID,float pos)
 {
-	Edge *theEdge=theObjectList[target]->edge(edgeID);
-	Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-	Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
+    Edge *theEdge=theObjectList[target]->edge(edgeID);
+    Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
+    Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
     unsigned int newVertex=theObjectList[target]->addVertex(theStart->m_position.x+(theEnd->m_position.x-theStart->m_position.x)*pos,theStart->m_position.y+(theEnd->m_position.y-theStart->m_position.y)*pos,theStart->m_position.z+(theEnd->m_position.z-theStart->m_position.z)*pos);
-    unsigned int right=theEdge->right;
-    unsigned int left=theEdge->left;
+    unsigned int right=theEdge->m_right;
+    unsigned int left=theEdge->m_left;
     unsigned int edgeCount=theEnd->m_adjacentEdgeList.size();
-    unsigned int removedEdge=theEdge->index;
+    unsigned int removedEdge=theEdge->m_index;
 	deleteEdgeH(target,removedEdge);
-    unsigned int edgeS=theObjectList[target]->addEdge(theStart->index,newVertex);
-    unsigned int edgeE=theObjectList[target]->addEdge(newVertex,theEnd->index);
+    unsigned int edgeS=theObjectList[target]->addEdge(theStart->m_index,newVertex);
+    unsigned int edgeE=theObjectList[target]->addEdge(newVertex,theEnd->m_index);
 
 	Face *theFace=theObjectList[target]->face(right);
 	if(theFace)
 	{
-		edgeCount=theFace->edge.size();
+        edgeCount=theFace->m_edge.size();
         unsigned int e;
 		for(e=0;e<edgeCount;++e)
 		{
-			if(theFace->edge[e]==(int)removedEdge)
+            if(theFace->m_edge[e]==(int)removedEdge)
 			{
-				theObjectList[target]->faceEdgeChange(theFace->index,e,edgeS);
+                theObjectList[target]->faceEdgeChange(theFace->m_index,e,edgeS);
 				break;
 			}
 		}
-		theObjectList[target]->faceEdgeInsert(theFace->index,e+1,edgeE);
-		theObjectList[target]->edgeRightChange(edgeE,right);
-		theObjectList[target]->edgeRightChange(edgeS,right);
+        theObjectList[target]->faceEdgeInsert(theFace->m_index,e+1,edgeE);
+        theObjectList[target]->edgeRightChange(edgeE,right);
+        theObjectList[target]->edgeRightChange(edgeS,right);
 	}
 
 	theFace=theObjectList[target]->face(left);
 	if(theFace)
 	{
-		edgeCount=theFace->edge.size();
+        edgeCount=theFace->m_edge.size();
         unsigned int e;
 		for(e=0;e<edgeCount;++e)
 		{
-			if(theFace->edge[e]==-((int)removedEdge))
+            if(theFace->m_edge[e]==-((int)removedEdge))
 			{
-				theObjectList[target]->faceEdgeChange(theFace->index,e,-((int)edgeE));
+                theObjectList[target]->faceEdgeChange(theFace->m_index,e,-((int)edgeE));
 				break;
 			}
 		}
-		theObjectList[target]->faceEdgeInsert(theFace->index,e+1,-((int)edgeS));
-		theObjectList[target]->edgeLeftChange(edgeE,left);
-		theObjectList[target]->edgeLeftChange(edgeS,left);
+        theObjectList[target]->faceEdgeInsert(theFace->m_index,e+1,-((int)edgeS));
+        theObjectList[target]->edgeLeftChange(edgeE,left);
+        theObjectList[target]->edgeLeftChange(edgeS,left);
 	}
 
 	return newVertex;
@@ -1740,22 +1739,22 @@ void Scene::split(int startV,int endV)
 	Face *theFace=NULL;
 	for(e=0;e<edgeCount;++e)
 	{
-        if(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->start==theEnd->index || theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->end==theEnd->index)
+        if(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->m_start==theEnd->m_index || theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->m_end==theEnd->m_index)
 		{
 			//±éÀústartµã£¬¿´ÊÇ²»ÊÇºÍendµãÖ»ÓÐÒ»¸ö±ßÏàÁ¬
 			return;
 		}
-        if(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->left && !theObjectList[target]->face(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->left)->isIn)
+        if(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->m_left && !theObjectList[target]->face(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->m_left)->m_isIn)
 		{
-            theFace=theObjectList[target]->face(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->left);
-			theFace->isIn=true;
+            theFace=theObjectList[target]->face(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->m_left);
+            theFace->m_isIn=true;
 			isInCache.push_back(theFace);
 		}
 	//	else
-        if(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->right && !theObjectList[target]->face(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->right)->isIn)
+        if(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->m_right && !theObjectList[target]->face(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->m_right)->m_isIn)
 		{
-            theFace=theObjectList[target]->face(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->right);
-			theFace->isIn=true;			
+            theFace=theObjectList[target]->face(theObjectList[target]->edge(theStart->m_adjacentEdgeList[e])->m_right);
+            theFace->m_isIn=true;
 			isInCache.push_back(theFace);
 		}
 	}
@@ -1763,15 +1762,15 @@ void Scene::split(int startV,int endV)
 	//Face *theFace=NULL;
 	for(e=0;e<edgeCount;++e)
 	{
-        if(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->left && theObjectList[target]->face(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->left)->isIn)
+        if(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->m_left && theObjectList[target]->face(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->m_left)->m_isIn)
 		{
-            theFace=theObjectList[target]->face(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->left);
+            theFace=theObjectList[target]->face(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->m_left);
 			break;
 		}
 	//	else
-        if(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->right && theObjectList[target]->face(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->right)->isIn)
+        if(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->m_right && theObjectList[target]->face(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->m_right)->m_isIn)
 		{
-            theFace=theObjectList[target]->face(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->right);
+            theFace=theObjectList[target]->face(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->m_right);
 			break;
 		}
 	}
@@ -1784,21 +1783,21 @@ void Scene::split(int startV,int endV)
 	//printf("begin2\n");
 	//µ½ÕâÒ»²½¿ÉÒÔËµÃ÷ÕâÁ½¸öµã²»¹²±ß¶øÇÒ¹²ÏíÍ¬Ò»¸öÃæ
 	//ÐÂ½¨Ò»¸ö±ß
-    unsigned int newEdge=theObjectList[target]->addEdge(theStart->index,theEnd->index);
+    unsigned int newEdge=theObjectList[target]->addEdge(theStart->m_index,theEnd->m_index);
 	//printf("begin2.5\n");
-	edgeCount=theFace->edge.size();
+    edgeCount=theFace->m_edge.size();
     unsigned int edgeS[2]={0};
     unsigned int edgeE[2]={0};
     for(unsigned int i=0;i<edgeCount;++i)
 	{
-		if(theFace->edge[i]>0)
+        if(theFace->m_edge[i]>0)
 		{
-			if(theObjectList[target]->edge(theFace->edge[i])->end==theStart->index)
+            if(theObjectList[target]->edge(theFace->m_edge[i])->m_end==theStart->m_index)
 			{
 				edgeS[0]=i;
 				edgeS[1]=(i+1)%edgeCount;
 			}
-			if(theObjectList[target]->edge(theFace->edge[i])->end==theEnd->index)
+            if(theObjectList[target]->edge(theFace->m_edge[i])->m_end==theEnd->m_index)
 			{
 				edgeE[0]=i;
 				edgeE[1]=(i+1)%edgeCount;				
@@ -1806,12 +1805,12 @@ void Scene::split(int startV,int endV)
 		}
 		else
 		{
-			if(theObjectList[target]->edge(-theFace->edge[i])->start==theStart->index)
+            if(theObjectList[target]->edge(-theFace->m_edge[i])->m_start==theStart->m_index)
 			{
 				edgeS[0]=i;
 				edgeS[1]=(i+1)%edgeCount;
 			}
-			if(theObjectList[target]->edge(-theFace->edge[i])->start==theEnd->index)
+            if(theObjectList[target]->edge(-theFace->m_edge[i])->m_start==theEnd->m_index)
 			{
 				edgeE[0]=i;
 				edgeE[1]=(i+1)%edgeCount;
@@ -1819,53 +1818,53 @@ void Scene::split(int startV,int endV)
 		}
 	}
 	
-	//printf("[%d]",theFace->index);
+    //printf("[%d]",theFace->m_index);
 	//µÃµ½theStartËùÔÚµÄµÚÒ»¸ö±ß
 	//Éú³ÉÁ½¸öÐÂµÄÃæ
-    unsigned int *tempFace=new unsigned int[theFace->edge.size()*2];
+    unsigned int *tempFace=new unsigned int[theFace->m_edge.size()*2];
     unsigned int b=edgeS[1];
     unsigned int count=0;
 	while(b!=edgeE[1])
 	{
-		if(theFace->edge[b]>0)
+        if(theFace->m_edge[b]>0)
 		{
-			theObjectList[target]->edgeRightChange(theFace->edge[b],0);
-			tempFace[count]=theFace->edge[b];
+            theObjectList[target]->edgeRightChange(theFace->m_edge[b],0);
+            tempFace[count]=theFace->m_edge[b];
 			++count;
 		}
 		else
 		{
-			theObjectList[target]->edgeLeftChange(-theFace->edge[b],0);
-			tempFace[count]=-theFace->edge[b];
+            theObjectList[target]->edgeLeftChange(-theFace->m_edge[b],0);
+            tempFace[count]=-theFace->m_edge[b];
 			++count;
 		}
 		++b;
-		b=b%theFace->edge.size();
+        b=b%theFace->m_edge.size();
 	}
 	tempFace[count]=newEdge;
-	//printf("count:%d,size:%d\n",count+1,theFace->edge.size()*2);
+    //printf("count:%d,size:%d\n",count+1,theFace->m_edge.size()*2);
 	theObjectList[target]->addFace(tempFace,count+1);
 	delete tempFace;
-    tempFace=new unsigned int[theFace->edge.size()*2];
+    tempFace=new unsigned int[theFace->m_edge.size()*2];
 	//printf("begin3\n");
 	b=edgeE[1];
 	count=0;
 	while(b!=edgeS[1])
 	{
-		if(theFace->edge[b]>0)
+        if(theFace->m_edge[b]>0)
 		{
-			theObjectList[target]->edgeRightChange(theFace->edge[b],0);
-			tempFace[count]=theFace->edge[b];
+            theObjectList[target]->edgeRightChange(theFace->m_edge[b],0);
+            tempFace[count]=theFace->m_edge[b];
 			++count;
 		}
 		else
 		{
-			theObjectList[target]->edgeLeftChange(-theFace->edge[b],0);
-			tempFace[count]=-theFace->edge[b];
+            theObjectList[target]->edgeLeftChange(-theFace->m_edge[b],0);
+            tempFace[count]=-theFace->m_edge[b];
 			++count;
 		}
 		++b;
-		b=b%theFace->edge.size();
+        b=b%theFace->m_edge.size();
 	}
 	tempFace[count]=newEdge;
 //	for(unsigned int i=0;i<count+1;i++)
@@ -1874,9 +1873,9 @@ void Scene::split(int startV,int endV)
 	//}
 	theObjectList[target]->addFace(tempFace,count+1);
 	//printf("begin4\n");
-	//printf("[%d]",theFace->index);
+    //printf("[%d]",theFace->m_index);
 
-    unsigned int fi=theFace->index;
+    unsigned int fi=theFace->m_index;
 	theFace=NULL;
 	theObjectList[target]->objectFaceRemove(fi);
 	delete tempFace;
@@ -1889,97 +1888,97 @@ void Scene::removeEdge()
     unsigned int removedEdgeCount=selection.size();
     for(unsigned int i=0;i<removedEdgeCount;++i)
 	{
-		Edge *theEdge=theObjectList[target]->edge(selection[i]);
+        Edge *theEdge=theObjectList[target]->edge(selection[i]);
 		if(theEdge==NULL)
 		{
 			continue;
 		}
 		//ÕâÀïÅÐ¶ÏÊÇ±ßÔµµÄ±ß»¹ÊÇÄÚ²¿µÄ±ß
-		if(theEdge->left==0)
+        if(theEdge->m_left==0)
 		{
 			//±£Ö¤Ã¿¸ö±ß±ØÓÐÁÚ½ÓµÄÃæ
-			Face *theFace=theObjectList[target]->face(theEdge->right);
-            unsigned int adjEdgeCount=theFace->edge.size();
+            Face *theFace=theObjectList[target]->face(theEdge->m_right);
+            unsigned int adjEdgeCount=theFace->m_edge.size();
             for(unsigned int e=0;e<adjEdgeCount;++e)
 			{
-				if(theFace->edge[e]>0)
+                if(theFace->m_edge[e]>0)
 				{
-					theObjectList[target]->edgeRightChange(theFace->edge[e],0);
-					if(!theObjectList[target]->edge(theFace->edge[e])->left)
+                    theObjectList[target]->edgeRightChange(theFace->m_edge[e],0);
+                    if(!theObjectList[target]->edge(theFace->m_edge[e])->m_left)
 					{
-						deleteEdgeH(target,theFace->edge[e]);
+                        deleteEdgeH(target,theFace->m_edge[e]);
 					}
 				}
 				else
 				{
-					theObjectList[target]->edgeLeftChange(-theFace->edge[e],0);
-					if(!theObjectList[target]->edge(-theFace->edge[e])->right)
+                    theObjectList[target]->edgeLeftChange(-theFace->m_edge[e],0);
+                    if(!theObjectList[target]->edge(-theFace->m_edge[e])->m_right)
 					{
-						deleteEdgeH(target,-theFace->edge[e]);
+                        deleteEdgeH(target,-theFace->m_edge[e]);
 					}
 				}
 			}
-			theObjectList[target]->objectFaceRemove(theFace->index);
+            theObjectList[target]->objectFaceRemove(theFace->m_index);
 		}
 		else
-		if(theEdge->right==0)
+        if(theEdge->m_right==0)
 		{
-			Face *theFace=theObjectList[target]->face(theEdge->left);
-            unsigned int adjEdgeCount=theFace->edge.size();
+            Face *theFace=theObjectList[target]->face(theEdge->m_left);
+            unsigned int adjEdgeCount=theFace->m_edge.size();
             for(unsigned int e=0;e<adjEdgeCount;++e)
 			{
-				if(theFace->edge[e]>0)
+                if(theFace->m_edge[e]>0)
 				{
-					theObjectList[target]->edgeRightChange(theFace->edge[e],0);
-					if(!theObjectList[target]->edge(theFace->edge[e])->left)
+                    theObjectList[target]->edgeRightChange(theFace->m_edge[e],0);
+                    if(!theObjectList[target]->edge(theFace->m_edge[e])->m_left)
 					{
-						deleteEdgeH(target,theFace->edge[e]);
+                        deleteEdgeH(target,theFace->m_edge[e]);
 					}
 				}
 				else
 				{
-					theObjectList[target]->edgeLeftChange(-theFace->edge[e],0);
-					if(!theObjectList[target]->edge(-theFace->edge[e])->right)
+                    theObjectList[target]->edgeLeftChange(-theFace->m_edge[e],0);
+                    if(!theObjectList[target]->edge(-theFace->m_edge[e])->m_right)
 					{
-						deleteEdgeH(target,-theFace->edge[e]);
+                        deleteEdgeH(target,-theFace->m_edge[e]);
 					}
 				}
 			}
-			theObjectList[target]->objectFaceRemove(theFace->index);
+            theObjectList[target]->objectFaceRemove(theFace->m_index);
 		}
 		else
 		{
-			Face *theLeft=theObjectList[target]->face(theEdge->left);
-			Face *theRight=theObjectList[target]->face(theEdge->right);
+            Face *theLeft=theObjectList[target]->face(theEdge->m_left);
+            Face *theRight=theObjectList[target]->face(theEdge->m_right);
 			//Ê×ÏÈÔÚÓÒ²àµÄÃæÀïÃæÕÒµ½ÒªÉ¾³ýµÄÕâ¸ö±ß
-            unsigned int adjEdgeCount=theRight->edge.size();
+            unsigned int adjEdgeCount=theRight->m_edge.size();
             unsigned int e=0;
 			for(e=0;e<adjEdgeCount;++e)
 			{
-				if(theRight->edge[e]>0)
+                if(theRight->m_edge[e]>0)
 				{
-                    if(theEdge->index==(unsigned int)theRight->edge[e])
+                    if(theEdge->m_index==(unsigned int)theRight->m_edge[e])
 						break;
 				}
 				else
 				{
-                    if(theEdge->index==(unsigned int)(-theRight->edge[e]))
+                    if(theEdge->m_index==(unsigned int)(-theRight->m_edge[e]))
 						break;
 				}
 			}
-			Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-			Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-			deleteEdgeH(target,theEdge->index);
+            Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
+            Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
+            deleteEdgeH(target,theEdge->m_index);
             while(theStart->m_adjacentEdgeList.size()==1)
 			{
                 unsigned int next=0;
-                if(theStart->index==theObjectList[target]->edge(theStart->m_adjacentEdgeList[0])->end)
+                if(theStart->m_index==theObjectList[target]->edge(theStart->m_adjacentEdgeList[0])->m_end)
 				{
-                    next=theObjectList[target]->edge(theStart->m_adjacentEdgeList[0])->start;
+                    next=theObjectList[target]->edge(theStart->m_adjacentEdgeList[0])->m_start;
 				}
 				else
 				{
-                    next=theObjectList[target]->edge(theStart->m_adjacentEdgeList[0])->end;
+                    next=theObjectList[target]->edge(theStart->m_adjacentEdgeList[0])->m_end;
 				}
                 deleteEdgeH(target,theStart->m_adjacentEdgeList[0]);
 				theStart=theObjectList[target]->vertex(next);
@@ -1988,13 +1987,13 @@ void Scene::removeEdge()
             while(theEnd->m_adjacentEdgeList.size()==1)
 			{
                 unsigned int next=0;
-                if(theEnd->index==theObjectList[target]->edge(theEnd->m_adjacentEdgeList[0])->end)
+                if(theEnd->m_index==theObjectList[target]->edge(theEnd->m_adjacentEdgeList[0])->m_end)
 				{
-                    next=theObjectList[target]->edge(theEnd->m_adjacentEdgeList[0])->start;
+                    next=theObjectList[target]->edge(theEnd->m_adjacentEdgeList[0])->m_start;
 				}
 				else
 				{
-                    next=theObjectList[target]->edge(theEnd->m_adjacentEdgeList[0])->end;
+                    next=theObjectList[target]->edge(theEnd->m_adjacentEdgeList[0])->m_end;
 				}
                 deleteEdgeH(target,theEnd->m_adjacentEdgeList[0]);
 				theEnd=theObjectList[target]->vertex(next);
@@ -2002,18 +2001,18 @@ void Scene::removeEdge()
 			//¿ªÊ¼Éú³ÉÐÂµÄÃæÁË;
             unsigned int sEdgeR=0;
             unsigned int eEdgeR=0;
-            unsigned int edgeCount=theRight->edge.size();
+            unsigned int edgeCount=theRight->m_edge.size();
             for(unsigned int e=0;e<edgeCount;++e)
 			{
-				if(theRight->edge[e]>0)
+                if(theRight->m_edge[e]>0)
 				{
-					if(theObjectList[target]->edge(theRight->edge[e]))
+                    if(theObjectList[target]->edge(theRight->m_edge[e]))
 					{
-						if(theObjectList[target]->edge(theRight->edge[e])->start==theEnd->index)
+                        if(theObjectList[target]->edge(theRight->m_edge[e])->m_start==theEnd->m_index)
 						{
 							sEdgeR=e;
 						}
-						if(theObjectList[target]->edge(theRight->edge[e])->end==theStart->index)
+                        if(theObjectList[target]->edge(theRight->m_edge[e])->m_end==theStart->m_index)
 						{
 							eEdgeR=e;
 						}
@@ -2021,13 +2020,13 @@ void Scene::removeEdge()
 				}
 				else
 				{
-					if(theObjectList[target]->edge(-theRight->edge[e]))
+                    if(theObjectList[target]->edge(-theRight->m_edge[e]))
 					{
-						if(theObjectList[target]->edge(-theRight->edge[e])->end==theEnd->index)
+                        if(theObjectList[target]->edge(-theRight->m_edge[e])->m_end==theEnd->m_index)
 						{
 							sEdgeR=e;
 						}
-						if(theObjectList[target]->edge(-theRight->edge[e])->start==theStart->index)
+                        if(theObjectList[target]->edge(-theRight->m_edge[e])->m_start==theStart->m_index)
 						{
 							eEdgeR=e;
 						}
@@ -2037,18 +2036,18 @@ void Scene::removeEdge()
 
             unsigned int sEdgeL=0;
             unsigned int eEdgeL=0;
-			edgeCount=theLeft->edge.size();
+            edgeCount=theLeft->m_edge.size();
             for(unsigned int e=0;e<edgeCount;++e)
 			{
-				if(theLeft->edge[e]>0)
+                if(theLeft->m_edge[e]>0)
 				{
-					if(theObjectList[target]->edge(theLeft->edge[e]))
+                    if(theObjectList[target]->edge(theLeft->m_edge[e]))
 					{
-						if(theObjectList[target]->edge(theLeft->edge[e])->start==theStart->index)
+                        if(theObjectList[target]->edge(theLeft->m_edge[e])->m_start==theStart->m_index)
 						{
 							sEdgeL=e;
 						}
-						if(theObjectList[target]->edge(theLeft->edge[e])->end==theEnd->index)
+                        if(theObjectList[target]->edge(theLeft->m_edge[e])->m_end==theEnd->m_index)
 						{
 							eEdgeL=e;
 						}
@@ -2056,13 +2055,13 @@ void Scene::removeEdge()
 				}
 				else
 				{
-					if(theObjectList[target]->edge(-theLeft->edge[e]))
+                    if(theObjectList[target]->edge(-theLeft->m_edge[e]))
 					{
-						if(theObjectList[target]->edge(-theLeft->edge[e])->end==theStart->index)
+                        if(theObjectList[target]->edge(-theLeft->m_edge[e])->m_end==theStart->m_index)
 						{
 							sEdgeL=e;
 						}
-						if(theObjectList[target]->edge(-theLeft->edge[e])->start==theEnd->index)
+                        if(theObjectList[target]->edge(-theLeft->m_edge[e])->m_start==theEnd->m_index)
 						{
 							eEdgeL=e;
 						}
@@ -2072,30 +2071,30 @@ void Scene::removeEdge()
 			//ÕýÊ½Éú³ÉÁ½¸öÐÂµÄÃæ
             unsigned int b=sEdgeR;
             unsigned int count=0;
-            unsigned int *tempEdge=new unsigned int[theRight->edge.size()+theLeft->edge.size()];
+            unsigned int *tempEdge=new unsigned int[theRight->m_edge.size()+theLeft->m_edge.size()];
 			while(b!=eEdgeR)
 			{
-				tempEdge[count]=theRight->edge[b]>0?theRight->edge[b]:-theRight->edge[b];
+                tempEdge[count]=theRight->m_edge[b]>0?theRight->m_edge[b]:-theRight->m_edge[b];
 				++count;
 				++b;
-				b=b%theRight->edge.size();
+                b=b%theRight->m_edge.size();
 			}
-			tempEdge[count]=theRight->edge[eEdgeR]>0?theRight->edge[eEdgeR]:-theRight->edge[eEdgeR];
+            tempEdge[count]=theRight->m_edge[eEdgeR]>0?theRight->m_edge[eEdgeR]:-theRight->m_edge[eEdgeR];
 			++count;
 			b=sEdgeL;
 			while(b!=eEdgeL)
 			{
-				tempEdge[count]=theLeft->edge[b]>0?theLeft->edge[b]:-theLeft->edge[b];
+                tempEdge[count]=theLeft->m_edge[b]>0?theLeft->m_edge[b]:-theLeft->m_edge[b];
 				++count;
 				++b;
-				b=b%theLeft->edge.size();
+                b=b%theLeft->m_edge.size();
 			}
 			//É¾³ýÔ­À´µÄÁ½¸öÃæ
-			tempEdge[count]=theLeft->edge[eEdgeL]>0?theLeft->edge[eEdgeL]:-theLeft->edge[eEdgeL];
+            tempEdge[count]=theLeft->m_edge[eEdgeL]>0?theLeft->m_edge[eEdgeL]:-theLeft->m_edge[eEdgeL];
 			++count;
 			theObjectList[target]->addFace(tempEdge,count);
-			theObjectList[target]->objectFaceRemove(theLeft->index);
-			theObjectList[target]->objectFaceRemove(theRight->index);
+            theObjectList[target]->objectFaceRemove(theLeft->m_index);
+            theObjectList[target]->objectFaceRemove(theRight->m_index);
 			delete tempEdge;
 		}
 	}}
@@ -2108,7 +2107,7 @@ void Scene::clearIsInCache()
 	{
 		if(isInCache[i])
 		{
-			isInCache[i]->isIn=false;
+            isInCache[i]->m_isIn=false;
 		}
 	}
 	isInCache.clear();
@@ -2131,44 +2130,44 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 	{
         Edge *theEdge=theObjectList[target]->edge(theOriginal->m_adjacentEdgeList[e]);
 		OAdjEdge.push_back(theEdge);
-		if(!theEdge->left || !theEdge->right)
+        if(!theEdge->m_left || !theEdge->m_right)
 		{
 			isEdge=true;
 		}
-		if(theEdge->left)
+        if(theEdge->m_left)
 		{
-			theObjectList[target]->face(theEdge->left)->isIn=true;
-			isInCache.push_back(theObjectList[target]->face(theEdge->left));
+            theObjectList[target]->face(theEdge->m_left)->m_isIn=true;
+            isInCache.push_back(theObjectList[target]->face(theEdge->m_left));
 		}
-		if(theEdge->right)
+        if(theEdge->m_right)
 		{
-			theObjectList[target]->face(theEdge->right)->isIn=true;
-			isInCache.push_back(theObjectList[target]->face(theEdge->right));
+            theObjectList[target]->face(theEdge->m_right)->m_isIn=true;
+            isInCache.push_back(theObjectList[target]->face(theEdge->m_right));
 		}
-		if(theEdge->start==theOriginal->index)
+        if(theEdge->m_start==theOriginal->m_index)
 		{
-			if(theEdge->end==theTarget->index)
+            if(theEdge->m_end==theTarget->m_index)
 			{
 				//ÕâËµÃ÷º¸½ÓµÄÁ½¸öµãÔÚÍ¬Ò»¸ö±ß
 				mode=1;
 				break;
 			}
-			Vertex *theVertex=theObjectList[target]->vertex(theEdge->end);
+            Vertex *theVertex=theObjectList[target]->vertex(theEdge->m_end);
 			OEnd.push_back(theVertex);
-			theVertex->isIn=true;
+            theVertex->m_isIn=true;
 			isInCache.push_back(theVertex);
 		}
 		else
 		{
-			if(theEdge->start==theTarget->index)
+            if(theEdge->m_start==theTarget->m_index)
 			{
 				//ËµÃ÷º¸½ÓµÄÁ½¸öµãÔÚÍ¬Ò»¸ö±ßÉÏ
 				mode=1;
 				break;
 			}
-			Vertex *theVertex=theObjectList[target]->vertex(theEdge->start);
+            Vertex *theVertex=theObjectList[target]->vertex(theEdge->m_start);
 			OEnd.push_back(theVertex);
-			theVertex->isIn=true;
+            theVertex->m_isIn=true;
 			isInCache.push_back(theVertex);
 		}
 	}
@@ -2179,44 +2178,44 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
         Edge *theEdge=theObjectList[target]->edge(theOriginal->m_adjacentEdgeList[e]);
 		Vertex *theStart=NULL;
 		Vertex *theEnd=NULL;
-        unsigned int eIndex=theEdge->index;
-        unsigned int right=theEdge->right;
-        unsigned int left=theEdge->left;
-		if(theEdge->start==vertexB)
+        unsigned int eIndex=theEdge->m_index;
+        unsigned int right=theEdge->m_right;
+        unsigned int left=theEdge->m_left;
+        if(theEdge->m_start==vertexB)
 		{
-			theStart=theObjectList[target]->vertex(theEdge->start);
-			theEnd=theObjectList[target]->vertex(theEdge->end);
+            theStart=theObjectList[target]->vertex(theEdge->m_start);
+            theEnd=theObjectList[target]->vertex(theEdge->m_end);
 		}
 		else
 		{
-			theStart=theObjectList[target]->vertex(theEdge->end);
-			theEnd=theObjectList[target]->vertex(theEdge->start);
+            theStart=theObjectList[target]->vertex(theEdge->m_end);
+            theEnd=theObjectList[target]->vertex(theEdge->m_start);
 		}
-		deleteEdgeH(target,theEdge->index);
+        deleteEdgeH(target,theEdge->m_index);
         unsigned int edgeCount=theEnd->m_adjacentEdgeList.size();
         for(unsigned int e=0;e<edgeCount;++e)
 		{
-            theObjectList[target]->vertexAdjacentPush(theStart->index,theEnd->m_adjacentEdgeList[e]);
+            theObjectList[target]->vertexAdjacentPush(theStart->m_index,theEnd->m_adjacentEdgeList[e]);
 			//¸üÐÂÕâÐ©±ßµÄ¶Ëµã
-            if(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->end==theEnd->index)
+            if(theObjectList[target]->edge(theEnd->m_adjacentEdgeList[e])->m_end==theEnd->m_index)
 			{
-                theObjectList[target]->edgeEndChange(theEnd->m_adjacentEdgeList[e],theStart->index);
+                theObjectList[target]->edgeEndChange(theEnd->m_adjacentEdgeList[e],theStart->m_index);
 			}
 			else
 			{
-                theObjectList[target]->edgeStartChange(theEnd->m_adjacentEdgeList[e],theStart->index);
+                theObjectList[target]->edgeStartChange(theEnd->m_adjacentEdgeList[e],theStart->m_index);
 			}
 		}
-		theObjectList[target]->objectVertexRemove(theEnd->index);
+        theObjectList[target]->objectVertexRemove(theEnd->m_index);
 		if(left>0)
 		{
 			Face  *theFace=theObjectList[target]->face(left);
-            unsigned int edgeCount=theFace->edge.size();
+            unsigned int edgeCount=theFace->m_edge.size();
             for(unsigned int i=0;i<edgeCount;++i)
 			{
-				if(theFace->edge[i]==-((int)eIndex))
+                if(theFace->m_edge[i]==-((int)eIndex))
 				{
-					theObjectList[target]->faceEdgeRemove(theFace->index,i);
+                    theObjectList[target]->faceEdgeRemove(theFace->m_index,i);
 					break;
 				}
 				
@@ -2227,17 +2226,17 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 		{
 			
 			Face  *theFace=theObjectList[target]->face(right);
-            unsigned int edgeCount=theFace->edge.size();
+            unsigned int edgeCount=theFace->m_edge.size();
             for(unsigned int i=0;i<edgeCount;++i)
 			{
-				if(theFace->edge[i]==(int)eIndex)
+                if(theFace->m_edge[i]==(int)eIndex)
 				{
-					theObjectList[target]->faceEdgeRemove(theFace->index,i);
+                    theObjectList[target]->faceEdgeRemove(theFace->m_index,i);
 					break;
 				}
 			}
 		}
-		clearDualEdge(target,theTarget->index);
+        clearDualEdge(target,theTarget->m_index);
 		return;
 	}
 
@@ -2251,19 +2250,19 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
         unsigned int adjEdgeNum=0;
         for(unsigned int e=0;e<edgeCount;++e)
 		{
-            if(!theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->left || !theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->right)
+            if(!theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_left || !theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_right)
 			{
-                if(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->left)
+                if(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_left)
 				{
-                    if(theObjectList[target]->face(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->left)->isIn)
+                    if(theObjectList[target]->face(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_left)->m_isIn)
 					{
 						//ËµÃ÷¹²Ãæ
 						return;
 					}
 				}
-                if(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->right)
+                if(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_right)
 				{
-                    if(theObjectList[target]->face(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->right)->isIn)
+                    if(theObjectList[target]->face(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_right)->m_isIn)
 					{
 						//ËµÃ÷¹²Ãæ
 						return;
@@ -2271,17 +2270,17 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 				}
 				//Èç¹ûÊÇ±ßÔµµÄ±ß
 				isEdge=true;
-                if(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->end==theTarget->index)
+                if(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_end==theTarget->m_index)
 				{
 					//ÅÐ¶ÏÊÇ²»ÊÇÒ»¼¶ÁÚ½Ó
-                    if(theObjectList[target]->vertex(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->start)->isIn)
+                    if(theObjectList[target]->vertex(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_start)->m_isIn)
 					{
 						//¼ÇÂ¼ÁÚ½Ó±ß
                         edgeE[adjEdgeNum]=theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e]);
                         unsigned int OEndCount=OEnd.size();
                         for(unsigned int h=0;h<OEndCount;++h)
 						{
-                            if(OEnd[h]->index==theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->start)
+                            if(OEnd[h]->m_index==theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_start)
 							{
 								edgeS[adjEdgeNum]=OAdjEdge[h];
 								break;
@@ -2296,13 +2295,13 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 				}
 				else
 				{
-                    if(theObjectList[target]->vertex(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->end)->isIn)
+                    if(theObjectList[target]->vertex(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_end)->m_isIn)
 					{
                         edgeE[adjEdgeNum]=theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e]);
                         unsigned int OEndCount=OEnd.size();
                         for(unsigned int h=0;h<OEndCount;++h)
 						{
-                            if(OEnd[h]->index==theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->end)
+                            if(OEnd[h]->m_index==theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->m_end)
 							{
 								edgeS[adjEdgeNum]=OAdjEdge[h];
 								break;
@@ -2327,17 +2326,17 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
                 for(unsigned int h=0;h<edgeCount;++h)
 				{
                     Edge *theEdge=theObjectList[target]->edge(theOriginal->m_adjacentEdgeList[h]);
-					theObjectList[target]->vertexAdjacentPush(theTarget->index,theEdge->index);
-					if(theEdge->start==theOriginal->index)
+                    theObjectList[target]->vertexAdjacentPush(theTarget->m_index,theEdge->m_index);
+                    if(theEdge->m_start==theOriginal->m_index)
 					{
-						theObjectList[target]->edgeStartChange(theEdge->index,theTarget->index);
+                        theObjectList[target]->edgeStartChange(theEdge->m_index,theTarget->m_index);
 					}
 					else
 					{
-						theObjectList[target]->edgeEndChange(theEdge->index,theTarget->index);
+                        theObjectList[target]->edgeEndChange(theEdge->m_index,theTarget->m_index);
 					}
 				}
-				theObjectList[target]->objectVertexRemove(theOriginal->index);
+                theObjectList[target]->objectVertexRemove(theOriginal->m_index);
 			}
 			else
 			if(adjEdgeNum>0)
@@ -2345,14 +2344,14 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
                 unsigned int wMode[2]={0};
                 for(unsigned int w=0;w<adjEdgeNum;++w)
 				{
-					if(edgeS[w]->end==edgeE[w]->start)
+                    if(edgeS[w]->m_end==edgeE[w]->m_start)
 					{
-						if(edgeS[w]->right && edgeE[w]->right)
+                        if(edgeS[w]->m_right && edgeE[w]->m_right)
 						{
 							wMode[w]=1;
 						}
 						else
-						if(edgeS[w]->left && edgeE[w]->left)
+                        if(edgeS[w]->m_left && edgeE[w]->m_left)
 						{
 							wMode[w]=2;
 						}
@@ -2363,14 +2362,14 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 						}
 					}
 					else
-					if(edgeS[w]->end==edgeE[w]->end)
+                    if(edgeS[w]->m_end==edgeE[w]->m_end)
 					{
-						if(edgeS[w]->right && edgeE[w]->left)
+                        if(edgeS[w]->m_right && edgeE[w]->m_left)
 						{
 							wMode[w]=3;
 						}
 						else
-						if(edgeS[w]->left && edgeE[w]->right)
+                        if(edgeS[w]->m_left && edgeE[w]->m_right)
 						{
 							wMode[w]=4;
 						}
@@ -2380,14 +2379,14 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 						}
 					}
 					else
-					if(edgeS[w]->start==edgeE[w]->start)
+                    if(edgeS[w]->m_start==edgeE[w]->m_start)
 					{
-						if(edgeS[w]->left && edgeE[w]->right)
+                        if(edgeS[w]->m_left && edgeE[w]->m_right)
 						{
 							wMode[w]=5;
 						}
 						else
-						if(edgeS[w]->right && edgeE[w]->left)
+                        if(edgeS[w]->m_right && edgeE[w]->m_left)
 						{
 							wMode[w]=6;
 						}
@@ -2397,14 +2396,14 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 						}
 					}
 					else
-					if(edgeS[w]->start==edgeE[w]->end)
+                    if(edgeS[w]->m_start==edgeE[w]->m_end)
 					{
-						if(edgeS[w]->left && edgeE[w]->left)
+                        if(edgeS[w]->m_left && edgeE[w]->m_left)
 						{
 							wMode[w]=7;
 						}
 						else
-						if(edgeS[w]->right && edgeE[w]->right)
+                        if(edgeS[w]->m_right && edgeE[w]->m_right)
 						{
 							wMode[w]=8;
 						}
@@ -2414,20 +2413,20 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 						}
 					}
 				}
-                unsigned int theOriginalIndex=theOriginal->index;
+                unsigned int theOriginalIndex=theOriginal->m_index;
                 for(unsigned int w=0;w<adjEdgeNum;w++)
 				{
 					if(wMode[w]==1)
 					{
-						Face *theF=theObjectList[target]->face(edgeS[w]->right);
-                        unsigned int edgeCount=theF->edge.size();
+                        Face *theF=theObjectList[target]->face(edgeS[w]->m_right);
+                        unsigned int edgeCount=theF->m_edge.size();
                         for(unsigned int h=0;h<edgeCount;++h)
 						{
-							if(theF->edge[h]==(int)(edgeS[w]->index))
+                            if(theF->m_edge[h]==(int)(edgeS[w]->m_index))
 							{
-								theObjectList[target]->faceEdgeChange(theF->index,h,-(int)(edgeE[w]->index));
-								theObjectList[target]->edgeLeftChange(edgeE[w]->index,theF->index);
-								deleteEdgeH(target,edgeS[w]->index);
+                                theObjectList[target]->faceEdgeChange(theF->m_index,h,-(int)(edgeE[w]->m_index));
+                                theObjectList[target]->edgeLeftChange(edgeE[w]->m_index,theF->m_index);
+                                deleteEdgeH(target,edgeS[w]->m_index);
 								break;
 							}
 						}
@@ -2435,15 +2434,15 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 					else
 					if(wMode[w]==2)
 					{
-						Face *theF=theObjectList[target]->face(edgeS[w]->left);
-                        unsigned int edgeCount=theF->edge.size();
+                        Face *theF=theObjectList[target]->face(edgeS[w]->m_left);
+                        unsigned int edgeCount=theF->m_edge.size();
                         for(unsigned int h=0;h<edgeCount;++h)
 						{
-							if(theF->edge[h]==-((int)edgeS[w]->index))
+                            if(theF->m_edge[h]==-((int)edgeS[w]->m_index))
 							{
-								theObjectList[target]->faceEdgeChange(theF->index,h,edgeE[w]->index);
-								theObjectList[target]->edgeRightChange(edgeE[w]->index,theF->index);
-								deleteEdgeH(target,edgeS[w]->index);
+                                theObjectList[target]->faceEdgeChange(theF->m_index,h,edgeE[w]->m_index);
+                                theObjectList[target]->edgeRightChange(edgeE[w]->m_index,theF->m_index);
+                                deleteEdgeH(target,edgeS[w]->m_index);
 								break;
 							}
 						}
@@ -2451,15 +2450,15 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 					else
 					if(wMode[w]==3)
 					{
-						Face *theF=theObjectList[target]->face(edgeS[w]->right);
-                        unsigned int edgeCount=theF->edge.size();
+                        Face *theF=theObjectList[target]->face(edgeS[w]->m_right);
+                        unsigned int edgeCount=theF->m_edge.size();
                         for(unsigned int h=0;h<edgeCount;++h)
 						{
-							if(theF->edge[h]==(int)edgeS[w]->index)
+                            if(theF->m_edge[h]==(int)edgeS[w]->m_index)
 							{
-								theObjectList[target]->faceEdgeChange(theF->index,h,edgeE[w]->index);
-								theObjectList[target]->edgeRightChange(edgeE[w]->index,theF->index);
-								deleteEdgeH(target,edgeS[w]->index);
+                                theObjectList[target]->faceEdgeChange(theF->m_index,h,edgeE[w]->m_index);
+                                theObjectList[target]->edgeRightChange(edgeE[w]->m_index,theF->m_index);
+                                deleteEdgeH(target,edgeS[w]->m_index);
 								break;
 							}
 						}
@@ -2467,15 +2466,15 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 					else
 					if(wMode[w]==4)
 					{
-						Face *theF=theObjectList[target]->face(edgeS[w]->left);
-                        unsigned int edgeCount=theF->edge.size();
+                        Face *theF=theObjectList[target]->face(edgeS[w]->m_left);
+                        unsigned int edgeCount=theF->m_edge.size();
                         for(unsigned int h=0;h<edgeCount;++h)
 						{
-							if(theF->edge[h]==-((int)edgeS[w]->index))
+                            if(theF->m_edge[h]==-((int)edgeS[w]->m_index))
 							{
-								theObjectList[target]->faceEdgeChange(theF->index,h,-((int)edgeE[w]->index));
-								theObjectList[target]->edgeLeftChange(edgeE[w]->index,theF->index);
-								deleteEdgeH(target,edgeS[w]->index);
+                                theObjectList[target]->faceEdgeChange(theF->m_index,h,-((int)edgeE[w]->m_index));
+                                theObjectList[target]->edgeLeftChange(edgeE[w]->m_index,theF->m_index);
+                                deleteEdgeH(target,edgeS[w]->m_index);
 								break;
 							}
 						}
@@ -2483,15 +2482,15 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 					else
 					if(wMode[w]==5)
 					{
-						Face *theF=theObjectList[target]->face(edgeS[w]->left);
-                        unsigned int edgeCount=theF->edge.size();
+                        Face *theF=theObjectList[target]->face(edgeS[w]->m_left);
+                        unsigned int edgeCount=theF->m_edge.size();
                         for(unsigned int h=0;h<edgeCount;++h)
 						{
-							if(theF->edge[h]==-((int)edgeS[w]->index))
+                            if(theF->m_edge[h]==-((int)edgeS[w]->m_index))
 							{
-								theObjectList[target]->faceEdgeChange(theF->index,h,-(int)(edgeE[w]->index));
-								theObjectList[target]->edgeLeftChange(edgeE[w]->index,theF->index);
-								deleteEdgeH(target,edgeS[w]->index);
+                                theObjectList[target]->faceEdgeChange(theF->m_index,h,-(int)(edgeE[w]->m_index));
+                                theObjectList[target]->edgeLeftChange(edgeE[w]->m_index,theF->m_index);
+                                deleteEdgeH(target,edgeS[w]->m_index);
 								break;
 							}
 						}
@@ -2499,15 +2498,15 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 					else
 					if(wMode[w]==6)
 					{
-						Face *theF=theObjectList[target]->face(edgeS[w]->right);
-                        unsigned int edgeCount=theF->edge.size();
+                        Face *theF=theObjectList[target]->face(edgeS[w]->m_right);
+                        unsigned int edgeCount=theF->m_edge.size();
                         for(unsigned int h=0;h<edgeCount;++h)
 						{
-							if(theF->edge[h]==(int)(edgeS[w]->index))
+                            if(theF->m_edge[h]==(int)(edgeS[w]->m_index))
 							{
-								theObjectList[target]->faceEdgeChange(theF->index,h,edgeE[w]->index);
-								theObjectList[target]->edgeRightChange(edgeE[w]->index,theF->index);
-								deleteEdgeH(target,edgeS[w]->index);
+                                theObjectList[target]->faceEdgeChange(theF->m_index,h,edgeE[w]->m_index);
+                                theObjectList[target]->edgeRightChange(edgeE[w]->m_index,theF->m_index);
+                                deleteEdgeH(target,edgeS[w]->m_index);
 								break;
 							}
 						}
@@ -2515,15 +2514,15 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 					else
 					if(wMode[w]==7)
 					{
-						Face *theF=theObjectList[target]->face(edgeS[w]->left);
-                        unsigned int edgeCount=theF->edge.size();
+                        Face *theF=theObjectList[target]->face(edgeS[w]->m_left);
+                        unsigned int edgeCount=theF->m_edge.size();
                         for(unsigned int h=0;h<edgeCount;++h)
 						{
-							if(theF->edge[h]==-((int)edgeS[w]->index))
+                            if(theF->m_edge[h]==-((int)edgeS[w]->m_index))
 							{
-								theObjectList[target]->faceEdgeChange(theF->index,h,edgeE[w]->index);
-								theObjectList[target]->edgeRightChange(edgeE[w]->index,theF->index);
-								deleteEdgeH(target,edgeS[w]->index);
+                                theObjectList[target]->faceEdgeChange(theF->m_index,h,edgeE[w]->m_index);
+                                theObjectList[target]->edgeRightChange(edgeE[w]->m_index,theF->m_index);
+                                deleteEdgeH(target,edgeS[w]->m_index);
 								break;
 							}
 						}
@@ -2531,15 +2530,15 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 					else
 					if(wMode[w]==8)
 					{
-						Face *theF=theObjectList[target]->face(edgeS[w]->right);
-                        unsigned int edgeCount=theF->edge.size();
+                        Face *theF=theObjectList[target]->face(edgeS[w]->m_right);
+                        unsigned int edgeCount=theF->m_edge.size();
                         for(unsigned int h=0;h<edgeCount;++h)
 						{
-							if(theF->edge[h]==(int)edgeS[w]->index)
+                            if(theF->m_edge[h]==(int)edgeS[w]->m_index)
 							{
-								theObjectList[target]->faceEdgeChange(theF->index,h,-((int)edgeE[w]->index));
-								theObjectList[target]->edgeLeftChange(edgeE[w]->index,theF->index);
-								deleteEdgeH(target,edgeS[w]->index);
+                                theObjectList[target]->faceEdgeChange(theF->m_index,h,-((int)edgeE[w]->m_index));
+                                theObjectList[target]->edgeLeftChange(edgeE[w]->m_index,theF->m_index);
+                                deleteEdgeH(target,edgeS[w]->m_index);
 								break;
 							}
 						}
@@ -2551,17 +2550,17 @@ void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
                     unsigned int edgeCount=theOriginal->m_adjacentEdgeList.size();
                     for(unsigned int h=0;h<edgeCount;++h)
 					{
-                        theObjectList[target]->vertexAdjacentPush(theTarget->index,theOriginal->m_adjacentEdgeList[h]);
-                        if(theObjectList[target]->edge(theOriginal->m_adjacentEdgeList[h])->end==theOriginal->index)
+                        theObjectList[target]->vertexAdjacentPush(theTarget->m_index,theOriginal->m_adjacentEdgeList[h]);
+                        if(theObjectList[target]->edge(theOriginal->m_adjacentEdgeList[h])->m_end==theOriginal->m_index)
 						{
-                            theObjectList[target]->edgeEndChange(theOriginal->m_adjacentEdgeList[h],theTarget->index);
+                            theObjectList[target]->edgeEndChange(theOriginal->m_adjacentEdgeList[h],theTarget->m_index);
 						}
 						else
 						{
-                            theObjectList[target]->edgeStartChange(theOriginal->m_adjacentEdgeList[h],theTarget->index);
+                            theObjectList[target]->edgeStartChange(theOriginal->m_adjacentEdgeList[h],theTarget->m_index);
 						}
 					}
-					theObjectList[target]->objectVertexRemove(theOriginal->index);
+                    theObjectList[target]->objectVertexRemove(theOriginal->m_index);
 				}
 			}
 		}
@@ -2588,7 +2587,7 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 		{
 			
 			//ÕâÀïÊ×ÏÈÒªµÃµ½Ò»¸öÃæµÄÁ¬Í¨ÇøÓò
-			if(!theObjectList[target]->face(selection[i]) || theObjectList[target]->face(selection[i])->isIn)
+            if(!theObjectList[target]->face(selection[i]) || theObjectList[target]->face(selection[i])->m_isIn)
 			{
 				continue;
 			}
@@ -2601,26 +2600,26 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 				toBeHandled.push_back(theFace);
 				while(!toBeHandled.empty())
 				{
-					if(!toBeHandled[0]->isIn)
+                    if(!toBeHandled[0]->m_isIn)
 					{
-						toBeHandled[0]->isIn=true;
+                        toBeHandled[0]->m_isIn=true;
 						isInCache.push_back(toBeHandled[0]);
 						theGroup.push_back(toBeHandled[0]);
-                        unsigned int edgeCount=toBeHandled[0]->edge.size();
+                        unsigned int edgeCount=toBeHandled[0]->m_edge.size();
                         for(unsigned int h=0;h<edgeCount;++h)
 						{
-							if(toBeHandled[0]->edge[h]>0)
+                            if(toBeHandled[0]->m_edge[h]>0)
 							{
-								Face *theLeft=theObjectList[target]->face(theObjectList[target]->edge(toBeHandled[0]->edge[h])->left);
-								if(theLeft && theLeft->isSelected)
+                                Face *theLeft=theObjectList[target]->face(theObjectList[target]->edge(toBeHandled[0]->m_edge[h])->m_left);
+                                if(theLeft && theLeft->m_isSelected)
 								{
 									toBeHandled.push_back(theLeft);
 								}
 							}
 							else
 							{
-								Face *theRight=theObjectList[target]->face(theObjectList[target]->edge(-toBeHandled[0]->edge[h])->right);
-								if(theRight && theRight->isSelected)
+                                Face *theRight=theObjectList[target]->face(theObjectList[target]->edge(-toBeHandled[0]->m_edge[h])->m_right);
+                                if(theRight && theRight->m_isSelected)
 								{
 									toBeHandled.push_back(theRight);
 								}
@@ -2637,70 +2636,70 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
                 for(unsigned int e=0;e<groupSize;++e)
 				{
 					Face *theFace=theGroup[e];
-                    unsigned int edgeCount=theFace->edge.size();
+                    unsigned int edgeCount=theFace->m_edge.size();
                     unsigned int *tempEdge=new unsigned int[edgeCount];
                     for(unsigned int h=0;h<edgeCount;++h)
 					{
 						Edge *theEdge;
-						if(theFace->edge[h]>0)
+                        if(theFace->m_edge[h]>0)
 						{
-							theEdge=theObjectList[target]->edge(theFace->edge[h]);
-							if(!theEdge->isIn)
+                            theEdge=theObjectList[target]->edge(theFace->m_edge[h]);
+                            if(!theEdge->m_isIn)
 							{
-								Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-								Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-								if(!theStart->isIn)
+                                Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
+                                Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
+                                if(!theStart->m_isIn)
 								{
                                     theStart->m_clone=theObjectList[target]->addVertex(theStart->m_position.x+x,theStart->m_position.y+y,theStart->m_position.z+z);
-									theStart->isIn=true;
+                                    theStart->m_isIn=true;
 									isInCache.push_back(theStart);
 								}
-								if(!theEnd->isIn)
+                                if(!theEnd->m_isIn)
 								{
                                     theEnd->m_clone=theObjectList[target]->addVertex(theEnd->m_position.x+x,theEnd->m_position.y+y,theEnd->m_position.z+z);
-									theEnd->isIn=true;
+                                    theEnd->m_isIn=true;
 									isInCache.push_back(theEnd);
 								}
-                                theEdge->clone=theObjectList[target]->addEdge(theStart->m_clone,theEnd->m_clone);
-								theEdge->isIn=true;
+                                theEdge->m_clone=theObjectList[target]->addEdge(theStart->m_clone,theEnd->m_clone);
+                                theEdge->m_isIn=true;
 								isInCache.push_back(theEdge);
-								if(theEdge->left==0 ||(theEdge->left>0 && !theObjectList[target]->face(theEdge->left)->isIn))
+                                if(theEdge->m_left==0 ||(theEdge->m_left>0 && !theObjectList[target]->face(theEdge->m_left)->m_isIn))
 								{
 									//ËµÃ÷ÊÇ±ßÉÏµÄ
-									eEdgeList.push_back(theEdge->index);
+                                    eEdgeList.push_back(theEdge->m_index);
 								}
 							}
-                            tempEdge[h]=theEdge->clone;
+                            tempEdge[h]=theEdge->m_clone;
 						}
 						else
 						{
-							theEdge=theObjectList[target]->edge(-theFace->edge[h]);
-							if(!theEdge->isIn)
+                            theEdge=theObjectList[target]->edge(-theFace->m_edge[h]);
+                            if(!theEdge->m_isIn)
 							{
-								Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-								Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-								if(!theStart->isIn)
+                                Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
+                                Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
+                                if(!theStart->m_isIn)
 								{
                                     theStart->m_clone=theObjectList[target]->addVertex(theStart->m_position.x+x,theStart->m_position.y+y,theStart->m_position.z+z);
-									theStart->isIn=true;
+                                    theStart->m_isIn=true;
 									isInCache.push_back(theStart);
 								}
-								if(!theEnd->isIn)
+                                if(!theEnd->m_isIn)
 								{
                                     theEnd->m_clone=theObjectList[target]->addVertex(theEnd->m_position.x+x,theEnd->m_position.y+y,theEnd->m_position.z+z);
-									theEnd->isIn=true;
+                                    theEnd->m_isIn=true;
 									isInCache.push_back(theEnd);
 								}
-                                theEdge->clone=theObjectList[target]->addEdge(theStart->m_clone,theEnd->m_clone);
-								theEdge->isIn=true;
+                                theEdge->m_clone=theObjectList[target]->addEdge(theStart->m_clone,theEnd->m_clone);
+                                theEdge->m_isIn=true;
 								isInCache.push_back(theEdge);
-								if(theEdge->right==0 ||(theEdge->right>0 && !theObjectList[target]->face(theEdge->right)->isIn))
+                                if(theEdge->m_right==0 ||(theEdge->m_right>0 && !theObjectList[target]->face(theEdge->m_right)->m_isIn))
 								{
 									//ËµÃ÷ÊÇ±ßÉÏµÄ
-									eEdgeList.push_back(-((int)theEdge->index));
+                                    eEdgeList.push_back(-((int)theEdge->m_index));
 								}
 							}
-                            tempEdge[h]=theEdge->clone;
+                            tempEdge[h]=theEdge->m_clone;
 						}
 					}
 					//theObjectList[target]->addFace(tempEdge,edgeCount);
@@ -2714,50 +2713,50 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 				{
 					if(eEdgeList[e]>0)
 					{
-						Edge *theEdge=theObjectList[target]->edge(eEdgeList[e]);
-						Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-						Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
+                        Edge *theEdge=theObjectList[target]->edge(eEdgeList[e]);
+                        Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
+                        Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
                         unsigned int tempEdge[4]={0};
-                        if(!theObjectList[target]->vertex(theStart->m_clone)->isIn)
+                        if(!theObjectList[target]->vertex(theStart->m_clone)->m_isIn)
 						{
-                            theObjectList[target]->vertex(theStart->m_clone)->m_clone=theObjectList[target]->addEdge(theStart->index,theStart->m_clone);
-                            theObjectList[target]->vertex(theStart->m_clone)->isIn=true;
+                            theObjectList[target]->vertex(theStart->m_clone)->m_clone=theObjectList[target]->addEdge(theStart->m_index,theStart->m_clone);
+                            theObjectList[target]->vertex(theStart->m_clone)->m_isIn=true;
                             isInCache.push_back(theObjectList[target]->vertex(theStart->m_clone));
 						}
                         tempEdge[3]=theObjectList[target]->vertex(theStart->m_clone)->m_clone;
-                        if(!theObjectList[target]->vertex(theEnd->m_clone)->isIn)
+                        if(!theObjectList[target]->vertex(theEnd->m_clone)->m_isIn)
 						{
-                            theObjectList[target]->vertex(theEnd->m_clone)->m_clone=theObjectList[target]->addEdge(theEnd->index,theEnd->m_clone);
-                            theObjectList[target]->vertex(theEnd->m_clone)->isIn=true;
+                            theObjectList[target]->vertex(theEnd->m_clone)->m_clone=theObjectList[target]->addEdge(theEnd->m_index,theEnd->m_clone);
+                            theObjectList[target]->vertex(theEnd->m_clone)->m_isIn=true;
                             isInCache.push_back(theObjectList[target]->vertex(theEnd->m_clone));
 						}
                         tempEdge[1]=theObjectList[target]->vertex(theEnd->m_clone)->m_clone;
-						tempEdge[0]=theEdge->index;
-                        tempEdge[2]=theEdge->clone;;
+                        tempEdge[0]=theEdge->m_index;
+                        tempEdge[2]=theEdge->m_clone;;
 						theObjectList[target]->addFace(tempEdge,4);
 					}
 					else
 					{
-						Edge *theEdge=theObjectList[target]->edge(-eEdgeList[e]);
-						Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-						Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
+                        Edge *theEdge=theObjectList[target]->edge(-eEdgeList[e]);
+                        Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
+                        Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
                         unsigned int tempEdge[4]={0};
-                        if(!theObjectList[target]->vertex(theStart->m_clone)->isIn)
+                        if(!theObjectList[target]->vertex(theStart->m_clone)->m_isIn)
 						{
-                            theObjectList[target]->vertex(theStart->m_clone)->m_clone=theObjectList[target]->addEdge(theStart->index,theStart->m_clone);
-                            theObjectList[target]->vertex(theStart->m_clone)->isIn=true;
+                            theObjectList[target]->vertex(theStart->m_clone)->m_clone=theObjectList[target]->addEdge(theStart->m_index,theStart->m_clone);
+                            theObjectList[target]->vertex(theStart->m_clone)->m_isIn=true;
                             isInCache.push_back(theObjectList[target]->vertex(theStart->m_clone));
 						}
                         tempEdge[1]=theObjectList[target]->vertex(theStart->m_clone)->m_clone;
-                        if(!theObjectList[target]->vertex(theEnd->m_clone)->isIn)
+                        if(!theObjectList[target]->vertex(theEnd->m_clone)->m_isIn)
 						{
-                            theObjectList[target]->vertex(theEnd->m_clone)->m_clone=theObjectList[target]->addEdge(theEnd->index,theEnd->m_clone);
-                            theObjectList[target]->vertex(theEnd->m_clone)->isIn=true;
+                            theObjectList[target]->vertex(theEnd->m_clone)->m_clone=theObjectList[target]->addEdge(theEnd->m_index,theEnd->m_clone);
+                            theObjectList[target]->vertex(theEnd->m_clone)->m_isIn=true;
                             isInCache.push_back(theObjectList[target]->vertex(theEnd->m_clone));
 						}
                         tempEdge[3]=theObjectList[target]->vertex(theEnd->m_clone)->m_clone;
-						tempEdge[0]=theEdge->index;
-                        tempEdge[2]=theEdge->clone;;
+                        tempEdge[0]=theEdge->m_index;
+                        tempEdge[2]=theEdge->m_clone;;
 						theObjectList[target]->addFace(tempEdge,4);
 					}
 				}
@@ -2766,33 +2765,33 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
                 for(unsigned int e=0;e<groupSize;++e)
 				{
 					Face *theFace=theGroup[e];
-                    unsigned int edgeCount=theFace->edge.size();
+                    unsigned int edgeCount=theFace->m_edge.size();
                     for(unsigned int h=0;h<edgeCount;++h)
 					{
-						if(theFace->edge[h]>0)
+                        if(theFace->m_edge[h]>0)
 						{
-							if(theObjectList[target]->edge(theFace->edge[h])->right==theFace->index)
+                            if(theObjectList[target]->edge(theFace->m_edge[h])->m_right==theFace->m_index)
 							{
-								theObjectList[target]->edgeRightChange(theFace->edge[h],0);
-								if(!theObjectList[target]->edge(theFace->edge[h])->left)
+                                theObjectList[target]->edgeRightChange(theFace->m_edge[h],0);
+                                if(!theObjectList[target]->edge(theFace->m_edge[h])->m_left)
 								{
-									deleteEdgeH(target,theFace->edge[h]);
+                                    deleteEdgeH(target,theFace->m_edge[h]);
 								}
 							}
 						}
 						else
 						{
-							if(theObjectList[target]->edge(-theFace->edge[h])->left==theFace->index)
+                            if(theObjectList[target]->edge(-theFace->m_edge[h])->m_left==theFace->m_index)
 							{
-								theObjectList[target]->edgeLeftChange(-theFace->edge[h],0);
-								if(!theObjectList[target]->edge(-theFace->edge[h])->right)
+                                theObjectList[target]->edgeLeftChange(-theFace->m_edge[h],0);
+                                if(!theObjectList[target]->edge(-theFace->m_edge[h])->m_right)
 								{
-									deleteEdgeH(target,-theFace->edge[h]);
+                                    deleteEdgeH(target,-theFace->m_edge[h]);
 								}
 							}
 						}
 					}
-					theObjectList[target]->objectFaceRemove(theFace->index);
+                    theObjectList[target]->objectFaceRemove(theFace->m_index);
 				}
 				theGroup.clear();
 				
@@ -2832,40 +2831,40 @@ void Scene::detach(Object *newObject)
             for(unsigned int e=0;e<faceCount;++e)
 			{
 				Face *theFace=theObjectList[target]->face(selection[e]);
-                unsigned int edgeCount=theFace->edge.size();
+                unsigned int edgeCount=theFace->m_edge.size();
                 unsigned int *tempEdge=new unsigned int[edgeCount];
                 for(unsigned int h=0;h<edgeCount;++h)
 				{
 					Edge *theEdge;
-					if(theFace->edge[h]>0)
+                    if(theFace->m_edge[h]>0)
 					{
-						theEdge=theObjectList[target]->edge(theFace->edge[h]);
+                        theEdge=theObjectList[target]->edge(theFace->m_edge[h]);
 					}
 					else
 					{
-						theEdge=theObjectList[target]->edge(-theFace->edge[h]);
+                        theEdge=theObjectList[target]->edge(-theFace->m_edge[h]);
 					}
-					if(!theEdge->isIn)
+                    if(!theEdge->m_isIn)
 					{
-						Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-						Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-						if(!theStart->isIn)
+                        Vertex *theStart=theObjectList[target]->vertex(theEdge->m_start);
+                        Vertex *theEnd=theObjectList[target]->vertex(theEdge->m_end);
+                        if(!theStart->m_isIn)
 						{
                             theStart->m_clone=newObject->addVertex(theStart->m_position);
-							theStart->isIn=true;
+                            theStart->m_isIn=true;
 							isInCache.push_back(theStart);
 						}
-						if(!theEnd->isIn)
+                        if(!theEnd->m_isIn)
 						{
                             theEnd->m_clone=newObject->addVertex(theEnd->m_position.x,theEnd->m_position.y,theEnd->m_position.z);
-							theEnd->isIn=true;
+                            theEnd->m_isIn=true;
 							isInCache.push_back(theEnd);
 						}
-                        theEdge->clone=newObject->addEdge(theStart->m_clone,theEnd->m_clone);
-						theEdge->isIn=true;
+                        theEdge->m_clone=newObject->addEdge(theStart->m_clone,theEnd->m_clone);
+                        theEdge->m_isIn=true;
 						isInCache.push_back(theEdge);
 					}
-                    tempEdge[h]=theEdge->clone;;
+                    tempEdge[h]=theEdge->m_clone;;
 				}
 
 				newObject->addFace(tempEdge,edgeCount);
@@ -2875,34 +2874,34 @@ void Scene::detach(Object *newObject)
 for(unsigned int e=0;e<faceCount;++e)
 			{
 				Face *theFace=theObjectList[target]->face(selection[e]);
-unsigned int edgeCount=theFace->edge.size();
+unsigned int edgeCount=theFace->m_edge.size();
                 for(unsigned int h=0;h<edgeCount;++h)
 				{
-					if(theFace->edge[h]>0)
+                    if(theFace->m_edge[h]>0)
 					{
-						theObjectList[target]->edgeRightChange(theFace->edge[h],0);
-						if(!theObjectList[target]->edge(theFace->edge[h])->left)
+                        theObjectList[target]->edgeRightChange(theFace->m_edge[h],0);
+                        if(!theObjectList[target]->edge(theFace->m_edge[h])->m_left)
 						{
-							deleteEdgeH(target,theFace->edge[h]);
+                            deleteEdgeH(target,theFace->m_edge[h]);
 						}
 					}
 					else
 					{
-						theObjectList[target]->edgeLeftChange(-theFace->edge[h],0);
-						if(!theObjectList[target]->edge(-theFace->edge[h])->right)
+                        theObjectList[target]->edgeLeftChange(-theFace->m_edge[h],0);
+                        if(!theObjectList[target]->edge(-theFace->m_edge[h])->m_right)
 						{
-							deleteEdgeH(target,-theFace->edge[h]);
+                            deleteEdgeH(target,-theFace->m_edge[h]);
 						}
 					}
 				}
-				theObjectList[target]->objectFaceRemove(theFace->index);
+                theObjectList[target]->objectFaceRemove(theFace->m_index);
 				//printf("sf");
 			}
 			
-newObject->center=theObjectList[target]->center;
-newObject->rotation=theObjectList[target]->rotation;
-newObject->position=theObjectList[target]->position;
-newObject->scale=theObjectList[target]->scale;
+newObject->m_center=theObjectList[target]->m_center;
+newObject->m_rotation=theObjectList[target]->m_rotation;
+newObject->m_position=theObjectList[target]->m_position;
+newObject->m_scale=theObjectList[target]->m_scale;
 
 		}
 
@@ -2913,15 +2912,15 @@ void Scene::attach(unsigned int original,unsigned int toBeAttached)
 	{
 		if(original && toBeAttached)
 		{
-			Vector rotation=theObjectList[toBeAttached]->rotation;
-            Vector position=theObjectList[toBeAttached]->position;
-			Vector scale=theObjectList[toBeAttached]->scale;
-			Vector center=theObjectList[toBeAttached]->center;
+            Vector rotation=theObjectList[toBeAttached]->m_rotation;
+            Vector position=theObjectList[toBeAttached]->m_position;
+            Vector scale=theObjectList[toBeAttached]->m_scale;
+            Vector center=theObjectList[toBeAttached]->m_center;
 
-			Vector originalRotation=theObjectList[original]->rotation;
-            Vector originalPosition=theObjectList[original]->position;
-			Vector originalScale=theObjectList[original]->scale;
-			Vector originalCenter=theObjectList[original]->center;
+            Vector originalRotation=theObjectList[original]->m_rotation;
+            Vector originalPosition=theObjectList[original]->m_position;
+            Vector originalScale=theObjectList[original]->m_scale;
+            Vector originalCenter=theObjectList[original]->m_center;
 
 			Matrix transform;
 
@@ -2957,10 +2956,10 @@ void Scene::attach(unsigned int original,unsigned int toBeAttached)
             unsigned int edgeCount=theObjectList[toBeAttached]->edgeCount();
             for(unsigned int e=0;e<edgeCount;++e)
 			{
-				Edge *theEdge=theObjectList[toBeAttached]->edge(e);
+                Edge *theEdge=theObjectList[toBeAttached]->edge(e);
 				if(e)
 				{
-                    theEdge->clone=theObjectList[original]->addEdge(theObjectList[toBeAttached]->vertex(theEdge->start)->m_clone,theObjectList[toBeAttached]->vertex(theEdge->end)->m_clone);
+                    theEdge->m_clone=theObjectList[original]->addEdge(theObjectList[toBeAttached]->vertex(theEdge->m_start)->m_clone,theObjectList[toBeAttached]->vertex(theEdge->m_end)->m_clone);
 				}
 			}
 
@@ -2969,17 +2968,17 @@ void Scene::attach(unsigned int original,unsigned int toBeAttached)
 			{
 				Face *theFace=theObjectList[toBeAttached]->face(f);
 				if(theFace==NULL) continue;
-                unsigned int edgeCount=theFace->edge.size();
+                unsigned int edgeCount=theFace->m_edge.size();
                 unsigned int *tempEdge=new unsigned int[edgeCount];
                 for(unsigned int e=0;e<edgeCount;++e)
 				{
-					if(theFace->edge[e]>0)
+                    if(theFace->m_edge[e]>0)
 					{
-                        tempEdge[e]=theObjectList[toBeAttached]->edge(theFace->edge[e])->clone;
+                        tempEdge[e]=theObjectList[toBeAttached]->edge(theFace->m_edge[e])->m_clone;
 					}
 					else
 					{
-                        tempEdge[e]=theObjectList[toBeAttached]->edge(-theFace->edge[e])->clone;
+                        tempEdge[e]=theObjectList[toBeAttached]->edge(-theFace->m_edge[e])->m_clone;
 					}
 				}
 				theObjectList[original]->addFace(tempEdge,edgeCount);
@@ -2999,7 +2998,7 @@ void Scene::clearSelection()
 			{
 				if(theObjectList[target]->vertex(selection[i]))
 				{
-					theObjectList[target]->vertex(selection[i])->isSelected=false;
+                    theObjectList[target]->vertex(selection[i])->m_isSelected=false;
 				}
 			}
 		}
@@ -3008,9 +3007,9 @@ void Scene::clearSelection()
 		{
             for(unsigned int i=0;i<selectionSize;i++)
 			{
-				if(theObjectList[target]->edge(selection[i]))
+                if(theObjectList[target]->edge(selection[i]))
 				{
-					theObjectList[target]->edge(selection[i])->isSelected=false;
+                    theObjectList[target]->edge(selection[i])->m_isSelected=false;
 				}
 			}			
 		}
@@ -3021,7 +3020,7 @@ void Scene::clearSelection()
 			{
 				if(theObjectList[target]->face(selection[i]))
 				{
-					theObjectList[target]->face(selection[i])->isSelected=false;
+                    theObjectList[target]->face(selection[i])->m_isSelected=false;
 				}
 			}			
 		}
@@ -3032,7 +3031,7 @@ void Scene::clearSelection()
 			{
 				if(theObjectList[selection[i]])
 				{
-					theObjectList[selection[i]]->isSelected=false;
+                    theObjectList[selection[i]]->m_isSelected=false;
 				}
 			}						
 		}

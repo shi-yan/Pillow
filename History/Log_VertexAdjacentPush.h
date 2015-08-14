@@ -5,7 +5,7 @@ class Log_VertexAdjacentPush :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
 
 public:
     Log_VertexAdjacentPush(unsigned int theTarget,unsigned int index);

@@ -1,28 +1,26 @@
 #include "Face.h"
 
-//³õÊ¼»¯ÎÞ·¨Ïß
-Face::Face(void):ElementBase(),center(0),normal(0)
+Face::Face(void)
+    :ElementBase(),
+      m_normal(0),
+      m_center(0)
 {
-	//¼Ù¶¨ÃæµÄÍ¨³£±ßÊýÄ¿Ð¡ÓÚ5
-    edge.clear();
-	edge.reserve(5);
+    m_edge.reserve(5);
 }
 
-//·µ»ØÖ¸¶¨µÄ±ßÁÐ±íÔªËØ
-const int& Face::operator [](unsigned int i)
+int Face::operator [](unsigned int i) const
 {
-	return edge[i];
+    return m_edge[i];
 }
 
-//µÃµ½ÃæµÄÐÅÏ¢,ÓÃÓÚ´æ´¢³ÉÎÄ¼þ
-struct FaceInfo Face::getFaceInfo()
+Face::FaceInfo Face::getFaceInfo() const
 {
-	struct FaceInfo result;
-	result.index=index;
-	result.edgeCount=edge.size();
-	result.nx=normal.x;
-	result.ny=normal.y;
-	result.nz=normal.z;
+    Face::FaceInfo result;
+    result.index = m_index;
+    result.edgeCount = m_edge.size();
+    result.nx = m_normal.x;
+    result.ny = m_normal.y;
+    result.nz = m_normal.z;
 	return result;
 }
 

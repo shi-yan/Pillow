@@ -1,22 +1,18 @@
 #include "SubdivideEdge.h"
 
-SubdivideEdge::SubdivideEdge(void)
+SubdivideEdge::SubdivideEdge(unsigned int start, unsigned int end)
     :ElementBase(),
-      start(0),
-      end(0),
-      left(0),
-      right(0),
-      subdivideId(0),
-      subdivideStep(0),
-      middle(0),
-      startEdge(0),
-      endEdge(0),
-      rightEdge(0),
-      leftEdge(0)
-{
-}
-
-SubdivideEdge::SubdivideEdge(unsigned int theStart,unsigned int theEnd):ElementBase(),start(theStart),end(theEnd),left(0),right(0),subdivideId(0),subdivideStep(0),middle(0),startEdge(0),endEdge(0),rightEdge(0),leftEdge(0)
+      m_start(start),
+      m_end(end),
+      m_left(0),
+      m_right(0),
+      m_subdivideId(0),
+      m_subdivideStep(0),
+      m_middle(0),
+      m_startEdge(0),
+      m_endEdge(0),
+      m_rightEdge(0),
+      m_leftEdge(0)
 {
 }
 

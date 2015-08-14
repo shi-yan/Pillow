@@ -6,7 +6,7 @@ class Log_VertexAdjacentPop :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
 	const int o;
 
 public:

@@ -1,21 +1,19 @@
 #include "Edge.h"
 
-Edge::Edge(void):SubdivideEdge(),clone(0)
+Edge::Edge(int theStart, int theEnd)
+    :SubdivideEdge(theStart, theEnd),
+      m_clone(0)
 {
 }
 
-Edge::Edge(int theStart,int theEnd):SubdivideEdge(theStart,theEnd),clone(0)
+Edge::EdgeInfo Edge::getEdgeInfo() const
 {
-}
-
-struct EdgeInfo Edge::getEdgeInfo()
-{
-	struct EdgeInfo result;
-	result.index=index;
-	result.start=start;
-	result.end=end;
-	result.left=left;
-	result.right=right;
+    EdgeInfo result;
+    result.index = m_index;
+    result.start = m_start;
+    result.end = m_end;
+    result.left = m_left;
+    result.right = m_right;
 	return result;
 }
 

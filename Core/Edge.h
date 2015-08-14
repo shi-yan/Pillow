@@ -1,25 +1,24 @@
 #pragma once
 #include "SubdivideEdge.h"
 
-struct EdgeInfo
-{
-    unsigned int index;
-    unsigned int start;
-    unsigned int end;
-    unsigned int left;
-    unsigned int right;
-};
-
 class Edge : public SubdivideEdge
 {
 public:
-	int clone;
+    typedef struct
+    {
+        unsigned int index;
+        unsigned int start;
+        unsigned int end;
+        unsigned int left;
+        unsigned int right;
+    } EdgeInfo;
+
+    int m_clone;
 
 public:
-	Edge(void);
-	Edge(int theStart,int theEnd);
-	struct EdgeInfo getEdgeInfo();
+    Edge(int theStart = 0, int theEnd = 0);
+    EdgeInfo getEdgeInfo() const;
 
 public:
-	~Edge(void);
+    ~Edge(void) override;
 };

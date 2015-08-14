@@ -6,7 +6,7 @@ class Log_ObjectEdgeRemove :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
 public:
 	Edge *o;
 

@@ -7,17 +7,12 @@
 class SubdivideLevel
 {
 public:
-	IndexArray<SubdivideVertex> vertex;
-	IndexArray<SubdivideEdge> edge;
-	IndexArray<SubdivideFace> face;
-public:
-	SubdivideLevel(void);
-    SubdivideLevel(unsigned int v,unsigned int e,unsigned int f)
-	{
-		vertex.reserve(v);
-		edge.reserve(e);
-		face.reserve(f);
-    }
+    IndexArray<SubdivideVertex> m_vertex;
+    IndexArray<SubdivideEdge> m_edge;
+    IndexArray<SubdivideFace> m_face;
+
+    SubdivideLevel(unsigned int v = 0,unsigned int e = 0,unsigned int f = 0);
+
 public:
 	~SubdivideLevel(void)
 	{

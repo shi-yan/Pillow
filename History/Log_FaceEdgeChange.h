@@ -5,7 +5,7 @@ class Log_FaceEdgeChange :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
     const unsigned int edgeIndex;
 public:
 	const int o;

@@ -5,7 +5,7 @@ class Log_FaceEdgeSwap :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
 public:
     const unsigned int oIndex;
     const unsigned int tIndex;

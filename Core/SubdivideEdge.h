@@ -1,28 +1,27 @@
 #pragma once
 #include "ElementBase.h"
 
-class SubdivideEdge:public ElementBase
+class SubdivideEdge : public ElementBase
 {
 	friend class Object;
 public:
-    unsigned int start;
-    unsigned int end;
-    unsigned int left;
-    unsigned int right;
+    unsigned int m_start;
+    unsigned int m_end;
+    unsigned int m_left;
+    unsigned int m_right;
 
 private:
-	int subdivideId;
-	int subdivideStep;
-	int middle;
-	int startEdge;
-	int endEdge;
-	int rightEdge;
-	int leftEdge;
+    int m_subdivideId;
+    int m_subdivideStep;
+    int m_middle;
+    int m_startEdge;
+    int m_endEdge;
+    int m_rightEdge;
+    int m_leftEdge;
 
 public:
-	SubdivideEdge(void);
-    SubdivideEdge(unsigned int theStart,unsigned int theEnd);
+    SubdivideEdge(unsigned int start = 0, unsigned int end = 0);
 
 public:
-	~SubdivideEdge(void);
+    virtual ~SubdivideEdge(void) override;
 };

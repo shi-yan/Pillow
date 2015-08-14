@@ -5,7 +5,7 @@ class Log_ObjectFaceAdd :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
 public:
     Log_ObjectFaceAdd(unsigned int theTarget,unsigned int theIndex);
 	std::string toString()

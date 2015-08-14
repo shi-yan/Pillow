@@ -1,42 +1,8 @@
 #include "SubdivideVertex.h"
 
-SubdivideVertex::SubdivideVertex(void)
-    :ElementBase(),
-      m_position(0),
-      m_normal(0),
-      m_edgeVertex(false),
-      m_subdivideId(0),
-      m_subdivideStep(0),
-      m_nextLevel(0)
-{
-    m_adjacentEdgeList.reserve(5);
-}
-
 SubdivideVertex::SubdivideVertex(const Vector &pos, const Vector &nor)
     :m_position(pos),
       m_normal(nor),
-      m_edgeVertex(false),
-      m_subdivideId(0),
-      m_subdivideStep(0),
-      m_nextLevel(0)
-{
-    m_adjacentEdgeList.reserve(5);
-}
-
-SubdivideVertex::SubdivideVertex(const Vector &pos)
-    :m_position(pos),
-      m_normal(0),
-      m_edgeVertex(false),
-      m_subdivideId(0),
-      m_subdivideStep(0),
-      m_nextLevel(0)
-{
-    m_adjacentEdgeList.reserve(5);
-}
-
-SubdivideVertex::SubdivideVertex(float p1,float p2,float p3)
-    :m_position(p1,p2,p3),
-      m_normal(0),
       m_edgeVertex(false),
       m_subdivideId(0),
       m_subdivideStep(0),
@@ -56,7 +22,7 @@ SubdivideVertex::SubdivideVertex(float p1,float p2,float p3,float n1,float n2,fl
     m_adjacentEdgeList.reserve(5);
 }
 
-inline const int& SubdivideVertex::operator [](unsigned int i)
+inline int SubdivideVertex::operator [](unsigned int i)
 {
     return m_adjacentEdgeList[i];
 }

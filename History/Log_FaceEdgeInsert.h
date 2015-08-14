@@ -5,7 +5,7 @@ class Log_FaceEdgeInsert :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
     const unsigned int edgeIndex;
 public:
     Log_FaceEdgeInsert(unsigned int theTarget,unsigned int theIndex,unsigned int theEdgeIndex);

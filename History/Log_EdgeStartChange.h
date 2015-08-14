@@ -5,7 +5,7 @@ class Log_EdgeStartChange :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
 
 public:
 	const int start;

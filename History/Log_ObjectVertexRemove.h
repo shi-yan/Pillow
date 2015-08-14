@@ -6,7 +6,7 @@ class Log_ObjectVertexRemove :
 	public HistoryLog
 {
 public:
-    const unsigned int index;
+    const unsigned int m_index;
 public:
 	Vertex *o;
 public:

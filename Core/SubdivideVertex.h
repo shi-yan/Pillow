@@ -18,13 +18,10 @@ private:
     bool m_edgeVertex;
 
 public:
-	SubdivideVertex(void);
-    SubdivideVertex(const Vector &pos, const Vector &nor);
-    SubdivideVertex(const Vector &pos);
-	SubdivideVertex(float p1,float p2,float p3);
-	SubdivideVertex(float p1,float p2,float p3,float n1,float n2,float n3);
-    const int& operator [](unsigned int i);
+    SubdivideVertex(const Vector &pos, const Vector &nor = Vector());
+    SubdivideVertex(float p1 = 0.0f, float p2 = 0.0f, float p3 = 0.0f, float n1 = 0.0f, float n2 = 0.0f, float n3 = 0.0f);
+    int operator [](unsigned int i);
 
 public:
-	~SubdivideVertex(void);
+    virtual ~SubdivideVertex(void)  override;
 };
