@@ -55,14 +55,14 @@ public:
 	virtual std::string toString()
 	{
 		return "\t\t\t<Log />\n";
-	};
+    }
 	
 	virtual void operator=(const HistoryLog& in) 
 	{
 		in;
-	};
+    }
 	virtual void clear()
-	{};
+    {}
 public:
 	virtual ~HistoryLog(void);
 };

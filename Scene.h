@@ -353,7 +353,7 @@ public:
 			theObjectList[target]->mat_shininess[3]=shininess;
 		}
 
-	};
+    }
 
 	void getSelectionMaterial(float *ambient,float *diffuse,float *specular,float *emission,float *shininess)
 	{
@@ -403,7 +403,7 @@ public:
 			emission[3]=theObjectList[target]->mat_emission[3];
 			(*shininess)=*(theObjectList[target]->mat_shininess);
 		}
-	};
+    }
 
 	void updateNormal()
 	{
@@ -873,19 +873,19 @@ public:
 			delete theObjectList[objectID];			
 		}
 		theObjectList.remove(objectID);
-	};
+    }
 
 	void clearScene()
 	{
 		theObjectList.clear();
-	};
+    }
 
     unsigned int sceneObjectAdd(unsigned int objectID,Object *theO)
 	{
 		theObjectList.addI(objectID,theO);
 		historyManager->record(new Log_SceneObjectAdd(objectID));
 		return objectID;
-	};
+    }
 
 
 	void selectDualSideObject(bool isAppend=false)
@@ -927,7 +927,7 @@ public:
 			}
 		}
 		updateAxisCursor();
-	};
+    }
 
 	void selectDualSideVertex(bool isAppend=false)
 	{
@@ -985,7 +985,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 				theObject->buildPSCacheFromVID(selection);
 			}
-	};
+    }
 
 	void selectDualSideEdge(bool isAppend=false)
 	{
@@ -1050,7 +1050,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			{
 				theObject->buildPSCacheFromEID(selection);
 			}
-	};
+    }
 
 	void redefineControlPoint()
 	{
@@ -1168,7 +1168,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		{
 			selectDualSideVertex(isAppend);
 		}
-	};
+    }
 
 	void changeShadeMode(RenderType::__Enum type)
 	{
@@ -1405,7 +1405,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				}
 			}
 		}
-	};
+    }
 
 	void weldVertex()
 	{
@@ -1419,24 +1419,24 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			clearSelection();
 			theObjectList[target]->clearPSCache();
 		}
-	};
+    }
 
 	void beginSplit()
 	{
 		isSplitMode=true;
 		changeSelectionMode(SelectionMode::Split);
-	};
+    }
 
 	void nextSplit()
 	{
 		splitVertexID=0;
-	};
+    }
 
 	void endSplit()
 	{
 		isSplitMode=false;
 		splitVertexID=0;
-	};
+    }
 
     void selectSingleSide(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int height,bool isAppend=false)
 	{
@@ -1460,7 +1460,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		{
 			splitPress(x1,y1,height);
 		}
-	};
+    }
 
     void selectSingleSideVertex(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int height,bool isAppend=false)
 	{
@@ -1562,7 +1562,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				theObject->buildPSCacheFromVID(selection);
 			}
 		}
-	};
+    }
 
 	void subdivide()
 	{
@@ -1588,7 +1588,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				}
 			}
 		}
-	};
+    }
 
     bool isAxisSelected(CameraMode::__Enum cameraMode,const Vector &eye,const unsigned int height,const unsigned int x,const unsigned int y,float &rx,float &ry,int &cursorMode)
 	{
@@ -1756,7 +1756,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);
 			return result;
 		}
-	};
+    }
 
 	void axisXMove(float step)
 	{
@@ -1805,7 +1805,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			moveFace(xAxis.x,xAxis.y,xAxis.z);
 			theObject->partialSubdivision();			
 		}
-	};
+    }
 
 	void axisXRotate(float step)
 	{
@@ -1882,7 +1882,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			rotateFace(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
 			theObject->partialSubdivision();			
 		}
-	};
+    }
 
 	void axisYRotate(float step)
 	{
@@ -1961,7 +1961,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			rotateFace(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
 			theObject->partialSubdivision();		
 		}
-	};
+    }
 
 	void rotateVertex(const Vector &center, Matrix &angle)
 	{
@@ -1976,7 +1976,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				theObjectList[target]->vertexPositionChangeA(theVertex->index,PToC.x,PToC.y,PToC.z);
 			}
 		}
-	};
+    }
 
 	void rotateEdge(const Vector &center,Matrix &angle)
 	{
@@ -2017,7 +2017,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				theObjectList[target]->vertexPositionChangeA(theVertex->index,PToC.x,PToC.y,PToC.z);
 			}
 		}
-	};
+    }
 
 	void rotateFace(const Vector &center,Matrix &angle)
 	{
@@ -2102,7 +2102,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				theObjectList[target]->vertexPositionChangeA(theVertex->index,newPosition.x,newPosition.y,newPosition.z);
 			}
 		}
-	};
+    }
 
 	void scaleEdge(Vector &center,Matrix &forward,Matrix &backward,float scale,int smode)
 	{
@@ -2313,7 +2313,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			rotateFace(originalMatrix*(theAxisCursor->position-theObject->center)+theObject->center,rotateMatrix);
 			theObject->partialSubdivision();			
 		}
-	};
+    }
 
 	void axisYMove(float step)
 	{
@@ -2362,7 +2362,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			moveFace(xAxis.x,xAxis.y,xAxis.z);
 			theObject->partialSubdivision();
 		}
-	};
+    }
 
 	void axisZMove(float step)
 	{
@@ -2412,7 +2412,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			theObject->partialSubdivision();
 		}
 
-	};
+    }
 
 	void axisXScale(float step)
 	{
@@ -2468,7 +2468,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			scaleFace(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),1);
 			theObject->partialSubdivision();					
 		}
-	};
+    }
 
 	void axisYScale(float step)
 	{
@@ -2527,7 +2527,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			scaleFace(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),2);
 			theObject->partialSubdivision();						
 		}
-	};
+    }
 
 	void axisZScale(float step)
 	{
@@ -2589,12 +2589,12 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			scaleFace(theAxisCursor->position,originalMatrix,backMatrix,(1+step*0.1f),3);
 			theObject->partialSubdivision();			
 		}
-	};
+    }
 
 	void axisRelease()
 	{
 		theAxisCursor->rotation.null();
-	};
+    }
 
 	void ctrlDrag(Vector &horizontal,Vector &vertical,int x,int y,bool isExtrude)
 	{
@@ -2792,7 +2792,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		{
 		
 		}
-	};
+    }
 
 	void unSubdivide()
 	{
@@ -2923,7 +2923,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				theObject->buildPSCacheFromEID(selection);
 			}
 		}
-	};
+    }
 
     void selectSingleSideFace(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int height,bool isAppend=false)
 	{
@@ -3069,7 +3069,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);
 			updateAxisCursor();
 		}
-	};
+    }
 
 	void changeSelectionMode(SelectionMode::__Enum theMode)
 	{
@@ -3082,7 +3082,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			else
 			{
 				target=selection[0];
-				clearSelection();//ÒòÎªÊÇºÍÑ¡ÔñÀ� ÐÍÏ� ¹ØµÄ£¬¼Ç×¡Ò»¶¨ÒªÏÈÇå¿Õ£¬·ñÔòÈç¹ûÀ� ÐÍ¸Ä±ä£¬Çå¿Õ¾Í²»Õý³£ÁË
+				clearSelection();//ÒòÎªÊÇºÍÑ¡ÔñÀ?ÐÍÏ?¹ØµÄ£¬¼Ç×¡Ò»¶¨ÒªÏÈÇå¿Õ£¬·ñÔòÈç¹ûÀ?ÐÍ¸Ä±ä£¬Çå¿Õ¾Í²»Õý³£ÁË
 				mode=theMode;
 			}
 		}
@@ -3277,7 +3277,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				}
 			}
 		}
-	};
+    }
 
 
 	void drawCutVertex()
@@ -3308,7 +3308,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				glPopMatrix();
 			}
 		}
-	};
+    }
 
 	void updateAxisCursor()
 	{
@@ -3470,12 +3470,12 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				theAxisCursor->mode=currentACMode;
 			}
 		}
-	};
+    }
 
 	void drawCursor(CameraMode::__Enum cameraMode,const Vector &eye)
 	{
 		theAxisCursor->onPaint(eye,cameraMode);	
-	};
+    }
 
 	void drawSelectedVertex()
 	{
@@ -3513,7 +3513,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				return;
 			}
 		}
-	};
+    }
 
 	void drawSelectedEdge()
 	{
@@ -3553,7 +3553,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				return;
 			}
 		}
-	};
+    }
 
 
 void drawSelectedFace()
@@ -3608,7 +3608,7 @@ void drawSelectedFace()
 				return;
 			}
 		}
-	};
+    }
 
 void openFromPWB(const char *fileName)
 {
@@ -3755,7 +3755,7 @@ void invertSelection()
 
 		updateAxisCursor();
 	}
-};
+}
 
 void saveToFileOBJ(const char *fileName)
 {
@@ -3806,7 +3806,7 @@ void saveToFileOBJ(const char *fileName)
 		}
 	}
 	fclose(fp);
-};
+}
 
 void saveToFilePWB(const char *fileName)
 {
@@ -3888,7 +3888,7 @@ void saveToFilePWB(const char *fileName)
 		}
 	}
 	fclose(fp);
-};
+}
 public:
 //	void initialize();
 	~Scene(void);

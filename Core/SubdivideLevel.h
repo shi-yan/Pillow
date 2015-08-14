@@ -12,7 +12,7 @@ public:
 	IndexArray<SubdivideFace> face;
 public:
 	SubdivideLevel(void);
-	SubdivideLevel(size_t v,size_t e,size_t f)
+    SubdivideLevel(unsigned int v,unsigned int e,unsigned int f)
 	{
 		vertex.reserve(v);
 		edge.reserve(e);

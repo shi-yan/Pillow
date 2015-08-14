@@ -18,12 +18,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"ObjectEdgeRemove\" Target=\"%d\" Index=\"%d\" />\n",target,index);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 			void operator=(const Log_ObjectEdgeRemove& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_ObjectEdgeRemove(void);
 };

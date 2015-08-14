@@ -23,7 +23,7 @@ public:
     SubdivideVertex(const Vector &pos);
 	SubdivideVertex(float p1,float p2,float p3);
 	SubdivideVertex(float p1,float p2,float p3,float n1,float n2,float n3);
-	const int& operator [](size_t i);
+    const int& operator [](unsigned int i);
 
 public:
 	~SubdivideVertex(void);

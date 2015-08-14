@@ -14,11 +14,11 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"FaceEdgePush\" Target=\"%d\" Index=\"%d\" />\n",target,index);
 		std::string out(temp);
 		return out;
-	};
+    }
 					void operator=(const Log_FaceEdgePush& in) 
 	{
 		in;
-	};
+    }
 
 public:
 	~Log_FaceEdgePush(void);

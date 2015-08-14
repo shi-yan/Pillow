@@ -53,7 +53,7 @@ void TopCamera::setCamera()
     glLightfv(GL_LIGHT0, GL_DIFFUSE, m_lightDiffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, m_lightSpecular);
     glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
-};
+}
 
 void TopCamera::setCameraForSelectionS()
 {
@@ -64,7 +64,7 @@ void TopCamera::setCameraForSelectionS()
     glLoadIdentity();
     glOrtho(-m_width*m_eye.z*0.005f,m_width*m_eye.z*0.005f,-m_height*m_eye.z*0.005f,m_height*m_eye.z*0.005f,m_nearPlane,m_farPlane);
     glViewport((GLint) m_startX,(GLint) m_startY,(GLint) m_width,(GLint) m_height);
-};
+}
 
 void TopCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h)
 {
@@ -80,7 +80,7 @@ void TopCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(m_eye.x,m_eye.y,990,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
-};
+}
 
 void TopCamera::setReferenceImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height)
 {
@@ -92,7 +92,7 @@ void TopCamera::setReferenceImage(const char *path,GLuint imageID,Vector &positi
         topReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
         topReference->initialize();
         topReference->isShow=true;
-};
+}
 
 void TopCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 {
@@ -112,7 +112,7 @@ void TopCamera::getViewportImage(GLuint &texID,std::string &path,Vector &positio
         width=0;
         height=0;
     }
-};
+}
 
     void TopCamera::disableReference()
 {
@@ -136,21 +136,21 @@ void TopCamera::drawGird() const
     {
         theGird->drawXY();
     }
-};
+}
 
 void TopCamera::zoom(float step)
 {
     Vector cameraDirection(0,0,-1);
      m_eye+=cameraDirection*(float)(step*0.1f);
     if( m_eye.z<2)  m_eye.z=2;
-};
+}
 
 void TopCamera::onPanPress(int x,int y)
 {
      m_isDraging=true;
      m_old.x=(float)x;
      m_old.y=(float)y;
-};
+}
 
 void TopCamera::onPanRelease(int x,int y)
 {
@@ -158,7 +158,7 @@ void TopCamera::onPanRelease(int x,int y)
     y;
     m_isDraging=false;
     m_old.null();
-};
+}
 
 void TopCamera::pan(int x,int y)
 {
@@ -171,5 +171,5 @@ void TopCamera::pan(int x,int y)
      m_eye.y+=dy;
      m_target.x+=dx;
      m_target.y+=dy;
-};
+}
 

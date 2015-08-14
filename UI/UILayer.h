@@ -102,7 +102,7 @@ public:
 		cameraStrip->add(frontButton);
 		cameraStrip->add(backButton);
 		cameraStrip->add(perspectiveButton);
-	};
+    }
 
 	void updateCameraStrip()
 	{
@@ -174,7 +174,7 @@ public:
 		}
 		else
 			return ButtonEventType::Nothing;
-	};
+    }
 
 		bool onLeftPress(int mx,int my)
 		{
@@ -191,12 +191,12 @@ public:
 	void updateModifyStrip()
 	{
 		modifyStrip->updatePosition((int)(((int)(width-(fileStrip->width+10+createStrip->width+10+modifyStrip->width+10+helpStrip->width)))*0.5f)+fileStrip->width+20+createStrip->width,1);
-	};
+    }
 
 	void updateHelpStrip()
 	{
 		helpStrip->updatePosition((int)(((int)(width-(fileStrip->width+10+createStrip->width+10+modifyStrip->width+10+helpStrip->width)))*0.5f)+fileStrip->width+30+createStrip->width+modifyStrip->width,1);
-	};
+    }
 
 	void updateCreateStrip()
 	{
@@ -206,22 +206,22 @@ public:
 	void updateModifyModeStrip()
 	{
 		modifyModeStrip->updatePosition(1,height*0.5f-modifyModeStrip->height*0.5f);
-	};
+    }
 
 	void updateLayoutModeStrip()
 	{
 		layoutModeStrip->updatePosition(width-layoutModeStrip->width-1,height*0.5f-layoutModeStrip->height*0.5f);
-	};
+    }
 
 	void updateShadeModeStrip()
 	{
 		shadeModeStrip->updatePosition((int)(((int)(width-shadeModeStrip->width-10-cameraStrip->width))*0.5f),height-shadeModeStrip->height-1);
-	};
+    }
 
 	void updateFileStrip()
 	{
 		fileStrip->updatePosition(((int)((int)(width-(fileStrip->width+10+createStrip->width+10+modifyStrip->width+10+helpStrip->width)))*0.5f),1);
-	};
+    }
 
 	void onPaint()
 	{
@@ -234,7 +234,7 @@ public:
 		modifyStrip->onPaint();
 		helpStrip->onPaint();
 		cameraStrip->onPaint();
-	};
+    }
 
     void updateSize(unsigned int theWidth,unsigned int theHeight)
 	{
@@ -248,7 +248,7 @@ public:
 		updateModifyStrip();
 		updateHelpStrip();
 		updateCameraStrip();
-	};
+    }
 
 	GLuint loadTexture(char *fileName)
 	{
@@ -264,7 +264,7 @@ public:
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
         return txtnumber;
 
-	};
+    }
 
 
 public:
@@ -275,5 +275,5 @@ public:
 		delete layoutModeStrip;
 		delete shadeModeStrip;
 		delete createStrip;
-	};
+    }
 };

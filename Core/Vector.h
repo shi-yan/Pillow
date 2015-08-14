@@ -28,11 +28,11 @@ class Vector
 
 	//! Constructor from 3 floating point numbers, sets x, y and z to their respective values, and w to 1.0f
 	Vector(float x0,float y0,float z0)
-	{ x=x0; y=y0; z=z0; w=1; };
+    { x=x0; y=y0; z=z0; w=1; }
 
 	//! Constructor from 4 floating point numbers
 	Vector(float x0,float y0,float z0,float w0)
-	{ x=x0; y=y0; z=z0; w=w0; };
+    { x=x0; y=y0; z=z0; w=w0; }
 
 	//! Atribuition operator
 	void operator=(const Vector& in) 
@@ -48,39 +48,39 @@ class Vector
 
 	//! Nullifying function, sets x, y and z to zero, and w to 1.0f
 	inline void null(void)
-	{ x=y=z=0; w=1; };
+    { x=y=z=0; w=1; }
 
 	//! Returns the length of the vector
 	inline float length(void)
-	{ return sqrtf(x*x+y*y+z*z); };
+    { return sqrtf(x*x+y*y+z*z); }
 
 	//! Returns the square of the length
 	inline float length2(void)
-	{ return x*x+y*y+z*z; };
+    { return x*x+y*y+z*z; }
 
 	//!	Returns the distance to another flyVector
 	inline float distto(const Vector& v) const
-	{ return sqrtf((v.x-x)*(v.x-x)+(v.y-y)*(v.y-y)+(v.z-z)*(v.z-z)); };
+    { return sqrtf((v.x-x)*(v.x-x)+(v.y-y)*(v.y-y)+(v.z-z)*(v.z-z)); }
 
 	//!	Returns the square of the distance to another flyVector
 	inline float distto2(const Vector& v) const
-	{ return (v.x-x)*(v.x-x)+(v.y-y)*(v.y-y)+(v.z-z)*(v.z-z); };
+    { return (v.x-x)*(v.x-x)+(v.y-y)*(v.y-y)+(v.z-z)*(v.z-z); }
 
 	//!	Set all the components to the given floating point value
 	inline void vec(float f)
-	{ x=y=z=w=f; };
+    { x=y=z=w=f; }
 
 	//!	Set components to the given floating point values
 	inline void vec(float x0,float y0,float z0)
-	{ x=x0; y=y0; z=z0; };
+    { x=x0; y=y0; z=z0; }
 
 	//!	Set components to the given floating point values
 	inline void vec(float x0,float y0,float z0,float w0)
-	{ x=x0; y=y0; z=z0; w=w0; };
+    { x=x0; y=y0; z=z0; w=w0; }
 
 	//!	Negate the first 3 components
 	inline void negate(void)
-	{ x=-x; y=-y; z=-z; };
+    { x=-x; y=-y; z=-z; }
 
 	//!	Compute the cross-product of two given flyVectors
 	inline void cross(const Vector& v1, const Vector& v2)
@@ -100,7 +100,7 @@ class Vector
 	}
 
 	//!	Reference indexing operator
-	inline float& operator[](int i) { return (&x)[i]; };
+    inline float& operator[](int i) { return (&x)[i]; }
 	//!	Indexing operator
 	inline float operator[](int i) const { return (&x)[i]; }
 

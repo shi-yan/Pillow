@@ -15,12 +15,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentPush\" Target=\"%d\" Index=\"%d\" />\n",target,index);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 			void operator=(const Log_VertexAdjacentPush& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_VertexAdjacentPush(void);
 };

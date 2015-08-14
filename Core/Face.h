@@ -6,8 +6,8 @@
 //ÃæÀàµÄÊôÐÔ£¬ÓÃÓÚ´æ´¢³ÉÎÄ¼þ
 struct FaceInfo
 {
-	size_t index;
-	size_t edgeCount;
+    unsigned int index;
+    unsigned int edgeCount;
 	float nx;
 	float ny;
 	float nz;
@@ -27,14 +27,14 @@ public:
 
 private:
 	//ÔÚÏÂÒ»²ãÏ¸·ÖÖÐ´ËÃæµÄÖÐµã±àºÅ
-	size_t center;
+    unsigned int center;
 	//Õâ¸öÃæÔÚÏÂÒ»²ãÏ¸·ÖÖÐÉú³ÉµÄËùÓÐ×ÓÃæ
 	std::vector<int> subdivideFace;
 
 public:
 	Face(void);
 	//µÃµ½Ö¸¶¨µÄ±ßÁÐ±íÖÐµÄÔªËØ
-	const int& operator [](size_t i);
+    const int& operator [](unsigned int i);
 	//·µ»ØÕâ¸öÃæµÄËùÓÐÊôÐÔ£¬ÓÃÓÚ´æ´¢³ÉÎÄ¼þ
 	struct FaceInfo getFaceInfo();
 

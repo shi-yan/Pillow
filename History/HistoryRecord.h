@@ -13,24 +13,24 @@ public:
 	HistoryRecord(std::string theName):name(theName)
 	{
 		record.reserve(1000);
-	};
+    }
 	void push(HistoryLog *theRecord)
 	{
 		record.push_back(theRecord);
-	};
+    }
 	HistoryLog & pop()
 	{
 		HistoryLog *result=record[record.size()-1];
 		return *result;
-	};
+    }
     HistoryLog * operator[](unsigned int i)
 	{
 		return record[i];
-	};
+    }
     unsigned int size()
 	{
 		return record.size();
-	};
+    }
 
 	std::string toString()
 	{
@@ -44,7 +44,7 @@ public:
 		}
 		out+="\t\t</Record>\n";
 		return out;
-	};
+    }
 	void clear()
 	{
         unsigned int logSize=record.size();
@@ -52,7 +52,7 @@ public:
 		{
 			record[i]->clear();
 		}
-	};
+    }
 public:
 	~HistoryRecord(void)
 	{
@@ -61,5 +61,5 @@ public:
 		{
 			delete record[i];
 		}
-	};
+    }
 };

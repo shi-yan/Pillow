@@ -8,13 +8,13 @@ class Quaternion : public Vector
 public:
 	//! Copy-constructor
 	Quaternion(const Quaternion& in) : Vector(in) 
-	{ };
+    { }
 
 	//! Default constructor
 	Quaternion() : Vector() 
-	{ };
+    { }
 Quaternion(float initial) : Vector(initial) 
-	{ };
+    { }
 	//! Construct the quaternion from a matrix
 	Quaternion(const Matrix &mat);
 

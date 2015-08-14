@@ -19,11 +19,11 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentChange\" Target=\"%d\" Index=\"%d\" AdjIndex=\"%d\" Original=\"%d\" />\n",target,index,adjIndex,original);
 		std::string out(temp);
 		return out;
-	};
+    }
 	void operator=(const Log_VertexAdjacentChange& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_VertexAdjacentChange(void);
 };

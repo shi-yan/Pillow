@@ -41,31 +41,31 @@ Object::Object(char *theName):center(),position(),rotation(),scale(1,1,1,1),name
 	subdivideLevel[3]=NULL;
 	subdivideLevel[4]=NULL;
 	renderMode=RenderType::WireframeFaced;
-};
+}
 
 
-size_t Object::addVertex(float p1,float p2,float p3)
+unsigned int Object::addVertex(float p1,float p2,float p3)
 {
-	size_t vi=vertexArray.add(new Vertex(p1,p2,p3));
+    unsigned int vi=vertexArray.add(new Vertex(p1,p2,p3));
 	historyManager->record(new Log_ObjectVertexAdd(index,vi));
 	return vi;
 }
 
-size_t Object::addVertex(float p1,float p2,float p3,float n1,float n2,float n3)
+unsigned int Object::addVertex(float p1,float p2,float p3,float n1,float n2,float n3)
 {
-	size_t vi=vertexArray.add(new Vertex(p1,p2,p3,n1,n2,n3));
+    unsigned int vi=vertexArray.add(new Vertex(p1,p2,p3,n1,n2,n3));
 	historyManager->record(new Log_ObjectVertexAdd(index,vi));
 	return vi;
 }
 
-size_t Object::addEdge(size_t ei,Edge *theE)
+unsigned int Object::addEdge(unsigned int ei,Edge *theE)
 	{
 		edgeArray.addI(ei,theE);
 		historyManager->record(new Log_ObjectEdgeAdd(index,ei));
 		return ei;
-	};
+    }
 
-size_t Object::addFace(size_t ei,Face *theF)
+unsigned int Object::addFace(unsigned int ei,Face *theF)
 	{
 		faceArray.addI(ei,theF);
 		historyManager->record(new Log_ObjectFaceAdd(index,ei));
@@ -129,23 +129,23 @@ void Object::drawMirror()
 		}
 	}
 
-size_t Object::addVertex(Vector &pos)
+unsigned int Object::addVertex(Vector &pos)
 {
-	size_t vi=vertexArray.add(new Vertex(pos));
+    unsigned int vi=vertexArray.add(new Vertex(pos));
 	historyManager->record(new Log_ObjectVertexAdd(index,vi));
 	return vi;
 }
 
-size_t Object::addVertex(size_t ei,Vertex *theV)
+unsigned int Object::addVertex(unsigned int ei,Vertex *theV)
 {
 	vertexArray.addI(ei,theV);
 	historyManager->record(new Log_ObjectVertexAdd(index,ei));
 	return ei;
 }
 
-size_t Object::addVertex(Vector &pos,Vector &nor)
+unsigned int Object::addVertex(Vector &pos,Vector &nor)
 {
-	size_t vi=vertexArray.add(new Vertex(pos,nor));
+    unsigned int vi=vertexArray.add(new Vertex(pos,nor));
 	historyManager->record(new Log_ObjectVertexAdd(index,vi));
 	return vi;
 }
@@ -153,7 +153,7 @@ size_t Object::addVertex(Vector &pos,Vector &nor)
 void Object::testOut(char *fileName)
 {
 	FILE *fp=fopen(fileName,"w");
-	for(size_t i=1;i<vertexArray.size();i++)
+    for(unsigned int i=1;i<vertexArray.size();i++)
 	{
 		if(vertexArray[i]==NULL)
 		{
@@ -165,11 +165,11 @@ void Object::testOut(char *fileName)
 		}
 	}
 	fprintf(fp,"g box01\n");
-	for(size_t i=1;i<faceArray.size();i++)
+    for(unsigned int i=1;i<faceArray.size();i++)
 	{
 		if(faceArray[i]==NULL) continue;
 		fprintf(fp,"f ");
-		for(size_t e=0;e<faceArray[i]->edge.size();e++)
+        for(unsigned int e=0;e<faceArray[i]->edge.size();e++)
 		{
 			if(faceArray[i]->edge[e]<0)
 			{
@@ -184,12 +184,12 @@ void Object::testOut(char *fileName)
 	}
 	fprintf(fp,"g\n");
 	fclose(fp);
-};
+}
 
-size_t Object::addEdge(int start,int end)
+unsigned int Object::addEdge(int start,int end)
 {
 	//printf("cao0");
-	size_t ei=edgeArray.add(new Edge(start,end));
+    unsigned int ei=edgeArray.add(new Edge(start,end));
 	//printf("cao0.5");
 //	printf("!%d,%d!",index,ei);
 	Log_ObjectEdgeAdd *theLog=new Log_ObjectEdgeAdd(index,ei);
@@ -203,33 +203,33 @@ size_t Object::addEdge(int start,int end)
 	historyManager->record(new Log_VertexAdjacentPush(index,end));
 	//printf("cao3");
 	return ei;
-};
+}
 
-Vertex * Object::vertex(size_t index)
+Vertex * Object::vertex(unsigned int index)
 {
 	return vertexArray[index];
-};
+}
 
-Edge * Object::edge(size_t index)
+Edge * Object::edge(unsigned int index)
 {
 	return edgeArray[index];
-};
+}
 
-Face * Object::face(size_t index)
+Face * Object::face(unsigned int index)
 {
 	return faceArray[index];
-};
+}
 
-size_t Object::addFace(size_t theEdgeArray[],size_t size)
+unsigned int Object::addFace(unsigned int theEdgeArray[],unsigned int size)
 {
 	//printf("start\n");
 	Face *theFace=new Face();
-	size_t resultIndex=faceArray.add(theFace);
+    unsigned int resultIndex=faceArray.add(theFace);
 	historyManager->record(new Log_ObjectFaceAdd(index,resultIndex));
-	for(size_t i=0;i<size;++i)
+    for(unsigned int i=0;i<size;++i)
 	{
-		size_t i1=theEdgeArray[i];
-		size_t i2=theEdgeArray[(i+1)%size];
+        unsigned int i1=theEdgeArray[i];
+        unsigned int i2=theEdgeArray[(i+1)%size];
 		if(edgeArray[i1]->end==edgeArray[i2]->start || edgeArray[i1]->end==edgeArray[i2]->end)
 		{
 			edgeArray[i1]->right=theFace->index;
@@ -248,23 +248,23 @@ size_t Object::addFace(size_t theEdgeArray[],size_t size)
 	}
 	//printf("end\n");
 	return resultIndex;
-};
+}
 
 void Object::SubTestOut(char *fileName,int level)
 {
 	FILE *fp=NULL;
 	fp=fopen(fileName,"w");
 	SubdivideLevel *theSub=subdivideLevel[level];
-	size_t vertexCount=theSub->vertex.size();
-	for(size_t i=1;i<vertexCount;++i)
+    unsigned int vertexCount=theSub->vertex.size();
+    for(unsigned int i=1;i<vertexCount;++i)
 	{
         fprintf(fp,"v %f %f %f\n",theSub->vertex[i]->m_position.x,theSub->vertex[i]->m_position.y,theSub->vertex[i]->m_position.z);
 	}
 	fprintf(fp,"g box01\n");
-	for(size_t i=1;i<theSub->face.size();++i)
+    for(unsigned int i=1;i<theSub->face.size();++i)
 	{
 		fprintf(fp,"f ");
-		for(size_t e=0;e<4;e++)
+        for(unsigned int e=0;e<4;e++)
 		{
 			if(theSub->face[i]->edge[e]>0)
 			{
@@ -294,8 +294,8 @@ void Object::subdivide()
 	{
 		subdivideLevel[0]=new SubdivideLevel(vertexArray.size()+edgeArray.size()+faceArray.size(),edgeArray.size()*4,edgeArray.size()*2);
 		++subdivideLevelSize;
-        size_t faceCount=  faceArray.size();
-		for(size_t i=1;i<faceCount;++i)
+        unsigned int faceCount=  faceArray.size();
+        for(unsigned int i=1;i<faceCount;++i)
 		{
 			if(faceArray[i]==NULL)
 				continue;
@@ -311,8 +311,8 @@ void Object::subdivide()
 		}
 		subdivideLevel[0]=new SubdivideLevel(subdivideLevel[0]->vertex.size()+subdivideLevel[0]->edge.size()+subdivideLevel[0]->face.size(),subdivideLevel[0]->edge.size()*4,subdivideLevel[0]->edge.size()*2);
 		++subdivideLevelSize;
-		size_t faceCount=subdivideLevel[1]->face.size();
-		for(size_t i=1;i<faceCount;i++)
+        unsigned int faceCount=subdivideLevel[1]->face.size();
+        for(unsigned int i=1;i<faceCount;i++)
 		{
 			if(subdivideLevel[1]->face[i]==NULL)
 				continue;
@@ -326,8 +326,8 @@ Vector Object::EAdjacentVertex(Vertex *theVertex)
 {
     theVertex->m_edgeVertex=false;
 	Vector result(0);
-    size_t vertexCount=theVertex->m_adjacentEdgeList.size();
-	for(size_t i=0;i<vertexCount;++i)
+    unsigned int vertexCount=theVertex->m_adjacentEdgeList.size();
+    for(unsigned int i=0;i<vertexCount;++i)
 	{
         if(edgeArray[theVertex->m_adjacentEdgeList[i]]->left && edgeArray[theVertex->m_adjacentEdgeList[i]]->right && !theVertex->m_edgeVertex)
 		{
@@ -361,14 +361,14 @@ Vector Object::EAdjacentVertex(Vertex *theVertex)
 		}
 	}
 	return result;
-};
+}
 
 Vector Object::EAdjacentVertex(SubdivideVertex *theVertex,int level)
 {
     theVertex->m_edgeVertex=false;
 	Vector result(0);
-    size_t vertexCount=theVertex->m_adjacentEdgeList.size();
-	for(size_t i=0;i<vertexCount;++i)
+    unsigned int vertexCount=theVertex->m_adjacentEdgeList.size();
+    for(unsigned int i=0;i<vertexCount;++i)
 	{
         if(subdivideLevel[level]->edge[theVertex->m_adjacentEdgeList[i]]->left!=0 && subdivideLevel[level]->edge[theVertex->m_adjacentEdgeList[i]]->right!=0 && !theVertex->m_edgeVertex)
 		{
@@ -408,8 +408,8 @@ Vector Object::EAdjacentVertex(SubdivideVertex *theVertex)
 {
     theVertex->m_edgeVertex=false;
 	Vector result(0);
-    size_t vertexCount=theVertex->m_adjacentEdgeList.size();
-	for(size_t i=0;i<vertexCount;++i)
+    unsigned int vertexCount=theVertex->m_adjacentEdgeList.size();
+    for(unsigned int i=0;i<vertexCount;++i)
 	{
         if(subdivideLevel[1]->edge[theVertex->m_adjacentEdgeList[i]]->left!=0 && subdivideLevel[1]->edge[theVertex->m_adjacentEdgeList[i]]->right!=0 && !theVertex->m_edgeVertex)
 		{
@@ -449,13 +449,13 @@ void Object::subdivideFace(Face *theFace)
 {
 	//Ê×ÏÈÒªµÃµ½Õâ¸öÃæµÄ¶Ëµã
 	//µÃµ½¶ËµãºÍ±ßµÄÊýÄ¿
-	size_t edgeCount=theFace->edge.size();
+    unsigned int edgeCount=theFace->edge.size();
 	//ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
 	Vertex **theVertexList=new Vertex*[edgeCount];
 	theFace->center=subdivideLevel[0]->vertex.add(new SubdivideVertex());
     //subdivideLevel[0]->vertex[theFace->center]->m_adjacentEdgeList.clear();
     subdivideLevel[0]->vertex[theFace->center]->m_adjacentEdgeList.reserve(4);
-	for(size_t e=0;e<edgeCount;++e)
+    for(unsigned int e=0;e<edgeCount;++e)
 	{
 		if(theFace->edge[e]<0)
 		{
@@ -471,7 +471,7 @@ void Object::subdivideFace(Face *theFace)
     subdivideLevel[0]->vertex[theFace->center]->m_position/=(float)edgeCount;
 	//subdivideLevel[0]->vertex[theFace->center]->normal/=edgeCount;
 	//¼ÆËãÐÂµÄ¶¥µã
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
 		Vertex *theV=theVertexList[i];
         if(theV->m_subdivideId!=subdivideId)
@@ -504,8 +504,8 @@ void Object::subdivideFace(Face *theFace)
 			{
                 subdivideLevel[0]->vertex[theV->m_nextLevel]->m_position+=subdivideLevel[0]->vertex[theFace->center]->m_position;
                 ++(theV->m_subdivideStep);
-                size_t n=theV->m_adjacentEdgeList.size();
-                if(n==(size_t)theV->m_subdivideStep)
+                unsigned int n=theV->m_adjacentEdgeList.size();
+                if(n==(unsigned int)theV->m_subdivideStep)
 				{
                     subdivideLevel[0]->vertex[theV->m_nextLevel]->m_position+=theV->m_position*(float)(n*n-2*n);
                     subdivideLevel[0]->vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
@@ -515,7 +515,7 @@ void Object::subdivideFace(Face *theFace)
 	}
 	delete theVertexList;
 	//Ö®ºó´¦ÀíÃ¿Ò»¸ö±ß
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
 		Edge *theEdge;
 		if(theFace->edge[i]>0)
@@ -600,16 +600,16 @@ void Object::subdivideFace(Face *theFace)
 	//½¨Á¢Ï¸·ÖÖ®ºóµÄÃæ
     //theFace->subdivideFace.clear();
 	theFace->subdivideFace.reserve(edgeCount);
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
-		size_t i2=(i+1)%edgeCount;
+        unsigned int i2=(i+1)%edgeCount;
 		if(theFace->edge[i]>0)
 		{
 			Edge *theEdge1=edgeArray[theFace->edge[i]];
 			if(theFace->edge[i2]>0)
 			{
 				Edge *theEdge2=edgeArray[theFace->edge[i2]];
-				size_t faceId=
+                unsigned int faceId=
 				subdivideLevel[0]->edge[theEdge1->rightEdge]->left=
 				subdivideLevel[0]->edge[theEdge1->endEdge]->right=
 				subdivideLevel[0]->edge[theEdge2->startEdge]->right=
@@ -619,7 +619,7 @@ void Object::subdivideFace(Face *theFace)
 			else
 			{
 				Edge *theEdge2=edgeArray[-theFace->edge[i2]];
-				size_t faceId=
+                unsigned int faceId=
 				subdivideLevel[0]->edge[theEdge1->rightEdge]->left=
 				subdivideLevel[0]->edge[theEdge1->endEdge]->right=
 				subdivideLevel[0]->edge[theEdge2->endEdge]->left=
@@ -633,7 +633,7 @@ void Object::subdivideFace(Face *theFace)
 			if(theFace->edge[i2]>0)
 			{
 				Edge *theEdge2=edgeArray[theFace->edge[i2]];
-				size_t faceId=
+                unsigned int faceId=
 				subdivideLevel[0]->edge[theEdge1->leftEdge]->left=
 				subdivideLevel[0]->edge[theEdge1->startEdge]->left=
 				subdivideLevel[0]->edge[theEdge2->startEdge]->right=
@@ -643,7 +643,7 @@ void Object::subdivideFace(Face *theFace)
 			else
 			{
 				Edge *theEdge2=edgeArray[-theFace->edge[i2]];
-				size_t faceId=
+                unsigned int faceId=
 				subdivideLevel[0]->edge[theEdge1->leftEdge]->left=
 				subdivideLevel[0]->edge[theEdge1->startEdge]->left=
 				subdivideLevel[0]->edge[theEdge2->endEdge]->left=
@@ -658,7 +658,7 @@ void Object::subdivideFace(SubdivideFace *theFace)
 {
 	//Ê×ÏÈÒªµÃµ½Õâ¸öÃæµÄ¶Ëµã
 	//µÃµ½¶ËµãºÍ±ßµÄÊýÄ¿
-	size_t edgeCount=4;
+    unsigned int edgeCount=4;
 	SubdivideLevel *target=subdivideLevel[0];
 	SubdivideLevel *original=subdivideLevel[1];
 	//ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
@@ -666,7 +666,7 @@ void Object::subdivideFace(SubdivideFace *theFace)
 	theFace->center=target->vertex.add(new SubdivideVertex());
     //target->vertex[theFace->center]->m_adjacentEdgeList.clear();
     target->vertex[theFace->center]->m_adjacentEdgeList.reserve(4);
-	for(size_t e=0;e<edgeCount;++e)
+    for(unsigned int e=0;e<edgeCount;++e)
 	{
 		if(theFace->edge[e]<0)
 		{
@@ -683,7 +683,7 @@ void Object::subdivideFace(SubdivideFace *theFace)
     target->vertex[theFace->center]->m_position/=(float)edgeCount;
 	//target->vertex[theFace->center]->normal/=edgeCount;
 	//¼ÆËãÐÂµÄ¶¥µã
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
 		SubdivideVertex *theV=theVertexList[i];
         if(theV->m_subdivideId!=subdivideId)
@@ -727,7 +727,7 @@ void Object::subdivideFace(SubdivideFace *theFace)
 	}
 	delete theVertexList;
 	//Ö®ºó´¦ÀíÃ¿Ò»¸ö±ß
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
 		SubdivideEdge *theEdge;
 		if(theFace->edge[i]>0)
@@ -810,9 +810,9 @@ void Object::subdivideFace(SubdivideFace *theFace)
 		}
 	}
 	//½¨Á¢Ï¸·ÖÖ®ºóµÄÃæ
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
-		size_t i2=(i+1)%edgeCount;
+        unsigned int i2=(i+1)%edgeCount;
 		if(theFace->edge[i]>0)
 		{
 			SubdivideEdge *theEdge1=original->edge[theFace->edge[i]];
@@ -865,14 +865,14 @@ void Object::subdivideFace(SubdivideFace *theFace)
 
 void Object::clearPSCache()
 {
-	size_t cacheSize=PSFaceCache.size();
+    unsigned int cacheSize=PSFaceCache.size();
 	for(int i=cacheSize-1;i>-1;--i)
 	{
 		PSFaceCache[i]->isSub=false;
 		PSFaceCache.pop_back();
 	}
 	PSFaceCache.clear();
-	for(size_t e=0;e<5;e++)
+    for(unsigned int e=0;e<5;e++)
 	{
 		cacheSize=PSSubFaceCache[e].size();
 		for(int i=cacheSize-1;i>-1;--i)
@@ -908,7 +908,7 @@ void Object::directPushVertex(Vertex *theVertex)
 		{
 			vertexArray.pushNullS();
 		}
-	};
+    }
 
 void Object::directPushEdge(Edge *theEdge)
 	{
@@ -920,7 +920,7 @@ void Object::directPushEdge(Edge *theEdge)
 		{
 			edgeArray.pushNullS();
 		}
-	};
+    }
 
 void Object::directPushFace(Face *theFace)
 		{
@@ -932,11 +932,11 @@ void Object::directPushFace(Face *theFace)
 			{
 				faceArray.pushNullS();
 			}
-		};
+        }
 
 void Object::normalizeVertexNormal()
 	{
-		for(size_t i=1;i<subdivideLevel[0]->vertex.size();++i)
+        for(unsigned int i=1;i<subdivideLevel[0]->vertex.size();++i)
 		{
             subdivideLevel[0]->vertex[i]->m_normal.normalize();
 		}
@@ -944,9 +944,9 @@ void Object::normalizeVertexNormal()
 
 void Object::updateFNormal(Face *theFace)
 	{
-		size_t edgeCount=theFace->edge.size();
+        unsigned int edgeCount=theFace->edge.size();
 		Vector *theVector=new Vector[edgeCount];
-		for(size_t i=0;i<edgeCount;++i)
+        for(unsigned int i=0;i<edgeCount;++i)
 		{
 			theVector[i].null();
 			if(theFace->edge[i]>0)
@@ -959,7 +959,7 @@ void Object::updateFNormal(Face *theFace)
 			}
 		}
 		--edgeCount;
-		for(size_t i=0;i<edgeCount;++i)
+        for(unsigned int i=0;i<edgeCount;++i)
 		{
 			theFace->normal+=perpendicular(theVector[i],theVector[i+1]);
 		}
@@ -968,10 +968,10 @@ void Object::updateFNormal(Face *theFace)
 		delete theVector;
 	}
 
-void Object::updateFNormal(SubdivideFace *theFace,size_t level)
+void Object::updateFNormal(SubdivideFace *theFace,unsigned int level)
 	{
 		Vector theVector[4];
-		for(size_t i=0;i<4;++i)
+        for(unsigned int i=0;i<4;++i)
 		{
 			theVector[i].null();
 			if(theFace->edge[i]>0)
@@ -983,7 +983,7 @@ void Object::updateFNormal(SubdivideFace *theFace,size_t level)
                 theVector[i]=subdivideLevel[level]->vertex[subdivideLevel[level]->edge[-theFace->edge[i]]->start]->m_position-subdivideLevel[level]->vertex[subdivideLevel[level]->edge[-theFace->edge[i]]->end]->m_position;
 			}
 		}
-		for(size_t i=0;i<3;++i)
+        for(unsigned int i=0;i<3;++i)
 		{
 			theFace->normal+=perpendicular(theVector[i],theVector[i+1]);
 		}
@@ -993,156 +993,156 @@ void Object::updateFNormal(SubdivideFace *theFace,size_t level)
 
 void Object::updateAllSubNormal()
 	{
-		size_t faceCount=subdivideLevel[0]->face.size();
-		for(size_t i=1;i<faceCount;++i)
+        unsigned int faceCount=subdivideLevel[0]->face.size();
+        for(unsigned int i=1;i<faceCount;++i)
 		{
 			updateFNormal(subdivideLevel[0]->face[i],0);
 		}
-		size_t vertexCount=subdivideLevel[0]->vertex.size();
-		for(size_t i=1;i<vertexCount;++i)
+        unsigned int vertexCount=subdivideLevel[0]->vertex.size();
+        for(unsigned int i=1;i<vertexCount;++i)
 		{
 			updateVNormal(subdivideLevel[0]->vertex[i],0);
 		}
 	}
 
 //µÃµ½±ßµÄÊýÄ¿
-size_t Object::edgeCount()
+unsigned int Object::edgeCount()
 	{
 		return edgeArray.size();
-	};
+    }
 
-size_t Object::vertexCount()
+unsigned int Object::vertexCount()
 	{
 		return vertexArray.size();
-	};
+    }
 
-size_t Object::faceCount()
+unsigned int Object::faceCount()
 	{
 		return faceArray.size();	
-	};
+    }
 
-void Object::vertexPositionChangeR(size_t vertexID,float nx,float ny,float nz)
+void Object::vertexPositionChangeR(unsigned int vertexID,float nx,float ny,float nz)
 	{
 		Vertex *theVertex=vertexArray[vertexID];
         historyManager->record(new Log_VertexPositionChange(index,vertexID,theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z));
         theVertex->m_position.x+=nx;
         theVertex->m_position.y+=ny;
         theVertex->m_position.z+=nz;
-	};
+    }
 
-void Object::vertexNormalChange(size_t vertexID,float nx,float ny,float nz)
+void Object::vertexNormalChange(unsigned int vertexID,float nx,float ny,float nz)
 	{
 		Vertex *theVertex=vertexArray[vertexID];
         historyManager->record(new Log_VertexNormalChange(index,vertexID,theVertex->m_normal.x,theVertex->m_normal.y,theVertex->m_normal.z));
         theVertex->m_normal.x=nx;
         theVertex->m_normal.y=ny;
         theVertex->m_normal.z=nz;
-	};
+    }
 
-void Object::objectEdgeRemove(size_t edgeID)
+void Object::objectEdgeRemove(unsigned int edgeID)
 	{
 		if(!historyManager->record(new Log_ObjectEdgeRemove(index,edgeID,edgeArray[edgeID])))
 		{
 			delete edgeArray[edgeID];
 		}
 		edgeArray.remove(edgeID);
-	};
+    }
 
-void Object::objectVertexRemove(size_t vertexID)
+void Object::objectVertexRemove(unsigned int vertexID)
 	{
 		if(!historyManager->record(new Log_ObjectVertexRemove(index,vertexID,vertexArray[vertexID])))
 		{
 			delete vertexArray[vertexID];
 		}
 		vertexArray.remove(vertexID);
-	};
+    }
 
-void Object::edgeRightChange(size_t edgeID,size_t nr)
+void Object::edgeRightChange(unsigned int edgeID,unsigned int nr)
 	{
 		historyManager->record(new Log_EdgeRightChange(index,edgeID,edgeArray[edgeID]->right));
 		edgeArray[edgeID]->right=nr;
-	};
+    }
 
-void Object::edgeStartChange(size_t edgeID,size_t ns)
+void Object::edgeStartChange(unsigned int edgeID,unsigned int ns)
 	{
 		historyManager->record(new Log_EdgeStartChange(index,edgeID,edgeArray[edgeID]->start));
 		edgeArray[edgeID]->start=ns;
-	};
+    }
 
-void Object::vertexAdjacentRemove(size_t vertexID,size_t adjID)
+void Object::vertexAdjacentRemove(unsigned int vertexID,unsigned int adjID)
 	{
-        size_t adjEdgeCount=vertexArray[vertexID]->m_adjacentEdgeList.size()-1;
+        unsigned int adjEdgeCount=vertexArray[vertexID]->m_adjacentEdgeList.size()-1;
         historyManager->record(new Log_VertexAdjacentRemove(index,vertexID,adjID,vertexArray[vertexID]->m_adjacentEdgeList[adjID]));
-        size_t temp=vertexArray[vertexID]->m_adjacentEdgeList[adjEdgeCount];
+        unsigned int temp=vertexArray[vertexID]->m_adjacentEdgeList[adjEdgeCount];
         vertexArray[vertexID]->m_adjacentEdgeList[adjEdgeCount]=vertexArray[vertexID]->m_adjacentEdgeList[adjID];
         vertexArray[vertexID]->m_adjacentEdgeList[adjID]=temp;
         vertexArray[vertexID]->m_adjacentEdgeList.pop_back();
-	};
+    }
 
-void Object::vertexAdjacentInsert(size_t vertexID,size_t adjID,size_t ne)
+void Object::vertexAdjacentInsert(unsigned int vertexID,unsigned int adjID,unsigned int ne)
 	{
 		historyManager->record(new Log_VertexAdjacentInsert(index,vertexID,adjID));
         vertexArray[vertexID]->m_adjacentEdgeList.push_back(ne);
-        size_t temp=vertexArray[vertexID]->m_adjacentEdgeList[adjID];
-        size_t adjEdgeCount=vertexArray[vertexID]->m_adjacentEdgeList.size()-1;
+        unsigned int temp=vertexArray[vertexID]->m_adjacentEdgeList[adjID];
+        unsigned int adjEdgeCount=vertexArray[vertexID]->m_adjacentEdgeList.size()-1;
         vertexArray[vertexID]->m_adjacentEdgeList[adjID]=vertexArray[vertexID]->m_adjacentEdgeList[adjEdgeCount];
         vertexArray[vertexID]->m_adjacentEdgeList[adjEdgeCount]=temp;
-	};
+    }
 
-void Object::faceEdgePush(size_t faceID,int nEdge)
+void Object::faceEdgePush(unsigned int faceID,int nEdge)
 	{
 		historyManager->record(new Log_FaceEdgePush(index,faceID));
 		faceArray[faceID]->edge.push_back(nEdge);
-	};
+    }
 
-void Object::faceEdgeChange(size_t faceID,size_t edgeID,int nEdge)
+void Object::faceEdgeChange(unsigned int faceID,unsigned int edgeID,int nEdge)
 	{
 		historyManager->record(new Log_FaceEdgeChange(index,faceID,edgeID,faceArray[faceID]->edge[edgeID]));
 		faceArray[faceID]->edge[edgeID]=nEdge;
-	};
+    }
 
-void Object::faceEdgeInsert(size_t faceID,size_t edgeID,int nEdge)
+void Object::faceEdgeInsert(unsigned int faceID,unsigned int edgeID,int nEdge)
 	{
 		historyManager->record(new Log_FaceEdgeInsert(index,faceID,edgeID));
 		Face *theFace=faceArray[faceID];
 		theFace->edge.push_back(0);
-		for(size_t h=theFace->edge.size()-1;h>edgeID;--h)
+        for(unsigned int h=theFace->edge.size()-1;h>edgeID;--h)
 		{
 			theFace->edge[h]=theFace->edge[h-1];
 		}
 		theFace->edge[edgeID]=nEdge;
-	};
+    }
 
-void Object::vertexAdjacentPush(size_t vertexID,size_t ne)
+void Object::vertexAdjacentPush(unsigned int vertexID,unsigned int ne)
 	{
 		historyManager->record(new Log_VertexAdjacentPush(index,vertexID));
         vertexArray[vertexID]->m_adjacentEdgeList.push_back(ne);
 	}
 
-void Object::vertexAdjacentChange(size_t vertexID,size_t edgeID,size_t ne)
+void Object::vertexAdjacentChange(unsigned int vertexID,unsigned int edgeID,unsigned int ne)
 	{
         historyManager->record(new Log_VertexAdjacentChange(index,vertexID,edgeID,vertexArray[vertexID]->m_adjacentEdgeList[edgeID]));
         vertexArray[vertexID]->m_adjacentEdgeList[edgeID]=ne;
 	}
 
-void Object::vertexAdjacentPop(size_t vertexID)
+void Object::vertexAdjacentPop(unsigned int vertexID)
 	{
         historyManager->record(new Log_VertexAdjacentPop(index,vertexID,vertexArray[vertexID]->m_adjacentEdgeList[vertexArray[vertexID]->m_adjacentEdgeList.size()-1]));
         vertexArray[vertexID]->m_adjacentEdgeList.pop_back();
 	}
-void Object::faceEdgeSwap(size_t faceID,size_t i1,size_t i2)
+void Object::faceEdgeSwap(unsigned int faceID,unsigned int i1,unsigned int i2)
 	{
 		historyManager->record(new Log_FaceEdgeSwap(index,faceID,i1,i2));
 		int temp=faceArray[faceID]->edge[i1];
 		faceArray[faceID]->edge[i1]=faceArray[faceID]->edge[i2];
 		faceArray[faceID]->edge[i2]=temp;
 	}
-void Object::faceEdgeRemove(size_t faceID,size_t edgeID)
+void Object::faceEdgeRemove(unsigned int faceID,unsigned int edgeID)
 	{
 		Face *theFace=faceArray[faceID];
 		historyManager->record(new Log_FaceEdgeRemove(index,faceID,edgeID,theFace->edge[edgeID]));
-		size_t edgeCount=theFace->edge.size();
-		for(size_t e=edgeID+1;e<edgeCount;++e)
+        unsigned int edgeCount=theFace->edge.size();
+        for(unsigned int e=edgeID+1;e<edgeCount;++e)
 		{
 			theFace->edge[e-1]=theFace->edge[e];
 		}
@@ -1153,19 +1153,19 @@ void Object::redefineControlPoint()
 	{
 		vertexArray.~IndexArray();
 		vertexArray.pushNull();
-		size_t vertexCount=subdivideLevel[0]->vertex.size();
+        unsigned int vertexCount=subdivideLevel[0]->vertex.size();
         //vertexArray.clear();
 		vertexArray.reserve(vertexCount);
-		for(size_t i=1;i<vertexCount;i++)
+        for(unsigned int i=1;i<vertexCount;i++)
 		{
             addVertex(subdivideLevel[0]->vertex[i]->m_position,subdivideLevel[0]->vertex[i]->m_normal);
 		}
 		edgeArray.~IndexArray();
 		edgeArray.pushNull();
-		size_t edgeCount=subdivideLevel[0]->edge.size();
+        unsigned int edgeCount=subdivideLevel[0]->edge.size();
         //edgeArray.clear();
 		edgeArray.reserve(edgeCount);
-		for(size_t i=1;i<edgeCount;i++)
+        for(unsigned int i=1;i<edgeCount;i++)
 		{
 		//	printf("-%d-",subdivideLevel[0]->edge[i]->start);
 		//	printf("-%d-",subdivideLevel[0]->edge[i]->end);
@@ -1173,14 +1173,14 @@ void Object::redefineControlPoint()
 		}
 		faceArray.~IndexArray();
 		faceArray.pushNull();
-		size_t faceCount=subdivideLevel[0]->face.size();
+        unsigned int faceCount=subdivideLevel[0]->face.size();
         //faceArray.clear();
 		faceArray.reserve(faceCount);
-		for(size_t i=1;i<faceCount;i++)
+        for(unsigned int i=1;i<faceCount;i++)
 		{
 			//printf("-%d--",i);
 			SubdivideFace *theSF=subdivideLevel[0]->face[i];
-			size_t tempEdge[4]={0};
+            unsigned int tempEdge[4]={0};
 			tempEdge[0]=theSF->edge[0]>0?theSF->edge[0]:-(theSF->edge[0]);
 			tempEdge[1]=theSF->edge[1]>0?theSF->edge[1]:-(theSF->edge[1]);
 			tempEdge[2]=theSF->edge[2]>0?theSF->edge[2]:-(theSF->edge[2]);
@@ -1188,39 +1188,39 @@ void Object::redefineControlPoint()
 			addFace(tempEdge,4);
 		}
 
-		for(size_t i=0;i<(size_t)subdivideLevelSize;i++)
+        for(unsigned int i=0;i<(unsigned int)subdivideLevelSize;i++)
 		{
 			delete subdivideLevel[i];
 			subdivideLevel[i]=NULL;
 		}
 		subdivideLevelSize=0;
-	};
+    }
 
 
 void Object::testXMLOut(char *fileName)
 	{
 		FILE *fp=fopen(fileName,"w");
 		fprintf(fp,"<O>\n");
-		for(size_t i=0;i<vertexArray.size();++i)
+        for(unsigned int i=0;i<vertexArray.size();++i)
 		{
 			if(!vertexArray[i]) continue;
 			fprintf(fp,"<V i=\"%d\">\n",vertexArray[i]->index);
-            for(size_t e=0;e<vertexArray[i]->m_adjacentEdgeList.size();e++)
+            for(unsigned int e=0;e<vertexArray[i]->m_adjacentEdgeList.size();e++)
 			{
                 fprintf(fp,"<AE a=\"%d\" />\n",vertexArray[i]->m_adjacentEdgeList[e]);
 			}
 			fprintf(fp,"</V>\n");
 		}
-		for(size_t i=0;i<edgeArray.size();i++)
+        for(unsigned int i=0;i<edgeArray.size();i++)
 		{
 			if(!edgeArray[i]) continue;
 			fprintf(fp,"<E i=\"%d\" s=\"%d\" e=\"%d\" l=\"%d\" r=\"%d\" />\n",edgeArray[i]->index,edgeArray[i]->start,edgeArray[i]->end,edgeArray[i]->left,edgeArray[i]->right);
 		}
-		for(size_t i=0;i<faceArray.size();i++)
+        for(unsigned int i=0;i<faceArray.size();i++)
 		{
 			if(!faceArray[i]) continue;
 			fprintf(fp,"<F i=\"%d\">\n",faceArray[i]->index);
-			for(size_t e=0;e<faceArray[i]->edge.size();e++)
+            for(unsigned int e=0;e<faceArray[i]->edge.size();e++)
 				fprintf(fp,"<FE e=\"%d\" />\n",faceArray[i]->edge[e]);
 			fprintf(fp,"</F>\n");
 		}
@@ -1229,56 +1229,56 @@ void Object::testXMLOut(char *fileName)
 	}
 
 
-void Object::vertexAdjacentSwap(size_t vertexID,size_t i1,size_t i2)
+void Object::vertexAdjacentSwap(unsigned int vertexID,unsigned int i1,unsigned int i2)
 	{
 		historyManager->record(new Log_VertexAdjacentSwap(index,vertexID,i1,i2));
-        size_t temp=vertexArray[vertexID]->m_adjacentEdgeList[i1];
+        unsigned int temp=vertexArray[vertexID]->m_adjacentEdgeList[i1];
         vertexArray[vertexID]->m_adjacentEdgeList[i1]=vertexArray[vertexID]->m_adjacentEdgeList[i2];
         vertexArray[vertexID]->m_adjacentEdgeList[i2]=temp;
 	}
 
-void Object::faceEdgePop(size_t faceID)
+void Object::faceEdgePop(unsigned int faceID)
 	{
 		historyManager->record(new Log_FaceEdgePop(index,faceID,faceArray[faceID]->edge[faceArray[faceID]->edge.size()-1]));
 		faceArray[faceID]->edge.pop_back();
-	};
+    }
 
-void Object::edgeEndChange(size_t edgeID,size_t ne)
+void Object::edgeEndChange(unsigned int edgeID,unsigned int ne)
 	{
 		historyManager->record(new Log_EdgeEndChange(index,edgeID,edgeArray[edgeID]->end));
 		edgeArray[edgeID]->end=ne;
-	};
+    }
 
-void Object::edgeLeftChange(size_t edgeID,size_t nl)
+void Object::edgeLeftChange(unsigned int edgeID,unsigned int nl)
 	{
 		historyManager->record(new Log_EdgeLeftChange(index,edgeID,edgeArray[edgeID]->left));
 		edgeArray[edgeID]->left=nl;
-	};
+    }
 
-void Object::objectFaceRemove(size_t faceID)
+void Object::objectFaceRemove(unsigned int faceID)
 	{
 		if(!historyManager->record(new Log_ObjectFaceRemove(index,faceID,faceArray[faceID])))
 		{
 			delete faceArray[faceID];			
 		}
 		faceArray.remove(faceID);
-	};
+    }
 
-	void Object::vertexPositionChangeA(size_t vertexID,float nx,float ny,float nz)
+    void Object::vertexPositionChangeA(unsigned int vertexID,float nx,float ny,float nz)
 	{
 		Vertex *theVertex=vertexArray[vertexID];
         historyManager->record(new Log_VertexPositionChange(index,vertexID,theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z));
         theVertex->m_position.x=nx;
         theVertex->m_position.y=ny;
         theVertex->m_position.z=nz;
-	};
+    }
 
 
 void Object::updateVNormal(Vertex *theVertex)
 	{
-        size_t adjCount=theVertex->m_adjacentEdgeList.size();
+        unsigned int adjCount=theVertex->m_adjacentEdgeList.size();
         theVertex->m_normal.null();
-		for(size_t i=0;i<adjCount;++i)
+        for(unsigned int i=0;i<adjCount;++i)
 		{
             if(edgeArray[theVertex->m_adjacentEdgeList[i]]->start==theVertex->index)
 			{
@@ -1297,11 +1297,11 @@ void Object::updateVNormal(Vertex *theVertex)
 	}
 
 
-void Object::updateVNormal(SubdivideVertex *theVertex,size_t level)
+void Object::updateVNormal(SubdivideVertex *theVertex,unsigned int level)
 	{
-        size_t adjCount=theVertex->m_adjacentEdgeList.size();
+        unsigned int adjCount=theVertex->m_adjacentEdgeList.size();
         theVertex->m_normal.null();
-		for(size_t i=0;i<adjCount;++i)
+        for(unsigned int i=0;i<adjCount;++i)
 		{
             if(subdivideLevel[level]->edge[theVertex->m_adjacentEdgeList[i]]->start==theVertex->index)
 			{
@@ -1354,7 +1354,7 @@ void Object::draw()
 			}
 			glPopMatrix();
 		}
-	};
+    }
 
 
 void Object::drawObjectSelected()
@@ -1380,7 +1380,7 @@ glScalef(scale.x,scale.y,scale.z);
 		drawWireObjectSelected();
 		}
 			glPopMatrix();
-	};
+    }
 
 void Object::drawWireVertexSelected()
 {
@@ -1391,7 +1391,7 @@ void Object::drawWireVertexSelected()
 	if(subdivideLevelSize==0)
 	{
 		glBegin(GL_LINES);
-		for(size_t i=1;i<edgeArray.size();++i)
+        for(unsigned int i=1;i<edgeArray.size();++i)
 		{
 			Edge *e=edgeArray[i];
 			if(e)
@@ -1407,7 +1407,7 @@ void Object::drawWireVertexSelected()
 	else
 	{
 		glBegin(GL_LINES);
-		for(size_t i=1;i<edgeArray.size();++i)
+        for(unsigned int i=1;i<edgeArray.size();++i)
 		{
 			Edge *e=edgeArray[i];
 			if(e)
@@ -1419,7 +1419,7 @@ void Object::drawWireVertexSelected()
 			}
 		}
 		glColor3ub(0,0,0);
-		for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+        for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 		{
 			SubdivideEdge *e=subdivideLevel[0]->edge[i];
 			SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -1441,7 +1441,7 @@ void Object::drawWireEdgeSelected()
 		if(subdivideLevelSize==0)
 		{
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e && !(e->isSelected))
@@ -1457,7 +1457,7 @@ void Object::drawWireEdgeSelected()
 		else
 		{
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1469,7 +1469,7 @@ void Object::drawWireEdgeSelected()
 				}
 			}
 			glColor3ub(0,0,0);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -1491,7 +1491,7 @@ void Object::drawWireFaceSelected()
 		if(subdivideLevelSize==0)
 		{
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1507,7 +1507,7 @@ void Object::drawWireFaceSelected()
 		else
 		{
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1519,7 +1519,7 @@ void Object::drawWireFaceSelected()
 				}
 			}
 			glColor3ub(0,0,0);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -1542,7 +1542,7 @@ void Object::drawWireObjectSelected()
 		if(subdivideLevelSize==0)
 		{
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1558,7 +1558,7 @@ void Object::drawWireObjectSelected()
 		else
 		{
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1570,7 +1570,7 @@ void Object::drawWireObjectSelected()
 				}
 			}
 			glColor3ub(0,0,0);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -1596,13 +1596,13 @@ void Object::drawSmoothObjectSelected()
 		{
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i])
 				{
 					Face *theFace=faceArray[i];
 					glBegin(GL_POLYGON);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -1627,7 +1627,7 @@ void Object::drawSmoothObjectSelected()
 			glColor3ub(114,186,221);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1646,7 +1646,7 @@ void Object::drawSmoothObjectSelected()
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				//glBegin(GL_POLYGON);
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
@@ -1708,7 +1708,7 @@ void Object::drawSmoothObjectSelected()
 			glColor3ub(0,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -1717,7 +1717,7 @@ void Object::drawSmoothObjectSelected()
                 glVertex3f(end->m_position.x,end->m_position.y,end->m_position.z);
 			}
 			glColor3ub(114,186,221);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1746,14 +1746,14 @@ void Object::drawFacedObjectSelected()
 		{
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i])
 				{
 					Face *theFace=faceArray[i];
 					glBegin(GL_POLYGON);
 					glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -1775,7 +1775,7 @@ void Object::drawFacedObjectSelected()
 			glColor3ub(114,186,221);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1794,7 +1794,7 @@ void Object::drawFacedObjectSelected()
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
 				glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
@@ -1846,7 +1846,7 @@ void Object::drawFacedObjectSelected()
 			glColor3ub(0,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -1856,7 +1856,7 @@ void Object::drawFacedObjectSelected()
 			}
 
 						glColor3ub(114,186,221);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1894,14 +1894,14 @@ glScalef(scale.x,scale.y,scale.z);
 		{
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i])
 				{
 					Face *theFace=faceArray[i];
 					glBegin(GL_POLYGON);
 					glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -1923,7 +1923,7 @@ glScalef(scale.x,scale.y,scale.z);
 			glColor3ub(114,186,221);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -1939,7 +1939,7 @@ glScalef(scale.x,scale.y,scale.z);
 			glPointSize(5.0f);
 			glBegin(GL_POINTS);
 			
-			for(size_t i=1;i<vertexArray.size();++i)
+            for(unsigned int i=1;i<vertexArray.size();++i)
 			{
 				Vertex *v=vertexArray[i];
 				if(v && !v->isSelected)
@@ -1955,7 +1955,7 @@ glScalef(scale.x,scale.y,scale.z);
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
 				glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
@@ -2007,7 +2007,7 @@ glScalef(scale.x,scale.y,scale.z);
 			glColor3ub(0,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -2017,7 +2017,7 @@ glScalef(scale.x,scale.y,scale.z);
 			}
 
 						glColor3ub(114,186,221);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -2033,7 +2033,7 @@ glScalef(scale.x,scale.y,scale.z);
 			glColor3ub(0,200,0);
 			glPointSize(5.0f);
 			glBegin(GL_POINTS);
-			for(size_t i=1;i<vertexArray.size();++i)
+            for(unsigned int i=1;i<vertexArray.size();++i)
 			{
 				Vertex *v=vertexArray[i];
 				if(v && !v->isSelected)
@@ -2068,14 +2068,14 @@ void Object::drawFacedFaceSelected()
 		{
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i] && !faceArray[i]->isSelected)
 				{
 					Face *theFace=faceArray[i];
 					glBegin(GL_POLYGON);
 					glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -2097,7 +2097,7 @@ void Object::drawFacedFaceSelected()
 			glColor3ub(100,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -2116,7 +2116,7 @@ void Object::drawFacedFaceSelected()
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
 				glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
@@ -2168,7 +2168,7 @@ void Object::drawFacedFaceSelected()
 			glColor3ub(0,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -2178,7 +2178,7 @@ void Object::drawFacedFaceSelected()
 			}
 
 						glColor3ub(100,0,0);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -2216,14 +2216,14 @@ void Object::drawFacedEdgeSelected()
 		{
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i])
 				{
 					Face *theFace=faceArray[i];
 					glBegin(GL_POLYGON);
 					glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -2245,7 +2245,7 @@ void Object::drawFacedEdgeSelected()
 			glColor3ub(0,0,100);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e && !e->isSelected)
@@ -2264,7 +2264,7 @@ void Object::drawFacedEdgeSelected()
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
 				glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
@@ -2316,7 +2316,7 @@ void Object::drawFacedEdgeSelected()
 			glColor3ub(0,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -2326,7 +2326,7 @@ void Object::drawFacedEdgeSelected()
 			}
 
 			glColor3ub(100,0,0);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e && !e->isSelected)
@@ -2341,7 +2341,7 @@ void Object::drawFacedEdgeSelected()
 			glEnable(GL_LIGHTING);
 		}
 		glPopMatrix();
-	};
+    }
 
 void Object::drawFaced()
 	{
@@ -2353,14 +2353,14 @@ void Object::drawFaced()
 		glEnable(GL_LIGHTING);
 		if(subdivideLevelSize==0)
 		{
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i])
 				{
 					Face *theFace=faceArray[i];
 					glBegin(GL_POLYGON);
 					glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -2380,7 +2380,7 @@ void Object::drawFaced()
 		else
 		{
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
 				glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
@@ -2428,14 +2428,14 @@ void Object::drawFaced()
 			glEnd();
 		}
 
-	};
+    }
 
 
 void Object::drawNormal()
 	{
 		glDisable(GL_LIGHTING);
 		glBegin(GL_LINES);
-		for(size_t i=1;i<vertexArray.size();++i)
+        for(unsigned int i=1;i<vertexArray.size();++i)
 		{
 			Vertex *v=vertexArray[i];
             Vector normal=v->m_normal*10+v->m_position;
@@ -2444,7 +2444,7 @@ void Object::drawNormal()
 		}
 		glEnd();
 		glEnable(GL_LIGHTING);
-	};
+    }
 
 void Object::drawSmooth()
 	{
@@ -2456,21 +2456,21 @@ void Object::drawSmooth()
 		glEnable(GL_LIGHTING);
 		if(subdivideLevelSize==0)
 		{
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i])
 				{
 					Face *theFace=faceArray[i];
 					if(theFace->isSelected)
 					{
-						GLfloat diffuse[4]={1.0f,0.0f,0.0f,1.0f};
+                        GLfloat diffuse[4]={1.0f,0.0f,0.0f,1.0f};
 						glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
 					}else
 					{
 					glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
 					}
 					glBegin(GL_POLYGON);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -2492,7 +2492,7 @@ void Object::drawSmooth()
 		else
 		{
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
 				if(theFace->edge[0]>0)
@@ -2547,7 +2547,7 @@ void Object::drawSmooth()
 			glEnd();
 		}
 
-	};
+    }
 
 
 void Object::drawWire(GLuint r,GLuint g,GLuint b)
@@ -2559,7 +2559,7 @@ void Object::drawWire(GLuint r,GLuint g,GLuint b)
 		if(subdivideLevelSize==0)
 		{
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -2575,7 +2575,7 @@ void Object::drawWire(GLuint r,GLuint g,GLuint b)
 		else
 		{
 			glBegin(GL_LINES);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -2586,7 +2586,7 @@ void Object::drawWire(GLuint r,GLuint g,GLuint b)
 			glEnd();
 		}
 		glEnable(GL_LIGHTING);
-	};
+    }
 
 
 void Object::drawWireframe()
@@ -2601,13 +2601,13 @@ void Object::drawWireframe()
 		{
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i])
 				{
 					Face *theFace=faceArray[i];
 					glBegin(GL_POLYGON);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -2632,7 +2632,7 @@ void Object::drawWireframe()
 			glColor3ub(0,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -2651,7 +2651,7 @@ void Object::drawWireframe()
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				//glBegin(GL_POLYGON);
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
@@ -2713,7 +2713,7 @@ void Object::drawWireframe()
 			glColor3ub(0,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -2725,7 +2725,7 @@ void Object::drawWireframe()
 			glEnable(GL_LIGHTING);
 		}
 
-	};
+    }
 
 
 void Object::selectionRenderObject()
@@ -2740,13 +2740,13 @@ void Object::selectionRenderObject()
 		
 		if(subdivideLevelSize==0)
 		{
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i])
 				{
 					Face *theFace=faceArray[i];
 					glBegin(GL_POLYGON);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -2766,7 +2766,7 @@ void Object::selectionRenderObject()
 		else
 		{
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
 				if(theFace->edge[0]>0)
@@ -2827,14 +2827,14 @@ void Object::drawWireframeFaced()
 		{
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<faceArray.size();++i)
+            for(unsigned int i=1;i<faceArray.size();++i)
 			{
 				if(faceArray[i])
 				{
 					Face *theFace=faceArray[i];
 					glBegin(GL_POLYGON);
 					glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -2856,7 +2856,7 @@ void Object::drawWireframeFaced()
 			glColor3ub(0,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<edgeArray.size();++i)
+            for(unsigned int i=1;i<edgeArray.size();++i)
 			{
 				Edge *e=edgeArray[i];
 				if(e)
@@ -2875,7 +2875,7 @@ void Object::drawWireframeFaced()
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
 			glBegin(GL_QUADS);
-			for(size_t i=1;i<subdivideLevel[0]->face.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->face.size();++i)
 			{
 				SubdivideFace *theFace=subdivideLevel[0]->face[i];
 				glNormal3f(theFace->normal.x,theFace->normal.y,theFace->normal.z);
@@ -2927,7 +2927,7 @@ void Object::drawWireframeFaced()
 			glColor3ub(0,0,0);
 			glLineWidth(1);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<subdivideLevel[0]->edge.size();++i)
+            for(unsigned int i=1;i<subdivideLevel[0]->edge.size();++i)
 			{
 				SubdivideEdge *e=subdivideLevel[0]->edge[i];
 				SubdivideVertex *start=subdivideLevel[0]->vertex[e->start];
@@ -2991,14 +2991,14 @@ struct ObjectInfo Object::getObjectInfo()
 		return result;
 }
 
-void Object::buildPSCacheFromEID(std::vector<size_t> &edgeToBeSub)
+void Object::buildPSCacheFromEID(std::vector<unsigned int> &edgeToBeSub)
 {
 	if(subdivideLevelSize>0)
 	{
-		std::vector<size_t> vertexToBeSub;
+        std::vector<unsigned int> vertexToBeSub;
         //vertexToBeSub.clear();
 		vertexToBeSub.reserve(1000);
-		for(size_t i=0;i<edgeToBeSub.size();++i)
+        for(unsigned int i=0;i<edgeToBeSub.size();++i)
 		{
 			Edge *theEdge=edgeArray[edgeToBeSub[i]];
 			if(theEdge)
@@ -3017,7 +3017,7 @@ void Object::buildPSCacheFromEID(std::vector<size_t> &edgeToBeSub)
 			}
 		}
 
-		for(size_t i=0;i<vertexToBeSub.size();++i)
+        for(unsigned int i=0;i<vertexToBeSub.size();++i)
 		{
 			vertexArray[vertexToBeSub[i]]->isSub=false;
 		}
@@ -3026,17 +3026,17 @@ void Object::buildPSCacheFromEID(std::vector<size_t> &edgeToBeSub)
 	}
 }
 
-void Object::buildPSCacheFromFID(std::vector<size_t> &faceToBeSub)
+void Object::buildPSCacheFromFID(std::vector<unsigned int> &faceToBeSub)
 {
 	if(subdivideLevelSize>0)
 	{
-		std::vector<size_t> vertexToBeSub;
+        std::vector<unsigned int> vertexToBeSub;
         //vertexToBeSub.clear();
 		vertexToBeSub.reserve(1000);
-		for(size_t i=0;i<faceToBeSub.size();++i)
+        for(unsigned int i=0;i<faceToBeSub.size();++i)
 		{
 			Face *theFace=faceArray[faceToBeSub[i]];
-			for(size_t e=0;e<theFace->edge.size();++e)
+            for(unsigned int e=0;e<theFace->edge.size();++e)
 			{
 				if(theFace->edge[e]>0)
 				{
@@ -3071,7 +3071,7 @@ void Object::buildPSCacheFromFID(std::vector<size_t> &faceToBeSub)
 			}
 		}
 
-		for(size_t i=0;i<vertexToBeSub.size();++i)
+        for(unsigned int i=0;i<vertexToBeSub.size();++i)
 		{
 			vertexArray[vertexToBeSub[i]]->isSub=false;
 		}
@@ -3080,19 +3080,19 @@ void Object::buildPSCacheFromFID(std::vector<size_t> &faceToBeSub)
 	}
 }
 
-void Object::buildPSCacheFromVID(std::vector<size_t> &vertexToBeSub)
+void Object::buildPSCacheFromVID(std::vector<unsigned int> &vertexToBeSub)
 {
 	if(subdivideLevelSize>0)
 	{
 		std::vector<Face *> faceToBeSub;
         //faceToBeSub.clear();
 		faceToBeSub.reserve(1000);
-		for(size_t i=0;i<vertexToBeSub.size();++i)
+        for(unsigned int i=0;i<vertexToBeSub.size();++i)
 		{
 			Vertex *theVertex=vertexArray[vertexToBeSub[i]];
 			if(theVertex)
 			{
-                for(size_t e=0;e<theVertex->m_adjacentEdgeList.size();++e)
+                for(unsigned int e=0;e<theVertex->m_adjacentEdgeList.size();++e)
 				{
                     Edge *theEdge=edgeArray[theVertex->m_adjacentEdgeList[e]];
 					if(theEdge)
@@ -3121,19 +3121,19 @@ void Object::buildPSCacheFromVID(std::vector<size_t> &vertexToBeSub)
 	}
 }
 
-void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,size_t level)
+void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,unsigned int level)
 {
 	//ÕâÀïoriginalListÓ¦¸Ã·ÖÅäºÃ¿Õ¼ä
 	//originalListÖÐµÄidÓ¦¸ÃÊÇ´ýÏ¸·ÖµÄ×´Ì¬
 	SubdivideLevel *theLevel=subdivideLevel[level];
-	size_t originalCount=originalList.size();
+    unsigned int originalCount=originalList.size();
 	std::vector<SubdivideVertex *> tempVertexList;
     //tempVertexList.clear();
 	tempVertexList.reserve(originalCount*4);
-	for(size_t i=0;i<originalCount;++i)
+    for(unsigned int i=0;i<originalCount;++i)
 	{
 		SubdivideFace *theFace=originalList[i];
-		for(size_t e=0;e<4;++e)
+        for(unsigned int e=0;e<4;++e)
 		{
 			if(theFace->edge[e]>0)
 			{
@@ -3156,11 +3156,11 @@ void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,size_t leve
 		}
 	}
 
-	for(size_t i=0;i<tempVertexList.size();++i)
+    for(unsigned int i=0;i<tempVertexList.size();++i)
 	{
 		SubdivideVertex *theVertex=tempVertexList[i];
 		theVertex->isSub=false;
-        for(size_t e=0;e<theVertex->m_adjacentEdgeList.size();++e)
+        for(unsigned int e=0;e<theVertex->m_adjacentEdgeList.size();++e)
 		{
             SubdivideEdge *theEdge=theLevel->edge[theVertex->m_adjacentEdgeList[e]];
 			if(theEdge->start==theVertex->index)
@@ -3185,15 +3185,15 @@ void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,size_t leve
 	}
 }
 
-/*void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,size_t level)
+/*void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,unsigned int level)
 {
 	//ÕâÀïoriginalListÓ¦¸Ã·ÖÅäºÃ¿Õ¼ä
 	//originalListÖÐµÄidÓ¦¸ÃÊÇ´ýÏ¸·ÖµÄ×´Ì¬
-	size_t originalCount=originalList.size();
-	for(size_t i=0;i<originalCount;++i)
+    unsigned int originalCount=originalList.size();
+    for(unsigned int i=0;i<originalCount;++i)
 	{
 		SubdivideFace *theFace=originalList[i];
-		for(size_t e=0;e<4;++e)
+        for(unsigned int e=0;e<4;++e)
 		{
 			SubdivideVertex *theVertex;
 			SubdivideLevel *theLevel=subdivideLevel[level];
@@ -3209,8 +3209,8 @@ void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,size_t leve
 					continue;
 				theVertex=theLevel->vertex[theLevel->edge[-theFace->edge[e]]->start];
 			}
-			size_t adjacentEdgeCount=theVertex->adjacentEdge.size();
-			for(size_t h=0;h<adjacentEdgeCount;++h)
+            unsigned int adjacentEdgeCount=theVertex->adjacentEdge.size();
+            for(unsigned int h=0;h<adjacentEdgeCount;++h)
 			{
 				if(theLevel->edge[theVertex->adjacentEdge[h]]->right && !theLevel->face[theLevel->edge[theVertex->adjacentEdge[h]]->right]->isSub)
 				{
@@ -3233,15 +3233,15 @@ void Object::expandSubFace(std::vector<Face*> &originalList)
 {
 	//ÕâÀïoriginalListÓ¦¸Ã·ÖÅäºÃ¿Õ¼ä
 	//originalListÖÐµÄidÓ¦¸ÃÊÇ´ýÏ¸·ÖµÄ×´Ì¬
-	size_t originalCount=originalList.size();
+    unsigned int originalCount=originalList.size();
 	std::vector<Vertex *> tempVertexList;
     //tempVertexList.clear();
 	tempVertexList.reserve(originalCount*5);
-	for(size_t i=0;i<originalCount;++i)
+    for(unsigned int i=0;i<originalCount;++i)
 	{
 		Face *theFace=originalList[i];
-		size_t edgeCount=theFace->edge.size();
-		for(size_t e=0;e<edgeCount;++e)
+        unsigned int edgeCount=theFace->edge.size();
+        for(unsigned int e=0;e<edgeCount;++e)
 		{
 			if(theFace->edge[e]>0)
 			{
@@ -3261,11 +3261,11 @@ void Object::expandSubFace(std::vector<Face*> &originalList)
 			}
 		}
 	}
-	for(size_t i=0;i<tempVertexList.size();++i)
+    for(unsigned int i=0;i<tempVertexList.size();++i)
 	{
 		Vertex *theVertex=tempVertexList[i];
 		theVertex->isSub=false;
-        for(size_t e=0;e<theVertex->m_adjacentEdgeList.size();++e)
+        for(unsigned int e=0;e<theVertex->m_adjacentEdgeList.size();++e)
 		{
             Edge *theEdge=edgeArray[theVertex->m_adjacentEdgeList[e]];
 			if(theEdge->start==theVertex->index)
@@ -3288,12 +3288,12 @@ void Object::expandSubFace(std::vector<Face*> &originalList)
 {
 	//ÕâÀïoriginalListÓ¦¸Ã·ÖÅäºÃ¿Õ¼ä
 	//originalListÖÐµÄidÓ¦¸ÃÊÇ´ýÏ¸·ÖµÄ×´Ì¬
-	size_t originalCount=originalList.size();
-	for(size_t i=0;i<originalCount;++i)
+    unsigned int originalCount=originalList.size();
+    for(unsigned int i=0;i<originalCount;++i)
 	{
 		Face *theFace=originalList[i];
-		size_t edgeCount=theFace->edge.size();
-		for(size_t e=0;e<edgeCount;++e)
+        unsigned int edgeCount=theFace->edge.size();
+        for(unsigned int e=0;e<edgeCount;++e)
 		{
 			Vertex *theVertex;
 			if(theFace->edge[e]>0)
@@ -3308,8 +3308,8 @@ void Object::expandSubFace(std::vector<Face*> &originalList)
 					continue;
 				theVertex=vertexArray[edgeArray[-theFace->edge[e]]->start];
 			}
-			size_t adjacentEdgeCount=theVertex->adjacentEdge.size();
-			for(size_t h=0;h<adjacentEdgeCount;++h)
+            unsigned int adjacentEdgeCount=theVertex->adjacentEdge.size();
+            for(unsigned int h=0;h<adjacentEdgeCount;++h)
 			{
 				if(edgeArray[theVertex->adjacentEdge[h]]->right && !faceArray[edgeArray[theVertex->adjacentEdge[h]]->right]->isSub)
 				{
@@ -3332,19 +3332,19 @@ void Object::buildPSCache(std::vector<Face*> &faceToBeSub)
 {
 	if(subdivideLevelSize>0)
 	{
-		size_t level=subdivideLevelSize-1;
-		size_t faceCount=faceToBeSub.size();
+        unsigned int level=subdivideLevelSize-1;
+        unsigned int faceCount=faceToBeSub.size();
         //PSFaceCache.clear();
 		PSFaceCache.reserve(faceCount);
 
         //PSSubFaceCache[level].clear();
 		PSSubFaceCache[level].reserve(faceCount*5);
-		for(size_t i=0;i<faceCount;++i)
+        for(unsigned int i=0;i<faceCount;++i)
 		{
 			PSFaceCache.push_back(faceToBeSub[i]);
 			faceToBeSub[i]->isSub=true;
-			size_t subFaceCount=faceToBeSub[i]->subdivideFace.size();
-			for(size_t h=0;h<subFaceCount;++h)
+            unsigned int subFaceCount=faceToBeSub[i]->subdivideFace.size();
+            for(unsigned int h=0;h<subFaceCount;++h)
 			{
 				SubdivideFace *theSubF=subdivideLevel[level]->face[faceToBeSub[i]->subdivideFace[h]];
 				PSSubFaceCache[level].push_back(theSubF);
@@ -3354,12 +3354,12 @@ void Object::buildPSCache(std::vector<Face*> &faceToBeSub)
 		expandSubFace(PSSubFaceCache[level],level);
 		for(int h=level-1;h>0;--h)
 		{
-			size_t e2=h;
-			size_t e1=h+1;
+            unsigned int e2=h;
+            unsigned int e1=h+1;
 			faceCount=PSSubFaceCache[e1].size();
             //PSSubFaceCache[e2].clear();
 			PSSubFaceCache[e2].reserve(faceCount*5);
-			for(size_t i=0;i<faceCount;++i)
+            for(unsigned int i=0;i<faceCount;++i)
 			{
 				SubdivideFace *theSubFace=subdivideLevel[e2]->face[(PSSubFaceCache[e1])[i]->subFace[0]];
 				PSSubFaceCache[e2].push_back(theSubFace);
@@ -3381,16 +3381,16 @@ void Object::buildPSCache(std::vector<Face*> &faceToBeSub)
 
 void Object::updateAllNormal()
 	{
-		size_t faceCount=faceArray.size();
-		for(size_t i=1;i<faceCount;++i)
+        unsigned int faceCount=faceArray.size();
+        for(unsigned int i=1;i<faceCount;++i)
 		{
 			if(faceArray[i])
 			{
 				updateFNormal(faceArray[i]);
 			}
 		}
-		size_t vertexCount=vertexArray.size();
-		for(size_t i=1;i<vertexCount;++i)
+        unsigned int vertexCount=vertexArray.size();
+        for(unsigned int i=1;i<vertexCount;++i)
 		{
 			if(vertexArray[i])
 			{
@@ -3403,17 +3403,17 @@ void Object::partialSubdivision()
 {
 	if(subdivideLevelSize)
 	{
-		size_t level=subdivideLevelSize-1;
+        unsigned int level=subdivideLevelSize-1;
 		++subdivideId;
-		size_t faceCount=PSFaceCache.size();
-		for(size_t i=0;i<faceCount;++i)
+        unsigned int faceCount=PSFaceCache.size();
+        for(unsigned int i=0;i<faceCount;++i)
 		{
 			partialSubdivideFace(PSFaceCache[i],level);
 		}
-		for(size_t e=level;e>0;--e)
+        for(unsigned int e=level;e>0;--e)
 		{
 			faceCount=PSSubFaceCache[e].size();
-			for(size_t i=0;i<faceCount;++i)
+            for(unsigned int i=0;i<faceCount;++i)
 			{
 				partialSubdivideFace((PSSubFaceCache[e])[i],e);
 			}
@@ -3423,16 +3423,16 @@ void Object::partialSubdivision()
 
 void Object::updateSubdivision()
 	{
-		size_t subdivideCount=subdivideLevelSize;
-		for(size_t i=0;i<5;++i)
+        unsigned int subdivideCount=subdivideLevelSize;
+        for(unsigned int i=0;i<5;++i)
 		{
 			unSubdivide();
 		}
-		for(size_t i=0;i<subdivideCount;++i)
+        for(unsigned int i=0;i<subdivideCount;++i)
 		{
 			subdivide();
 		}
-	};
+    }
 
 
 void Object::unSubdivide()
@@ -3455,14 +3455,14 @@ void Object::partialSubdivideFace(SubdivideFace *theFace,int level)
 	SubdivideLevel *theLevel=subdivideLevel[level];
 	//Ê×ÏÈÒªµÃµ½Õâ¸öÃæµÄ¶Ëµã
 	//µÃµ½¶ËµãºÍ±ßµÄÊýÄ¿
-	size_t edgeCount=4;
+    unsigned int edgeCount=4;
 	//ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
 	SubdivideVertex **theVertexList=new SubdivideVertex*[edgeCount];
 	//¼ÆËãÕâ¸öÃæµÄÖÐµã
 	//½«Ô­Ê¼µÄÖÐµãÇåÁã
     theSubLevel->vertex[theFace->center]->m_position.null();
     theSubLevel->vertex[theFace->center]->m_normal.null();
-	for(size_t e=0;e<edgeCount;++e)
+    for(unsigned int e=0;e<edgeCount;++e)
 	{
 		if(theFace->edge[e]<0)
 		{
@@ -3478,7 +3478,7 @@ void Object::partialSubdivideFace(SubdivideFace *theFace,int level)
     theSubLevel->vertex[theFace->center]->m_position/=(float)edgeCount;
     theSubLevel->vertex[theFace->center]->m_normal/=(float)edgeCount;
 	//¼ÆËãÐÂµÄ¶¥µã
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
 		SubdivideVertex *theV=theVertexList[i];
         if(theV->m_subdivideId!=subdivideId)
@@ -3501,8 +3501,8 @@ void Object::partialSubdivideFace(SubdivideFace *theFace,int level)
 				//¼ÓÉÏÕâ¸öÃæµÄÖÐµã
                 theSubLevel->vertex[theV->m_nextLevel]->m_position+=theSubLevel->vertex[theFace->center]->m_position;
                 theV->m_subdivideStep++;
-                size_t adjEdgeCount=theV->m_adjacentEdgeList.size();
-				for(size_t h=0;h<adjEdgeCount;++h)
+                unsigned int adjEdgeCount=theV->m_adjacentEdgeList.size();
+                for(unsigned int h=0;h<adjEdgeCount;++h)
 				{
                     if(theLevel->edge[theV->m_adjacentEdgeList[h]]->end==theV->index)
 					{
@@ -3521,8 +3521,8 @@ void Object::partialSubdivideFace(SubdivideFace *theFace,int level)
 						}			
 					}
 				}
-                size_t n=theV->m_adjacentEdgeList.size();
-                if(n==(size_t)(theV->m_subdivideStep))
+                unsigned int n=theV->m_adjacentEdgeList.size();
+                if(n==(unsigned int)(theV->m_subdivideStep))
 				{
                     theSubLevel->vertex[theV->m_nextLevel]->m_position+=theV->m_position*(float)(n*n-2*n);
                     theSubLevel->vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
@@ -3535,8 +3535,8 @@ void Object::partialSubdivideFace(SubdivideFace *theFace,int level)
 			{
                 theSubLevel->vertex[theV->m_nextLevel]->m_position+=theSubLevel->vertex[theFace->center]->m_position;
                 theV->m_subdivideStep++;
-                size_t n=theV->m_adjacentEdgeList.size();
-                if(n==(size_t)(theV->m_subdivideStep))
+                unsigned int n=theV->m_adjacentEdgeList.size();
+                if(n==(unsigned int)(theV->m_subdivideStep))
 				{
                     theSubLevel->vertex[theV->m_nextLevel]->m_position+=theV->m_position*(float)(n*n-2*n);
                     theSubLevel->vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
@@ -3546,7 +3546,7 @@ void Object::partialSubdivideFace(SubdivideFace *theFace,int level)
 	}
 	delete theVertexList;
 	//Ö®ºó´¦ÀíÃ¿Ò»¸ö±ß
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
 		SubdivideEdge *theEdge;
 		if(theFace->edge[i]>0)
@@ -3623,35 +3623,35 @@ void Object::buildPSCacheFast(std::vector<Face*> &faceToBeSub)
 {
 	if(subdivideLevelSize>0)
 	{
-		size_t subCount=faceToBeSub.size();
+        unsigned int subCount=faceToBeSub.size();
         //PSFaceCache.clear();
 		PSFaceCache.reserve(subCount*2);
-		for(size_t i=0;i<subCount;++i)
+        for(unsigned int i=0;i<subCount;++i)
 		{
 			PSFaceCache.push_back(faceToBeSub[i]);
 			faceToBeSub[i]->isSub=true;
 		}
 		expandSubFace(faceToBeSub);
 		subCount=PSFaceCache.size();
-		size_t level=subdivideLevelSize-1;
+        unsigned int level=subdivideLevelSize-1;
         //PSSubFaceCache[level].clear();
 		PSSubFaceCache[level].reserve(5*subCount);
-		for(size_t i=0;i<subCount;++i)
+        for(unsigned int i=0;i<subCount;++i)
 		{
-			size_t subFaceCount=PSFaceCache[i]->subdivideFace.size();
-			for(size_t h=0;h<subFaceCount;++h)
+            unsigned int subFaceCount=PSFaceCache[i]->subdivideFace.size();
+            for(unsigned int h=0;h<subFaceCount;++h)
 			{
 				PSSubFaceCache[level].push_back(subdivideLevel[level]->face[PSFaceCache[i]->subdivideFace[h]]);
 				subdivideLevel[level]->face[PSFaceCache[i]->subdivideFace[h]]->isSub=true;
 			}
 		}
-		for(size_t e=level;e>0;--e)
+        for(unsigned int e=level;e>0;--e)
 		{
-			size_t subCount=PSSubFaceCache[e].size();
-			size_t e2=e-1;
+            unsigned int subCount=PSSubFaceCache[e].size();
+            unsigned int e2=e-1;
             //PSSubFaceCache[e2].clear();
 			PSSubFaceCache[e2].reserve(subCount*2);
-			for(size_t i=0;i<subCount;++i)
+            for(unsigned int i=0;i<subCount;++i)
 			{
 				PSSubFaceCache[e2].push_back(subdivideLevel[e2]->face[(PSSubFaceCache[level])[i]->subFace[0]]);
 				subdivideLevel[e2]->face[(PSSubFaceCache[level])[i]->subFace[0]]->isSub=true;
@@ -3670,13 +3670,13 @@ void Object::partialSubdivideFace(Face *theFace,int level)
 {
 	//Ê×ÏÈÒªµÃµ½Õâ¸öÃæµÄ¶Ëµã
 	//µÃµ½¶ËµãºÍ±ßµÄÊýÄ¿
-	size_t edgeCount=theFace->edge.size();
+    unsigned int edgeCount=theFace->edge.size();
 	SubdivideLevel *theLevel=subdivideLevel[level];
 	//ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
 	Vertex **theVertexList=new Vertex*[edgeCount];
     theLevel->vertex[theFace->center]->m_position.null();
     theLevel->vertex[theFace->center]->m_normal.null();
-	for(size_t e=0;e<edgeCount;++e)
+    for(unsigned int e=0;e<edgeCount;++e)
 	{
 		if(theFace->edge[e]<0)
 		{
@@ -3693,7 +3693,7 @@ void Object::partialSubdivideFace(Face *theFace,int level)
     theLevel->vertex[theFace->center]->m_position/=(float)edgeCount;
     theLevel->vertex[theFace->center]->m_normal/=(float)edgeCount;
 	//¼ÆËãÐÂµÄ¶¥µã
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
 		Vertex *theV=theVertexList[i];
         if(theV->m_subdivideId!=subdivideId)
@@ -3716,8 +3716,8 @@ void Object::partialSubdivideFace(Face *theFace,int level)
 				//¼ÓÉÏÕâ¸öÃæµÄÖÐµã
                 theLevel->vertex[theV->m_nextLevel]->m_position+=theLevel->vertex[theFace->center]->m_position;
                 theV->m_subdivideStep++;
-                size_t adjEdgeCount=theV->m_adjacentEdgeList.size();
-				for(size_t h=0;h<adjEdgeCount;++h)
+                unsigned int adjEdgeCount=theV->m_adjacentEdgeList.size();
+                for(unsigned int h=0;h<adjEdgeCount;++h)
 				{
                     if(edgeArray[theV->m_adjacentEdgeList[h]]->end==theV->index)
 					{
@@ -3736,8 +3736,8 @@ void Object::partialSubdivideFace(Face *theFace,int level)
 						}			
 					}
 				}
-                size_t n=theV->m_adjacentEdgeList.size();
-                if(n==(size_t)(theV->m_subdivideStep))
+                unsigned int n=theV->m_adjacentEdgeList.size();
+                if(n==(unsigned int)(theV->m_subdivideStep))
 				{
                     theLevel->vertex[theV->m_nextLevel]->m_position+=theV->m_position*(float)(n*n-2*n);
                     theLevel->vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
@@ -3750,8 +3750,8 @@ void Object::partialSubdivideFace(Face *theFace,int level)
 			{
                 theLevel->vertex[theV->m_nextLevel]->m_position+=theLevel->vertex[theFace->center]->m_position;
                 ++(theV->m_subdivideStep);
-                size_t n=theV->m_adjacentEdgeList.size();
-                if(n==(size_t)(theV->m_subdivideStep))
+                unsigned int n=theV->m_adjacentEdgeList.size();
+                if(n==(unsigned int)(theV->m_subdivideStep))
 				{
                     theLevel->vertex[theV->m_nextLevel]->m_position+=theVertexList[i]->m_position*(float)(n*n-2*n);
                     theLevel->vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
@@ -3761,7 +3761,7 @@ void Object::partialSubdivideFace(Face *theFace,int level)
 	}
 	delete theVertexList;
 	//Ö®ºó´¦ÀíÃ¿Ò»¸ö±ß
-	for(size_t i=0;i<edgeCount;++i)
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
 		Edge *theEdge;
 		if(theFace->edge[i]>0)

@@ -16,11 +16,11 @@ public:
         sprintf(temp, "\t\t\t<Log Type=\"FaceEdgePop\" Target=\"%d\" Index=\"%d\" O=\"%d\" />\n", target, index, o);
 		std::string out(temp);
 		return out;
-	};
+    }
 					void operator=(const Log_FaceEdgePop& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_FaceEdgePop(void);
 };

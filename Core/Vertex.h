@@ -8,14 +8,14 @@ class Vertex :public SubdivideVertex
 public:
     typedef struct
     {
-        size_t index;
+        unsigned int index;
         float x;
         float y;
         float z;
         float nx;
         float ny;
         float nz;
-        size_t adjacentCount;
+        unsigned int adjacentCount;
     } VertexInfo;
 
     int m_clone;

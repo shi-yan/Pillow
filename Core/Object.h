@@ -71,7 +71,7 @@ END_ENUM()
 //ÎïÌåÀàµÄÊôÐÔ,ÓÃÓÚ´æ´¢³ÉÎÄ¼þ
 struct ObjectInfo
 {
-	size_t index;
+    unsigned int index;
 	float centerX;
 	float centerY;
 	float centerZ;
@@ -89,9 +89,9 @@ struct ObjectInfo
 	GLfloat mat_specular[4];
 	GLfloat mat_emission[4];
 	GLfloat mat_shininess[4];
-	size_t vertexCount;
-	size_t edgeCount;
-	size_t faceCount;
+    unsigned int vertexCount;
+    unsigned int edgeCount;
+    unsigned int faceCount;
 };
 
 //¶¨ÒåÎïÌåµÄÀà
@@ -147,28 +147,28 @@ private:
 public:
 	Object(char *theName);
 	//Ôö¼ÓÐÂµÄ¶¥µã,·µ»ØÌí¼ÓµÄµã±àºÅ
-	size_t addVertex(float p1,float p2,float p3);
-	size_t addVertex(float p1,float p2,float p3,float n1,float n2,float n3);
-	size_t addVertex(Vector &pos);
-	size_t addVertex(size_t ei,Vertex *theV);
-	size_t addVertex(Vector &pos,Vector &nor);
+    unsigned int addVertex(float p1,float p2,float p3);
+    unsigned int addVertex(float p1,float p2,float p3,float n1,float n2,float n3);
+    unsigned int addVertex(Vector &pos);
+    unsigned int addVertex(unsigned int ei,Vertex *theV);
+    unsigned int addVertex(Vector &pos,Vector &nor);
 
 	//Ôö¼ÓÐÂµÄ±ß,·µ»ØÌí¼ÓµÄµã±àºÅ
-	size_t addEdge(int start,int end);
+    unsigned int addEdge(int start,int end);
 	//Ö±½ÓÔÚÖ¸¶¨µÄÎ»ÖÃÌí¼ÓÐÂµÄ±ß
-	size_t addEdge(size_t ei,Edge *theE);
+    unsigned int addEdge(unsigned int ei,Edge *theE);
 
 	//µÃµ½Ö¸¶¨Î»ÖÃµÄ¶¥µã
-	Vertex * vertex(size_t index);
+    Vertex * vertex(unsigned int index);
 	//µÃµ½Ö¸¶¨Î»ÖÃµÄ±ß
-	Edge * edge(size_t index);
+    Edge * edge(unsigned int index);
 	//µÃµ½Ö¸¶¨Î»ÖÃµÄÃæ
-	Face * face(size_t index);
+    Face * face(unsigned int index);
 
 	//Ìí¼ÓÒ»¸öÃæ,·µ»ØÌí¼ÓµÄÃæµÄ±àºÅ
-	size_t addFace(size_t theEdgeArray[],size_t size);
+    unsigned int addFace(unsigned int theEdgeArray[],unsigned int size);
 	//Ö±½ÓÌí¼ÓÒ»¸öÃæ
-	size_t addFace(size_t ei,Face *theF);
+    unsigned int addFace(unsigned int ei,Face *theF);
 
 	//½«ÎÄ¼þÊä³ö³Éobj¸ñÊ½,ÓÃÓÚ²âÊÔ
 	void testOut(char *fileName);
@@ -190,11 +190,11 @@ public:
 	void unSubdivide();
 
 	//Í¨¹ý¶¥µã±àºÅ¼¯Éú³É¾Ö²¿Ï¸·ÖÃæ»º³å
-	void buildPSCacheFromVID(std::vector<size_t> &vertexToBeSub);
+    void buildPSCacheFromVID(std::vector<unsigned int> &vertexToBeSub);
 	//Í¨¹ý±ß±àºÅ¼¯Éú³É¾Ö²¿Ï¸·ÖÃæ»º³å
-	void buildPSCacheFromEID(std::vector<size_t> &edgeToBeSub);
+    void buildPSCacheFromEID(std::vector<unsigned int> &edgeToBeSub);
 	//Í¨¹ýÃæ±àºÅ¼¯Éú³É¾Ö²¿Ï¸·ÖÃæ»º³å
-	void buildPSCacheFromFID(std::vector<size_t> &faceToBeSub);
+    void buildPSCacheFromFID(std::vector<unsigned int> &faceToBeSub);
 
 	//ÏÔÊ¾¾µÏñÎïÌå
 	//type Îª¾µÏñÃæÀàÐÍ
@@ -253,67 +253,67 @@ public:
 	//½«ËùÓÐ¶¥µãµÄ·¨Ïßµ¥Î»»¯
 	void normalizeVertexNormal();
 	//¸üÐÂ¶¥µãµÄ·¨Ïß
-	void updateVNormal(SubdivideVertex *theVertex,size_t level);
+    void updateVNormal(SubdivideVertex *theVertex,unsigned int level);
 	//¸üÐÂ¶¥µãµÄ·¨Ïß
 	void updateVNormal(Vertex *theVertex);
 	//¸üÐÂÃæµÄ·¨Ïß
 	void updateFNormal(Face *theFace);
 	//¸üÐÂÃæµÄ·¨Ïß
-	void updateFNormal(SubdivideFace *theFace,size_t level);
+    void updateFNormal(SubdivideFace *theFace,unsigned int level);
 	//¸üÐÂËùÓÐµÄ·¨Ïß
 	void updateAllNormal();
 	//¸üÐÂ×îÍâ²ãÏ¸·ÖÃæµÄ·¨Ïß
 	void updateAllSubNormal();
 	//µÃµ½±ßµÄÊýÄ¿
-	size_t edgeCount();
+    unsigned int edgeCount();
 	//µÃµ½¶¥µãµÄÊýÄ¿
-	size_t vertexCount();
+    unsigned int vertexCount();
 	//µÃµ½ÃæµÄÊýÄ¿
-	size_t faceCount();
+    unsigned int faceCount();
 	//¸üÐÂ¶¥µãÎ»ÖÃµ½Ò»¸ö¾ø¶ÔÖµ
-	void vertexPositionChangeA(size_t vertexID,float nx,float ny,float nz);
+    void vertexPositionChangeA(unsigned int vertexID,float nx,float ny,float nz);
 	//¸üÐÂ¶¥µãÎ»ÖÃµ½Ò»¸öÏà¶ÔÖµ
-	void vertexPositionChangeR(size_t vertexID,float nx,float ny,float nz);
+    void vertexPositionChangeR(unsigned int vertexID,float nx,float ny,float nz);
 	//¸üÐÂ¶¥µã·¨Ïß
-	void vertexNormalChange(size_t vertexID,float nx,float ny,float nz);
+    void vertexNormalChange(unsigned int vertexID,float nx,float ny,float nz);
 	//É¾³ýÃæ
-	void objectFaceRemove(size_t faceID);
+    void objectFaceRemove(unsigned int faceID);
 	//É¾³ý±ß
-	void objectEdgeRemove(size_t edgeID);
+    void objectEdgeRemove(unsigned int edgeID);
 	//É¾³ý¶¥µã
-	void objectVertexRemove(size_t vertexID);
+    void objectVertexRemove(unsigned int vertexID);
 	//¸Ä±ä±ßµÄÓÒÃæ
-	void edgeRightChange(size_t edgeID,size_t nr);
+    void edgeRightChange(unsigned int edgeID,unsigned int nr);
 	//¸Ä±ä±ßµÄ×óÃæ
-	void edgeLeftChange(size_t edgeID,size_t nl);
+    void edgeLeftChange(unsigned int edgeID,unsigned int nl);
 	//¸Ä±ä±ßµÄÆðÊ¼µã
-	void edgeStartChange(size_t edgeID,size_t ns);
+    void edgeStartChange(unsigned int edgeID,unsigned int ns);
 	//¸Ä±ä±ßµÄÖÕÖ¹µã
-	void edgeEndChange(size_t edgeID,size_t ne);
+    void edgeEndChange(unsigned int edgeID,unsigned int ne);
 	//É¾³ýµãµÄÒ»¸öÁÚ½Ó±ß
-	void vertexAdjacentRemove(size_t vertexID,size_t adjID);
+    void vertexAdjacentRemove(unsigned int vertexID,unsigned int adjID);
 	//²åÈëµãµÄÒ»¸öÁÚ½Ó±ß
-	void vertexAdjacentInsert(size_t vertexID,size_t adjID,size_t ne);
+    void vertexAdjacentInsert(unsigned int vertexID,unsigned int adjID,unsigned int ne);
 	//Ä©Î²²åÈëÒ»¸öÃæµÄ±ß
-	void faceEdgePush(size_t faceID,int nEdge);
+    void faceEdgePush(unsigned int faceID,int nEdge);
 	//µ¯³öÃæµÄÒ»¸ö±ß
-	void faceEdgePop(size_t faceID);
+    void faceEdgePop(unsigned int faceID);
 	//¸Ä±äÃæµÄÒ»¸ö±ß
-	void faceEdgeChange(size_t faceID,size_t edgeID,int nEdge);
+    void faceEdgeChange(unsigned int faceID,unsigned int edgeID,int nEdge);
 	//²åÈëÒ»¸öÃæµÄ±ß
-	void faceEdgeInsert(size_t faceID,size_t edgeID,int nEdge);
+    void faceEdgeInsert(unsigned int faceID,unsigned int edgeID,int nEdge);
 	//²åÈëÒ»¸ö¶¥µãµÄÁÚ½Ó±ß
-	void vertexAdjacentPush(size_t vertexID,size_t ne);
+    void vertexAdjacentPush(unsigned int vertexID,unsigned int ne);
 	//¸Ä±äÒ»¸ö¶¥µãµÄÁÚ½Ó±ß
-	void vertexAdjacentChange(size_t vertexID,size_t edgeID,size_t ne);
+    void vertexAdjacentChange(unsigned int vertexID,unsigned int edgeID,unsigned int ne);
 	//µ¯³öÒ»¸ö¶¥µãµÄÁÚ½Ó±ß
-	void vertexAdjacentPop(size_t vertexID);
+    void vertexAdjacentPop(unsigned int vertexID);
 	//½»»»Ò»¸ö¶¥µãµÄÁÚ½Ó±ß
-	void vertexAdjacentSwap(size_t vertexID,size_t i1,size_t i2);
+    void vertexAdjacentSwap(unsigned int vertexID,unsigned int i1,unsigned int i2);
 	//½»»»Ò»¸öÃæµÄÁÚ½Ó±ß
-	void faceEdgeSwap(size_t faceID,size_t i1,size_t i2);
+    void faceEdgeSwap(unsigned int faceID,unsigned int i1,unsigned int i2);
 	//É¾³ýÒ»¸öÃæµÄÁÚ½Ó±ß
-	void faceEdgeRemove(size_t faceID,size_t edgeID);
+    void faceEdgeRemove(unsigned int faceID,unsigned int edgeID);
 	//Êä³ö²âÊÔxml
 	void testXMLOut(char *fileName);
 	//´ÓÐÂ¶¨Òå¿ØÖÆµã
@@ -325,7 +325,7 @@ private:
 	Vector EAdjacentVertex(SubdivideVertex *theVertex);
 	void subdivideFace(Face *theFace);
 	void subdivideFace(SubdivideFace *theFace);
-	void expandSubFace(std::vector<SubdivideFace*> &originalList,size_t level);
+    void expandSubFace(std::vector<SubdivideFace*> &originalList,unsigned int level);
 	void expandSubFace(std::vector<Face*> &originalList);
 	void partialSubdivideFace(SubdivideFace *theFace,int level);
 	void partialSubdivideFace(Face *theFace,int level);

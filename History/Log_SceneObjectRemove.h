@@ -12,7 +12,7 @@ public:
 	void clear()
 	{
 		delete o;
-	};
+    }
 public:
 	~Log_SceneObjectRemove(void);
 };

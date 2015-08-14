@@ -16,7 +16,7 @@ public:
 	IndexArray(void)
 	{
         theArray.push_back(nullptr);
-	};
+    }
 
 	//´ø³õÊ¼¿Õ¼ä·ÖÅäµÄ¹¹Ôìº¯Êý
     IndexArray(unsigned int space)
@@ -24,7 +24,7 @@ public:
         theSpace.clear();
 		theArray.reserve(space+1);
         theArray.push_back(nullptr);
-	};
+    }
 
 	//Çå¿ÕÕû¸öÁÐ±í
 	void clear()
@@ -46,19 +46,19 @@ public:
         theArray.push_back(nullptr);
 		//Çå¿ÕÒÑ¾­ÊÍ·ÅÔªËØ±àºÅ¶ÓÁÐ
 		theSpace.clear();
-	};
+    }
 
 	//ÎªÁÐ±íÔ¤Áô¿Õ¼ä
     void reserve(unsigned int space)
 	{
 		theArray.reserve(space);
-	};
+    }
 
 	//·ÅÈë¿ÕÖµÔªËØ
 	void pushNull()
 	{
         theArray.push_back(nullptr);
-	};
+    }
 
 	//ÔÚÁÐ±íµÄÄ©Î²·ÅÈëÒ»¸ö¿ÕµÄÔªËØ²¢ÇÒÔÚÒÑÊÍ·Å¶ÓÁÐÖÐ¼ÇÂ¼
 	//Õâ¸öº¯ÊýÓÃÓÚ´ÓÎÄ¼þÖÐ¶ÁÈ¡µÄÊ±ºòÈç¹û³öÏÖÒÑ¾­É¾³ýµÄÔªËØµÄÊ±ºò
@@ -66,7 +66,7 @@ public:
 	{
 		theSpace.push_back(theArray.size());
         theArray.push_back(nullptr);
-	};
+    }
 
 	//ÒÔ²åÈëµÄ·½Ê½Ìí¼ÓÒ»¸öÔªËØ
 	//eiÊÇ²åÈëµÄÎ»ÖÃ
@@ -96,13 +96,13 @@ public:
 			//Èç¹ûµ±Ç°Î»ÖÃ±»Õ¼ÓÃ
 			return 0;
 		}
-	};	
+    }
 
 	//Ö±½ÓÔÚÄ©Î²·ÅÈëÔªËØ£¬¶ÔÓÚÒÑ¾­ÓÐÏÂ±êµÄÔªËØ£¬ÇÒ²»Ï£Íû±»²åÈëµ½µ±Ç°¿ÕÏÐÎ»ÖÃµÄÊ±ºò
 	void directPush(ElementType *theElement)
 	{
 		theArray.push_back(theElement);
-	};
+    }
 
 	//Ìí¼ÓÒ»¸öÐÂµÄÔªËØ
     unsigned int add(ElementType *theElement)
@@ -133,7 +133,7 @@ public:
 			//·µ»ØÔªËØµÄ½Å±ê
 			return tempIndex;
 		}
-	};
+    }
 
 	//É¾³ýÒ»¸öÔªËØ
 	//Õâ¸öº¯Êý²¢²»ÊÍ·ÅÔªËØµÄ¿Õ¼ä£¬ÒòÎªÒª±£Ö¤Ìí¼Óµ½ÀúÊ·¼ÇÂ¼ÖÐÔªËØµÄÕýÈ·ÐÔ
@@ -148,19 +148,19 @@ public:
 			theSpace.push_back(index);
 		}
 		return;
-	};
+    }
 
 	//µÃµ½Ö¸¶¨Î»ÖÃµÄÔªËØ
     ElementType* operator [](unsigned int i)
 	{
 		return theArray[i];
-	};
+    }
 
 	//µÃµ½Êý×éµÄ´óÐ¡£¬Õâ¸ö´óÐ¡ÊÇ¸ö½üËÆÖµ£¬ÀïÃæ°üÀ¨ÁËÔø¾­É¾³ýµÄÔªËØÊýÄ¿
     unsigned int size()
 	{
 		return theArray.size();
-	};
+    }
 
 	~IndexArray(void)
 	{
@@ -173,5 +173,5 @@ public:
 			}
 		}
 		theArray.clear();
-	};
+    }
 };

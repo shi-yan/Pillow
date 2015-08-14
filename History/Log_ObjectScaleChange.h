@@ -16,12 +16,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"ObjectScaleChange\" Target=\"%d\" X=\"%f\" Y=\"%f\" Z=\"%f\" />\n",target,x,y,z);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 	void operator=(const Log_ObjectScaleChange& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_ObjectScaleChange(void);
 };

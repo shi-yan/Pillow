@@ -20,12 +20,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"VertexNormalChange\" Target=\"%d\" Index=\"%d\" X=\"%f\" Y=\"%f\" Z=\"%f\" />\n",target,index,x,y,z);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 		void operator=(const Log_VertexNormalChange& in) 
 	{
 		in;
-	};
+    }
 
 public:
 	~Log_VertexNormalChange(void);

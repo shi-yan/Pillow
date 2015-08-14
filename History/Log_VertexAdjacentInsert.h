@@ -18,12 +18,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentInsert\" Target=\"%d\" Index=\"%d\" AdjIndex=\"%d\" />\n",target,index,adjIndex);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 	void operator=(const Log_VertexAdjacentInsert& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_VertexAdjacentInsert(void);
 };

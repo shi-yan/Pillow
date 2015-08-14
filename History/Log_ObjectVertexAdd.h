@@ -14,12 +14,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"ObjectVertexAdd\" Target=\"%d\" Index=\"%d\" />\n",target,index);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 	void operator=(const Log_ObjectVertexAdd& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_ObjectVertexAdd(void);
 };

@@ -15,7 +15,7 @@ class Matrix
 		m[1][0]=m[1][2]=m[1][3]=0.0f;
 		m[2][0]=m[2][1]=m[2][3]=0.0f;
 		m[3][0]=m[3][1]=m[3][2]=0.0f;
-	};
+    }
 
 	//! Copy-constructor
 	Matrix(const Matrix& in) 
@@ -24,7 +24,7 @@ class Matrix
 		m[1][0]=in.m[1][0]; m[1][1]=in.m[1][1]; m[1][2]=in.m[1][2]; m[1][3]=in.m[1][3];
 		m[2][0]=in.m[2][0]; m[2][1]=in.m[2][1]; m[2][2]=in.m[2][2]; m[2][3]=in.m[2][3];
 		m[3][0]=in.m[3][0]; m[3][1]=in.m[3][1]; m[3][2]=in.m[3][2]; m[3][3]=in.m[3][3];
-	};
+    }
 
 	//! Atribuition operator
 	void operator=(const Matrix& in) 
@@ -33,7 +33,7 @@ class Matrix
 		m[1][0]=in.m[1][0]; m[1][1]=in.m[1][1]; m[1][2]=in.m[1][2]; m[1][3]=in.m[1][3];
 		m[2][0]=in.m[2][0]; m[2][1]=in.m[2][1]; m[2][2]=in.m[2][2]; m[2][3]=in.m[2][3];
 		m[3][0]=in.m[3][0]; m[3][1]=in.m[3][1]; m[3][2]=in.m[3][2]; m[3][3]=in.m[3][3];
-	};
+    }
 
 	//! Nullify all elements
 	inline void null(void)
@@ -42,7 +42,7 @@ class Matrix
 		m[1][0]=m[1][1]=m[1][2]=m[1][3]= 
 		m[2][0]=m[2][1]=m[2][2]=m[2][3]= 
 		m[3][0]=m[3][1]=m[3][2]=m[3][3]=0.0f;
-	};
+    }
 
 	//! Load the identity matrix
 	inline void load_identity(void)
@@ -52,7 +52,7 @@ class Matrix
 		m[1][0]=m[1][2]=m[1][3]=0.0f;
 		m[2][0]=m[2][1]=m[2][3]=0.0f;
 		m[3][0]=m[3][1]=m[3][2]=0.0f;
-	};
+    }
 
 	//! Set the matrix as the rotation matrix of angle given by 'ang' around direction 'dir'
 	void setRotation( float ang, const Vector& dir );

@@ -12,7 +12,7 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"SceneObjectAdd\" Target=\"%d\" />\n",target);
 		std::string out(temp);
 		return out;
-	};
+    }
 public:
 	~Log_SceneObjectAdd(void);
 };

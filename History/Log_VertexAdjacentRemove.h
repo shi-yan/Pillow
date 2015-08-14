@@ -19,12 +19,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentRemove\" Target=\"%d\" Index=\"%d\" AdjIndex=\"%d\" O=\"%d\" />\n",target,index,adjIndex,o);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 	void operator=(const Log_VertexAdjacentRemove& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_VertexAdjacentRemove(void);
 };

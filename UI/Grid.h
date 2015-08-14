@@ -12,7 +12,7 @@ private:
 public:
 	Gird(void)
 	{
-	};
+    }
 
 	void initialize()
 	{
@@ -137,7 +137,7 @@ public:
 		glDeleteLists(xy,1);
 		glDeleteLists(xz,1);
 		glDeleteLists(yz,1);
-	};
+    }
 };
 
 extern Gird *theGird;

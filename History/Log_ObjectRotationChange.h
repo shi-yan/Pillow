@@ -16,12 +16,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"ObjectRotationChange\" Target=\"%d\" X=\"%f\" Y=\"%f\" Z=\"%f\" />\n",target,x,y,z);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 								void operator=(const Log_ObjectRotationChange& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_ObjectRotationChange(void);
 };

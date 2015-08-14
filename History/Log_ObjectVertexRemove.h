@@ -17,16 +17,16 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"ObjectVertexRemove\" Target=\"%d\" Index=\"%d\" />\n",target,index);
 		std::string out(temp);
 		return out;
-	};
+    }
 		void clear()
 	{
 		delete o;
-	};
+    }
 
 		void operator=(const Log_ObjectVertexRemove& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_ObjectVertexRemove(void);
 };

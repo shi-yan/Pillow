@@ -56,7 +56,7 @@ void RightCamera::setCamera()
         glLightfv(GL_LIGHT0, GL_DIFFUSE, m_lightDiffuse);
         glLightfv(GL_LIGHT0, GL_SPECULAR, m_lightSpecular);
         glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
-    };
+    }
             void RightCamera::zoom(float step)
     {
         Vector cameraDirection(-1,0,0);
@@ -65,7 +65,7 @@ void RightCamera::setCamera()
         // target+=cameraDirection*step;
         m_eye+=cameraDirection*((float)step*0.1f);
         if(m_eye.x<2) m_eye.x=2;
-    };
+    }
 
                                         void RightCamera::setReferenceImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height)
     {
@@ -77,7 +77,7 @@ void RightCamera::setCamera()
             rightReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
             rightReference->initialize();
             rightReference->isShow=true;
-    };
+    }
 
     void RightCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
     {
@@ -97,7 +97,7 @@ void RightCamera::setCamera()
             width=0;
             height=0;
         }
-    };
+    }
 
         void RightCamera::disableReference()
     {
@@ -114,7 +114,7 @@ void RightCamera::setCamera()
         //gluPerspective( angle, width/ height, nearPlane, farPlane);
         glOrtho(-m_width*(m_eye.x)*0.005f,m_width*(m_eye.x)*0.005f,-m_height*(m_eye.x)*0.005f,m_height*(m_eye.x)*0.005f,m_nearPlane,m_farPlane);
         glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
-    };
+    }
 
                     void RightCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h)
     {
@@ -155,7 +155,7 @@ Vector RightCamera::getHorizontalDir() const
          m_isDraging=true;
          m_old.x=(float)x;
          m_old.y=(float)y;
-    };
+    }
 
     void RightCamera::onPanRelease(int x,int y)
     {
@@ -163,7 +163,7 @@ Vector RightCamera::getHorizontalDir() const
         y;
         m_isDraging=false;
         m_old.null();
-    };
+    }
 
     void RightCamera::pan(int x,int y)
     {
@@ -176,4 +176,4 @@ Vector RightCamera::getHorizontalDir() const
         m_eye.z+=dz;
         m_target.y+=dy;
         m_target.z+=dz;
-    };
+    }

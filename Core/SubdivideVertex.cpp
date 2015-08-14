@@ -56,7 +56,7 @@ SubdivideVertex::SubdivideVertex(float p1,float p2,float p3,float n1,float n2,fl
     m_adjacentEdgeList.reserve(5);
 }
 
-inline const int& SubdivideVertex::operator [](size_t i)
+inline const int& SubdivideVertex::operator [](unsigned int i)
 {
     return m_adjacentEdgeList[i];
 }

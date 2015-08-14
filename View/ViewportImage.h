@@ -111,7 +111,7 @@ public:
 			glEnd();						
 		}
 		glEndList();
-	};
+    }
 	void onPaint()
 	{
 		glDisable(GL_LIGHTING);
@@ -122,7 +122,7 @@ public:
 		glEnable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D,0);
-	};
+    }
 public:
 	~ViewportImage(void);
 };

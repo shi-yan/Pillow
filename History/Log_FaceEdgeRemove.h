@@ -17,12 +17,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"FaceEdgeRemove\" Target=\"%d\" Index=\"%d\" EdgeIndex=\"%d\" O=\"%d\" />\n",target,index,edgeIndex,o);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 						void operator=(const Log_FaceEdgeRemove& in) 
 	{
 		in;
-	};
+    }
 public:
 	~Log_FaceEdgeRemove(void);
 };

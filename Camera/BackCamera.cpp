@@ -92,7 +92,7 @@ void BackCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned
         backReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
         backReference->initialize();
         backReference->isShow=true;
-};
+}
 
 void BackCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 {

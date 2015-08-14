@@ -15,7 +15,7 @@ public:
     HistoryManager(unsigned int theCapacity=20):capacity(theCapacity),recordLock(false),currentRecord(NULL)
 	{
 		redoList.reserve(capacity);
-	};
+    }
 
 	void recordBegin(std::string theName)
 	{
@@ -36,20 +36,20 @@ public:
 			undoList.pop_front();
 			undoList.push_back(currentRecord);
 		}
-	};
+    }
 
 	void recordBeginR(std::string &theName)
 	{
 		recordLock=true;
 		currentRecord=new HistoryRecord(theName);
 		undoList.push_back(currentRecord);
-	};
+    }
 
 	void recordEnd()
 	{
 		recordLock=false;
 		currentRecord=NULL;
-	};
+    }
 
 	bool record(HistoryLog *theLog)
 	{
@@ -65,42 +65,42 @@ public:
 			return false;
 		}
 		//return false;
-	};
+    }
 
 	HistoryRecord & undoBegin()
 	{
 		return *undoList[undoList.size()-1];
-	};
+    }
 
 	HistoryRecord & redoBegin()
 	{
 		return *redoList[redoList.size()-1];
-	};
+    }
 
 	void redoRecordBegin(std::string &theName)
 	{
 		recordLock=true;
 		currentRecord=new HistoryRecord(theName);
 		redoList.push_back(currentRecord);
-	};
+    }
 
 	void redoRecordEnd()
 	{
 		recordLock=false;
 		currentRecord=NULL;
-	};
+    }
 
 	void redoEnd()
 	{
 		delete redoList[redoList.size()-1];
 		redoList.pop_back();
-	};
+    }
 
 	void undoEnd()
 	{
 		delete undoList[undoList.size()-1];
 		undoList.pop_back();
-	};
+    }
 
 	void releaseRedo()
 	{
@@ -110,7 +110,7 @@ public:
 			redoList[i]->clear();
 			delete redoList[i];
 		}
-	};
+    }
 
 	void releaseUndo()
 	{
@@ -120,23 +120,23 @@ public:
 			undoList[i]->clear();
 			delete undoList[i];
 		}
-	};
+    }
 
     void releaseUndo(unsigned int i)
 	{
 		undoList[i]->clear();
 		delete undoList[i];
-	};
+    }
 
     unsigned int undoSize()
 	{
 		return undoList.size();
-	};
+    }
 
     unsigned int redoSize()
 	{
 		return  redoList.size();
-	};
+    }
 
 	void testOut()
 	{
@@ -162,7 +162,7 @@ public:
 			std::cout<<"\t</Redo>"<<std::endl;
 		}		
 		std::cout<<"</History>"<<std::endl;
-	};
+    }
 
 	void testOut(char *fileName)
 	{
@@ -191,14 +191,14 @@ public:
 		}		
 		fprintf(fp,"</History>\n");
 		fclose(fp);
-	};
+    }
 
 public:
 	~HistoryManager(void)
 	{
 		releaseRedo();
 		releaseUndo();
-	};
+    }
 };
 
 static HistoryManager *historyManager=new HistoryManager();

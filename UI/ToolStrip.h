@@ -37,12 +37,12 @@ public:
 	{
 		callID=glGenLists(1);
 		buttonSet.reserve(buttonNum);
-	};
+    }
 	void add(Button *theButton)
 	{
 		buttonSet.push_back(theButton);
 		theButton->updateSize(bSX,bSY);
-	};
+    }
 	void updateButtonPosition()
 	{
 		if(isH)
@@ -69,7 +69,7 @@ public:
 			width=42;
 			height=buttonSet.size()*bSY+vPadding+vPadding+spacer*(buttonSet.size()-1);
 		}
-	};
+    }
 
 
 	ButtonEventType onLeftRelease()
@@ -82,7 +82,7 @@ public:
 		{
 			return ButtonEventType::Nothing;
 		}
-	};
+    }
 
 	bool onLeftPress(int mx,int my)
 	{
@@ -101,7 +101,7 @@ public:
 		{
 			return false;
 		}
-	};
+    }
 
 	bool onIn(int mx,int my)
 	{
@@ -150,14 +150,14 @@ public:
 		updateButtonPosition();
 		initializeButton();
 		initialize();
-	};
+    }
 	void initializeButton()
 	{
         for(unsigned int i=0;i<buttonSet.size();++i)
 		{
 			buttonSet[i]->initialize();
 		}
-	};
+    }
 	void initialize()
 	{
 		if(isH)
@@ -226,7 +226,7 @@ public:
 			glEnd();
 			glEndList();
 		}
-	};
+    }
 	void onPaint()
 	{
 		glCallList(callID);
@@ -235,7 +235,7 @@ public:
 			buttonSet[i]->onPaint();
 		}
 		
-	};
+    }
 public:
 	~ToolStrip(void)
 	{
@@ -244,5 +244,5 @@ public:
 			delete buttonSet[i];
 		}
 		buttonSet.clear();
-	};
+    }
 };

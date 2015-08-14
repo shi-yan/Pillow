@@ -9,7 +9,7 @@ Face::Face(void):ElementBase(),center(0),normal(0)
 }
 
 //·µ»ØÖ¸¶¨µÄ±ßÁÐ±íÔªËØ
-const int& Face::operator [](size_t i)
+const int& Face::operator [](unsigned int i)
 {
 	return edge[i];
 }

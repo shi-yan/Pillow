@@ -18,12 +18,12 @@ public:
         sprintf(temp,"\t\t\t<Log Type=\"EdgeEndChange\" Target=\"%d\" Index=\"%d\" End=\"%d\" />\n",target,index,end);
 		std::string out(temp);
 		return out;
-	};
+    }
 
 	void operator=(const Log_EdgeEndChange& in) 
 	{
 		in;
-	};
+    }
 
 public:
 	~Log_EdgeEndChange(void);
