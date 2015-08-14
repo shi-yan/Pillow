@@ -10,7 +10,7 @@ public:
 	const unsigned int b;
 	const unsigned int a;
 public:
-	Log_ObjectColorChange(size_t theTarget,unsigned int theR,unsigned int theG,unsigned int theB,unsigned int theA);
+    Log_ObjectColorChange(unsigned int theTarget,unsigned int theR,unsigned int theG,unsigned int theB,unsigned int theA);
 	std::string toString()
 	{
 		char temp[256];

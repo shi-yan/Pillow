@@ -8,7 +8,7 @@ class Log_SceneObjectRemove :
 public:
 	Object *o;
 public:
-	Log_SceneObjectRemove(size_t theTarget,Object *o);
+    Log_SceneObjectRemove(unsigned int theTarget,Object *o);
 	void clear()
 	{
 		delete o;

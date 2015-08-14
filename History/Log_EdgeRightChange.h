@@ -5,11 +5,11 @@ class Log_EdgeRightChange :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 public:
-	const size_t right;
+    const unsigned int right;
 public:
-	Log_EdgeRightChange(size_t theTarget,size_t theIndex,size_t theRight);
+    Log_EdgeRightChange(unsigned int theTarget,unsigned int theIndex,unsigned int theRight);
 	std::string toString()
 	{
 		char temp[256];

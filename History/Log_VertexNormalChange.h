@@ -5,7 +5,7 @@ class Log_VertexNormalChange :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 
 public:
 	const float x;
@@ -13,7 +13,7 @@ public:
 	const float z;
 
 public:
-	Log_VertexNormalChange(size_t theTarget,size_t theIndex,float theX,float theY,float theZ);
+    Log_VertexNormalChange(unsigned int theTarget,unsigned int theIndex,float theX,float theY,float theZ);
 	std::string toString()
 	{
 		char temp[256];

@@ -5,10 +5,10 @@ class Log_VertexAdjacentPush :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 
 public:
-	Log_VertexAdjacentPush(size_t theTarget,size_t index);
+    Log_VertexAdjacentPush(unsigned int theTarget,unsigned int index);
 	std::string toString()
 	{
 		char temp[256];

@@ -23,11 +23,11 @@ public:
 		HistoryLog *result=record[record.size()-1];
 		return *result;
 	};
-	HistoryLog * operator[](size_t i)
+    HistoryLog * operator[](unsigned int i)
 	{
 		return record[i];
 	};
-	size_t size()
+    unsigned int size()
 	{
 		return record.size();
 	};
@@ -36,8 +36,8 @@ public:
 	{
 		std::string out;
 		out+="\t\t<Record name=\""+name+"\">\n";
-		size_t logSize=record.size();
-		for(size_t i=0;i<logSize;++i)
+        unsigned int logSize=record.size();
+        for(unsigned int i=0;i<logSize;++i)
 		{
 			out+=record[i]->toString();
 			//printf("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
@@ -47,8 +47,8 @@ public:
 	};
 	void clear()
 	{
-		size_t logSize=record.size();
-		for(size_t i=0;i<logSize;++i)
+        unsigned int logSize=record.size();
+        for(unsigned int i=0;i<logSize;++i)
 		{
 			record[i]->clear();
 		}
@@ -56,8 +56,8 @@ public:
 public:
 	~HistoryRecord(void)
 	{
-		size_t logSize=record.size();
-		for(size_t i=0;i<logSize;++i)
+        unsigned int logSize=record.size();
+        for(unsigned int i=0;i<logSize;++i)
 		{
 			delete record[i];
 		}

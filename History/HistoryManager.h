@@ -9,10 +9,10 @@ private:
 	std::deque<HistoryRecord *> undoList;
 	std::vector<HistoryRecord *> redoList;
 	bool recordLock;
-	size_t capacity;
+    unsigned int capacity;
 	HistoryRecord *currentRecord;
 public:
-	HistoryManager(size_t theCapacity=20):capacity(theCapacity),recordLock(false),currentRecord(NULL)
+    HistoryManager(unsigned int theCapacity=20):capacity(theCapacity),recordLock(false),currentRecord(NULL)
 	{
 		redoList.reserve(capacity);
 	};
@@ -104,8 +104,8 @@ public:
 
 	void releaseRedo()
 	{
-		size_t redoSize=redoList.size();
-		for(size_t i=0;i<redoSize;++i)
+        unsigned int redoSize=redoList.size();
+        for(unsigned int i=0;i<redoSize;++i)
 		{
 			redoList[i]->clear();
 			delete redoList[i];
@@ -114,26 +114,26 @@ public:
 
 	void releaseUndo()
 	{
-		size_t undoSize=undoList.size();
-		for(size_t i=0;i<undoSize;++i)
+        unsigned int undoSize=undoList.size();
+        for(unsigned int i=0;i<undoSize;++i)
 		{
 			undoList[i]->clear();
 			delete undoList[i];
 		}
 	};
 
-	void releaseUndo(size_t i)
+    void releaseUndo(unsigned int i)
 	{
 		undoList[i]->clear();
 		delete undoList[i];
 	};
 
-	size_t undoSize()
+    unsigned int undoSize()
 	{
 		return undoList.size();
 	};
 
-	size_t redoSize()
+    unsigned int redoSize()
 	{
 		return  redoList.size();
 	};
@@ -141,21 +141,21 @@ public:
 	void testOut()
 	{
 		std::cout<<"<History>"<<std::endl;
-		size_t undoSize=undoList.size();
+        unsigned int undoSize=undoList.size();
 		if(undoSize)
 		{
 			std::cout<<"\t<Undo>"<<std::endl;
-			for(size_t i=0;i<undoSize;i++)
+            for(unsigned int i=0;i<undoSize;i++)
 			{
 				std::cout<<undoList[i]->toString()<<std::endl;
 			}
 			std::cout<<"\t</UnDo>"<<std::endl;
 		}
-		size_t redoSize=redoList.size();
+        unsigned int redoSize=redoList.size();
 		if(redoSize)
 		{
 			std::cout<<"\t<Redo>"<<std::endl;
-			for(size_t i=0;i<redoSize;i++)
+            for(unsigned int i=0;i<redoSize;i++)
 			{
 				std::cout<<redoList[i]->toString()<<std::endl;
 			}
@@ -169,21 +169,21 @@ public:
 		FILE *fp;
         fp = fopen(fileName,"w");
 		fprintf(fp,"<History>\n");
-		size_t undoSize=undoList.size();
+        unsigned int undoSize=undoList.size();
 		if(undoSize)
 		{
 			fprintf(fp,"\t<Undo>\n");
-			for(size_t i=0;i<undoSize;i++)
+            for(unsigned int i=0;i<undoSize;i++)
 			{
 				fprintf(fp,"%s",undoList[i]->toString().c_str());
 			}
 			fprintf(fp,"\t</Undo>\n");
 		}
-		size_t redoSize=redoList.size();
+        unsigned int redoSize=redoList.size();
 		if(redoSize)
 		{
 			fprintf(fp,"\t<Redo>\n");
-			for(size_t i=0;i<redoSize;i++)
+            for(unsigned int i=0;i<redoSize;i++)
 			{
 				fprintf(fp,redoList[i]->toString().c_str());
 			}

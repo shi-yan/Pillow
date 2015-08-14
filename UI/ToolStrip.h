@@ -5,13 +5,13 @@
 class ToolStrip
 {
 public:
-	size_t callID;
+    unsigned int callID;
 	Button *currentIn;
 	int x;
 	int y;
-	size_t spacer;
-	size_t hPadding;
-	size_t vPadding;
+    unsigned int spacer;
+    unsigned int hPadding;
+    unsigned int vPadding;
 	float textLeftX1;
 	float textLeftY1;
 	float textLeftX2;
@@ -24,15 +24,15 @@ public:
 	float textRightY1;
 	float textRightX2;
 	float textRightY2;
-	size_t width;
-	size_t height;
-	size_t bSX;
-	size_t bSY;
+    unsigned int width;
+    unsigned int height;
+    unsigned int bSX;
+    unsigned int bSY;
 	bool isH;
 	std::vector<Button*> buttonSet;
 	GLuint textureID;
 public:
-	ToolStrip(int theX,int theY,size_t theWidth,size_t theHeight,bool theIsH,size_t buttonNum,float theTextLeftX1,float theTextLeftY1,float theTextLeftX2,float theTextLeftY2,float theTextBGX1,float theTextBGY1,float theTextBGX2,float theTextBGY2,float theTextRightX1,float theTextRightY1,float theTextRightX2,float theTextRightY2)
+    ToolStrip(int theX,int theY,unsigned int theWidth,unsigned int theHeight,bool theIsH,unsigned int buttonNum,float theTextLeftX1,float theTextLeftY1,float theTextLeftX2,float theTextLeftY2,float theTextBGX1,float theTextBGY1,float theTextBGX2,float theTextBGY2,float theTextRightX1,float theTextRightY1,float theTextRightX2,float theTextRightY2)
 		:currentIn(NULL),x(theX),y(theY),width(theWidth),height(theHeight),isH(theIsH),spacer(10),hPadding(5),vPadding(5),bSY(32),bSX(32),textLeftX1(theTextLeftX1),textLeftY1(theTextLeftY1),textLeftX2(theTextLeftX2),textLeftY2(theTextLeftY2),textBGX1(theTextBGX1),textBGY1(theTextBGY1),textBGX2(theTextBGX2),textBGY2(theTextBGY2),textRightX1(theTextRightX1),textRightY1(theTextRightY1),textRightX2(theTextRightX2),textRightY2(theTextRightY2)
 	{
 		callID=glGenLists(1);
@@ -49,7 +49,7 @@ public:
 		{
 			int tempX=x+hPadding;
 			int tempY=y+vPadding;
-			for(size_t i=0;i<buttonSet.size();++i)
+            for(unsigned int i=0;i<buttonSet.size();++i)
 			{
 				buttonSet[i]->updatePosition(tempX,tempY);
 				tempX+=spacer+bSX;
@@ -61,7 +61,7 @@ public:
 		{
 			int tempX=x+hPadding;
 			int tempY=y+vPadding;
-			for(size_t i=0;i<buttonSet.size();++i)
+            for(unsigned int i=0;i<buttonSet.size();++i)
 			{
 				buttonSet[i]->updatePosition(tempX,tempY);
 				tempY+=spacer+bSY;
@@ -107,7 +107,7 @@ public:
 	{
 		if(mx>x && my>y && my<y+(int)height && mx<x+(int)width)
 		{
-			for(size_t i=0;i<buttonSet.size();++i)
+            for(unsigned int i=0;i<buttonSet.size();++i)
 			{
 				if(buttonSet[i]->onIn(mx,my))
 				{
@@ -153,7 +153,7 @@ public:
 	};
 	void initializeButton()
 	{
-		for(size_t i=0;i<buttonSet.size();++i)
+        for(unsigned int i=0;i<buttonSet.size();++i)
 		{
 			buttonSet[i]->initialize();
 		}
@@ -230,7 +230,7 @@ public:
 	void onPaint()
 	{
 		glCallList(callID);
-		for(size_t i=0;i<buttonSet.size();++i)
+        for(unsigned int i=0;i<buttonSet.size();++i)
 		{
 			buttonSet[i]->onPaint();
 		}
@@ -239,7 +239,7 @@ public:
 public:
 	~ToolStrip(void)
 	{
-		for(size_t i=0;i<buttonSet.size();++i)
+        for(unsigned int i=0;i<buttonSet.size();++i)
 		{
 			delete buttonSet[i];
 		}

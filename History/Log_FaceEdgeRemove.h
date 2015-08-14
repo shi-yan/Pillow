@@ -5,12 +5,12 @@ class Log_FaceEdgeRemove :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 public:
-	const size_t edgeIndex;
+    const unsigned int edgeIndex;
 	const int o;
 public:
-	Log_FaceEdgeRemove(size_t theTarget,size_t theIndex,size_t theEdgeIndex,int theO);
+    Log_FaceEdgeRemove(unsigned int theTarget,unsigned int theIndex,unsigned int theEdgeIndex,int theO);
 	std::string toString()
 	{
 		char temp[256];

@@ -67,7 +67,7 @@ void RightCamera::setCamera()
         if(m_eye.x<2) m_eye.x=2;
     };
 
-                                        void RightCamera::setReferenceImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height)
+                                        void RightCamera::setReferenceImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height)
     {
             if(rightReference)
             {
@@ -79,7 +79,7 @@ void RightCamera::setCamera()
             rightReference->isShow=true;
     };
 
-    void RightCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,size_t &width,size_t &height)
+    void RightCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
     {
         if(rightReference)
         {
@@ -116,15 +116,15 @@ void RightCamera::setCamera()
         glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
     };
 
-                    void RightCamera::setCameraForSelectionD(size_t x1,size_t y1,size_t x2,size_t y2,size_t h)
+                    void RightCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h)
     {
         glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
         GLint viewport[4];
         glGetIntegerv (GL_VIEWPORT, viewport);
                 glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        size_t sw=(x2-x1)>5?(x2-x1):5;
-        size_t sh=(y2-y1)>5?(y2-y1):5;
+        unsigned int sw=(x2-x1)>5?(x2-x1):5;
+        unsigned int sh=(y2-y1)>5?(y2-y1):5;
         gluPickMatrix((GLdouble) (x1+x2)/2,(GLdouble) (h- (y1+y2)/2), (GLdouble)sw,(GLdouble)sh, viewport);
         glOrtho(-m_width*(m_eye.x)*0.005f,m_width*(m_eye.x)*0.005f,-m_height*(m_eye.x)*0.005f,m_height*(m_eye.x)*0.005f,m_nearPlane,m_farPlane);
     glMatrixMode(GL_MODELVIEW);

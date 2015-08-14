@@ -5,13 +5,13 @@ class Log_EdgeStartChange :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 
 public:
 	const int start;
 
 public:
-	Log_EdgeStartChange(size_t theTarget,size_t theIndex,int theStart);
+    Log_EdgeStartChange(unsigned int theTarget,unsigned int theIndex,int theStart);
 	std::string toString()
 	{
 		char temp[256];

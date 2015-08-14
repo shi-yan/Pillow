@@ -13,40 +13,40 @@
 class SplitedView
 {
 protected:
-    size_t m_splitX;
-    size_t m_splitY;
-    size_t m_width;
-    size_t m_height;
-    size_t m_selected;
+    unsigned int m_splitX;
+    unsigned int m_splitY;
+    unsigned int m_width;
+    unsigned int m_height;
+    unsigned int m_selected;
     int m_panIndex;
     int m_zoomIndex;
     int m_rotateIndex;
     Camera *m_camera[4];
-    size_t m_selectionSX;
-    size_t m_selectionSY;
-    size_t m_selectionEX;
-    size_t m_selectionEY;
-    size_t m_axisDragSX;
-    size_t m_axisDragSY;
-    size_t m_axisDragEX;
-    size_t m_axisDragEY;
+    unsigned int m_selectionSX;
+    unsigned int m_selectionSY;
+    unsigned int m_selectionEX;
+    unsigned int m_selectionEY;
+    unsigned int m_axisDragSX;
+    unsigned int m_axisDragSY;
+    unsigned int m_axisDragEX;
+    unsigned int m_axisDragEY;
     bool m_isSelectionMode;
     bool m_isAxisMode;
     bool m_isExtrude;
     Vector m_cursorDir;
     int m_cursorMode;
     bool m_isCtrlMode;
-    size_t m_ctrlSX;
-    size_t m_ctrlSY;
+    unsigned int m_ctrlSX;
+    unsigned int m_ctrlSY;
 
 public:
-    size_t m_viewCount;
+    unsigned int m_viewCount;
 
     void changeCamera(CameraMode::__Enum type);
 
-    void getViewportImage(GLuint &texID,std::string &path,Vector &position,size_t &width,size_t &height);
+    void getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height);
 
-    void setViewportImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height);
+    void setViewportImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height);
 
     void disableReference();
 
@@ -56,49 +56,49 @@ public:
 
     void switchGird();
 
-    virtual bool onCtrlPress(size_t x,size_t y);
+    virtual bool onCtrlPress(unsigned int x,unsigned int y);
 
-    virtual bool onCtrlDrag(size_t x,size_t y);
+    virtual bool onCtrlDrag(unsigned int x,unsigned int y);
 
-    virtual bool onPanPress(size_t x,size_t y);
+    virtual bool onPanPress(unsigned int x,unsigned int y);
 
-    virtual bool onAxisPress(size_t x,size_t y);
+    virtual bool onAxisPress(unsigned int x,unsigned int y);
 
-    virtual bool onAxisDrag(size_t x,size_t y);
+    virtual bool onAxisDrag(unsigned int x,unsigned int y);
 
     virtual bool onAxisRelease();
 
     virtual bool onCtrlRelease();
 
-    virtual bool onPanDrag(size_t x,size_t y);
+    virtual bool onPanDrag(unsigned int x,unsigned int y);
 
     virtual bool onPanRelease();
 
-    virtual bool onRotateDrag(size_t x,size_t y);
+    virtual bool onRotateDrag(unsigned int x,unsigned int y);
 
     virtual bool onRotateRelease();
 	
-    virtual bool onRotatePress(size_t x,size_t y);
+    virtual bool onRotatePress(unsigned int x,unsigned int y);
 
-    virtual bool onSelectionPress(size_t x,size_t y);
+    virtual bool onSelectionPress(unsigned int x,unsigned int y);
 	
-    virtual CameraMode::__Enum setView(size_t i);
+    virtual CameraMode::__Enum setView(unsigned int i);
 
-    Vector getEye(size_t i) const;
+    Vector getEye(unsigned int i) const;
 	
-    virtual void onWheel(float step,size_t x,size_t y);
+    virtual void onWheel(float step,unsigned int x,unsigned int y);
 	
-    virtual void update(size_t splitX,size_t splitY,size_t width,size_t height);
+    virtual void update(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 
-    virtual void setViewport(size_t index);
+    virtual void setViewport(unsigned int index);
 
-    virtual bool onDrag(size_t x,size_t y);
+    virtual bool onDrag(unsigned int x,unsigned int y);
 
     virtual bool onLeftDown(unsigned int x, unsigned int y);
 
     virtual void onPaint(void);
 
-    virtual bool onSelectionDrag(size_t x,size_t y);
+    virtual bool onSelectionDrag(unsigned int x,unsigned int y);
 
     virtual bool onSingleSideSelectionRelease(bool isAppend);
 

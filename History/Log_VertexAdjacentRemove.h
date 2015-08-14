@@ -5,14 +5,14 @@ class Log_VertexAdjacentRemove :
 	public HistoryLog
 {
 public:
-	const size_t index;
-	const size_t adjIndex;
+    const unsigned int index;
+    const unsigned int adjIndex;
 
 public:
 	const int o;
 
 public:
-	Log_VertexAdjacentRemove(size_t theTarget,size_t theIndex,size_t theAdjIndex,int theO);
+    Log_VertexAdjacentRemove(unsigned int theTarget,unsigned int theIndex,unsigned int theAdjIndex,int theO);
 	std::string toString()
 	{
 		char temp[256];

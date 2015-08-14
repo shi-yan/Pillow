@@ -49,9 +49,9 @@ class HistoryLog
 {
 public:
 	const LogType type;
-	const size_t target;
+    const unsigned int target;
 public:
-	HistoryLog(LogType::__Enum theType,size_t theTarget);
+    HistoryLog(LogType::__Enum theType,unsigned int theTarget);
 	virtual std::string toString()
 	{
 		return "\t\t\t<Log />\n";

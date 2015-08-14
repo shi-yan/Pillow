@@ -23,11 +23,11 @@ public:
 	std::string path;
 	GLuint imageID;
 	GLuint callID;
-	size_t width;
-	size_t height;
+    unsigned int width;
+    unsigned int height;
 	CameraMode cameraMode;
 	Vector position;
-	ViewportImage(const char *thePath,GLuint theImageID,size_t width,size_t height,CameraMode::__Enum theCameraMode,Vector &thePosition);
+    ViewportImage(const char *thePath,GLuint theImageID,unsigned int width,unsigned int height,CameraMode::__Enum theCameraMode,Vector &thePosition);
 	void initialize()
 	{
 		callID=glGenLists(1);

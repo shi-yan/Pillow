@@ -5,13 +5,13 @@ class Log_EdgeEndChange :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 
 public:
 	const int end;
 
 public:
-	Log_EdgeEndChange(size_t theTarget,size_t theIndex,int theEnd);
+    Log_EdgeEndChange(unsigned int theTarget,unsigned int theIndex,int theEnd);
 	std::string toString()
 	{
 		char temp[256];

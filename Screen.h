@@ -49,12 +49,12 @@ void updateScreen(unsigned int width,unsigned int height);
 		currentView->disableReference();
 	}
 
-	void getViewportImage(GLuint &textID,std::string &path,Vector &position,size_t &width,size_t &height)
+    void getViewportImage(GLuint &textID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 	{
 		currentView->getViewportImage(textID,path,position,width,height);
 	}
 
-	void setViewportImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height)
+    void setViewportImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height)
 	{
 		currentView->setViewportImage(path,imageID,position,width,height);
 	}

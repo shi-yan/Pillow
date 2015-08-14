@@ -6,12 +6,12 @@ class Log_ObjectEdgeRemove :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 public:
 	Edge *o;
 
 public:
-	Log_ObjectEdgeRemove(size_t theTarget,size_t theIndex,Edge *theO);
+    Log_ObjectEdgeRemove(unsigned int theTarget,unsigned int theIndex,Edge *theO);
 	std::string toString()
 	{
 		char temp[256];

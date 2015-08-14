@@ -5,13 +5,13 @@ class Log_VertexAdjacentInsert :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 
 public:
-	const size_t adjIndex;
+    const unsigned int adjIndex;
 
 public:
-	Log_VertexAdjacentInsert(size_t theTarget,size_t theIndex,size_t adjIndex);
+    Log_VertexAdjacentInsert(unsigned int theTarget,unsigned int theIndex,unsigned int adjIndex);
 	std::string toString()
 	{
 		char temp[256];

@@ -5,9 +5,9 @@ class Log_ObjectVertexAdd :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 public:
-	Log_ObjectVertexAdd(size_t theTarget,size_t theIndex);
+    Log_ObjectVertexAdd(unsigned int theTarget,unsigned int theIndex);
 	std::string toString()
 	{
 		char temp[256];

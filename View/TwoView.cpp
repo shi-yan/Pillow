@@ -66,13 +66,13 @@ TwoView::~TwoView(void)
     delete m_camera[1];
 }
 
-CameraMode::__Enum TwoView::setView(size_t index)
+CameraMode::__Enum TwoView::setView(unsigned int index)
 {
     m_camera[index]->setCamera();
     return m_camera[index]->m_type._value;
 }
 
-bool TwoView::onPanPress(size_t x,size_t y)
+bool TwoView::onPanPress(unsigned int x,unsigned int y)
 {
     if(m_selected==0 && x<m_splitX)
     {
@@ -85,13 +85,13 @@ bool TwoView::onPanPress(size_t x,size_t y)
     return true;
 }
 
-bool TwoView::onPanDrag(size_t x,size_t y)
+bool TwoView::onPanDrag(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->pan(x,y);
     return true;
 }
 
-void TwoView::onWheel(float step,size_t x,size_t y)
+void TwoView::onWheel(float step,unsigned int x,unsigned int y)
 {
     if(m_selected==0 && x<m_splitX)
     {
@@ -104,13 +104,13 @@ void TwoView::onWheel(float step,size_t x,size_t y)
     y;
 }
 
-bool TwoView::onRotateDrag(size_t x,size_t y)
+bool TwoView::onRotateDrag(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->rotate(x,y);
     return true;
 }
 
-bool TwoView::onRotatePress(size_t x,size_t y)
+bool TwoView::onRotatePress(unsigned int x,unsigned int y)
 {
     if(m_selected==0 && x<m_splitX)
     {
@@ -156,7 +156,7 @@ bool TwoView::onLeftDown(unsigned int x, unsigned int y)
     }
 }
 
-bool TwoView::onCtrlPress(size_t x,size_t y)
+bool TwoView::onCtrlPress(unsigned int x,unsigned int y)
 {
     m_isCtrlMode=true;
     m_ctrlSX=x;
@@ -179,7 +179,7 @@ bool TwoView::onCtrlRelease()
     }
 }
 
-bool TwoView::onCtrlDrag(size_t x,size_t y)
+bool TwoView::onCtrlDrag(unsigned int x,unsigned int y)
 {
     if(m_isCtrlMode)
     {
@@ -197,7 +197,7 @@ bool TwoView::onCtrlDrag(size_t x,size_t y)
     }
 }
 
-bool TwoView::onSelectionPress(size_t x,size_t y)
+bool TwoView::onSelectionPress(unsigned int x,unsigned int y)
 {
     m_isSelectionMode=true;
     m_selectionSX=x;
@@ -207,7 +207,7 @@ bool TwoView::onSelectionPress(size_t x,size_t y)
     return true;
 }
 
-bool TwoView::onSelectionDrag(size_t x,size_t y)
+bool TwoView::onSelectionDrag(unsigned int x,unsigned int y)
 {
     if(m_isSelectionMode)
     {
@@ -221,7 +221,7 @@ bool TwoView::onSelectionDrag(size_t x,size_t y)
     }
 }
 
-bool TwoView::onAxisDrag(size_t x,size_t y)
+bool TwoView::onAxisDrag(unsigned int x,unsigned int y)
 {
     if(m_isAxisMode)
     {
@@ -255,7 +255,7 @@ bool TwoView::onAxisRelease()
     }
 }
 
-bool TwoView::onAxisPress(size_t x,size_t y)
+bool TwoView::onAxisPress(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->setCameraForSelectionS();
     m_cursorDir.z=0;
@@ -274,10 +274,10 @@ bool TwoView::onSingleSideSelectionRelease(bool isAppend)
 {
     if(m_isSelectionMode)
     {
-        size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
-        size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
-        size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
-        size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+        unsigned int x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+        unsigned int y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+        unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+        unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionS();
         theScene->selectSingleSide(x1,y1,x2,y2,m_height,isAppend);
         m_isSelectionMode=false;
@@ -297,10 +297,10 @@ bool TwoView::onDualSideSelectionRelease(bool isAppend)
 {
     if(m_isSelectionMode)
     {
-        size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
-        size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
-        size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
-        size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+        unsigned int x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+        unsigned int y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+        unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+        unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionD(x1,y1,x2,y2,m_height);
         theScene->selectDualSide(isAppend);
         m_isSelectionMode=false;
@@ -329,7 +329,7 @@ bool TwoView::onPanRelease()
     return true;
 }
 
-void TwoView::update(size_t theSplitX,size_t theSplitY,size_t theWidth,size_t theHeight)
+void TwoView::update(unsigned int theSplitX,unsigned int theSplitY,unsigned int theWidth,unsigned int theHeight)
 {
     m_splitX=theSplitX;
     m_splitY=theSplitY;

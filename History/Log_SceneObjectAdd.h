@@ -5,7 +5,7 @@ class Log_SceneObjectAdd :
 	public HistoryLog
 {
 public:
-	Log_SceneObjectAdd(size_t theTarget);
+    Log_SceneObjectAdd(unsigned int theTarget);
 	std::string toString()
 	{
 		char temp[256];

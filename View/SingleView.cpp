@@ -20,45 +20,45 @@ SingleView::~SingleView(void)
     delete  m_camera[0];
 }
 
-CameraMode::__Enum SingleView::setView(size_t index)
+CameraMode::__Enum SingleView::setView(unsigned int index)
 {
     index;
     m_camera[0]->setCamera();
     return m_camera[0]->m_type._value;
 }
 
-bool SingleView::onPanPress(size_t x,size_t y)
+bool SingleView::onPanPress(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->onPanPress(x,y);
     return true;
 }
 
-bool SingleView::onPanDrag(size_t x,size_t y)
+bool SingleView::onPanDrag(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->pan(x,y);
     return true;
 }
 
-void SingleView::onWheel(float step,size_t x,size_t y)
+void SingleView::onWheel(float step,unsigned int x,unsigned int y)
 {
     x;
     y;
     m_camera[m_selected]->zoom(step);
 }
 
-bool SingleView::onRotateDrag(size_t x,size_t y)
+bool SingleView::onRotateDrag(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->rotate(x,y);
     return true;
 }
 
-bool SingleView::onRotatePress(size_t x,size_t y)
+bool SingleView::onRotatePress(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->onRotatePress(x,y);
     return true;
 }
 
-bool SingleView::onCtrlPress(size_t x,size_t y)
+bool SingleView::onCtrlPress(unsigned int x,unsigned int y)
 {
     m_isCtrlMode=true;
     m_ctrlSX=x;
@@ -81,7 +81,7 @@ bool SingleView::onCtrlRelease()
     }
 }
 
-bool SingleView::onCtrlDrag(size_t x,size_t y)
+bool SingleView::onCtrlDrag(unsigned int x,unsigned int y)
 {
     if(m_isCtrlMode)
     {
@@ -111,7 +111,7 @@ bool SingleView::onPanRelease()
     return true;
 }
 
-void SingleView::update(size_t theSplitX,size_t theSplitY,size_t theWidth,size_t theHeight)
+void SingleView::update(unsigned int theSplitX,unsigned int theSplitY,unsigned int theWidth,unsigned int theHeight)
 {
     m_splitX=theSplitX;
     m_splitY=theSplitY;
@@ -120,7 +120,7 @@ void SingleView::update(size_t theSplitX,size_t theSplitY,size_t theWidth,size_t
     m_camera[0]->updateSize(0.0f,0.0f,(float)m_width,(float)m_height);
 }
 
-bool SingleView::onSelectionPress(size_t x,size_t y)
+bool SingleView::onSelectionPress(unsigned int x,unsigned int y)
 {
     m_isSelectionMode=true;
     m_selectionSX=x;
@@ -130,7 +130,7 @@ bool SingleView::onSelectionPress(size_t x,size_t y)
     return true;
 }
 
-bool SingleView::onSelectionDrag(size_t x,size_t y)
+bool SingleView::onSelectionDrag(unsigned int x,unsigned int y)
 {
     if(m_isSelectionMode)
     {
@@ -149,10 +149,10 @@ bool SingleView::onSingleSideSelectionRelease(bool isAppend)
     if(m_isSelectionMode)
     {
         qDebug() << "single selection mode =";
-        size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
-        size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
-        size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
-        size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+        unsigned int x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+        unsigned int y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+        unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+        unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionS();
         theScene->selectSingleSide(x1,y1,x2,y2,m_height,isAppend);
         m_isSelectionMode=false;
@@ -172,10 +172,10 @@ bool SingleView::onDualSideSelectionRelease(bool isAppend)
 {
     if(m_isSelectionMode)
     {
-        size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
-        size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
-        size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
-        size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+        unsigned int x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+        unsigned int y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+        unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+        unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionD(x1,y1,x2,y2,m_height);
         theScene->selectDualSide(isAppend);
         m_isSelectionMode=false;
@@ -191,7 +191,7 @@ bool SingleView::onDualSideSelectionRelease(bool isAppend)
     }
 }
 
-bool SingleView::onAxisDrag(size_t x,size_t y)
+bool SingleView::onAxisDrag(unsigned int x,unsigned int y)
 {
     if(m_isAxisMode)
     {
@@ -225,7 +225,7 @@ bool SingleView::onAxisRelease()
     }
 }
 
-bool SingleView::onAxisPress(size_t x,size_t y)
+bool SingleView::onAxisPress(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->setCameraForSelectionS();
     m_cursorDir.z=0;

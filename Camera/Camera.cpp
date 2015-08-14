@@ -38,7 +38,7 @@ void Camera::onPanPress(int x, int y)
 
 void Camera::disableReference() {}
 
-void Camera::getViewportImage(GLuint &texID,std::string &path,Vector &position,size_t &width,size_t &height)
+void Camera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 {
     UNUSED(texID);
     UNUSED(path);
@@ -47,7 +47,7 @@ void Camera::getViewportImage(GLuint &texID,std::string &path,Vector &position,s
     UNUSED(height);
 }
 
-void Camera::setReferenceImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height)
+void Camera::setReferenceImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height)
 {
     UNUSED(path);
     UNUSED(imageID);
@@ -87,7 +87,7 @@ void Camera::setCamera()
 {
 }
 
-void Camera::setCameraForSelectionD(size_t x1,size_t y1,size_t x2,size_t y2,size_t h)
+void Camera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h)
 {
     UNUSED(x1);
     UNUSED(y1);

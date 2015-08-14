@@ -8,43 +8,43 @@ class SingleView : public SplitedView
 public:
     SingleView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 	
-    CameraMode::__Enum setView(size_t index) override;
+    CameraMode::__Enum setView(unsigned int index) override;
 
-    bool onPanPress(size_t x,size_t y) override;
+    bool onPanPress(unsigned int x,unsigned int y) override;
 
-    bool onPanDrag(size_t x,size_t y) override;
+    bool onPanDrag(unsigned int x,unsigned int y) override;
 
-    void onWheel(float step,size_t x,size_t y) override;
+    void onWheel(float step,unsigned int x,unsigned int y) override;
 
-    bool onRotateDrag(size_t x,size_t y) override;
+    bool onRotateDrag(unsigned int x,unsigned int y) override;
 
-    bool onRotatePress(size_t x,size_t y) override;
+    bool onRotatePress(unsigned int x,unsigned int y) override;
 
-    bool onCtrlPress(size_t x,size_t y) override;
+    bool onCtrlPress(unsigned int x,unsigned int y) override;
 
     bool onCtrlRelease() override;
 
-    bool onCtrlDrag(size_t x,size_t y) override;
+    bool onCtrlDrag(unsigned int x,unsigned int y) override;
 
     bool onRotateRelease() override;
 	
     bool onPanRelease() override;
 
-    void update(size_t theSplitX,size_t theSplitY,size_t theWidth,size_t theHeight) override;
+    void update(unsigned int theSplitX,unsigned int theSplitY,unsigned int theWidth,unsigned int theHeight) override;
 
-    bool onSelectionPress(size_t x,size_t y) override;
+    bool onSelectionPress(unsigned int x,unsigned int y) override;
 
-    bool onSelectionDrag(size_t x,size_t y) override;
+    bool onSelectionDrag(unsigned int x,unsigned int y) override;
 
     bool onSingleSideSelectionRelease(bool isAppend) override;
 
     bool onDualSideSelectionRelease(bool isAppend) override;
 
-    bool onAxisDrag(size_t x,size_t y) override;
+    bool onAxisDrag(unsigned int x,unsigned int y) override;
 
     bool onAxisRelease() override;
 
-    bool onAxisPress(size_t x,size_t y) override;
+    bool onAxisPress(unsigned int x,unsigned int y) override;
 
     void onPaint() override;
 

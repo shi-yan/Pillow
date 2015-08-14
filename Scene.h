@@ -12,7 +12,6 @@
 #include "Core/Quaternion.h"
 
 #include <QImage>
-
 #include <QDebug>
 
 DECLARE_ENUM(SelectionMode)
@@ -50,7 +49,7 @@ struct SceneInfo
 {
 	char ID[4];
 	int version;
-	size_t objectCount;
+    unsigned int objectCount;
 };
 
 class Scene
@@ -60,54 +59,54 @@ private:
 	AxisCursor *theAxisCursor;
 	AxisCursorMode currentACMode;
 	IndexArray<Object> theObjectList;
-	std::vector<size_t> selection;
-	size_t target;
+    std::vector<unsigned int> selection;
+    unsigned int target;
 	SelectionMode mode;
 
 public:
 	std::string fileName;
-	size_t splitVertexID;
+    unsigned int splitVertexID;
 	bool isSplitMode;
-	//size_t splitVX;
-	//size_t splitVY;
+    //unsigned int splitVX;
+    //unsigned int splitVY;
 	
 	Scene(void);
-	size_t newCube(float x,float y,float z,float lx,float ly,float lz,size_t sx,size_t sy,size_t sz);
-	void newCube(Object *theCube,float x,float y,float z,float lx,float ly,float lz,size_t sx,size_t sy,size_t sz);
-	size_t newCylinder(float x,float y,float z,float r,float h,AxisMode::__Enum axis,size_t sa,size_t sr,size_t sh);
-	void newCylinder(Object *theCylinder,float x,float y,float z,float r,float h,AxisMode::__Enum axis,size_t sa,size_t sr,size_t sh);
-	size_t newSphere(float x,float y,float z,float r,AxisMode::__Enum axis,size_t sa,size_t sr);
-	void newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode::__Enum axis,size_t sa,size_t sr);
+    unsigned int newCube(float x,float y,float z,float lx,float ly,float lz,unsigned int sx,unsigned int sy,unsigned int sz);
+    void newCube(Object *theCube,float x,float y,float z,float lx,float ly,float lz,unsigned int sx,unsigned int sy,unsigned int sz);
+    unsigned int newCylinder(float x,float y,float z,float r,float h,AxisMode::__Enum axis,unsigned int sa,unsigned int sr,unsigned int sh);
+    void newCylinder(Object *theCylinder,float x,float y,float z,float r,float h,AxisMode::__Enum axis,unsigned int sa,unsigned int sr,unsigned int sh);
+    unsigned int newSphere(float x,float y,float z,float r,AxisMode::__Enum axis,unsigned int sa,unsigned int sr);
+    void newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode::__Enum axis,unsigned int sa,unsigned int sr);
 	void moveVertex(float x,float y,float z);
 	void moveEdge(float x,float y,float z);
 	void moveFace(float x,float y,float z);
-	size_t newPlane(float x,float y,float z,float length,float width,AxisMode::__Enum axis,size_t sl,size_t sw);
-	void newPlane(Object *thePlane,float x,float y,float z,float length,float width,AxisMode::__Enum axis,size_t sl,size_t sw);
-	//◊¢“‚£¨«Â≥˝Œﬁ”√µƒ∂Àµ„µ´√ª”–±ﬂµƒ◊Û”“√Ê!!!!!!!!!!!
-	void deleteEdgeH(size_t t,size_t edgeID);
+    unsigned int newPlane(float x,float y,float z,float length,float width,AxisMode::__Enum axis,unsigned int sl,unsigned int sw);
+    void newPlane(Object *thePlane,float x,float y,float z,float length,float width,AxisMode::__Enum axis,unsigned int sl,unsigned int sw);
+	//√ó¬¢√í√¢¬£¬¨√á√•¬≥√Ω√é√û√ì√É¬µ√Ñ¬∂√ã¬µ√£¬µ¬´√É¬ª√ì√ê¬±√ü¬µ√Ñ√ó√≥√ì√í√É√¶!!!!!!!!!!!
+    void deleteEdgeH(unsigned int t,unsigned int edgeID);
 	void deleteVertex();
 	void deleteFace();
 	void extrudeEdge(float x,float y,float z);
-	size_t insertVertex(int edgeID,float pos);
+    unsigned int insertVertex(int edgeID,float pos);
 	void split(int startV,int endV);
 	void removeEdge();
 	void clearIsInCache();
-	void targetWeldVertex(size_t vertexA,size_t vertexB);
+    void targetWeldVertex(unsigned int vertexA,unsigned int vertexB);
 	void extrudeFaceGroup(float x,float y,float z);
 	void sceneObjectAdd(char *name);
 	void sceneObjectAdd(Object *newObject);
 	void detach(Object *newObject);
-	void attach(size_t original,size_t toBeAttached);
+    void attach(unsigned int original,unsigned int toBeAttached);
 	void clearSelection();
 	void initialize();
 	void changeAxisCursorMode(AxisCursorMode::__Enum newMode);
-	void clearDualEdge(size_t tt,size_t vertexID);
+    void clearDualEdge(unsigned int tt,unsigned int vertexID);
 
 	void mirrorClone()
 	{
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theOriginal=theObjectList[selection[i]];
 				if(theOriginal)
@@ -133,7 +132,7 @@ public:
 						glGetFloatv(GL_MODELVIEW_MATRIX,(GLfloat*)(&transform.m));
 						glPopMatrix();
 						Object *newObject=new Object("Cloned");
-						for(size_t e=1;e<theOriginal->vertexCount();++e)
+                        for(unsigned int e=1;e<theOriginal->vertexCount();++e)
 						{
 							Vertex *theVertex=theOriginal->vertex(e);
 							if(theVertex)
@@ -142,7 +141,7 @@ public:
                                 theVertex->m_clone=newObject->addVertex(theNV);
 							}
 						}
-						for(size_t e=1;e<theOriginal->edgeCount();++e)
+                        for(unsigned int e=1;e<theOriginal->edgeCount();++e)
 						{
 							Edge *theEdge=theOriginal->edge(e);
 							if(theEdge)
@@ -150,13 +149,13 @@ public:
                                 theEdge->clone=newObject->addEdge(theOriginal->vertex(theEdge->start)->m_clone,theOriginal->vertex(theEdge->end)->m_clone);
 							}
 						}
-						for(size_t e=1;e<theOriginal->faceCount();++e)
+                        for(unsigned int e=1;e<theOriginal->faceCount();++e)
 						{
 							Face *theFace=theOriginal->face(e);
 							if(theFace)
 							{
-								size_t *tempEdgeSet=new size_t[theFace->edge.size()];
-								for(size_t h=0;h<theFace->edge.size();++h)
+                                unsigned int *tempEdgeSet=new unsigned int[theFace->edge.size()];
+                                for(unsigned int h=0;h<theFace->edge.size();++h)
 								{
 									tempEdgeSet[h]=theFace->edge[h]>0?theFace->edge[h]:-theFace->edge[h];
 								}
@@ -175,13 +174,13 @@ public:
 	{
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theOriginal=theObjectList[selection[i]];
 				if(theOriginal)
 				{
 					Object *newObject=new Object("Cloned");
-					for(size_t e=1;e<theOriginal->vertexCount();++e)
+                    for(unsigned int e=1;e<theOriginal->vertexCount();++e)
 					{
 						Vertex *theVertex=theOriginal->vertex(e);
 						if(theVertex)
@@ -190,7 +189,7 @@ public:
 						}
 					}
 
-					for(size_t e=1;e<theOriginal->edgeCount();++e)
+                    for(unsigned int e=1;e<theOriginal->edgeCount();++e)
 					{
 						Edge *theEdge=theOriginal->edge(e);
 						if(theEdge)
@@ -199,13 +198,13 @@ public:
 						}
 					}
 
-					for(size_t e=1;e<theOriginal->faceCount();++e)
+                    for(unsigned int e=1;e<theOriginal->faceCount();++e)
 					{
 						Face *theFace=theOriginal->face(e);
 						if(theFace)
 						{
-							size_t *tempEdgeSet=new size_t[theFace->edge.size()];
-							for(size_t h=0;h<theFace->edge.size();++h)
+                            unsigned int *tempEdgeSet=new unsigned int[theFace->edge.size()];
+                            for(unsigned int h=0;h<theFace->edge.size();++h)
 							{
 								tempEdgeSet[h]=theFace->edge[h]>0?theFace->edge[h]:-theFace->edge[h];
 							}
@@ -219,10 +218,10 @@ public:
 		}
 	}
 
-	void getSceneInfo(size_t &objectCount,size_t &vertexCount,size_t &edgeCount,size_t &faceCount)
+    void getSceneInfo(unsigned int &objectCount,unsigned int &vertexCount,unsigned int &edgeCount,unsigned int &faceCount)
 	{
 		objectCount=theObjectList.size();
-		for(size_t i=1;i<objectCount;++i)
+        for(unsigned int i=1;i<objectCount;++i)
 		{
 			if(theObjectList[i])
 			{
@@ -238,7 +237,7 @@ public:
 	{
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=1;i<selection.size();++i)
+            for(unsigned int i=1;i<selection.size();++i)
 			{
 				attach(selection[0],selection[i]);
 			}
@@ -261,7 +260,7 @@ public:
 		Vector mirrorPosition(x,y,z);
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				if(theObjectList[selection[i]])
 				{
@@ -282,7 +281,7 @@ public:
 	{
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				if(theObjectList[selection[i]])
 				{
@@ -410,7 +409,7 @@ public:
 	{
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				if(theObjectList[selection[i]])
 				{
@@ -428,7 +427,7 @@ public:
 	{
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				sceneObjectRemove(selection[i]);
 			}
@@ -438,7 +437,7 @@ public:
 		{
 			if(mode==SelectionMode::Vertex)
 			{
-				for(size_t i=0;i<selection.size();++i)
+                for(unsigned int i=0;i<selection.size();++i)
 				{
 					removeVertex(target,selection[i]);
 				}
@@ -458,7 +457,7 @@ public:
 		
 	}
 
-	void removeVertex(size_t tt,size_t vertexID)
+    void removeVertex(unsigned int tt,unsigned int vertexID)
 	{
 		if(tt && vertexID)
 		{
@@ -470,11 +469,11 @@ public:
 				{
 					if(edgeB->end==vertexID)
 					{//printf("@@@@@@@@1@@@@@@@@@@@@@");
-						size_t newEdge=theObjectList[tt]->addEdge(edgeB->start,edgeA->end);
+                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->start,edgeA->end);
 						if(edgeA->right>0 && edgeB->right>0 && edgeA->right==edgeB->right)
 						{
 							Face *theFace=theObjectList[tt]->face(edgeA->right);
-							size_t edgeCount=theFace->edge.size();
+                            unsigned int edgeCount=theFace->edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
 								if(theFace->edge[e]==(int)(edgeB->index))
@@ -491,7 +490,7 @@ public:
 						if(edgeA->left>0 && edgeB->left>0 && edgeA->left==edgeB->left)
 						{
 							Face *theFace=theObjectList[tt]->face(edgeA->left);
-							size_t edgeCount=theFace->edge.size();
+                            unsigned int edgeCount=theFace->edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
 								if(theFace->edge[e]==-(int)(edgeA->index))
@@ -511,11 +510,11 @@ public:
 					}
 					else
 					{//printf("@@@@@@@@@@2@@@@@@@@@@@");
-						size_t newEdge=theObjectList[tt]->addEdge(edgeB->end,edgeA->end);
+                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->end,edgeA->end);
 						if(edgeA->right>0 && edgeB->left>0 && edgeA->right==edgeB->left)
 						{
 							Face *theFace=theObjectList[tt]->face(edgeA->right);
-							size_t edgeCount=theFace->edge.size();
+                            unsigned int edgeCount=theFace->edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
 								if(theFace->edge[e]==-((int)edgeB->index))
@@ -532,7 +531,7 @@ public:
 						if(edgeA->left>0 && edgeB->right>0 && edgeA->left==edgeB->right)
 						{
 							Face *theFace=theObjectList[tt]->face(edgeA->left);
-							size_t edgeCount=theFace->edge.size();
+                            unsigned int edgeCount=theFace->edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
 								if(theFace->edge[e]==-((int)edgeA->index))
@@ -555,11 +554,11 @@ public:
 				{
 					if(edgeB->end==vertexID)
 					{//printf("@@@@@@@@@3@@@@@@@@@@@@");
-						size_t newEdge=theObjectList[tt]->addEdge(edgeB->start,edgeA->start);
+                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->start,edgeA->start);
 						if(edgeA->left>0 && edgeB->right>0 && edgeA->left==edgeB->right)
 						{
 							Face *theFace=theObjectList[tt]->face(edgeA->left);
-							size_t edgeCount=theFace->edge.size();
+                            unsigned int edgeCount=theFace->edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
 								if(theFace->edge[e]==((int)edgeB->index))
@@ -576,7 +575,7 @@ public:
 						if(edgeA->right>0 && edgeB->left>0 && edgeA->right==edgeB->left)
 						{
 							Face *theFace=theObjectList[tt]->face(edgeA->right);
-							size_t edgeCount=theFace->edge.size();
+                            unsigned int edgeCount=theFace->edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
 								if(theFace->edge[e]==((int)edgeA->index))
@@ -597,11 +596,11 @@ public:
 					else
 					{
 						//printf("@@@@@@@@@@@4@@@@@@@@@@");
-						size_t newEdge=theObjectList[tt]->addEdge(edgeB->end,edgeA->start);
+                        unsigned int newEdge=theObjectList[tt]->addEdge(edgeB->end,edgeA->start);
 						if(edgeA->left>0 && edgeB->left>0 && edgeA->left==edgeB->left)
 						{
 							Face *theFace=theObjectList[tt]->face(edgeA->left);
-							size_t edgeCount=theFace->edge.size();
+                            unsigned int edgeCount=theFace->edge.size();
 							for(int e=edgeCount-1;e>-1;--e)
 							{
 								if(theFace->edge[e]==-((int)edgeB->index))
@@ -652,7 +651,7 @@ public:
 	{
 		HistoryRecord &theRecord=historyManager->redoBegin();
 		historyManager->recordBeginR(theRecord.name);
-		size_t recordSize=theRecord.size();
+        unsigned int recordSize=theRecord.size();
 		for(int i=recordSize-1;i>-1;--i)
 		{
 			parseLog(theRecord[i]);
@@ -665,7 +664,7 @@ public:
 	{
 		HistoryRecord &theRecord=historyManager->undoBegin();
 		historyManager->redoRecordBegin(theRecord.name);
-		size_t recordSize=theRecord.size();
+        unsigned int recordSize=theRecord.size();
 		for(int i=recordSize-1;i>-1;--i)
 		{
 			parseLog(theRecord[i]);
@@ -867,7 +866,7 @@ public:
 			}
 	}
 
-	void sceneObjectRemove(size_t objectID)
+    void sceneObjectRemove(unsigned int objectID)
 	{
 		if(!historyManager->record(new Log_SceneObjectRemove(objectID,theObjectList[objectID])))
 		{
@@ -881,7 +880,7 @@ public:
 		theObjectList.clear();
 	};
 
-	size_t sceneObjectAdd(size_t objectID,Object *theO)
+    unsigned int sceneObjectAdd(unsigned int objectID,Object *theO)
 	{
 		theObjectList.addI(objectID,theO);
 		historyManager->record(new Log_SceneObjectAdd(objectID));
@@ -895,14 +894,14 @@ public:
 		{
 			clearSelection();
 		}
-		for(size_t i=1;i<theObjectList.size();++i)
+        for(unsigned int i=1;i<theObjectList.size();++i)
 		{
 			struct SelectionResult selectBuffer[512];
 			glSelectBuffer(2048, (GLuint*)selectBuffer);
 			glRenderMode(GL_SELECT);
 			glInitNames();
 			glPushName(0);
-			size_t objectCount=0;
+            unsigned int objectCount=0;
 			while(i<theObjectList.size() && objectCount<512)
 			{
 				if(theObjectList[i])
@@ -918,7 +917,7 @@ public:
 			glFlush();
 			GLuint hits = glRenderMode(GL_RENDER);
 
-			for (size_t e=0; e<hits; e++) 
+            for (unsigned int e=0; e<hits; e++)
 			{
 				struct SelectionResult result=selectBuffer[e];
 				if(result.size==1)
@@ -945,14 +944,14 @@ public:
 glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
 		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
 
-		for(size_t i=1;i<theObject->vertexCount();++i)
+        for(unsigned int i=1;i<theObject->vertexCount();++i)
 		{
 			struct SelectionResult selectBuffer[512];
 			glSelectBuffer(2048, (GLuint*)selectBuffer);
 			glRenderMode(GL_SELECT);
 			glInitNames();
 			glPushName(0);
-			size_t objectCount=0;
+            unsigned int objectCount=0;
 			while(i<theObject->vertexCount() && objectCount<512)
 			{
 				Vertex *theVertex=theObject->vertex(i);
@@ -971,7 +970,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 			GLuint hits = glRenderMode(GL_RENDER);
 
-			for (size_t e=0; e<hits; ++e) 
+            for (unsigned int e=0; e<hits; ++e)
 			{
 				struct SelectionResult result=selectBuffer[e];
 				if(result.size==1)
@@ -1003,14 +1002,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
 		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
 
-		for(size_t i=1;i<theObject->edgeCount();++i)
+        for(unsigned int i=1;i<theObject->edgeCount();++i)
 		{
 			struct SelectionResult selectBuffer[512];
 			glSelectBuffer(2048, (GLuint*)selectBuffer);
 			glRenderMode(GL_SELECT);
 			glInitNames();
 			glPushName(0);
-			size_t objectCount=0;
+            unsigned int objectCount=0;
 			while(i<theObject->edgeCount() && objectCount<512)
 			{
 				Edge *theEdge=theObject->edge(i);
@@ -1032,7 +1031,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	
 			GLuint hits = glRenderMode(GL_RENDER);
 
-			for (size_t e=0; e<hits; ++e) 
+            for (unsigned int e=0; e<hits; ++e)
 			{
 				struct SelectionResult result=selectBuffer[e];
 				if(result.size==1)
@@ -1057,7 +1056,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	{
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				if(theObjectList[selection[i]])
 				{
@@ -1088,14 +1087,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);	
 		glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
 
-		for(size_t i=1;i<theObject->faceCount();++i)
+        for(unsigned int i=1;i<theObject->faceCount();++i)
 		{
 			struct SelectionResult selectBuffer[512];
 			glSelectBuffer(2048, (GLuint*)selectBuffer);
 			glRenderMode(GL_SELECT);
 			glInitNames();
 			glPushName(0);
-			size_t objectCount=0;
+            unsigned int objectCount=0;
 			while(i<theObject->faceCount() && objectCount<512)
 			{
 				Face *theFace=theObject->face(i);
@@ -1103,7 +1102,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				{
 					glLoadName(i);
 					glBegin(GL_POLYGON);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -1125,7 +1124,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glFlush();
 			GLuint hits = glRenderMode(GL_RENDER);
 
-			for (size_t e=0; e<hits; ++e) 
+            for (unsigned int e=0; e<hits; ++e)
 			{
 				struct SelectionResult result=selectBuffer[e];
 				if(result.size==1)
@@ -1175,8 +1174,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	{
 		if(mode==SelectionMode::Object && target==0)
 		{
-			size_t selectionSize=selection.size();
-			for(size_t i=0;i<selectionSize;++i)
+            unsigned int selectionSize=selection.size();
+            for(unsigned int i=0;i<selectionSize;++i)
 			{
 				if(theObjectList[selection[i]])
 				{
@@ -1194,14 +1193,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		}
 	}
 
-	void splitPress(size_t x1,size_t y1,size_t height)
+    void splitPress(unsigned int x1,unsigned int y1,unsigned int height)
 	{
 		Object *theObject=theObjectList[target];
 		if(mode==SelectionMode::Split && theObject->vertexCount()<16777215 && theObject->edgeCount()<16777215)
 		{
-			size_t newSplitVX;
-			size_t newSplitVY;
-			size_t cutVertex=0;
+            unsigned int newSplitVX;
+            unsigned int newSplitVY;
+            unsigned int cutVertex=0;
 			glClearColor(1.0f,1.0f,1.0f,1.0f);
 			glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 			glDisable(GL_DITHER);
@@ -1219,7 +1218,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<theObject->faceCount();++i)
+            for(unsigned int i=1;i<theObject->faceCount();++i)
 			{
 				Face *theFace=theObject->face(i);
 				if(theFace)
@@ -1227,7 +1226,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 					glBegin(GL_POLYGON);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -1247,7 +1246,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
 			glPointSize(5.0f);
 			glBegin(GL_POINTS);
-			for(size_t i=0;i<theObject->vertexCount();++i)
+            for(unsigned int i=0;i<theObject->vertexCount();++i)
 			{
 				Vertex *theVertex=theObject->vertex(i);
 				if(theVertex)
@@ -1260,15 +1259,15 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glEnd();
 			glFlush();
 			glPopMatrix();
-			size_t sw=5;
-			size_t sh=5;
-			size_t length=sw*sh;
+            unsigned int sw=5;
+            unsigned int sh=5;
+            unsigned int length=sw*sh;
 			struct ColorID *pixel=new struct ColorID[length];
 			glReadPixels(x1,height-y1,sw,sh, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
-			for(size_t e=0;e<length;++e)
+            for(unsigned int e=0;e<length;++e)
 			{
 				pixel[e].a=0;
-				size_t result=(*(size_t*)&(pixel[e]));
+                unsigned int result=(*(unsigned int*)&(pixel[e]));
 				if(result<16777215)
 				{
 					if(result<theObject->vertexCount()&&theObject->vertex(result))
@@ -1304,7 +1303,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			}
 			else if(cutVertex==0)
 			{
-				size_t edgeBeCuted=0;
+                unsigned int edgeBeCuted=0;
 				glClearColor(1.0f,1.0f,1.0f,1.0f);
 				glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 				glDisable(GL_DITHER);
@@ -1322,7 +1321,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
 				glEnable(GL_POLYGON_OFFSET_FILL);
 				glPolygonOffset(1.0f,1.0f);
-				for(size_t i=1;i<theObject->faceCount();++i)
+                for(unsigned int i=1;i<theObject->faceCount();++i)
 				{
 					Face *theFace=theObject->face(i);
 					if(theFace)
@@ -1330,7 +1329,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 						struct ColorID colorID=(*(struct ColorID*)&(i));
 						glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 						glBegin(GL_POLYGON);
-						for(size_t e=0;e<theFace->edge.size();++e)
+                        for(unsigned int e=0;e<theFace->edge.size();++e)
 						{
 							if(theFace->edge[e]>0)
 							{
@@ -1349,7 +1348,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				glDisable(GL_POLYGON_OFFSET_FILL);
 				glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
 				glBegin(GL_LINES);
-				for(size_t i=1;i<theObject->edgeCount();++i)
+                for(unsigned int i=1;i<theObject->edgeCount();++i)
 				{
 					Edge *theEdge=theObject->edge(i);
 					if(theEdge)
@@ -1365,15 +1364,15 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				glEnd();
 				glFlush();
 				glPopMatrix();
-				size_t sw=5;
-				size_t sh=5;
-				size_t length=sw*sh;
+                unsigned int sw=5;
+                unsigned int sh=5;
+                unsigned int length=sw*sh;
 				struct ColorID *pixel=new struct ColorID[length];
 				glReadPixels(x1,height-y1,sw,sh, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
-				for(size_t e=0;e<length;++e)
+                for(unsigned int e=0;e<length;++e)
 				{
 					pixel[e].a=0;
-					size_t result=(*(size_t*)&(pixel[e]));
+                    unsigned int result=(*(unsigned int*)&(pixel[e]));
 					if(result<16777215)
 					{
 						if(result<theObject->edgeCount()&&theObject->edge(result))
@@ -1412,8 +1411,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	{
 		if(mode==SelectionMode::Vertex && target && selection.size()>1)
 		{
-			size_t targetV=selection[0];
-			for(size_t i=selection.size()-1;i>0;--i)
+            unsigned int targetV=selection[0];
+            for(unsigned int i=selection.size()-1;i>0;--i)
 			{
 				targetWeldVertex(selection[i],targetV);
 			}
@@ -1439,7 +1438,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		splitVertexID=0;
 	};
 
-	void selectSingleSide(size_t x1,size_t y1,size_t x2,size_t y2,size_t height,bool isAppend=false)
+    void selectSingleSide(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int height,bool isAppend=false)
 	{
 		if(mode==SelectionMode::Object && target==0)
 		{
@@ -1463,7 +1462,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		}
 	};
 
-	void selectSingleSideVertex(size_t x1,size_t y1,size_t x2,size_t y2,size_t height,bool isAppend=false)
+    void selectSingleSideVertex(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int height,bool isAppend=false)
 	{
 		if(!isAppend)
 		{
@@ -1491,7 +1490,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<theObject->faceCount();++i)
+            for(unsigned int i=1;i<theObject->faceCount();++i)
 			{
 				Face *theFace=theObject->face(i);
 				if(theFace)
@@ -1499,7 +1498,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 					glBegin(GL_POLYGON);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -1519,7 +1518,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
 			glPointSize(5.0f);
 			glBegin(GL_POINTS);
-			for(size_t i=0;i<theObject->vertexCount();++i)
+            for(unsigned int i=0;i<theObject->vertexCount();++i)
 			{
 				Vertex *theVertex=theObject->vertex(i);
 				if(theVertex)
@@ -1532,15 +1531,15 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glEnd();
 			glFlush();
 			glPopMatrix();
-			size_t sw=(x2-x1)>5?(x2-x1):5;
-			size_t sh=(y2-y1)>5?(y2-y1):5;
-			size_t length=sw*sh;
+            unsigned int sw=(x2-x1)>5?(x2-x1):5;
+            unsigned int sh=(y2-y1)>5?(y2-y1):5;
+            unsigned int length=sw*sh;
 			struct ColorID *pixel=new struct ColorID[length];
 			glReadPixels(x1,height-y2,sw,sh, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
-			for(size_t e=0;e<length;++e)
+            for(unsigned int e=0;e<length;++e)
 			{
 				pixel[e].a=0;
-				size_t result=(*(size_t*)&(pixel[e]));
+                unsigned int result=(*(unsigned int*)&(pixel[e]));
 				if(result<16777215)
 				{
 					if(result<theObject->vertexCount()&&theObject->vertex(result))
@@ -1571,7 +1570,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		{
 			if(!selection.empty())
 			{
-				for(size_t i=0;i<selection.size();++i)
+                for(unsigned int i=0;i<selection.size();++i)
 				{
 					theObjectList[selection[i]]->subdivide();
 				}
@@ -1591,7 +1590,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		}
 	};
 
-	bool isAxisSelected(CameraMode::__Enum cameraMode,const Vector &eye,const size_t height,const size_t x,const size_t y,float &rx,float &ry,int &cursorMode)
+    bool isAxisSelected(CameraMode::__Enum cameraMode,const Vector &eye,const unsigned int height,const unsigned int x,const unsigned int y,float &rx,float &ry,int &cursorMode)
 	{
 		if(selection.empty())
 		{
@@ -1615,7 +1614,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			if(pixel.r==255 && pixel.g==0 && pixel.b==0)
 			{
 				result=true;
-				cursorMode=1;//x÷·
+				cursorMode=1;//x√ñ√°
 				GLint viewport[4];
 				glGetIntegerv(GL_VIEWPORT, viewport);
 				GLdouble modelMatrix[16];
@@ -1764,7 +1763,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		theAxisCursor->position.x+=step;
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
@@ -1823,21 +1822,21 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
 				{
-					//–˝◊™∑÷≥…¡Ω≤ø£¨µ⁄“ª≤Ω «∏¸–¬Œª÷√£¨µ⁄∂˛≤Ω «∏¸–¬Ω«∂»
-					// ◊œ»“™∏¸–¬Œª÷√
-					//∂‘”⁄√ø∏ˆŒÔÃÂ ◊œ»«Û≥ˆ÷––ƒµ„µΩ–˝◊™÷·µƒ“ª∏ˆœÚ¡ø
+					//√ê√Ω√ó¬™¬∑√ñ¬≥√â√Å¬Ω¬≤¬ø¬£¬¨¬µ√ö√í¬ª¬≤¬Ω√ä√á¬∏√º√ê√Ç√é¬ª√ñ√É¬£¬¨¬µ√ö¬∂√æ¬≤¬Ω√ä√á¬∏√º√ê√Ç¬Ω√á¬∂√à
+					//√ä√ó√è√à√í¬™¬∏√º√ê√Ç√é¬ª√ñ√É
+					//¬∂√î√ì√ö√É¬ø¬∏√∂√é√Ø√å√•√ä√ó√è√à√á√≥¬≥√∂√ñ√ê√ê√Ñ¬µ√£¬µ¬Ω√ê√Ω√ó¬™√ñ√°¬µ√Ñ√í¬ª¬∏√∂√è√≤√Å¬ø
 					//new position;
 					Vector CToR(theObject->center+theObject->position-theAxisCursor->position);
-					//Ω´’‚∏ˆœÚ¡ø—ÿ◊≈–˝◊™÷·Ω¯–––˝◊™
+					//¬Ω¬´√ï√¢¬∏√∂√è√≤√Å¬ø√ë√ò√ó√Ö√ê√Ω√ó¬™√ñ√°¬Ω√∏√ê√ê√ê√Ω√ó¬™
 					CToR=(rotateMatrix)*(CToR);
-					//–˝◊™÷Æ∫Ûªπ‘≠–¬µƒ÷––ƒµ„
+					//√ê√Ω√ó¬™√ñ¬Æ¬∫√≥¬ª¬π√î¬≠√ê√Ç¬µ√Ñ√ñ√ê√ê√Ñ¬µ√£
 					theObject->position=theAxisCursor->position+CToR-theObject->center;
-					//÷Æ∫Û“™–˝◊™ŒÔÃÂµƒΩ«∂»
+					//√ñ¬Æ¬∫√≥√í¬™√ê√Ω√ó¬™√é√Ø√å√•¬µ√Ñ¬Ω√á¬∂√à
 					Quaternion original(theObject->rotation.w,Vector(theObject->rotation));
 					Quaternion add(step,Vector(0,0,1));
 					Quaternion result=add*original;
@@ -1900,21 +1899,21 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
 				{
-					//–˝◊™∑÷≥…¡Ω≤ø£¨µ⁄“ª≤Ω «∏¸–¬Œª÷√£¨µ⁄∂˛≤Ω «∏¸–¬Ω«∂»
-					// ◊œ»“™∏¸–¬Œª÷√
-					//∂‘”⁄√ø∏ˆŒÔÃÂ ◊œ»«Û≥ˆ÷––ƒµ„µΩ–˝◊™÷·µƒ“ª∏ˆœÚ¡ø
+					//√ê√Ω√ó¬™¬∑√ñ¬≥√â√Å¬Ω¬≤¬ø¬£¬¨¬µ√ö√í¬ª¬≤¬Ω√ä√á¬∏√º√ê√Ç√é¬ª√ñ√É¬£¬¨¬µ√ö¬∂√æ¬≤¬Ω√ä√á¬∏√º√ê√Ç¬Ω√á¬∂√à
+					//√ä√ó√è√à√í¬™¬∏√º√ê√Ç√é¬ª√ñ√É
+					//¬∂√î√ì√ö√É¬ø¬∏√∂√é√Ø√å√•√ä√ó√è√à√á√≥¬≥√∂√ñ√ê√ê√Ñ¬µ√£¬µ¬Ω√ê√Ω√ó¬™√ñ√°¬µ√Ñ√í¬ª¬∏√∂√è√≤√Å¬ø
 					//new position;
 					Vector CToR(theObject->center+theObject->position-theAxisCursor->position);
-					//Ω´’‚∏ˆœÚ¡ø—ÿ◊≈–˝◊™÷·Ω¯–––˝◊™
+					//¬Ω¬´√ï√¢¬∏√∂√è√≤√Å¬ø√ë√ò√ó√Ö√ê√Ω√ó¬™√ñ√°¬Ω√∏√ê√ê√ê√Ω√ó¬™
 					CToR=(rotateMatrix)*(CToR);
-					//–˝◊™÷Æ∫Ûªπ‘≠–¬µƒ÷––ƒµ„
+					//√ê√Ω√ó¬™√ñ¬Æ¬∫√≥¬ª¬π√î¬≠√ê√Ç¬µ√Ñ√ñ√ê√ê√Ñ¬µ√£
 					theObject->position=theAxisCursor->position+CToR-theObject->center;
-					//÷Æ∫Û“™–˝◊™ŒÔÃÂµƒΩ«∂»
+					//√ñ¬Æ¬∫√≥√í¬™√ê√Ω√ó¬™√é√Ø√å√•¬µ√Ñ¬Ω√á¬∂√à
 /*					theObject->rotation*=theObject->rotation.w;
 					theObject->rotation.x+=step;
 					float angle=theObject->rotation.length();
@@ -1966,8 +1965,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void rotateVertex(const Vector &center, Matrix &angle)
 	{
-		size_t selectionCount=selection.size();
-		for(size_t i=0;i<selectionCount;++i)
+        unsigned int selectionCount=selection.size();
+        for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Vertex *theVertex=theObjectList[target]->vertex(selection[i]);
 			if(theVertex)
@@ -1981,10 +1980,10 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void rotateEdge(const Vector &center,Matrix &angle)
 	{
-		size_t selectionCount=selection.size();
+        unsigned int selectionCount=selection.size();
 		std::vector<Vertex *> vertexToBeRotate;
 		vertexToBeRotate.reserve(selectionCount*2);
-		for(size_t i=0;i<selectionCount;++i)
+        for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Edge *theEdge=theObjectList[target]->edge(selection[i]);
 			if(theEdge)
@@ -2008,7 +2007,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 		clearIsInCache();
 
-		for(size_t i=0;i<vertexToBeRotate.size();++i)
+        for(unsigned int i=0;i<vertexToBeRotate.size();++i)
 		{
 			Vertex *theVertex=vertexToBeRotate[i];
 			if(theVertex)
@@ -2022,14 +2021,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void rotateFace(const Vector &center,Matrix &angle)
 	{
-		size_t selectionCount=selection.size();
+        unsigned int selectionCount=selection.size();
 		std::vector<Vertex *> vertexToBeRotate;
 		vertexToBeRotate.reserve(selectionCount*2);
-		for(size_t i=0;i<selectionCount;++i)
+        for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Face *theFace=theObjectList[target]->face(selection[i]);
-			size_t edgeCount=theFace->edge.size();
-			for(size_t e=0;e<edgeCount;++e)
+            unsigned int edgeCount=theFace->edge.size();
+            for(unsigned int e=0;e<edgeCount;++e)
 			{
 				if(theFace->edge[e]>0)
 				{
@@ -2058,7 +2057,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 		clearIsInCache();
 
-		for(size_t i=0;i<vertexToBeRotate.size();++i)
+        for(unsigned int i=0;i<vertexToBeRotate.size();++i)
 		{
 			Vertex *theVertex=vertexToBeRotate[i];
 			if(theVertex)
@@ -2072,8 +2071,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void scaleVertex(Vector &center,Matrix &forward,Matrix &backward,float scale,int smode)
 	{
-		size_t selectionCount=selection.size();
-		for(size_t i=0;i<selectionCount;++i)
+        unsigned int selectionCount=selection.size();
+        for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Vertex *theVertex=theObjectList[target]->vertex(selection[i]);
 			if(theVertex)
@@ -2107,10 +2106,10 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void scaleEdge(Vector &center,Matrix &forward,Matrix &backward,float scale,int smode)
 	{
-		size_t selectionCount=selection.size();
+        unsigned int selectionCount=selection.size();
 		std::vector<Vertex *> vertexToBeScale;
 		vertexToBeScale.reserve(selectionCount*2);
-		for(size_t i=0;i<selectionCount;++i)
+        for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Edge *theEdge=theObjectList[target]->edge(selection[i]);
 			if(theEdge)
@@ -2134,8 +2133,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 		clearIsInCache();
 
-		size_t vertexCount=vertexToBeScale.size();
-		for(size_t i=0;i<vertexCount;++i)
+        unsigned int vertexCount=vertexToBeScale.size();
+        for(unsigned int i=0;i<vertexCount;++i)
 		{
 			Vertex *theVertex=vertexToBeScale[i];
 			if(theVertex)
@@ -2169,14 +2168,14 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void scaleFace(Vector &center,Matrix &forward,Matrix &backward,float scale,int smode)
 	{
-		size_t selectionCount=selection.size();
+        unsigned int selectionCount=selection.size();
 		std::vector<Vertex *> vertexToBeScale;
 		vertexToBeScale.reserve(selectionCount*2);
-		for(size_t i=0;i<selectionCount;++i)
+        for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Face *theFace=theObjectList[target]->face(selection[i]);
-			size_t edgeCount=theFace->edge.size();
-			for(size_t e=0;e<edgeCount;++e)
+            unsigned int edgeCount=theFace->edge.size();
+            for(unsigned int e=0;e<edgeCount;++e)
 			{
 				if(theFace->edge[e]>0)
 				{
@@ -2205,8 +2204,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 		clearIsInCache();
 
-		size_t vertexCount=vertexToBeScale.size();
-		for(size_t i=0;i<vertexCount;++i)
+        unsigned int vertexCount=vertexToBeScale.size();
+        for(unsigned int i=0;i<vertexCount;++i)
 		{
 			Vertex *theVertex=vertexToBeScale[i];
 			if(theVertex)
@@ -2253,21 +2252,21 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
 				{
-					//–˝◊™∑÷≥…¡Ω≤ø£¨µ⁄“ª≤Ω «∏¸–¬Œª÷√£¨µ⁄∂˛≤Ω «∏¸–¬Ω«∂»
-					// ◊œ»“™∏¸–¬Œª÷√
-					//∂‘”⁄√ø∏ˆŒÔÃÂ ◊œ»«Û≥ˆ÷––ƒµ„µΩ–˝◊™÷·µƒ“ª∏ˆœÚ¡ø
+					//√ê√Ω√ó¬™¬∑√ñ¬≥√â√Å¬Ω¬≤¬ø¬£¬¨¬µ√ö√í¬ª¬≤¬Ω√ä√á¬∏√º√ê√Ç√é¬ª√ñ√É¬£¬¨¬µ√ö¬∂√æ¬≤¬Ω√ä√á¬∏√º√ê√Ç¬Ω√á¬∂√à
+					//√ä√ó√è√à√í¬™¬∏√º√ê√Ç√é¬ª√ñ√É
+					//¬∂√î√ì√ö√É¬ø¬∏√∂√é√Ø√å√•√ä√ó√è√à√á√≥¬≥√∂√ñ√ê√ê√Ñ¬µ√£¬µ¬Ω√ê√Ω√ó¬™√ñ√°¬µ√Ñ√í¬ª¬∏√∂√è√≤√Å¬ø
 					//new position;
 					Vector CToR(theObject->center+theObject->position-theAxisCursor->position);
-					//Ω´’‚∏ˆœÚ¡ø—ÿ◊≈–˝◊™÷·Ω¯–––˝◊™
+					//¬Ω¬´√ï√¢¬∏√∂√è√≤√Å¬ø√ë√ò√ó√Ö√ê√Ω√ó¬™√ñ√°¬Ω√∏√ê√ê√ê√Ω√ó¬™
 					CToR=(rotateMatrix)*(CToR);
-					//–˝◊™÷Æ∫Ûªπ‘≠–¬µƒ÷––ƒµ„
+					//√ê√Ω√ó¬™√ñ¬Æ¬∫√≥¬ª¬π√î¬≠√ê√Ç¬µ√Ñ√ñ√ê√ê√Ñ¬µ√£
 					theObject->position=theAxisCursor->position+CToR-theObject->center;
-					//÷Æ∫Û“™–˝◊™ŒÔÃÂµƒΩ«∂»
+					//√ñ¬Æ¬∫√≥√í¬™√ê√Ω√ó¬™√é√Ø√å√•¬µ√Ñ¬Ω√á¬∂√à
 				/*	theObject->rotation*=theObject->rotation.w;
 					theObject->rotation.y+=step;
 					float angle=theObject->rotation.length();
@@ -2321,7 +2320,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		theAxisCursor->position.y+=step;
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
@@ -2370,7 +2369,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		theAxisCursor->position.z+=step;
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
@@ -2419,7 +2418,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	{
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
@@ -2475,7 +2474,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	{
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
@@ -2534,7 +2533,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	{
 		if(mode==SelectionMode::Object && target==0)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				Object *theObject=theObjectList[selection[i]];
 				if(theObject)
@@ -2624,7 +2623,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			Vector offset(horizontal*(float)x/projUnitX.length()+vertical*(float)y/projUnitY.length());
 			if(mode==SelectionMode::Object)
 			{
-				for(size_t i=0;i<selection.size();++i)
+                for(unsigned int i=0;i<selection.size();++i)
 				{
 					theObjectList[selection[i]]->position-=offset;
 				}
@@ -2688,7 +2687,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		GLdouble winz;
 		if(cursorMode==1)
 		{
-			//x÷·
+			//x√ñ√°
 			if(theAxisCursor->mode==AxisCursorMode::MoveAxis)
 			{
 				gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
@@ -2706,7 +2705,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				winy=(GLdouble)viewport[3]-winy;
 				Vector projUnit((float)(winx-ox),(float)(winy-oy),0.0f);
 				axisXRotate(step/projUnit.length());
-				//’‚¿Ô–ﬁ∏ƒ–¬œÚ¡ø
+				//√ï√¢√Ä√Ø√ê√û¬∏√Ñ√ê√Ç√è√≤√Å¬ø
 				rx=(float)(winx-ox);
 				ry=(float)(winy-oy);
 			}
@@ -2740,7 +2739,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				winy=(GLdouble)viewport[3]-winy;
 				Vector projUnit((float)(winx-ox),(float)(winy-oy),0.0f);
 				axisYRotate(step/projUnit.length());
-				//’‚¿Ô–ﬁ∏ƒ–¬œÚ¡ø
+				//√ï√¢√Ä√Ø√ê√û¬∏√Ñ√ê√Ç√è√≤√Å¬ø
 				rx=(float)(winx-ox);
 				ry=(float)(winy-oy);
 			}
@@ -2774,7 +2773,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				winy=(GLdouble)viewport[3]-winy;
 				Vector projUnit((float)(winx-ox),(float)(winy-oy),0.0f);
 		axisZRotate(step/projUnit.length());
-				//’‚¿Ô–ﬁ∏ƒ–¬œÚ¡ø
+				//√ï√¢√Ä√Ø√ê√û¬∏√Ñ√ê√Ç√è√≤√Å¬ø
 				rx=(float)(winx-ox);
 				ry=(float)(winy-oy);
 			}
@@ -2801,7 +2800,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		{
 			if(!selection.empty())
 			{
-				for(size_t i=0;i<selection.size();++i)
+                for(unsigned int i=0;i<selection.size();++i)
 				{
 					theObjectList[selection[i]]->unSubdivide();
 				}
@@ -2822,7 +2821,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		}
 	}
 
-	void selectSingleSideEdge(size_t x1,size_t y1,size_t x2,size_t y2,size_t height,bool isAppend=false)
+    void selectSingleSideEdge(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int height,bool isAppend=false)
 	{
 		if(!isAppend)
 		{
@@ -2850,7 +2849,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.0f,1.0f);
-			for(size_t i=1;i<theObject->faceCount();++i)
+            for(unsigned int i=1;i<theObject->faceCount();++i)
 			{
 				Face *theFace=theObject->face(i);
 				if(theFace)
@@ -2858,7 +2857,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 					glBegin(GL_POLYGON);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -2877,7 +2876,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glDisable(GL_POLYGON_OFFSET_FILL);
 			glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
 			glBegin(GL_LINES);
-			for(size_t i=1;i<theObject->edgeCount();++i)
+            for(unsigned int i=1;i<theObject->edgeCount();++i)
 			{
 				Edge *theEdge=theObject->edge(i);
 				if(theEdge)
@@ -2893,15 +2892,15 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glEnd();
 			glFlush();
 			glPopMatrix();
-			size_t sw=(x2-x1)>5?(x2-x1):5;
-			size_t sh=(y2-y1)>5?(y2-y1):5;
-			size_t length=sw*sh;
+            unsigned int sw=(x2-x1)>5?(x2-x1):5;
+            unsigned int sh=(y2-y1)>5?(y2-y1):5;
+            unsigned int length=sw*sh;
 			struct ColorID *pixel=new struct ColorID[length];
 			glReadPixels(x1,height-y2,sw,sh, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
-			for(size_t e=0;e<length;++e)
+            for(unsigned int e=0;e<length;++e)
 			{
 				pixel[e].a=0;
-				size_t result=(*(size_t*)&(pixel[e]));
+                unsigned int result=(*(unsigned int*)&(pixel[e]));
 				if(result<16777215)
 				{
 					if(result<theObject->edgeCount()&&theObject->edge(result))
@@ -2926,7 +2925,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		}
 	};
 
-	void selectSingleSideFace(size_t x1,size_t y1,size_t x2,size_t y2,size_t height,bool isAppend=false)
+    void selectSingleSideFace(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int height,bool isAppend=false)
 	{
 		if(!isAppend)
 		{
@@ -2950,7 +2949,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
             glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
             glTranslatef(-theObject->center.x,-theObject->center.y,-theObject->center.z);
 
-			for(size_t i=1;i<theObject->faceCount();++i)
+            for(unsigned int i=1;i<theObject->faceCount();++i)
 			{
 				Face *theFace=theObject->face(i);
 				if(theFace)
@@ -2958,7 +2957,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 					struct ColorID colorID=(*(struct ColorID*)&(i));
 					glColor4ub(colorID.r, colorID.g,colorID.b,colorID.a);
 					glBegin(GL_POLYGON);
-					for(size_t e=0;e<theFace->edge.size();++e)
+                    for(unsigned int e=0;e<theFace->edge.size();++e)
 					{
 						if(theFace->edge[e]>0)
 						{
@@ -2976,22 +2975,26 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			}
 			glFlush();
 			glPopMatrix();
-			size_t sw=(x2-x1)>5?(x2-x1):5;
-			size_t sh=(y2-y1)>5?(y2-y1):5;
-			size_t length=sw*sh;
+            unsigned int sw=(x2-x1)>5?(x2-x1):5;
+            unsigned int sh=(y2-y1)>5?(y2-y1):5;
+            unsigned int length=sw*sh;
 			struct ColorID *pixel=new struct ColorID[length];
 			glReadPixels(x1,height-y2,sw,sh, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
-			for(size_t e=0;e<length;e+=2)
+            qDebug() << glGetError();
+            for(unsigned int e=0;e<length;e+=2)
 			{
 				pixel[e].a=0;
-				size_t result=(*(size_t*)&(pixel[e]));
+                unsigned int result=(*(unsigned int*)&(pixel[e]));
 				if(result<16777215)
 				{
 					if(result<theObject->faceCount()&&theObject->face(result))
 					{
 						selectionPush(theObject->face(result));
 					}
+
+
 				}
+                qDebug() << "result: " << result;
 			}
 			delete pixel;
 			glEnable(GL_BLEND);
@@ -3009,7 +3012,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		}
     }
 
-	void selectSingleSideObject(size_t x1,size_t y1,size_t x2,size_t y2,size_t height,bool isAppend=false)
+    void selectSingleSideObject(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int height,bool isAppend=false)
 	{
         qDebug() << "single side object select";
 		if(!isAppend)
@@ -3025,7 +3028,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			glDisable(GL_TEXTURE_2D);
 			glDisable(GL_ALPHA_TEST);
 			glDisable(GL_BLEND);
-			for(size_t i=1;i<theObjectList.size();++i)
+            for(unsigned int i=1;i<theObjectList.size();++i)
 			{
 				if(theObjectList[i])
 				{
@@ -3036,19 +3039,19 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				}
 			}
 			glFlush();
-			size_t sw=(x2-x1)>5?(x2-x1):5;
-			size_t sh=(y2-y1)>5?(y2-y1):5;
-			size_t length=sw*sh;
+            unsigned int sw=(x2-x1)>5?(x2-x1):5;
+            unsigned int sh=(y2-y1)>5?(y2-y1):5;
+            unsigned int length=sw*sh;
 			struct ColorID *pixel=new struct ColorID[length];
 			glReadPixels(x1,height-y2,sw,sh, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
          //   QImage image((uchar*) pixel, sw, sh,QImage::Format_RGBA8888);
          //   image.save("haha.png");
 
-			for(size_t e=0;e<length;e+=2)
+            for(unsigned int e=0;e<length;e+=2)
 			{
 				pixel[e].a=0;
-				size_t result=(*(size_t*)&(pixel[e]));
+                unsigned int result=(*(unsigned int*)&(pixel[e]));
 				if(result<16777215)
 				{
 					if(result<theObjectList.size()&&theObjectList[result])
@@ -3079,7 +3082,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			else
 			{
 				target=selection[0];
-				clearSelection();//“ÚŒ™ «∫Õ—°‘Ò¿‡–Õœ‡πÿµƒ£¨º«◊°“ª∂®“™œ»«Âø’£¨∑Ò‘Ú»Áπ˚¿‡–Õ∏ƒ±‰£¨«Âø’æÕ≤ª’˝≥£¡À
+				clearSelection();//√í√≤√é¬™√ä√á¬∫√ç√ë¬°√î√±√Ä√ √ê√ç√è√ ¬π√ò¬µ√Ñ¬£¬¨¬º√á√ó¬°√í¬ª¬∂¬®√í¬™√è√à√á√•¬ø√ï¬£¬¨¬∑√±√î√≤√à√ß¬π√ª√Ä√ √ê√ç¬∏√Ñ¬±√§¬£¬¨√á√•¬ø√ï¬æ√ç¬≤¬ª√ï√Ω¬≥¬£√Å√ã
 				mode=theMode;
 			}
 		}
@@ -3108,7 +3111,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 
 	void unhideAll()
 	{
-		for(size_t i=1;i<theObjectList.size();++i)
+        for(unsigned int i=1;i<theObjectList.size();++i)
 		{
 			if(theObjectList[i])
 			{
@@ -3122,7 +3125,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		if(mode==SelectionMode::Object)
 		{
 			clearSelection();
-			for(size_t i=1;i<theObjectList.size();++i)
+            for(unsigned int i=1;i<theObjectList.size();++i)
 			{
 				if(theObjectList[i])
 				{
@@ -3136,7 +3139,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	{
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=1;i<theObjectList.size();++i)
+            for(unsigned int i=1;i<theObjectList.size();++i)
 			{
 				if(theObjectList[i] && !(theObjectList[i]->isSelected))
 				{
@@ -3146,7 +3149,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		}
 		else if(target>0)
 		{
-			for(size_t i=1;i<theObjectList.size();++i)
+            for(unsigned int i=1;i<theObjectList.size();++i)
 			{
 				if(theObjectList[i])
 				{
@@ -3165,7 +3168,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	{
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=0;i<selection.size();++i)
+            for(unsigned int i=0;i<selection.size();++i)
 			{
 				if(theObjectList[selection[i]])
 				{
@@ -3187,7 +3190,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 	{
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=1;i<theObjectList.size();++i)
+            for(unsigned int i=1;i<theObjectList.size();++i)
 			{
 				if(theObjectList[i])
 				{
@@ -3207,7 +3210,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		}
 		else
 		{
-			for(size_t i=1;i<theObjectList.size();++i)
+            for(unsigned int i=1;i<theObjectList.size();++i)
 			{
 				if(theObjectList[i])
 				{
@@ -3320,8 +3323,8 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			else
 			{
 				Vector *center=new Vector();
-				size_t selectionSize=selection.size();
-				for(size_t i=0;i<selectionSize;++i)
+                unsigned int selectionSize=selection.size();
+                for(unsigned int i=0;i<selectionSize;++i)
 				{
 					Object *theObject=theObjectList[selection[i]];
 					if(theObject)
@@ -3343,22 +3346,22 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			else
 			{
 				Vector *center=new Vector();
-				size_t selectionSize=selection.size();
+                unsigned int selectionSize=selection.size();
 				Object *theObject=theObjectList[target];
-				for(size_t i=0;i<selectionSize;++i)
+                for(unsigned int i=0;i<selectionSize;++i)
 				{
 					Vertex *theVertex=theObject->vertex(selection[i]);
 					if(theVertex)
                         (*center)+=theVertex->m_position;
 				}
 				(*center)/=(float)selectionSize;
-				//’‚¿Ô–˝◊™
+				//√ï√¢√Ä√Ø√ê√Ω√ó¬™
 				Vector rotateAxis=Vector(theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
 				Quaternion rotateQuaternion(theObject->rotation.w,rotateAxis);
 				Matrix rotateMatrix;
 				rotateQuaternion.getMatrix(rotateMatrix);
 				*center=rotateMatrix*(*center-theObject->center);
-				//’‚¿Ô∆Ω“∆
+				//√ï√¢√Ä√Ø√Ü¬Ω√í√Ü
                 theAxisCursor->position=*center+theObject->position+theObject->center;
 				delete center;
 				theAxisCursor->mode=currentACMode;
@@ -3374,9 +3377,9 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			else
 			{
 				Vector *center=new Vector();
-				size_t selectionSize=selection.size();
+                unsigned int selectionSize=selection.size();
 				Object *theObject=theObjectList[target];
-				for(size_t i=0;i<selectionSize;++i)
+                for(unsigned int i=0;i<selectionSize;++i)
 				{
 					Edge *theEdge=theObject->edge(selection[i]);
 					if(theEdge)
@@ -3397,13 +3400,13 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				}
 				(*center)/=(float)isInCache.size();
 				clearIsInCache();
-				//’‚¿Ô–˝◊™
+				//√ï√¢√Ä√Ø√ê√Ω√ó¬™
 				Vector rotateAxis=Vector(theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
 				Quaternion rotateQuaternion(theObject->rotation.w,rotateAxis);
 				Matrix rotateMatrix;
 				rotateQuaternion.getMatrix(rotateMatrix);
 				*center=rotateMatrix*(*center-theObject->center);
-				//’‚¿Ô∆Ω“∆
+				//√ï√¢√Ä√Ø√Ü¬Ω√í√Ü
 				theAxisCursor->position=*center+theObject->position+theObject->center;
 				delete center;
 				theAxisCursor->mode=currentACMode;
@@ -3420,15 +3423,15 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 			else
 			{
 				Vector *center=new Vector();
-				size_t selectionSize=selection.size();
+                unsigned int selectionSize=selection.size();
 				Object *theObject=theObjectList[target];
-				for(size_t i=0;i<selectionSize;++i)
+                for(unsigned int i=0;i<selectionSize;++i)
 				{
 					Face *theFace=theObject->face(selection[i]);
 					if(theFace)
 					{
-						size_t edgeCount=theFace->edge.size();
-						for(size_t e=0;e<edgeCount;++e)
+                        unsigned int edgeCount=theFace->edge.size();
+                        for(unsigned int e=0;e<edgeCount;++e)
 						{
 							if(theFace->edge[e]>0)
 							{
@@ -3455,13 +3458,13 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				}
 				(*center)/=(float)isInCache.size();
 				clearIsInCache();
-				//’‚¿Ô–˝◊™
+				//√ï√¢√Ä√Ø√ê√Ω√ó¬™
 				Vector rotateAxis=Vector(theObject->rotation.x,theObject->rotation.y,theObject->rotation.z);
 				Quaternion rotateQuaternion(theObject->rotation.w,rotateAxis);
 				Matrix rotateMatrix;
 				rotateQuaternion.getMatrix(rotateMatrix);
 				*center=rotateMatrix*(*center-theObject->center);
-				//’‚¿Ô∆Ω“∆
+				//√ï√¢√Ä√Ø√Ü¬Ω√í√Ü
 				theAxisCursor->position=*center+theObject->position+theObject->center;
 				delete center;
 				theAxisCursor->mode=currentACMode;
@@ -3493,7 +3496,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 				glColor3ub(255,0,0);
 				glPointSize(5.0f);
 				glBegin(GL_POINTS);
-				for(size_t i=0;i<selection.size();++i)
+                for(unsigned int i=0;i<selection.size();++i)
 				{
 					Vertex *theVertex=theObject->vertex(selection[i]);
 					if(theVertex)
@@ -3530,7 +3533,7 @@ glScalef(theObject->scale.x,theObject->scale.y,theObject->scale.z);
 		glDisable(GL_LIGHTING);
 				glColor3ub(255,252,0);
 				glBegin(GL_LINES);
-				for(size_t i=0;i<selection.size();++i)
+                for(unsigned int i=0;i<selection.size();++i)
 				{
 					Edge *theEdge=theObject->edge(selection[i]);
 					if(theEdge)
@@ -3573,13 +3576,13 @@ void drawSelectedFace()
 				glPolygonOffset(1.0f,1.0f);
 				//glEnable(GL_ALPHA_TEST);
 				glColor3ub(48,92,235);
-				for(size_t i=0;i<selection.size();++i)
+                for(unsigned int i=0;i<selection.size();++i)
 				{
 					Face *theFace=theObject->face(selection[i]);
 					if(theFace)
 					{
 						glBegin(GL_POLYGON);
-						for(size_t e=0;e<theFace->edge.size();++e)
+                        for(unsigned int e=0;e<theFace->edge.size();++e)
 						{
 							if(theFace->edge[e]>0)
 							{
@@ -3618,7 +3621,7 @@ void loadFromPWB(const char *fileName)
 	FILE *fp=fopen(fileName,"rb");
 	struct SceneInfo sceneInfo;
 	fread(&sceneInfo,sizeof(sceneInfo),1,fp);
-	for(size_t i=1;i<sceneInfo.objectCount;++i)
+    for(unsigned int i=1;i<sceneInfo.objectCount;++i)
 	{
 		struct ObjectInfo objectInfo;
 		fread(&objectInfo,sizeof(objectInfo),1,fp);
@@ -3655,7 +3658,7 @@ void loadFromPWB(const char *fileName)
 			theObject->mat_shininess[2]=objectInfo.mat_shininess[2];
 			theObject->mat_shininess[3]=objectInfo.mat_shininess[3];
 
-			for(size_t e=1;e<objectInfo.vertexCount;++e)
+            for(unsigned int e=1;e<objectInfo.vertexCount;++e)
 			{
                 Vertex::VertexInfo vertexInfo;
 				fread(&vertexInfo,sizeof(vertexInfo),1,fp);
@@ -3665,10 +3668,10 @@ void loadFromPWB(const char *fileName)
 					theVertex->index=vertexInfo.index;
                     theVertex->m_position.vec(vertexInfo.x,vertexInfo.y,vertexInfo.z);
                     theVertex->m_normal.vec(vertexInfo.nx,vertexInfo.ny,vertexInfo.nz);
-					for(size_t h=0;h<vertexInfo.adjacentCount;++h)
+                    for(unsigned int h=0;h<vertexInfo.adjacentCount;++h)
 					{
-						size_t theAdj;
-						fread(&theAdj,sizeof(size_t),1,fp);
+                        unsigned int theAdj;
+                        fread(&theAdj,sizeof(unsigned int),1,fp);
                         theVertex->m_adjacentEdgeList.push_back(theAdj);
 					}
 					theObject->directPushVertex(theVertex);
@@ -3679,7 +3682,7 @@ void loadFromPWB(const char *fileName)
 				}
 			}
 
-			for(size_t e=1;e<objectInfo.edgeCount;++e)
+            for(unsigned int e=1;e<objectInfo.edgeCount;++e)
 			{
 				struct EdgeInfo edgeInfo;
 				fread(&edgeInfo,sizeof(edgeInfo),1,fp);
@@ -3697,7 +3700,7 @@ void loadFromPWB(const char *fileName)
 				}
 			}
 
-			for(size_t e=1;e<objectInfo.faceCount;++e)
+            for(unsigned int e=1;e<objectInfo.faceCount;++e)
 			{
 				struct FaceInfo faceInfo;
 				fread(&faceInfo,sizeof(faceInfo),1,fp);
@@ -3706,7 +3709,7 @@ void loadFromPWB(const char *fileName)
 					Face *theFace=new Face();					
 					theFace->index=faceInfo.index;
 					theFace->normal.vec(faceInfo.nx,faceInfo.ny,faceInfo.nz);
-					for(size_t h=0;h<faceInfo.edgeCount;++h)
+                    for(unsigned int h=0;h<faceInfo.edgeCount;++h)
 					{
 						int theE;
 						fread(&theE,sizeof(int),1,fp);
@@ -3733,9 +3736,9 @@ void invertSelection()
 {
 	if(mode==SelectionMode::Object)
 	{
-		std::vector<size_t> objectToBeSelected;
+        std::vector<unsigned int> objectToBeSelected;
 		objectToBeSelected.reserve(100);
-		for(size_t i=1;i<theObjectList.size();++i)
+        for(unsigned int i=1;i<theObjectList.size();++i)
 		{
 			if(theObjectList[i] && !(theObjectList[i]->isSelected))
 			{
@@ -3745,7 +3748,7 @@ void invertSelection()
 
 		clearSelection();
 
-		for(size_t i=0;i<objectToBeSelected.size();++i)
+        for(unsigned int i=0;i<objectToBeSelected.size();++i)
 		{
 			selectionPush(theObjectList[objectToBeSelected[i]]);
 		}
@@ -3757,13 +3760,13 @@ void invertSelection()
 void saveToFileOBJ(const char *fileName)
 {
 	FILE *fp=fopen(fileName,"w");
-	size_t vertexBase=0;
-	for(size_t h=1;h<theObjectList.size();++h)
+    unsigned int vertexBase=0;
+    for(unsigned int h=1;h<theObjectList.size();++h)
 	{
 		Object *theObject=theObjectList[h];
 		if(theObject)
 		{
-			size_t i=1;
+            unsigned int i=1;
 			for(i=1;i<theObject->vertexCount();i++)
 			{
 				if(theObject->vertex(i)==NULL)
@@ -3776,15 +3779,15 @@ void saveToFileOBJ(const char *fileName)
                     fprintf(fp,"v %f %f %f\n",theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z);
 				}
 			}
-			size_t tempBase=i-1;
+            unsigned int tempBase=i-1;
 			fprintf(fp,"g box01\n");
-			for(size_t i=1;i<theObject->faceCount();i++)
+            for(unsigned int i=1;i<theObject->faceCount();i++)
 			{
 				Face *theFace=theObject->face(i);
 				if(theFace)
 				{
 					fprintf(fp,"f ");
-					for(size_t e=0;e<theFace->edge.size();e++)
+                    for(unsigned int e=0;e<theFace->edge.size();e++)
 					{
 						if(theFace->edge[e]<0)
 						{
@@ -3816,21 +3819,21 @@ void saveToFilePWB(const char *fileName)
 	sceneInfo.version=1;
 	sceneInfo.objectCount=theObjectList.size();
 	fwrite(&sceneInfo,sizeof(sceneInfo),1,fp);
-	for(size_t i=1;i<sceneInfo.objectCount;++i)
+    for(unsigned int i=1;i<sceneInfo.objectCount;++i)
 	{
 		Object *theObject=theObjectList[i];
 		if(theObject)
 		{
 			struct ObjectInfo objectInfo=theObjectList[i]->getObjectInfo();
 			fwrite(&objectInfo,sizeof(objectInfo),1,fp);
-			for(size_t e=1;e<objectInfo.vertexCount;++e)
+            for(unsigned int e=1;e<objectInfo.vertexCount;++e)
 			{
 				Vertex *theVertex=theObject->vertex(e);
 				if(theVertex)
 				{
                     Vertex::VertexInfo vertexInfo=theVertex->getVertexInfo();
 					fwrite(&vertexInfo,sizeof(vertexInfo),1,fp);
-                    fwrite(&(theVertex->m_adjacentEdgeList[0]),sizeof(size_t),vertexInfo.adjacentCount,fp);
+                    fwrite(&(theVertex->m_adjacentEdgeList[0]),sizeof(unsigned int),vertexInfo.adjacentCount,fp);
 				}
 				else
 				{
@@ -3841,7 +3844,7 @@ void saveToFilePWB(const char *fileName)
 				}
 			}
 
-			for(size_t e=1;e<objectInfo.edgeCount;++e)
+            for(unsigned int e=1;e<objectInfo.edgeCount;++e)
 			{
 				Edge *theEdge=theObject->edge(e);
 				if(theEdge)
@@ -3857,14 +3860,14 @@ void saveToFilePWB(const char *fileName)
 				}
 			}
 
-			for(size_t e=1;e<objectInfo.faceCount;++e)
+            for(unsigned int e=1;e<objectInfo.faceCount;++e)
 			{
 				Face *theFace=theObject->face(e);
 				if(theFace)
 				{
 					struct FaceInfo faceInfo=theFace->getFaceInfo();
 					fwrite(&faceInfo,sizeof(faceInfo),1,fp);
-					fwrite(&(theFace->edge[0]),sizeof(size_t),faceInfo.edgeCount,fp);
+                    fwrite(&(theFace->edge[0]),sizeof(unsigned int),faceInfo.edgeCount,fp);
 				}
 				else
 				{

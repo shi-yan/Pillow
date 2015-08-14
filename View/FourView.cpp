@@ -160,13 +160,13 @@ FourView::~FourView(void)
     delete m_camera[3];
 }
 
-CameraMode::__Enum FourView::setView(size_t index)
+CameraMode::__Enum FourView::setView(unsigned int index)
 {
     m_camera[index]->setCamera();
     return m_camera[index]->m_type._value;
 }
 
-bool FourView::onAxisPress(size_t x,size_t y)
+bool FourView::onAxisPress(unsigned int x,unsigned int y)
 {
     //if((selected==0 && x<splitX)||(selected==1 && x>splitX)){
     m_camera[m_selected]->setCameraForSelectionS();
@@ -182,7 +182,7 @@ bool FourView::onAxisPress(size_t x,size_t y)
     return result;
 }
 
-bool FourView::onAxisDrag(size_t x,size_t y)
+bool FourView::onAxisDrag(unsigned int x,unsigned int y)
 {
     if(m_isAxisMode)
     {
@@ -216,7 +216,7 @@ bool FourView::onAxisRelease()
     }
 }
 
-bool FourView::onCtrlDrag(size_t x,size_t y)
+bool FourView::onCtrlDrag(unsigned int x,unsigned int y)
 {
     if(m_isCtrlMode)
     {
@@ -234,7 +234,7 @@ bool FourView::onCtrlDrag(size_t x,size_t y)
     }
 }
 
-bool FourView::onCtrlPress(size_t x,size_t y)
+bool FourView::onCtrlPress(unsigned int x,unsigned int y)
 {
     m_isCtrlMode=true;
     m_ctrlSX=x;
@@ -257,7 +257,7 @@ bool FourView::onCtrlRelease()
     }
 }
 
-bool FourView::onPanPress(size_t x,size_t y)
+bool FourView::onPanPress(unsigned int x,unsigned int y)
 {
     if(m_selected==0 && x<m_splitX && y<m_splitY)
     {
@@ -278,13 +278,13 @@ bool FourView::onPanPress(size_t x,size_t y)
     return true;
 }
 
-bool FourView::onPanDrag(size_t x,size_t y)
+bool FourView::onPanDrag(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->pan(x,y);
     return true;
 }
 
-bool FourView::onSelectionPress(size_t x,size_t y)
+bool FourView::onSelectionPress(unsigned int x,unsigned int y)
 {
     m_isSelectionMode=true;
     m_selectionSX=x;
@@ -294,7 +294,7 @@ bool FourView::onSelectionPress(size_t x,size_t y)
     return true;
 }
 
-bool FourView::onSelectionDrag(size_t x,size_t y)
+bool FourView::onSelectionDrag(unsigned int x,unsigned int y)
 {
     if(m_isSelectionMode)
     {
@@ -312,10 +312,10 @@ bool FourView::onSingleSideSelectionRelease(bool isAppend)
 {
     if(m_isSelectionMode)
     {
-        size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
-        size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
-        size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
-        size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+        unsigned int x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+        unsigned int y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+        unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+        unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionS();
         theScene->selectSingleSide(x1,y1,x2,y2,m_height,isAppend);
         m_isSelectionMode=false;
@@ -335,10 +335,10 @@ bool FourView::onDualSideSelectionRelease(bool isAppend)
 {
     if(m_isSelectionMode)
     {
-        size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
-        size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
-        size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
-        size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+        unsigned int x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+        unsigned int y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+        unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+        unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionD(x1,y1,x2,y2,m_height);
         theScene->selectDualSide(isAppend);
         m_isSelectionMode=false;
@@ -354,7 +354,7 @@ bool FourView::onDualSideSelectionRelease(bool isAppend)
     }
 }
 
-void FourView::onWheel(float step,size_t x,size_t y)
+void FourView::onWheel(float step,unsigned int x,unsigned int y)
 {
     if(m_selected==0 && x<m_splitX && y<m_splitY)
     {
@@ -374,13 +374,13 @@ void FourView::onWheel(float step,size_t x,size_t y)
     }
 }
 
-bool FourView::onRotateDrag(size_t x,size_t y)
+bool FourView::onRotateDrag(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->rotate(x,y);
     return true;
 }
 
-bool FourView::onRotatePress(size_t x,size_t y)
+bool FourView::onRotatePress(unsigned int x,unsigned int y)
 {
     if(m_selected==0 && x<m_splitX && y<m_splitY)
     {
@@ -413,7 +413,7 @@ bool FourView::onPanRelease()
     return true;
 }
 
-void FourView::update(size_t theSplitX,size_t theSplitY,size_t theWidth,size_t theHeight)
+void FourView::update(unsigned int theSplitX,unsigned int theSplitY,unsigned int theWidth,unsigned int theHeight)
 {
     m_splitX=theSplitX;
     m_splitY=theSplitY;

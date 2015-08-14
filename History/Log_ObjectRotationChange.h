@@ -9,7 +9,7 @@ public:
 	const float y;
 	const float z;
 public:
-	Log_ObjectRotationChange(size_t theTarget,float theX,float theY,float theZ);
+    Log_ObjectRotationChange(unsigned int theTarget,float theX,float theY,float theZ);
 	std::string toString()
 	{
 		char temp[256];

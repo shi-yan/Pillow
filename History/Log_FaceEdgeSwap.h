@@ -5,12 +5,12 @@ class Log_FaceEdgeSwap :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 public:
-	const size_t oIndex;
-	const size_t tIndex;
+    const unsigned int oIndex;
+    const unsigned int tIndex;
 public:
-	Log_FaceEdgeSwap(size_t theTarget,size_t theIndex,size_t theOIndex,size_t theTIndex);
+    Log_FaceEdgeSwap(unsigned int theTarget,unsigned int theIndex,unsigned int theOIndex,unsigned int theTIndex);
 	std::string toString()
 	{
 		char temp[256];

@@ -5,10 +5,10 @@ class Log_FaceEdgeInsert :
 	public HistoryLog
 {
 public:
-	const size_t index;
-	const size_t edgeIndex;
+    const unsigned int index;
+    const unsigned int edgeIndex;
 public:
-	Log_FaceEdgeInsert(size_t theTarget,size_t theIndex,size_t theEdgeIndex);
+    Log_FaceEdgeInsert(unsigned int theTarget,unsigned int theIndex,unsigned int theEdgeIndex);
 	std::string toString()
 	{
 		char temp[256];

@@ -12,13 +12,13 @@ public:
 
     void setCamera() override;
 
-    void setReferenceImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height) override;
+    void setReferenceImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height) override;
 
-    void getViewportImage(GLuint &texID,std::string &path,Vector &position,size_t &width,size_t &height) override;
+    void getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height) override;
 
     void disableReference() override;
 	
-    void setCameraForSelectionD(size_t x1,size_t y1,size_t x2,size_t y2,size_t h) override;
+    void setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h) override;
 
     void setCameraForSelectionS() override;
 	

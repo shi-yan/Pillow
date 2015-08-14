@@ -36,10 +36,10 @@ SplitedView::~SplitedView(void)
 
 void SplitedView::changeCamera(CameraMode::__Enum type)
 {
-    size_t cameraWidth=(size_t)m_camera[m_selected]->m_width;
-    size_t cameraHeight=(size_t)m_camera[m_selected]->m_height;
-    size_t cameraStartX=(size_t)m_camera[m_selected]->m_startX;
-    size_t cameraStartY=(size_t)m_camera[m_selected]->m_startY;
+    unsigned int cameraWidth=(unsigned int)m_camera[m_selected]->m_width;
+    unsigned int cameraHeight=(unsigned int)m_camera[m_selected]->m_height;
+    unsigned int cameraStartX=(unsigned int)m_camera[m_selected]->m_startX;
+    unsigned int cameraStartY=(unsigned int)m_camera[m_selected]->m_startY;
     delete m_camera[m_selected];
     m_camera[m_selected]=NULL;
     if(type==CameraMode::Perspective)
@@ -72,12 +72,12 @@ void SplitedView::changeCamera(CameraMode::__Enum type)
     }
 }
 
-void SplitedView::getViewportImage(GLuint &texID,std::string &path,Vector &position,size_t &width,size_t &height)
+void SplitedView::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 {
     m_camera[m_selected]->getViewportImage(texID,path,position,width,height);
 }
 
-void SplitedView::setViewportImage(const char *path,GLuint imageID,Vector &position,size_t width,size_t height)
+void SplitedView::setViewportImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height)
 {
     m_camera[m_selected]->setReferenceImage(path,imageID,position,width,height);
 }
@@ -102,32 +102,32 @@ void SplitedView::switchGird()
     m_camera[m_selected]->m_showGird=!(m_camera[m_selected]->m_showGird);
 }
 
-bool SplitedView::onCtrlPress(size_t x,size_t y)
+bool SplitedView::onCtrlPress(unsigned int x,unsigned int y)
 {
     x;y;
     return false;
 }
 
-bool SplitedView::onCtrlDrag(size_t x,size_t y)
+bool SplitedView::onCtrlDrag(unsigned int x,unsigned int y)
 {
     x;y;
     return false;
 }
 
-bool SplitedView::onPanPress(size_t x,size_t y)
+bool SplitedView::onPanPress(unsigned int x,unsigned int y)
 {
     x;
     y;
     return false;
 }
 
-bool SplitedView::onAxisPress(size_t x,size_t y)
+bool SplitedView::onAxisPress(unsigned int x,unsigned int y)
 {
     x;y;
     return false;
 }
 
-bool SplitedView::onAxisDrag(size_t x,size_t y)
+bool SplitedView::onAxisDrag(unsigned int x,unsigned int y)
 {
     x;y;
     return false;
@@ -143,7 +143,7 @@ bool SplitedView::onCtrlRelease()
     return false;
 }
 
-bool SplitedView::onPanDrag(size_t x,size_t y)
+bool SplitedView::onPanDrag(unsigned int x,unsigned int y)
 {
     x;
     y;
@@ -155,7 +155,7 @@ bool SplitedView::onPanRelease()
     return false;
 }
 
-bool SplitedView::onRotateDrag(size_t x,size_t y)
+bool SplitedView::onRotateDrag(unsigned int x,unsigned int y)
 {
     x;
     y;
@@ -167,38 +167,38 @@ bool SplitedView::onRotateRelease()
     return false;
 }
 
-bool SplitedView::onRotatePress(size_t x,size_t y)
+bool SplitedView::onRotatePress(unsigned int x,unsigned int y)
 {
     x;
     y;
     return false;
 }
 
-bool SplitedView::onSelectionPress(size_t x,size_t y)
+bool SplitedView::onSelectionPress(unsigned int x,unsigned int y)
 {
     x;y;
     return false;
 }
 
-CameraMode::__Enum SplitedView::setView(size_t i)
+CameraMode::__Enum SplitedView::setView(unsigned int i)
 {
     return CameraMode::Perspective;
     i;
 }
 
-Vector SplitedView::getEye(size_t i) const
+Vector SplitedView::getEye(unsigned int i) const
 {
     return m_camera[i]->getEye();
 }
 
-void SplitedView::onWheel(float step,size_t x,size_t y)
+void SplitedView::onWheel(float step,unsigned int x,unsigned int y)
 {
     step;
     x;
     y;
 }
 
-void SplitedView::update(size_t splitX,size_t splitY,size_t width,size_t height)
+void SplitedView::update(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
 {
     splitX;
     splitY;
@@ -206,12 +206,12 @@ void SplitedView::update(size_t splitX,size_t splitY,size_t width,size_t height)
     height;
 }
 
-void SplitedView::setViewport(size_t index)
+void SplitedView::setViewport(unsigned int index)
 {
     index;
 }
 
-bool SplitedView::onDrag(size_t x,size_t y)
+bool SplitedView::onDrag(unsigned int x,unsigned int y)
 {
     x;y;
     return false;
@@ -228,7 +228,7 @@ void SplitedView::onPaint(void)
 {
 }
 
-bool SplitedView::onSelectionDrag(size_t x, size_t y)
+bool SplitedView::onSelectionDrag(unsigned int x, unsigned int y)
 {
     x;
     y;

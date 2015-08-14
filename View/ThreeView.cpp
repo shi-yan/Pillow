@@ -126,13 +126,13 @@ void ThreeView::onPaint(void)
 	glColor3ub(255,255,255);
 }
 
-CameraMode::__Enum ThreeView::setView(size_t index)
+CameraMode::__Enum ThreeView::setView(unsigned int index)
 {
     m_camera[index]->setCamera();
     return m_camera[index]->m_type._value;
 }
 
-bool ThreeView::onPanPress(size_t x,size_t y)
+bool ThreeView::onPanPress(unsigned int x,unsigned int y)
 {
     if(m_selected==0 && x<m_splitX)
     {
@@ -149,13 +149,13 @@ bool ThreeView::onPanPress(size_t x,size_t y)
     return true;
 }
 
-bool ThreeView::onPanDrag(size_t x,size_t y)
+bool ThreeView::onPanDrag(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->pan(x,y);
     return true;
 }
 
-bool ThreeView::onAxisDrag(size_t x,size_t y)
+bool ThreeView::onAxisDrag(unsigned int x,unsigned int y)
 {
     if(m_isAxisMode)
     {
@@ -189,7 +189,7 @@ bool ThreeView::onAxisRelease()
     }
 }
 
-bool ThreeView::onCtrlPress(size_t x,size_t y)
+bool ThreeView::onCtrlPress(unsigned int x,unsigned int y)
 {
     m_isCtrlMode=true;
     m_ctrlSX=x;
@@ -212,7 +212,7 @@ bool ThreeView::onCtrlRelease()
     }
 }
 
-bool ThreeView::onCtrlDrag(size_t x,size_t y)
+bool ThreeView::onCtrlDrag(unsigned int x,unsigned int y)
 {
     if(m_isCtrlMode)
     {
@@ -230,7 +230,7 @@ bool ThreeView::onCtrlDrag(size_t x,size_t y)
     }
 }
 
-bool ThreeView::onAxisPress(size_t x,size_t y)
+bool ThreeView::onAxisPress(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->setCameraForSelectionS();
     m_cursorDir.z=0;
@@ -245,7 +245,7 @@ bool ThreeView::onAxisPress(size_t x,size_t y)
     return result;
 }
 
-bool ThreeView::onSelectionPress(size_t x,size_t y)
+bool ThreeView::onSelectionPress(unsigned int x,unsigned int y)
 {
     m_isSelectionMode=true;
     m_selectionSX=x;
@@ -255,7 +255,7 @@ bool ThreeView::onSelectionPress(size_t x,size_t y)
     return true;
 }
 
-bool ThreeView::onSelectionDrag(size_t x,size_t y)
+bool ThreeView::onSelectionDrag(unsigned int x,unsigned int y)
 {
     if(m_isSelectionMode)
     {
@@ -271,10 +271,10 @@ bool ThreeView::onSingleSideSelectionRelease(bool isAppend)
 {
     if(m_isSelectionMode)
     {
-        size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
-        size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
-        size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
-        size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+        unsigned int x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+        unsigned int y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+        unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+        unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionS();
         theScene->selectSingleSide(x1,y1,x2,y2,m_height,isAppend);
         m_isSelectionMode=false;
@@ -294,10 +294,10 @@ bool ThreeView::onDualSideSelectionRelease(bool isAppend)
 {
     if(m_isSelectionMode)
     {
-        size_t x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
-        size_t y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
-        size_t x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
-        size_t y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
+        unsigned int x1=(m_selectionSX>m_selectionEX)?m_selectionEX:m_selectionSX;
+        unsigned int y1=(m_selectionSY>m_selectionEY)?m_selectionEY:m_selectionSY;
+        unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
+        unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionD(x1,y1,x2,y2,m_height);
         theScene->selectDualSide(isAppend);
         m_isSelectionMode=false;
@@ -313,7 +313,7 @@ bool ThreeView::onDualSideSelectionRelease(bool isAppend)
     }
 }
 
-void ThreeView::onWheel(float step,size_t x,size_t y)
+void ThreeView::onWheel(float step,unsigned int x,unsigned int y)
 {
     if(m_selected==0 && x<m_splitX)
     {
@@ -329,13 +329,13 @@ void ThreeView::onWheel(float step,size_t x,size_t y)
     }
 }
 
-bool ThreeView::onRotateDrag(size_t x,size_t y)
+bool ThreeView::onRotateDrag(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->rotate(x,y);
     return true;
 }
 
-bool ThreeView::onRotatePress(size_t x,size_t y)
+bool ThreeView::onRotatePress(unsigned int x,unsigned int y)
 {
     if(m_selected==0 && x<m_splitX)
     {
@@ -364,7 +364,7 @@ bool ThreeView::onPanRelease()
     return true;
 }
 
-void ThreeView::update(size_t theSplitX,size_t theSplitY,size_t theWidth,size_t theHeight)
+void ThreeView::update(unsigned int theSplitX,unsigned int theSplitY,unsigned int theWidth,unsigned int theHeight)
 {
     m_splitX=theSplitX;
     m_splitY=theSplitY;

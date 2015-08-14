@@ -5,11 +5,11 @@ class Log_FaceEdgePop :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 public:
 	const int o;
 public:
-	Log_FaceEdgePop(size_t theTarget,size_t theIndex,int theO);
+    Log_FaceEdgePop(unsigned int theTarget,unsigned int theIndex,int theO);
 	std::string toString()
 	{
 		char temp[256];

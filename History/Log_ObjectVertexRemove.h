@@ -6,11 +6,11 @@ class Log_ObjectVertexRemove :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 public:
 	Vertex *o;
 public:
-	Log_ObjectVertexRemove(size_t theTarget,size_t theIndex,Vertex *theO);
+    Log_ObjectVertexRemove(unsigned int theTarget,unsigned int theIndex,Vertex *theO);
 	std::string toString()
 	{
 		char temp[256];

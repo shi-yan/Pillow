@@ -5,14 +5,14 @@ class Log_VertexAdjacentChange :
 	public HistoryLog
 {
 public:
-	const size_t index;
-	const size_t adjIndex;
+    const unsigned int index;
+    const unsigned int adjIndex;
 
 public:
 	const int original;
 
 public:
-	Log_VertexAdjacentChange(size_t theTarget,size_t theIndex,size_t theAdjIndex,int theOriginal);
+    Log_VertexAdjacentChange(unsigned int theTarget,unsigned int theIndex,unsigned int theAdjIndex,int theOriginal);
 	std::string toString()
 	{
 		char temp[256];

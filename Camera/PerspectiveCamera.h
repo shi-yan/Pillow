@@ -30,7 +30,7 @@ public:
 
     void setCamera() override;
 
-    void setCameraForSelectionD(size_t x1,size_t y1,size_t x2,size_t y2,size_t h) override;
+    void setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h) override;
 
     void setCameraForSelectionS() override;
 	

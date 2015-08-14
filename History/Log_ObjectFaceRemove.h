@@ -6,11 +6,11 @@ class Log_ObjectFaceRemove :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 public:
 	Face *o;
 public:
-	Log_ObjectFaceRemove(size_t theTarget,size_t theIndex,Face *theO);
+    Log_ObjectFaceRemove(unsigned int theTarget,unsigned int theIndex,Face *theO);
 	std::string toString()
 	{
 		char temp[256];

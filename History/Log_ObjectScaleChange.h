@@ -9,7 +9,7 @@ public:
 	const float y;
 	const float z;
 public:
-	Log_ObjectScaleChange(size_t theTarget,float theX,float theY,float theZ);
+    Log_ObjectScaleChange(unsigned int theTarget,float theX,float theY,float theZ);
 	std::string toString()
 	{
 		char temp[256];

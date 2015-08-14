@@ -39,14 +39,14 @@ void Scene::changeAxisCursorMode(AxisCursorMode::__Enum newMode)
 	}
 }
 
-void Scene::clearDualEdge(size_t tt,size_t vertexID)
+void Scene::clearDualEdge(unsigned int tt,unsigned int vertexID)
 	{
 		if(tt && vertexID)
 		{
 			//首先遍历这个点的邻接面，将edge的大小为2的删除
 			Vertex *theVertex=theObjectList[tt]->vertex(vertexID);
-            size_t adjEdgeCount=theVertex->m_adjacentEdgeList.size();
-			for(size_t e=0;e<adjEdgeCount;++e)
+            unsigned int adjEdgeCount=theVertex->m_adjacentEdgeList.size();
+            for(unsigned int e=0;e<adjEdgeCount;++e)
 			{
                 if(theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e])->start==theVertex->index)
 				{
@@ -99,12 +99,12 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 			}
 			//到这一步应该把双重边夹的面都删除了
 			//然后遍历所有的边 找到一组dual边的时候，进行合并
-            for(size_t e=0;e<theVertex->m_adjacentEdgeList.size()-1;++e)
+            for(unsigned int e=0;e<theVertex->m_adjacentEdgeList.size()-1;++e)
 			{
                 Edge *currentEdge=theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[e]);
 				if(currentEdge->start==theVertex->index)
 				{
-                    for(size_t i=e+1;i<theVertex->m_adjacentEdgeList.size();++i)
+                    for(unsigned int i=e+1;i<theVertex->m_adjacentEdgeList.size();++i)
 					{
                         Edge *tempEdge=theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[i]);
 						if(tempEdge->end==theVertex->index && currentEdge->end==tempEdge->start)
@@ -112,8 +112,8 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 							if(currentEdge->left>0 && currentEdge->right==0 && tempEdge->left>0 && tempEdge->right==0)
 							{
 								Face *theLeft=theObjectList[tt]->face(tempEdge->left);
-								size_t fEdgeCount=theLeft->edge.size();
-								for(size_t h=0;h<fEdgeCount;++h)
+                                unsigned int fEdgeCount=theLeft->edge.size();
+                                for(unsigned int h=0;h<fEdgeCount;++h)
 								{
 									if(theLeft->edge[h]==-((int)(tempEdge->index)))
 									{
@@ -126,8 +126,8 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 							if(currentEdge->right>0 && currentEdge->left==0 && tempEdge->right>0 && tempEdge->left==0)
 							{
 								Face *theRight=theObjectList[tt]->face(tempEdge->right);
-								size_t fEdgeCount=theRight->edge.size();
-								for(size_t h=0;h<fEdgeCount;++h)
+                                unsigned int fEdgeCount=theRight->edge.size();
+                                for(unsigned int h=0;h<fEdgeCount;++h)
 								{
 									if(theRight->edge[h]==((int)tempEdge->index))
 									{
@@ -155,8 +155,8 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 							if(currentEdge->left>0 && currentEdge->right==0 && tempEdge->right>0 && tempEdge->left==0)
 							{
 								Face *theRight=theObjectList[tt]->face(tempEdge->right);
-								size_t fEdgeCount=theRight->edge.size();
-								for(size_t h=0;h<fEdgeCount;++h)
+                                unsigned int fEdgeCount=theRight->edge.size();
+                                for(unsigned int h=0;h<fEdgeCount;++h)
 								{
 									if(theRight->edge[h]==((int)tempEdge->index))
 									{
@@ -169,8 +169,8 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 								if(currentEdge->right>0 && currentEdge->left==0 && tempEdge->left>0 && tempEdge->right==0)
 							{
 								Face *theLeft=theObjectList[tt]->face(tempEdge->left);
-								size_t fEdgeCount=theLeft->edge.size();
-								for(size_t h=0;h<fEdgeCount;++h)
+                                unsigned int fEdgeCount=theLeft->edge.size();
+                                for(unsigned int h=0;h<fEdgeCount;++h)
 								{
 									if(theLeft->edge[h]==-((int)tempEdge->index))
 									{
@@ -195,7 +195,7 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 				}
 				else
 				{
-                    for(size_t i=e+1;i<theVertex->m_adjacentEdgeList.size();++i)
+                    for(unsigned int i=e+1;i<theVertex->m_adjacentEdgeList.size();++i)
 					{
                         Edge *tempEdge=theObjectList[tt]->edge(theVertex->m_adjacentEdgeList[i]);
 						if(tempEdge->end==theVertex->index && currentEdge->start==tempEdge->start)
@@ -203,8 +203,8 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 							if(currentEdge->right>0 && currentEdge->left==0 && tempEdge->left>0 && tempEdge->right==0)
 							{
 								Face *theLeft=theObjectList[tt]->face(tempEdge->left);
-								size_t fEdgeCount=theLeft->edge.size();
-								for(size_t h=0;h<fEdgeCount;++h)
+                                unsigned int fEdgeCount=theLeft->edge.size();
+                                for(unsigned int h=0;h<fEdgeCount;++h)
 								{
 									if(theLeft->edge[h]==-((int)tempEdge->index))
 									{
@@ -217,8 +217,8 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 								if(currentEdge->left>0 && currentEdge->right==0 && tempEdge->right>0 && tempEdge->left==0)
 							{
 								Face *theRight=theObjectList[tt]->face(tempEdge->right);
-								size_t fEdgeCount=theRight->edge.size();
-								for(size_t h=0;h<fEdgeCount;++h)
+                                unsigned int fEdgeCount=theRight->edge.size();
+                                for(unsigned int h=0;h<fEdgeCount;++h)
 								{
 									if(theRight->edge[h]==(int)tempEdge->index)
 									{
@@ -246,8 +246,8 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 							if(currentEdge->right>0 && currentEdge->left==0 && tempEdge->right>0 && tempEdge->left==0)
 							{
 								Face *theRight=theObjectList[tt]->face(tempEdge->right);
-								size_t fEdgeCount=theRight->edge.size();
-								for(size_t h=0;h<fEdgeCount;++h)
+                                unsigned int fEdgeCount=theRight->edge.size();
+                                for(unsigned int h=0;h<fEdgeCount;++h)
 								{
 									if(theRight->edge[h]==(int)tempEdge->index)
 									{
@@ -260,8 +260,8 @@ void Scene::clearDualEdge(size_t tt,size_t vertexID)
 								if(currentEdge->left>0 && currentEdge->right==0 && tempEdge->left>0 && tempEdge->right==0)
 							{
 								Face *theLeft=theObjectList[tt]->face(tempEdge->left);
-								size_t fEdgeCount=theLeft->edge.size();
-								for(size_t h=0;h<fEdgeCount;++h)
+                                unsigned int fEdgeCount=theLeft->edge.size();
+                                for(unsigned int h=0;h<fEdgeCount;++h)
 								{
 									if(theLeft->edge[h]==-((int)tempEdge->index))
 									{
@@ -294,7 +294,7 @@ Scene::Scene(void):mode(SelectionMode::Object),target(0),currentACMode(AxisCurso
 
 }
 
-size_t Scene::newCube(float x,float y,float z,float lx,float ly,float lz,size_t sx,size_t sy,size_t sz)
+unsigned int Scene::newCube(float x,float y,float z,float lx,float ly,float lz,unsigned int sx,unsigned int sy,unsigned int sz)
 {
 	Object *theCube=new Object("Cube");
 	newCube(theCube,x,y,z,lx,ly,lz,sx,sy,sz);
@@ -302,7 +302,7 @@ size_t Scene::newCube(float x,float y,float z,float lx,float ly,float lz,size_t 
 	return theCube->index;
 }
 
-size_t Scene::newPlane(float x,float y,float z,float length,float width,AxisMode::__Enum axis,size_t sl,size_t sw)
+unsigned int Scene::newPlane(float x,float y,float z,float length,float width,AxisMode::__Enum axis,unsigned int sl,unsigned int sw)
 {
 	Object *thePlane=new Object("Plane");
 	newPlane(thePlane,x,y,z,length,width,axis,sl,sw);
@@ -310,7 +310,7 @@ size_t Scene::newPlane(float x,float y,float z,float length,float width,AxisMode
 	return thePlane->index;
 }
 
-void Scene::newPlane(Object *thePlane,float x,float y,float z,float length,float width,AxisMode::__Enum axis,size_t sl,size_t sw)
+void Scene::newPlane(Object *thePlane,float x,float y,float z,float length,float width,AxisMode::__Enum axis,unsigned int sl,unsigned int sw)
 {
 	thePlane->center.x=x;
 	thePlane->center.y=y;
@@ -323,27 +323,27 @@ void Scene::newPlane(Object *thePlane,float x,float y,float z,float length,float
 		float segmentL=length/sl;
 		float segmentW=length/sw;
 		
-		size_t *tempVertexListRight=new size_t[sl+1];
-		size_t *tempVertexListLeft=new size_t[sl+1];
-		size_t *rightEdge=new size_t[sl];
-		size_t *leftEdge=new size_t[sl];
+        unsigned int *tempVertexListRight=new unsigned int[sl+1];
+        unsigned int *tempVertexListLeft=new unsigned int[sl+1];
+        unsigned int *rightEdge=new unsigned int[sl];
+        unsigned int *leftEdge=new unsigned int[sl];
 
 		//首先计算第一行
 		Vector positionAAxisV(positionAAxis(axis,x,y,z,-halfLength,-halfWidth,0));
 		tempVertexListRight[0]=thePlane->addVertex(positionAAxisV);
-		for(size_t e=1;e<=sl;++e)
+        for(unsigned int e=1;e<=sl;++e)
 		{
 			positionAAxisV=positionAAxis(axis,x,y,z,-halfLength+e*segmentL,-halfWidth,0);
 			tempVertexListRight[e]=thePlane->addVertex(positionAAxisV);
 			rightEdge[e-1]=thePlane->addEdge(tempVertexListRight[e-1],tempVertexListRight[e]);
 		}
 
-		for(size_t i=1;i<=sw;++i)
+        for(unsigned int i=1;i<=sw;++i)
 		{
 			//得到这一行的第一个
 			positionAAxisV=positionAAxis(axis,x,y,z,-halfLength,-halfWidth+i*segmentW,0);
 			tempVertexListLeft[0]=thePlane->addVertex(positionAAxisV);
-			for(size_t e=1;e<=sl;++e)
+            for(unsigned int e=1;e<=sl;++e)
 			{
 				positionAAxisV=positionAAxis(axis,x,y,z,-halfLength+e*segmentL,-halfWidth+i*segmentW,0);
 				tempVertexListLeft[e]=thePlane->addVertex(positionAAxisV);
@@ -351,12 +351,12 @@ void Scene::newPlane(Object *thePlane,float x,float y,float z,float length,float
 			}
 
 			//生成第一个底边
-			size_t bottomEdge=thePlane->addEdge(tempVertexListRight[0],tempVertexListLeft[0]);
+            unsigned int bottomEdge=thePlane->addEdge(tempVertexListRight[0],tempVertexListLeft[0]);
 			//生成第一个顶边
-			for(size_t e=0;e<sl;++e)
+            for(unsigned int e=0;e<sl;++e)
 			{
-				size_t topEdge=thePlane->addEdge(tempVertexListRight[e+1],tempVertexListLeft[e+1]);
-				size_t tempEdges[4];
+                unsigned int topEdge=thePlane->addEdge(tempVertexListRight[e+1],tempVertexListLeft[e+1]);
+                unsigned int tempEdges[4];
 				tempEdges[0]=bottomEdge;
 				tempEdges[1]=leftEdge[e];
 				tempEdges[2]=topEdge;
@@ -366,7 +366,7 @@ void Scene::newPlane(Object *thePlane,float x,float y,float z,float length,float
 				bottomEdge=topEdge;
 			}
 
-			for(size_t e=0;e<sl;++e)
+            for(unsigned int e=0;e<sl;++e)
 			{
 				rightEdge[e]=leftEdge[e];
 				tempVertexListRight[e]=tempVertexListLeft[e];
@@ -381,7 +381,7 @@ void Scene::newPlane(Object *thePlane,float x,float y,float z,float length,float
 	}
 }
 
-void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,float lz,size_t sx,size_t sy,size_t sz)
+void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,float lz,unsigned int sx,unsigned int sy,unsigned int sz)
 {
 	theCube->center.x=x;
 	theCube->center.y=y;
@@ -396,31 +396,31 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 	float sly=ly/sy;
 	float slz=lz/sz;
 	//首先声明边和边上的点列表
-	size_t *edge1=new size_t[sz];
-	size_t *vertex1=new size_t[sz+1];
-	size_t *edge2=new size_t[sz];
-	size_t *vertex2=new size_t[sz+1];
-	size_t *edge3=new size_t[sz];
-	size_t *vertex3=new size_t[sz+1];
-	size_t *edge4=new size_t[sz];
-	size_t *vertex4=new size_t[sz+1];
-	size_t *edge5=new size_t[sy];
-	size_t *vertex5=new size_t[sy+1];
-	size_t *edge6=new size_t[sy];
-	size_t *vertex6=new size_t[sy+1];
-	size_t *edge7=new size_t[sx];
-	size_t *vertex7=new size_t[sx+1];
-	size_t *edge8=new size_t[sx];
-	size_t *vertex8=new size_t[sx+1];
-	size_t *edge9=new size_t[sy];
-	size_t *vertex9=new size_t[sy+1];
-	size_t *edge10=new size_t[sy];
-	size_t *vertex10=new size_t[sy+1];
+    unsigned int *edge1=new unsigned int[sz];
+    unsigned int *vertex1=new unsigned int[sz+1];
+    unsigned int *edge2=new unsigned int[sz];
+    unsigned int *vertex2=new unsigned int[sz+1];
+    unsigned int *edge3=new unsigned int[sz];
+    unsigned int *vertex3=new unsigned int[sz+1];
+    unsigned int *edge4=new unsigned int[sz];
+    unsigned int *vertex4=new unsigned int[sz+1];
+    unsigned int *edge5=new unsigned int[sy];
+    unsigned int *vertex5=new unsigned int[sy+1];
+    unsigned int *edge6=new unsigned int[sy];
+    unsigned int *vertex6=new unsigned int[sy+1];
+    unsigned int *edge7=new unsigned int[sx];
+    unsigned int *vertex7=new unsigned int[sx+1];
+    unsigned int *edge8=new unsigned int[sx];
+    unsigned int *vertex8=new unsigned int[sx+1];
+    unsigned int *edge9=new unsigned int[sy];
+    unsigned int *vertex9=new unsigned int[sy+1];
+    unsigned int *edge10=new unsigned int[sy];
+    unsigned int *vertex10=new unsigned int[sy+1];
 
-	size_t *edge11=new size_t[sx];
-	size_t *vertex11=new size_t[sx+1];
-	size_t *edge12=new size_t[sx];
-	size_t *vertex12=new size_t[sx+1];
+    unsigned int *edge11=new unsigned int[sx];
+    unsigned int *vertex11=new unsigned int[sx+1];
+    unsigned int *edge12=new unsigned int[sx];
+    unsigned int *vertex12=new unsigned int[sx+1];
 
 	//然后计算各个顶点
 	vertex12[sx]=vertex1[0]=vertex6[0]=theCube->addVertex(x+hlx,y+hly,z-hlz);
@@ -434,7 +434,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 	vertex9[sy]=vertex11[0]=vertex4[sz]=theCube->addVertex(x-hlx,y+hly,z+hlz);
 	
 	//补全顶点列表上面的数据
-	for(size_t i=1;i<sz;++i)
+    for(unsigned int i=1;i<sz;++i)
 	{
 		vertex1[i]=theCube->addVertex(x+hlx,y+hly,z-hlz+i*slz);
 		vertex2[i]=theCube->addVertex(x+hlx,y-hly,z-hlz+i*slz);
@@ -442,7 +442,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 		vertex4[i]=theCube->addVertex(x-hlx,y+hly,z-hlz+i*slz);
 	}
 
-	for(size_t i=1;i<sy;++i)
+    for(unsigned int i=1;i<sy;++i)
 	{
 		vertex5[i]=theCube->addVertex(x+hlx,y+hly-i*sly,z+hlz);
 		vertex6[i]=theCube->addVertex(x+hlx,y+hly-i*sly,z-hlz);
@@ -450,7 +450,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 		vertex10[i]=theCube->addVertex(x-hlx,y-hly+i*sly,z-hlz);
 	}
 
-	for(size_t i=1;i<sx;++i)
+    for(unsigned int i=1;i<sx;++i)
 	{
 		vertex7[i]=theCube->addVertex(x+hlx-i*slx,y-hly,z+hlz);
 		vertex8[i]=theCube->addVertex(x+hlx-i*slx,y-hly,z-hlz);
@@ -459,7 +459,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 	}
 
 	//然后开始生成所有的边列表
-	for(size_t i=0;i<sz;++i)
+    for(unsigned int i=0;i<sz;++i)
 	{
 		edge1[i]=theCube->addEdge(vertex1[i],vertex1[i+1]);
 		edge2[i]=theCube->addEdge(vertex2[i],vertex2[i+1]);
@@ -467,7 +467,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 		edge4[i]=theCube->addEdge(vertex4[i],vertex4[i+1]);
 	}
 
-	for(size_t i=0;i<sx;++i)
+    for(unsigned int i=0;i<sx;++i)
 	{
 		edge7[i]=theCube->addEdge(vertex7[i],vertex7[i+1]);
 		edge8[i]=theCube->addEdge(vertex8[i],vertex8[i+1]);
@@ -475,7 +475,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 		edge12[i]=theCube->addEdge(vertex12[i],vertex12[i+1]);
 	}
 
-	for(size_t i=0;i<sy;++i)
+    for(unsigned int i=0;i<sy;++i)
 	{
 		edge5[i]=theCube->addEdge(vertex5[i],vertex5[i+1]);
 		edge6[i]=theCube->addEdge(vertex6[i],vertex6[i+1]);
@@ -486,35 +486,35 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 	//然后开始正式生成面
 	{
 		//生成面1和面3
-		size_t *rightEdge1=new size_t[sz];
-		size_t *rightEdge3=new size_t[sz];
-		size_t *rightVertex1=new size_t[sz];
-		size_t *rightVertex3=new size_t[sz];
-		for(size_t i=0;i<sz;++i)
+        unsigned int *rightEdge1=new unsigned int[sz];
+        unsigned int *rightEdge3=new unsigned int[sz];
+        unsigned int *rightVertex1=new unsigned int[sz];
+        unsigned int *rightVertex3=new unsigned int[sz];
+        for(unsigned int i=0;i<sz;++i)
 		{
 			rightEdge1[i]=edge1[i];
 			rightEdge3[i]=edge3[i];
 			rightVertex1[i]=vertex1[i+1];
 			rightVertex3[i]=vertex3[i+1];
 		}
-		for(size_t i=0;i<sy-1;++i)
+        for(unsigned int i=0;i<sy-1;++i)
 		{
-			size_t lowEdge1=edge6[i];
-			size_t lowEdge3=edge10[i];
-			size_t lowLeftVertex1=vertex6[i+1];
-			size_t lowLeftVertex3=vertex10[i+1];
-			size_t *leftEdge1=new size_t[sz];
-			size_t *leftEdge3=new size_t[sz];
-			for(size_t e=0;e<sz-1;++e)
+            unsigned int lowEdge1=edge6[i];
+            unsigned int lowEdge3=edge10[i];
+            unsigned int lowLeftVertex1=vertex6[i+1];
+            unsigned int lowLeftVertex3=vertex10[i+1];
+            unsigned int *leftEdge1=new unsigned int[sz];
+            unsigned int *leftEdge3=new unsigned int[sz];
+            for(unsigned int e=0;e<sz-1;++e)
 			{
-				size_t newVertex1=theCube->addVertex(x+hlx,y+hly-(i+1)*sly,z-hlz+(e+1)*slz);
-				size_t newVertex3=theCube->addVertex(x-hlx,y-hly+(i+1)*sly,z-hlz+(e+1)*slz);
+                unsigned int newVertex1=theCube->addVertex(x+hlx,y+hly-(i+1)*sly,z-hlz+(e+1)*slz);
+                unsigned int newVertex3=theCube->addVertex(x-hlx,y-hly+(i+1)*sly,z-hlz+(e+1)*slz);
 				leftEdge1[e]=theCube->addEdge(lowLeftVertex1,newVertex1);
 				leftEdge3[e]=theCube->addEdge(lowLeftVertex3,newVertex3);
-				size_t topEdge1=theCube->addEdge(newVertex1,rightVertex1[e]);
-				size_t topEdge3=theCube->addEdge(newVertex3,rightVertex3[e]);
-				size_t edgeList1[4]={0};
-				size_t edgeList3[4]={0};
+                unsigned int topEdge1=theCube->addEdge(newVertex1,rightVertex1[e]);
+                unsigned int topEdge3=theCube->addEdge(newVertex3,rightVertex3[e]);
+                unsigned int edgeList1[4]={0};
+                unsigned int edgeList3[4]={0};
 				edgeList1[0]=leftEdge1[e];
 				edgeList3[0]=leftEdge3[e];
 				edgeList1[1]=topEdge1;
@@ -536,10 +536,10 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 				//计算最上面一格
 				leftEdge1[sz-1]=theCube->addEdge(lowLeftVertex1,vertex5[i+1]);
 				leftEdge3[sz-1]=theCube->addEdge(lowLeftVertex3,vertex9[i+1]);
-				size_t topEdge1=edge5[i];
-				size_t topEdge3=edge9[i];
-				size_t edgeList1[4]={0};
-				size_t edgeList3[4]={0};
+                unsigned int topEdge1=edge5[i];
+                unsigned int topEdge3=edge9[i];
+                unsigned int edgeList1[4]={0};
+                unsigned int edgeList3[4]={0};
 				edgeList1[0]=leftEdge1[sz-1];
 				edgeList3[0]=leftEdge3[sz-1];
 				edgeList1[1]=topEdge1;
@@ -553,7 +553,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 				rightVertex1[sz-1]=vertex5[i+1];
 				rightVertex3[sz-1]=vertex9[i+1];
 			}
-			for(size_t e=0;e<sz;++e)
+            for(unsigned int e=0;e<sz;++e)
 			{
 				rightEdge1[e]=leftEdge1[e];
 				rightEdge3[e]=leftEdge3[e];
@@ -561,18 +561,18 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 			delete leftEdge1;
 			delete leftEdge3;
 		}
-		size_t lowEdge1=edge6[sy-1];
-		size_t lowEdge3=edge10[sy-1];
-		size_t lowLeftVertex1=vertex2[0];
-		size_t lowLeftVertex3=vertex4[0];
-		for(size_t e=0;e<sz-1;++e)
+        unsigned int lowEdge1=edge6[sy-1];
+        unsigned int lowEdge3=edge10[sy-1];
+        unsigned int lowLeftVertex1=vertex2[0];
+        unsigned int lowLeftVertex3=vertex4[0];
+        for(unsigned int e=0;e<sz-1;++e)
 		{
-			size_t newVertex1=vertex2[e+1];
-			size_t newVertex3=vertex4[e+1];
-			size_t topEdge1=theCube->addEdge(newVertex1,rightVertex1[e]);
-			size_t topEdge3=theCube->addEdge(newVertex3,rightVertex3[e]);
-			size_t edgeList1[4]={0};
-			size_t edgeList3[4]={0};
+            unsigned int newVertex1=vertex2[e+1];
+            unsigned int newVertex3=vertex4[e+1];
+            unsigned int topEdge1=theCube->addEdge(newVertex1,rightVertex1[e]);
+            unsigned int topEdge3=theCube->addEdge(newVertex3,rightVertex3[e]);
+            unsigned int edgeList1[4]={0};
+            unsigned int edgeList3[4]={0};
 			edgeList1[0]=edge2[e];
 			edgeList3[0]=edge4[e];
 			edgeList1[1]=topEdge1;
@@ -590,8 +590,8 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 		}
 		//计算最上面的方格
 		{
-			size_t edgeList1[4]={0};
-			size_t edgeList3[4]={0};
+            unsigned int edgeList1[4]={0};
+            unsigned int edgeList3[4]={0};
 			edgeList1[0]=edge2[sz-1];
 			edgeList3[0]=edge4[sz-1];
 			edgeList1[1]=edge5[sy-1];
@@ -610,35 +610,35 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 	}
 	{
 		//生成面2和面4
-		size_t *rightEdge2=new size_t[sz];
-		size_t *rightEdge4=new size_t[sz];
-		size_t *rightVertex2=new size_t[sz];
-		size_t *rightVertex4=new size_t[sz];
-		for(size_t i=0;i<sz;++i)
+        unsigned int *rightEdge2=new unsigned int[sz];
+        unsigned int *rightEdge4=new unsigned int[sz];
+        unsigned int *rightVertex2=new unsigned int[sz];
+        unsigned int *rightVertex4=new unsigned int[sz];
+        for(unsigned int i=0;i<sz;++i)
 		{
 			rightEdge2[i]=edge2[i];
 			rightEdge4[i]=edge4[i];
 			rightVertex2[i]=vertex2[i+1];
 			rightVertex4[i]=vertex4[i+1];
 		}
-		for(size_t i=0;i<sx-1;++i)
+        for(unsigned int i=0;i<sx-1;++i)
 		{
-			size_t lowEdge2=edge8[i];
-			size_t lowEdge4=edge12[i];
-			size_t lowLeftVertex2=vertex8[i+1];
-			size_t lowLeftVertex4=vertex12[i+1];
-			size_t *leftEdge2=new size_t[sz];
-			size_t *leftEdge4=new size_t[sz];
-			for(size_t e=0;e<sz-1;++e)
+            unsigned int lowEdge2=edge8[i];
+            unsigned int lowEdge4=edge12[i];
+            unsigned int lowLeftVertex2=vertex8[i+1];
+            unsigned int lowLeftVertex4=vertex12[i+1];
+            unsigned int *leftEdge2=new unsigned int[sz];
+            unsigned int *leftEdge4=new unsigned int[sz];
+            for(unsigned int e=0;e<sz-1;++e)
 			{
-				size_t newVertex2=theCube->addVertex(x+hlx-(i+1)*slx,y-hly,z-hlz+(e+1)*slz);
-				size_t newVertex4=theCube->addVertex(x-hlx+(i+1)*slx,y+hly,z-hlz+(e+1)*slz);
+                unsigned int newVertex2=theCube->addVertex(x+hlx-(i+1)*slx,y-hly,z-hlz+(e+1)*slz);
+                unsigned int newVertex4=theCube->addVertex(x-hlx+(i+1)*slx,y+hly,z-hlz+(e+1)*slz);
 				leftEdge2[e]=theCube->addEdge(lowLeftVertex2,newVertex2);
 				leftEdge4[e]=theCube->addEdge(lowLeftVertex4,newVertex4);
-				size_t topEdge2=theCube->addEdge(newVertex2,rightVertex2[e]);
-				size_t topEdge4=theCube->addEdge(newVertex4,rightVertex4[e]);
-				size_t edgeList2[4]={0};
-				size_t edgeList4[4]={0};
+                unsigned int topEdge2=theCube->addEdge(newVertex2,rightVertex2[e]);
+                unsigned int topEdge4=theCube->addEdge(newVertex4,rightVertex4[e]);
+                unsigned int edgeList2[4]={0};
+                unsigned int edgeList4[4]={0};
 				edgeList2[0]=leftEdge2[e];
 				edgeList4[0]=leftEdge4[e];
 				edgeList2[1]=topEdge2;
@@ -660,10 +660,10 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 				//计算最上面一格
 				leftEdge2[sz-1]=theCube->addEdge(lowLeftVertex2,vertex7[i+1]);
 				leftEdge4[sz-1]=theCube->addEdge(lowLeftVertex4,vertex11[i+1]);
-				size_t topEdge2=edge7[i];
-				size_t topEdge4=edge11[i];
-				size_t edgeList2[4]={0};
-				size_t edgeList4[4]={0};
+                unsigned int topEdge2=edge7[i];
+                unsigned int topEdge4=edge11[i];
+                unsigned int edgeList2[4]={0};
+                unsigned int edgeList4[4]={0};
 				edgeList2[0]=leftEdge2[sz-1];
 				edgeList4[0]=leftEdge4[sz-1];
 				edgeList2[1]=topEdge2;
@@ -677,7 +677,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 				rightVertex2[sz-1]=vertex7[i+1];
 				rightVertex4[sz-1]=vertex11[i+1];
 			}
-			for(size_t e=0;e<sz;++e)
+            for(unsigned int e=0;e<sz;++e)
 			{
 				rightEdge2[e]=leftEdge2[e];
 				rightEdge4[e]=leftEdge4[e];
@@ -685,18 +685,18 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 			delete leftEdge2;
 			delete leftEdge4;
 		}
-		size_t lowEdge2=edge8[sx-1];
-		size_t lowEdge4=edge12[sx-1];
-		size_t lowLeftVertex2=vertex3[0];
-		size_t lowLeftVertex4=vertex1[0];
-		for(size_t e=0;e<sz-1;e++)
+        unsigned int lowEdge2=edge8[sx-1];
+        unsigned int lowEdge4=edge12[sx-1];
+        unsigned int lowLeftVertex2=vertex3[0];
+        unsigned int lowLeftVertex4=vertex1[0];
+        for(unsigned int e=0;e<sz-1;e++)
 		{
-			size_t newVertex2=vertex3[e+1];
-			size_t newVertex4=vertex1[e+1];
-			size_t topEdge2=theCube->addEdge(newVertex2,rightVertex2[e]);
-			size_t topEdge4=theCube->addEdge(newVertex4,rightVertex4[e]);
-			size_t edgeList2[4]={0};
-			size_t edgeList4[4]={0};
+            unsigned int newVertex2=vertex3[e+1];
+            unsigned int newVertex4=vertex1[e+1];
+            unsigned int topEdge2=theCube->addEdge(newVertex2,rightVertex2[e]);
+            unsigned int topEdge4=theCube->addEdge(newVertex4,rightVertex4[e]);
+            unsigned int edgeList2[4]={0};
+            unsigned int edgeList4[4]={0};
 			edgeList2[0]=edge3[e];
 			edgeList4[0]=edge1[e];
 			edgeList2[1]=topEdge2;
@@ -714,8 +714,8 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 		}
 		//计算最上面的方格
 		{
-			size_t edgeList2[4]={0};
-			size_t edgeList4[4]={0};
+            unsigned int edgeList2[4]={0};
+            unsigned int edgeList4[4]={0};
 			edgeList2[0]=edge3[sz-1];
 			edgeList4[0]=edge1[sz-1];
 			edgeList2[1]=edge7[sx-1];
@@ -734,24 +734,24 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 	}
 	{
 		//生成面5,上面的面是5
-		size_t *rightEdge5=new size_t[sx];
-		size_t *rightVertex5=new size_t[sx];
-		for(size_t i=0;i<sx;++i)
+        unsigned int *rightEdge5=new unsigned int[sx];
+        unsigned int *rightVertex5=new unsigned int[sx];
+        for(unsigned int i=0;i<sx;++i)
 		{
 			rightEdge5[i]=edge7[i];
 			rightVertex5[i]=vertex7[i+1];
 		}
-		for(size_t i=0;i<sy-1;++i)
+        for(unsigned int i=0;i<sy-1;++i)
 		{
-			size_t lowEdge5=edge5[sy-1-i];
-			size_t lowLeftVertex5=vertex5[sy-1-i];
-			size_t *leftEdge5=new size_t[sx];
-			for(size_t e=0;e<sx-1;++e)
+            unsigned int lowEdge5=edge5[sy-1-i];
+            unsigned int lowLeftVertex5=vertex5[sy-1-i];
+            unsigned int *leftEdge5=new unsigned int[sx];
+            for(unsigned int e=0;e<sx-1;++e)
 			{
-				size_t newVertex5=theCube->addVertex(x+hlx-(e+1)*slx,y-hly+(i+1)*sly,z+hlz);
+                unsigned int newVertex5=theCube->addVertex(x+hlx-(e+1)*slx,y-hly+(i+1)*sly,z+hlz);
 				leftEdge5[e]=theCube->addEdge(lowLeftVertex5,newVertex5);
-				size_t topEdge5=theCube->addEdge(newVertex5,rightVertex5[e]);
-				size_t edgeList5[4]={0};
+                unsigned int topEdge5=theCube->addEdge(newVertex5,rightVertex5[e]);
+                unsigned int edgeList5[4]={0};
 				edgeList5[3]=leftEdge5[e];
 				edgeList5[2]=topEdge5;
 				edgeList5[1]=rightEdge5[e];
@@ -764,8 +764,8 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 			{
 				//计算最上面一格
 				leftEdge5[sx-1]=theCube->addEdge(lowLeftVertex5,vertex9[i+1]);
-				size_t topEdge5=edge9[i];
-				size_t edgeList5[4]={0};
+                unsigned int topEdge5=edge9[i];
+                unsigned int edgeList5[4]={0};
 				edgeList5[3]=leftEdge5[sx-1];
 				edgeList5[2]=topEdge5;
 				edgeList5[1]=rightEdge5[sx-1];
@@ -773,19 +773,19 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 				theCube->addFace(edgeList5,4);
 				rightVertex5[sx-1]=vertex9[i+1];
 			}
-			for(size_t e=0;e<sx;++e)
+            for(unsigned int e=0;e<sx;++e)
 			{
 				rightEdge5[e]=leftEdge5[e];
 			}
 			delete leftEdge5;
 		}
-		size_t lowEdge5=edge5[0];
-		size_t lowLeftVertex5=vertex11[sx];
-		for(size_t e=0;e<sx-1;++e)
+        unsigned int lowEdge5=edge5[0];
+        unsigned int lowLeftVertex5=vertex11[sx];
+        for(unsigned int e=0;e<sx-1;++e)
 		{
-			size_t newVertex5=vertex11[sx-1-e];
-			size_t topEdge5=theCube->addEdge(newVertex5,rightVertex5[e]);
-			size_t edgeList5[4]={0};
+            unsigned int newVertex5=vertex11[sx-1-e];
+            unsigned int topEdge5=theCube->addEdge(newVertex5,rightVertex5[e]);
+            unsigned int edgeList5[4]={0};
 			edgeList5[3]=edge11[sx-1-e];
 			edgeList5[2]=topEdge5;
 			edgeList5[1]=rightEdge5[e];
@@ -796,7 +796,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 		}
 		//计算最上面的方格
 		{
-			size_t edgeList5[4]={0};
+            unsigned int edgeList5[4]={0};
 			edgeList5[3]=edge11[0];
 			edgeList5[2]=edge9[sy-1];
 			edgeList5[1]=rightEdge5[sx-1];
@@ -808,24 +808,24 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 	}
 	{
 		//生成面6,上面的面是5
-		size_t *rightEdge6=new size_t[sy];
-		size_t *rightVertex6=new size_t[sy];
-		for(size_t i=0;i<sy;++i)
+        unsigned int *rightEdge6=new unsigned int[sy];
+        unsigned int *rightVertex6=new unsigned int[sy];
+        for(unsigned int i=0;i<sy;++i)
 		{
 			rightEdge6[i]=edge6[i];
 			rightVertex6[i]=vertex6[i+1];
 		}
-		for(size_t i=0;i<sx-1;++i)
+        for(unsigned int i=0;i<sx-1;++i)
 		{
-			size_t lowEdge6=edge12[sx-1-i];
-			size_t lowLeftVertex6=vertex12[sx-1-i];
-			size_t *leftEdge6=new size_t[sy];
-			for(size_t e=0;e<sy-1;++e)
+            unsigned int lowEdge6=edge12[sx-1-i];
+            unsigned int lowLeftVertex6=vertex12[sx-1-i];
+            unsigned int *leftEdge6=new unsigned int[sy];
+            for(unsigned int e=0;e<sy-1;++e)
 			{
-				size_t newVertex6=theCube->addVertex(x+hlx-(i+1)*slx,y+hly-(e+1)*sly,z-hlz);
+                unsigned int newVertex6=theCube->addVertex(x+hlx-(i+1)*slx,y+hly-(e+1)*sly,z-hlz);
 				leftEdge6[e]=theCube->addEdge(lowLeftVertex6,newVertex6);
-				size_t topEdge6=theCube->addEdge(newVertex6,rightVertex6[e]);
-				size_t edgeList6[4]={0};
+                unsigned int topEdge6=theCube->addEdge(newVertex6,rightVertex6[e]);
+                unsigned int edgeList6[4]={0};
 				edgeList6[0]=leftEdge6[e];
 				edgeList6[1]=topEdge6;
 				edgeList6[2]=rightEdge6[e];
@@ -838,8 +838,8 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 			{
 				//计算最上面一格
 				leftEdge6[sy-1]=theCube->addEdge(lowLeftVertex6,vertex8[i+1]);
-				size_t topEdge6=edge8[i];
-				size_t edgeList6[4]={0};
+                unsigned int topEdge6=edge8[i];
+                unsigned int edgeList6[4]={0};
 				edgeList6[0]=leftEdge6[sy-1];
 				edgeList6[1]=topEdge6;
 				edgeList6[2]=rightEdge6[sy-1];
@@ -847,20 +847,20 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 				theCube->addFace(edgeList6,4);
 				rightVertex6[sy-1]=vertex8[i+1];
 			}
-			for(size_t e=0;e<sy;++e)
+            for(unsigned int e=0;e<sy;++e)
 			{
 				rightEdge6[e]=leftEdge6[e];
 			}
 			delete leftEdge6;
 		}
 		
-		size_t lowEdge6=edge12[0];
-		size_t lowLeftVertex6=vertex10[sy];
-		for(size_t e=0;e<sy-1;++e)
+        unsigned int lowEdge6=edge12[0];
+        unsigned int lowLeftVertex6=vertex10[sy];
+        for(unsigned int e=0;e<sy-1;++e)
 		{
-			size_t newVertex6=vertex10[sy-1-e];
-			size_t topEdge6=theCube->addEdge(newVertex6,rightVertex6[e]);
-			size_t edgeList6[4]={0};
+            unsigned int newVertex6=vertex10[sy-1-e];
+            unsigned int topEdge6=theCube->addEdge(newVertex6,rightVertex6[e]);
+            unsigned int edgeList6[4]={0};
 			edgeList6[0]=edge10[sy-1-e];
 			edgeList6[1]=topEdge6;
 			edgeList6[2]=rightEdge6[e];
@@ -871,7 +871,7 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 		}
 		//计算最上面的方格
 		{
-			size_t edgeList6[4]={0};
+            unsigned int edgeList6[4]={0};
 			edgeList6[0]=edge10[0];
 			edgeList6[1]=edge8[sx-1];
 			edgeList6[2]=rightEdge6[sy-1];
@@ -912,14 +912,14 @@ void Scene::newCube(Object *theCube,float x,float y,float z,float lx,float ly,fl
 	delete vertex12;
 }
 
-size_t Scene::newCylinder(float x,float y,float z,float r,float h,AxisMode::__Enum axis,size_t sa,size_t sr,size_t sh)
+unsigned int Scene::newCylinder(float x,float y,float z,float r,float h,AxisMode::__Enum axis,unsigned int sa,unsigned int sr,unsigned int sh)
 {
 	Object *theCylinder=new Object("Clinder");
 	newCylinder(theCylinder,x,y,z,r,h,axis,sa,sr,sh);
 	theObjectList.add(theCylinder);
 	return theCylinder->index;
 }
-void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,float h,AxisMode::__Enum axis,size_t sa,size_t sr,size_t sh)
+void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,float h,AxisMode::__Enum axis,unsigned int sa,unsigned int sr,unsigned int sh)
 {
 	//首先生成一个物体
 	theCylinder->center.x=x;
@@ -929,9 +929,9 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 	{
 		//首先生成轴上的两个点
 		Vector positionAAxisV(positionAAxis(axis,x,y,z,0,0,0));
-		size_t center=theCylinder->addVertex(positionAAxisV);
+        unsigned int center=theCylinder->addVertex(positionAAxisV);
 		positionAAxisV=positionAAxis(axis,x,y,z,0,0,h);
-		size_t centerH=theCylinder->addVertex(positionAAxisV);
+        unsigned int centerH=theCylinder->addVertex(positionAAxisV);
 
 		//计算弧度间隔
 		float da=ps2PI/sa;
@@ -940,14 +940,14 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 		//计算高度递增间隔
 		float dh=h/sh;
 
-		size_t *startHEdge=new size_t[sh];
-		size_t *startHVertex=new size_t[sh+1];
+        unsigned int *startHEdge=new unsigned int[sh];
+        unsigned int *startHVertex=new unsigned int[sh+1];
 
-		size_t *startUEdge=new size_t[sr];
-		size_t *startUVertex=new size_t[sr+1];
+        unsigned int *startUEdge=new unsigned int[sr];
+        unsigned int *startUVertex=new unsigned int[sr+1];
 
-		size_t *startLEdge=new size_t[sr];
-		size_t *startLVertex=new size_t[sr+1];
+        unsigned int *startLEdge=new unsigned int[sr];
+        unsigned int *startLVertex=new unsigned int[sr+1];
 
 		//初始化这些信息
 
@@ -960,7 +960,7 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 		startLVertex[sr]=startHVertex[0]=theCylinder->addVertex(positionAAxisV);
 
 		//初始化起始线
-		for(size_t i=1;i<sr;++i)
+        for(unsigned int i=1;i<sr;++i)
 		{
 			positionAAxisV=positionAAxis(axis,x,y,z,dr*i,0,h);
 			startUVertex[i]=theCylinder->addVertex(positionAAxisV);
@@ -972,7 +972,7 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 		startUEdge[sr-1]=theCylinder->addEdge(startUVertex[sr-1],startUVertex[sr]);
 		startLEdge[sr-1]=theCylinder->addEdge(startLVertex[sr-1],startLVertex[sr]);
 
-		for(size_t i=1;i<sh;++i)
+        for(unsigned int i=1;i<sh;++i)
 		{
 			positionAAxisV=positionAAxis(axis,x,y,z,r,0,dh*i);
 			startHVertex[i]=theCylinder->addVertex(positionAAxisV);
@@ -980,22 +980,22 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 		}
 		startHEdge[sh-1]=theCylinder->addEdge(startHVertex[sh-1],startHVertex[sh]);
 
-		size_t *endHEdgeC=new size_t[sh];
-		size_t *endHVertexC=new size_t[sh+1];
+        unsigned int *endHEdgeC=new unsigned int[sh];
+        unsigned int *endHVertexC=new unsigned int[sh+1];
 
-		for(size_t i=0;i<sh;++i)
+        for(unsigned int i=0;i<sh;++i)
 		{
 			endHEdgeC[i]=startHEdge[i];
 			endHVertexC[i]=startHVertex[i];
 		}
 		endHVertexC[sh]=startHVertex[sh];
 
-		size_t *endUEdgeC=new size_t[sr];
-		size_t *endUVertexC=new size_t[sr+1];
-		size_t *endLEdgeC=new size_t[sr];
-		size_t *endLVertexC=new size_t[sr+1];
+        unsigned int *endUEdgeC=new unsigned int[sr];
+        unsigned int *endUVertexC=new unsigned int[sr+1];
+        unsigned int *endLEdgeC=new unsigned int[sr];
+        unsigned int *endLVertexC=new unsigned int[sr+1];
 
-		for(size_t i=0;i<sr;++i)
+        for(unsigned int i=0;i<sr;++i)
 		{
 			endUEdgeC[i]=startUEdge[i];
 			endUVertexC[i]=startUVertex[i];
@@ -1005,14 +1005,14 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 		endUVertexC[sr]=startUVertex[sr];
 		endLVertexC[sr]=startLVertex[sr];
 
-		for(size_t e=1;e<sa;++e)
+        for(unsigned int e=1;e<sa;++e)
 		{
-			size_t *endHEdge=new size_t[sh];
-			size_t *endHVertex=new size_t[sh+1];
-			size_t *endUEdge=new size_t[sr];
-			size_t *endUVertex=new size_t[sr+1];
-			size_t *endLEdge=new size_t[sr];
-			size_t *endLVertex=new size_t[sr+1];
+            unsigned int *endHEdge=new unsigned int[sh];
+            unsigned int *endHVertex=new unsigned int[sh+1];
+            unsigned int *endUEdge=new unsigned int[sr];
+            unsigned int *endUVertex=new unsigned int[sr+1];
+            unsigned int *endLEdge=new unsigned int[sr];
+            unsigned int *endLVertex=new unsigned int[sr+1];
 
 			//初始化这些信息
 		
@@ -1025,7 +1025,7 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 			endLVertex[sr]=endHVertex[0]=theCylinder->addVertex(positionAAxisV);
 
 		//初始化起始线
-			for(size_t i=1;i<sr;++i)
+            for(unsigned int i=1;i<sr;++i)
 			{
 				positionAAxisV=positionAAxis(axis,x,y,z,dr*i*cos(da*e),dr*i*sin(da*e),h);
 				endUVertex[i]=theCylinder->addVertex(positionAAxisV);
@@ -1037,7 +1037,7 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 			endUEdge[sr-1]=theCylinder->addEdge(endUVertex[sr-1],endUVertex[sr]);
 			endLEdge[sr-1]=theCylinder->addEdge(endLVertex[sr-1],endLVertex[sr]);
 
-			for(size_t i=1;i<sh;++i)
+            for(unsigned int i=1;i<sh;++i)
 			{
 				positionAAxisV=positionAAxis(axis,x,y,z,r*cos(da*e),r*sin(da*e),dh*i);
 				endHVertex[i]=theCylinder->addVertex(positionAAxisV);
@@ -1046,23 +1046,23 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 			endHEdge[sh-1]=theCylinder->addEdge(endHVertex[sh-1],endHVertex[sh]);
 			
 			//正式生成面，首先是上下面
-			size_t LEdge=theCylinder->addEdge(endHVertex[0],startHVertex[0]);
-			size_t UEdge=theCylinder->addEdge(endHVertex[sh],startHVertex[sh]);
-			size_t HLEdge=LEdge;
-			size_t HUEdge=UEdge;
-			for(size_t i=sr-1;i>0;--i)
+            unsigned int LEdge=theCylinder->addEdge(endHVertex[0],startHVertex[0]);
+            unsigned int UEdge=theCylinder->addEdge(endHVertex[sh],startHVertex[sh]);
+            unsigned int HLEdge=LEdge;
+            unsigned int HUEdge=UEdge;
+            for(unsigned int i=sr-1;i>0;--i)
 			{
-				size_t tempLEdge=theCylinder->addEdge(endLVertex[i],startLVertex[i]);
-				size_t tempUEdge=theCylinder->addEdge(endUVertex[i],startUVertex[i]);
+                unsigned int tempLEdge=theCylinder->addEdge(endLVertex[i],startLVertex[i]);
+                unsigned int tempUEdge=theCylinder->addEdge(endUVertex[i],startUVertex[i]);
 				
-				size_t edgeListL[4]={0};
+                unsigned int edgeListL[4]={0};
 				edgeListL[3]=tempLEdge;
 				edgeListL[2]=endLEdge[i];
 				edgeListL[1]=LEdge;
 				edgeListL[0]=startLEdge[i];
 				theCylinder->addFace(edgeListL,4);
 
-				size_t edgeListU[4]={0};
+                unsigned int edgeListU[4]={0};
 				edgeListU[3]=tempUEdge;
 				edgeListU[2]=startUEdge[i];
 				edgeListU[1]=UEdge;
@@ -1073,23 +1073,23 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 				UEdge=tempUEdge;
 			}
 			//补全三角面
-			size_t edgeListL[3]={0};
+            unsigned int edgeListL[3]={0};
 			edgeListL[2]=endLEdge[0];
 			edgeListL[1]=LEdge;
 			edgeListL[0]=startLEdge[0];
 			theCylinder->addFace(edgeListL,3);
 
-			size_t edgeListU[3]={0};
+            unsigned int edgeListU[3]={0};
 			edgeListU[2]=startUEdge[0];
 			edgeListU[1]=UEdge;
 			edgeListU[0]=endUEdge[0];
 			theCylinder->addFace(edgeListU,3);
 
 			//生成纵向的面
-			for(size_t i=1;i<sh;i++)
+            for(unsigned int i=1;i<sh;i++)
 			{
-				size_t tempHLEdge=theCylinder->addEdge(endHVertex[i],startHVertex[i]);
-				size_t edgeListH[4]={0};
+                unsigned int tempHLEdge=theCylinder->addEdge(endHVertex[i],startHVertex[i]);
+                unsigned int edgeListH[4]={0};
 				edgeListH[3]=tempHLEdge;
 				edgeListH[2]=startHEdge[i-1];
 				edgeListH[1]=HLEdge;
@@ -1097,7 +1097,7 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 				theCylinder->addFace(edgeListH,4);
 				HLEdge=tempHLEdge;
 			}
-				size_t edgeListH[4]={0};
+                unsigned int edgeListH[4]={0};
 				edgeListH[3]=HUEdge;
 				edgeListH[2]=startHEdge[sh-1];
 				edgeListH[1]=HLEdge;
@@ -1119,23 +1119,23 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 			startLVertex=endLVertex;
 		}
 		
-			size_t LEdge=theCylinder->addEdge(endHVertexC[0],startHVertex[0]);
-			size_t UEdge=theCylinder->addEdge(endHVertexC[sh],startHVertex[sh]);
-			size_t HLEdge=LEdge;
-			size_t HUEdge=UEdge;
-			for(size_t i=sr-1;i>0;--i)
+            unsigned int LEdge=theCylinder->addEdge(endHVertexC[0],startHVertex[0]);
+            unsigned int UEdge=theCylinder->addEdge(endHVertexC[sh],startHVertex[sh]);
+            unsigned int HLEdge=LEdge;
+            unsigned int HUEdge=UEdge;
+            for(unsigned int i=sr-1;i>0;--i)
 			{
-				size_t tempLEdge=theCylinder->addEdge(endLVertexC[i],startLVertex[i]);
-				size_t tempUEdge=theCylinder->addEdge(endUVertexC[i],startUVertex[i]);
+                unsigned int tempLEdge=theCylinder->addEdge(endLVertexC[i],startLVertex[i]);
+                unsigned int tempUEdge=theCylinder->addEdge(endUVertexC[i],startUVertex[i]);
 				
-				size_t edgeListL[4]={0};
+                unsigned int edgeListL[4]={0};
 				edgeListL[3]=tempLEdge;
 				edgeListL[2]=endLEdgeC[i];
 				edgeListL[1]=LEdge;
 				edgeListL[0]=startLEdge[i];
 				theCylinder->addFace(edgeListL,4);
 
-				size_t edgeListU[4]={0};
+                unsigned int edgeListU[4]={0};
 				edgeListU[3]=tempUEdge;
 				edgeListU[2]=startUEdge[i];
 				edgeListU[1]=UEdge;
@@ -1146,23 +1146,23 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 				UEdge=tempUEdge;
 			}
 			//补全三角面
-			size_t edgeListL[3]={0};
+            unsigned int edgeListL[3]={0};
 			edgeListL[2]=endLEdgeC[0];
 			edgeListL[1]=LEdge;
 			edgeListL[0]=startLEdge[0];
 			theCylinder->addFace(edgeListL,3);
 
-			size_t edgeListU[3]={0};
+            unsigned int edgeListU[3]={0};
 			edgeListU[2]=startUEdge[0];
 			edgeListU[1]=UEdge;
 			edgeListU[0]=endUEdgeC[0];
 			theCylinder->addFace(edgeListU,3);
 
 			//生成纵向的面
-			for(size_t i=1;i<sh;++i)
+            for(unsigned int i=1;i<sh;++i)
 			{
-				size_t tempHLEdge=theCylinder->addEdge(endHVertexC[i],startHVertex[i]);
-				size_t edgeListH[4]={0};
+                unsigned int tempHLEdge=theCylinder->addEdge(endHVertexC[i],startHVertex[i]);
+                unsigned int edgeListH[4]={0};
 				edgeListH[3]=tempHLEdge;
 				edgeListH[2]=startHEdge[i-1];
 				edgeListH[1]=HLEdge;
@@ -1170,7 +1170,7 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 				theCylinder->addFace(edgeListH,4);
 				HLEdge=tempHLEdge;
 			}
-				size_t edgeListH[4]={0};
+                unsigned int edgeListH[4]={0};
 				edgeListH[3]=HUEdge;
 				edgeListH[2]=startHEdge[sh-1];
 				edgeListH[1]=HLEdge;
@@ -1194,7 +1194,7 @@ void Scene::newCylinder(Object *theCylinder,float x,float y,float z,float r,floa
 
 }
 
-size_t Scene::newSphere(float x,float y,float z,float r,AxisMode::__Enum axis,size_t sa,size_t sr)
+unsigned int Scene::newSphere(float x,float y,float z,float r,AxisMode::__Enum axis,unsigned int sa,unsigned int sr)
 {
 	Object *theSphere=new Object("Sphere");
 	newSphere(theSphere,x,y,z,r,axis,sa,sr);
@@ -1202,31 +1202,31 @@ size_t Scene::newSphere(float x,float y,float z,float r,AxisMode::__Enum axis,si
 	return theSphere->index;
 }
 
-void Scene::newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode::__Enum axis,size_t sa,size_t sr)
+void Scene::newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode::__Enum axis,unsigned int sa,unsigned int sr)
 {
 	theSphere->center.x=x;
 	theSphere->center.y=y;
 	theSphere->center.z=z;
 	//首先计算上下两个顶点
 	Vector positionAAxisV(positionAAxis(axis,x,y,z,0,0,r));
-	size_t centerU=theSphere->addVertex(positionAAxisV);
+    unsigned int centerU=theSphere->addVertex(positionAAxisV);
 	positionAAxisV=positionAAxis(axis,x,y,z,0,0,-r);
-	size_t centerL=theSphere->addVertex(positionAAxisV);
+    unsigned int centerL=theSphere->addVertex(positionAAxisV);
 	//计算间隔
 	float dr=psPI2/sr;
 	float da=ps2PI/sa;
 
-	size_t *startUEdge=new size_t[sr];
-	size_t *startUVertex=new size_t[sr+1];
+    unsigned int *startUEdge=new unsigned int[sr];
+    unsigned int *startUVertex=new unsigned int[sr+1];
 
-	size_t *startLEdge=new size_t[sr];
-	size_t *startLVertex=new size_t[sr+1];
+    unsigned int *startLEdge=new unsigned int[sr];
+    unsigned int *startLVertex=new unsigned int[sr+1];
 
-	size_t *endUEdgeC=new size_t[sr];
-	size_t *endUVertexC=new size_t[sr+1];
+    unsigned int *endUEdgeC=new unsigned int[sr];
+    unsigned int *endUVertexC=new unsigned int[sr+1];
 
-	size_t *endLEdgeC=new size_t[sr];
-	size_t *endLVertexC=new size_t[sr+1];
+    unsigned int *endLEdgeC=new unsigned int[sr];
+    unsigned int *endLVertexC=new unsigned int[sr+1];
 
 	startUVertex[0]=endUVertexC[0]=centerU;
 	startLVertex[0]=endLVertexC[0]=centerL;
@@ -1234,7 +1234,7 @@ void Scene::newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode
 	positionAAxisV=positionAAxis(axis,x,y,z,r,0,0);
 	startUVertex[sr]=endUVertexC[sr]=startLVertex[sr]=endLVertexC[sr]=theSphere->addVertex(positionAAxisV);
 
-	for(size_t i=1;i<sr;++i)
+    for(unsigned int i=1;i<sr;++i)
 	{
 		positionAAxisV=positionAAxis(axis,x,y,z,r*cos((sr-i)*dr),0,r*sin((sr-i)*dr));
 		startUVertex[i]=endUVertexC[i]=theSphere->addVertex(positionAAxisV);
@@ -1242,24 +1242,24 @@ void Scene::newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode
 		startLVertex[i]=endLVertexC[i]=theSphere->addVertex(positionAAxisV);
 	}
 	//建立第一条边
-	for(size_t i=0;i<sr;++i)
+    for(unsigned int i=0;i<sr;++i)
 	{
 		startUEdge[i]=endUEdgeC[i]=theSphere->addEdge(startUVertex[i],startUVertex[i+1]);
 		startLEdge[i]=endLEdgeC[i]=theSphere->addEdge(startLVertex[i],startLVertex[i+1]);
 	}
 	//开始循环绘制
-	for(size_t e=0;e<sa-1;++e)
+    for(unsigned int e=0;e<sa-1;++e)
 	{
-		size_t *endUEdge=new size_t[sr];
-		size_t *endUVertex=new size_t[sr+1];
-		size_t *endLEdge=new size_t[sr];
-		size_t *endLVertex=new size_t[sr+1];
+        unsigned int *endUEdge=new unsigned int[sr];
+        unsigned int *endUVertex=new unsigned int[sr+1];
+        unsigned int *endLEdge=new unsigned int[sr];
+        unsigned int *endLVertex=new unsigned int[sr+1];
 		endUVertex[0]=centerU;
 		endLVertex[0]=centerL;
 		positionAAxisV=positionAAxis(axis,x,y,z,r*cos((e+1)*da),r*sin((e+1)*da),0);
 		endUVertex[sr]=endLVertex[sr]=theSphere->addVertex(positionAAxisV);
 	
-		for(size_t i=1;i<sr;++i)
+        for(unsigned int i=1;i<sr;++i)
 		{
 			positionAAxisV=positionAAxis(axis,x,y,z,r*cos((sr-i)*dr)*cos((e+1)*da),r*cos((sr-i)*dr)*sin((e+1)*da),r*sin((sr-i)*dr));
 			endUVertex[i]=theSphere->addVertex(positionAAxisV);
@@ -1267,30 +1267,30 @@ void Scene::newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode
 			endLVertex[i]=theSphere->addVertex(positionAAxisV);
 		}
 
-		for(size_t i=0;i<sr;++i)
+        for(unsigned int i=0;i<sr;++i)
 		{
 			endUEdge[i]=theSphere->addEdge(endUVertex[i],endUVertex[i+1]);
 			endLEdge[i]=theSphere->addEdge(endLVertex[i],endLVertex[i+1]);
 		}
 		
 		//正式生成面
-		size_t middleEdge=theSphere->addEdge(endUVertex[sr],startUVertex[sr]);
-		size_t upEdge=theSphere->addEdge(endUVertex[1],startUVertex[1]);
-		size_t lowEdge=theSphere->addEdge(endLVertex[1],startLVertex[1]);
-		size_t tempUpEdge=upEdge;
-		size_t tempLowEdge=lowEdge;
-		for(size_t i=1;i<sr-1;++i)
+        unsigned int middleEdge=theSphere->addEdge(endUVertex[sr],startUVertex[sr]);
+        unsigned int upEdge=theSphere->addEdge(endUVertex[1],startUVertex[1]);
+        unsigned int lowEdge=theSphere->addEdge(endLVertex[1],startLVertex[1]);
+        unsigned int tempUpEdge=upEdge;
+        unsigned int tempLowEdge=lowEdge;
+        for(unsigned int i=1;i<sr-1;++i)
 		{
-			size_t tempEdgeU=theSphere->addEdge(endUVertex[i+1],startUVertex[i+1]);
-			size_t edgeListU[4]={0};
+            unsigned int tempEdgeU=theSphere->addEdge(endUVertex[i+1],startUVertex[i+1]);
+            unsigned int edgeListU[4]={0};
 			edgeListU[3]=endUEdge[i];
 			edgeListU[2]=tempUpEdge;
 			edgeListU[1]=startUEdge[i];
 			edgeListU[0]=tempEdgeU;
 			theSphere->addFace(edgeListU,4);
 
-			size_t tempEdgeL=theSphere->addEdge(endLVertex[i+1],startLVertex[i+1]);
-			size_t edgeListL[4]={0};
+            unsigned int tempEdgeL=theSphere->addEdge(endLVertex[i+1],startLVertex[i+1]);
+            unsigned int edgeListL[4]={0};
 			edgeListL[3]=endLEdge[i];
 			edgeListL[2]=tempEdgeL;
 			edgeListL[1]=startLEdge[i];
@@ -1301,14 +1301,14 @@ void Scene::newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode
 			tempLowEdge=tempEdgeL;
 		}
 		
-		size_t edgeListU[4]={0};
+        unsigned int edgeListU[4]={0};
 		edgeListU[3]=endUEdge[sr-1];
 		edgeListU[2]=tempUpEdge;
 		edgeListU[1]=startUEdge[sr-1];
 		edgeListU[0]=middleEdge;
 		theSphere->addFace(edgeListU,4);
 
-		size_t edgeListL[4]={0};
+        unsigned int edgeListL[4]={0};
 		edgeListL[3]=endLEdge[sr-1];
 		edgeListL[2]=middleEdge;
 		edgeListL[1]=startLEdge[sr-1];
@@ -1338,23 +1338,23 @@ void Scene::newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode
 
 	//生成最后一条
 		
-		size_t middleEdge=theSphere->addEdge(endUVertexC[sr],startUVertex[sr]);
-		size_t upEdge=theSphere->addEdge(endUVertexC[1],startUVertex[1]);
-		size_t lowEdge=theSphere->addEdge(endLVertexC[1],startLVertex[1]);
-		size_t tempUpEdge=upEdge;
-		size_t tempLowEdge=lowEdge;
-		for(size_t i=1;i<sr-1;++i)
+        unsigned int middleEdge=theSphere->addEdge(endUVertexC[sr],startUVertex[sr]);
+        unsigned int upEdge=theSphere->addEdge(endUVertexC[1],startUVertex[1]);
+        unsigned int lowEdge=theSphere->addEdge(endLVertexC[1],startLVertex[1]);
+        unsigned int tempUpEdge=upEdge;
+        unsigned int tempLowEdge=lowEdge;
+        for(unsigned int i=1;i<sr-1;++i)
 		{
-			size_t tempEdgeU=theSphere->addEdge(endUVertexC[i+1],startUVertex[i+1]);
-			size_t edgeListU[4]={0};
+            unsigned int tempEdgeU=theSphere->addEdge(endUVertexC[i+1],startUVertex[i+1]);
+            unsigned int edgeListU[4]={0};
 			edgeListU[3]=endUEdgeC[i];
 			edgeListU[2]=tempUpEdge;
 			edgeListU[1]=startUEdge[i];
 			edgeListU[0]=tempEdgeU;
 			theSphere->addFace(edgeListU,4);
 
-			size_t tempEdgeL=theSphere->addEdge(endLVertexC[i+1],startLVertex[i+1]);
-			size_t edgeListL[4]={0};
+            unsigned int tempEdgeL=theSphere->addEdge(endLVertexC[i+1],startLVertex[i+1]);
+            unsigned int edgeListL[4]={0};
 			edgeListL[3]=endLEdgeC[i];
 			edgeListL[2]=tempEdgeL;
 			edgeListL[1]=startLEdge[i];
@@ -1365,14 +1365,14 @@ void Scene::newSphere(Object *theSphere,float x,float y,float z,float r,AxisMode
 			tempLowEdge=tempEdgeL;
 		}
 		
-		size_t edgeListU[4]={0};
+        unsigned int edgeListU[4]={0};
 		edgeListU[3]=endUEdgeC[sr-1];
 		edgeListU[2]=tempUpEdge;
 		edgeListU[1]=startUEdge[sr-1];
 		edgeListU[0]=middleEdge;
 		theSphere->addFace(edgeListU,4);
 
-		size_t edgeListL[4]={0};
+        unsigned int edgeListL[4]={0};
 		edgeListL[3]=endLEdgeC[sr-1];
 		edgeListL[2]=middleEdge;
 		edgeListL[1]=startLEdge[sr-1];
@@ -1407,8 +1407,8 @@ void Scene::moveVertex(float x,float y,float z)
 	if(mode==SelectionMode::Vertex && target)
 	{
 		//遍历所有选择的点
-//		size_t selectionSize=selection.size();
-		for(size_t e=0;e<selection.size();++e)
+//		unsigned int selectionSize=selection.size();
+        for(unsigned int e=0;e<selection.size();++e)
 		{
 			//得到当前的位置
 		//	Vertex *theVertex=theObjectList[target]->vertex(selection[e]);
@@ -1423,8 +1423,8 @@ void Scene::moveEdge(float x,float y,float z)
 	if(mode==SelectionMode::Edge && target)
 	{
 		
-		size_t edgeCount=selection.size();
-		for(size_t e=0;e<edgeCount;++e)
+        unsigned int edgeCount=selection.size();
+        for(unsigned int e=0;e<edgeCount;++e)
 		{
 			Vertex *theVertex=theObjectList[target]->vertex(theObjectList[target]->edge(selection[e])->end);
 			if(!theVertex->isIn)
@@ -1452,12 +1452,12 @@ void Scene::moveFace(float x,float y,float z)
 	if(mode==SelectionMode::Face && target)
 	{
 		
-		size_t selectionCount=selection.size();
-		for(size_t i=0;i<selectionCount;++i)
+        unsigned int selectionCount=selection.size();
+        for(unsigned int i=0;i<selectionCount;++i)
 		{
 			Face *theFace=theObjectList[target]->face(selection[i]);
-			size_t edgeCount=theFace->edge.size();
-			for(size_t e=0;e<edgeCount;++e)
+            unsigned int edgeCount=theFace->edge.size();
+            for(unsigned int e=0;e<edgeCount;++e)
 			{
 				if(theFace->edge[e]>0)
 				{
@@ -1487,12 +1487,12 @@ void Scene::moveFace(float x,float y,float z)
 }
 
 //注意，清楚无用的端点但没有边的左右面!!!!!!!!!!!
-void Scene::deleteEdgeH(size_t t,size_t edgeID)
+void Scene::deleteEdgeH(unsigned int t,unsigned int edgeID)
 {
 	Edge *theEdge=theObjectList[t]->edge(edgeID);
 	Vertex *theStart=theObjectList[t]->vertex(theEdge->start);
-    size_t adjEdgeCount=theStart->m_adjacentEdgeList.size();
-	for(size_t e=0;e<adjEdgeCount;++e)
+    unsigned int adjEdgeCount=theStart->m_adjacentEdgeList.size();
+    for(unsigned int e=0;e<adjEdgeCount;++e)
 	{
         if(theStart->m_adjacentEdgeList[e]==(int)theEdge->index)
 		{
@@ -1506,7 +1506,7 @@ void Scene::deleteEdgeH(size_t t,size_t edgeID)
 	}
 	Vertex *theEnd=theObjectList[t]->vertex(theEdge->end);
     adjEdgeCount=theEnd->m_adjacentEdgeList.size();
-	for(size_t e=0;e<adjEdgeCount;++e)
+    for(unsigned int e=0;e<adjEdgeCount;++e)
 	{
         if(theEnd->m_adjacentEdgeList[e]==(int)theEdge->index)
 		{
@@ -1525,21 +1525,21 @@ void Scene::deleteVertex()
 {
 	if(mode==SelectionMode::Vertex && target)
 	{
-		size_t vertexCount=selection.size();
-		for(size_t i=0;i<vertexCount;++i)
+        unsigned int vertexCount=selection.size();
+        for(unsigned int i=0;i<vertexCount;++i)
 		{
 			//首先得到邻接的面
 			Vertex *currentVertex=theObjectList[target]->vertex(selection[i]);
-            size_t edgeCount=currentVertex->m_adjacentEdgeList.size();
-			for(size_t e=0;e<edgeCount;++e)
+            unsigned int edgeCount=currentVertex->m_adjacentEdgeList.size();
+            for(unsigned int e=0;e<edgeCount;++e)
 			{
                 if(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->end==selection[i])
 				{
                     Face *currentFace=theObjectList[target]->face(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->right);
 					if(currentFace==NULL) 
 						continue;
-					size_t edgeSize=currentFace->edge.size();
-					for(size_t h=0;h<edgeSize;++h)
+                    unsigned int edgeSize=currentFace->edge.size();
+                    for(unsigned int h=0;h<edgeSize;++h)
 					{
 						if(currentFace->edge[h]>0)
 						{
@@ -1558,8 +1558,8 @@ void Scene::deleteVertex()
                     Face *currentFace=theObjectList[target]->face(theObjectList[target]->edge(currentVertex->m_adjacentEdgeList[e])->left);
 					if(currentFace==NULL) 
 						continue;
-					size_t edgeSize=currentFace->edge.size();
-					for(size_t h=0;h<edgeSize;++h)
+                    unsigned int edgeSize=currentFace->edge.size();
+                    for(unsigned int h=0;h<edgeSize;++h)
 					{
 						if(currentFace->edge[h]>0)
 						{
@@ -1590,12 +1590,12 @@ void Scene::deleteFace()
 	if(mode==SelectionMode::Face && target)
 	{
 		//首先得到要删除的面数
-		size_t faceCount=selection.size();
-		for(size_t i=0;i<faceCount;++i)
+        unsigned int faceCount=selection.size();
+        for(unsigned int i=0;i<faceCount;++i)
 		{
 			Face *theFace=theObjectList[target]->face(selection[i]);
-			size_t edgeCount=theFace->edge.size();
-			for(size_t e=0;e<edgeCount;++e)
+            unsigned int edgeCount=theFace->edge.size();
+            for(unsigned int e=0;e<edgeCount;++e)
 			{
 				if(theFace->edge[e]>0)
 				{
@@ -1623,10 +1623,10 @@ void Scene::extrudeEdge(float x,float y,float z)
 {
 	if(mode==SelectionMode::Edge && target)
 	{
-		std::vector<size_t> newSelection;
-		size_t edgeCount=selection.size();
+        std::vector<unsigned int> newSelection;
+        unsigned int edgeCount=selection.size();
 		newSelection.reserve(edgeCount);
-		for(size_t e=0;e<edgeCount;++e)
+        for(unsigned int e=0;e<edgeCount;++e)
 		{
 			Edge *theEdge=theObjectList[target]->edge(selection[e]);
 			if(theEdge->left==0 || theEdge->right==0)
@@ -1648,7 +1648,7 @@ void Scene::extrudeEdge(float x,float y,float z)
                     isInCache.push_back(theStart);
 				}
 				//生成面
-				size_t tempEdge[4]={0};
+                unsigned int tempEdge[4]={0};
 				if(theEdge->right==0)
 				{
 					tempEdge[0]=theEdge->index;
@@ -1670,32 +1670,32 @@ void Scene::extrudeEdge(float x,float y,float z)
 		clearIsInCache();
 
 		clearSelection();
-		for(size_t i=0;i<newSelection.size();++i)
+        for(unsigned int i=0;i<newSelection.size();++i)
 		{
 			selectionPush(theObjectList[target]->edge(newSelection[i]));
 		}
 	}
 }
 
-size_t Scene::insertVertex(int edgeID,float pos)
+unsigned int Scene::insertVertex(int edgeID,float pos)
 {
 	Edge *theEdge=theObjectList[target]->edge(edgeID);
 	Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
 	Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
-    size_t newVertex=theObjectList[target]->addVertex(theStart->m_position.x+(theEnd->m_position.x-theStart->m_position.x)*pos,theStart->m_position.y+(theEnd->m_position.y-theStart->m_position.y)*pos,theStart->m_position.z+(theEnd->m_position.z-theStart->m_position.z)*pos);
-	size_t right=theEdge->right;
-	size_t left=theEdge->left;
-    size_t edgeCount=theEnd->m_adjacentEdgeList.size();
-	size_t removedEdge=theEdge->index;
+    unsigned int newVertex=theObjectList[target]->addVertex(theStart->m_position.x+(theEnd->m_position.x-theStart->m_position.x)*pos,theStart->m_position.y+(theEnd->m_position.y-theStart->m_position.y)*pos,theStart->m_position.z+(theEnd->m_position.z-theStart->m_position.z)*pos);
+    unsigned int right=theEdge->right;
+    unsigned int left=theEdge->left;
+    unsigned int edgeCount=theEnd->m_adjacentEdgeList.size();
+    unsigned int removedEdge=theEdge->index;
 	deleteEdgeH(target,removedEdge);
-	size_t edgeS=theObjectList[target]->addEdge(theStart->index,newVertex);
-	size_t edgeE=theObjectList[target]->addEdge(newVertex,theEnd->index);
+    unsigned int edgeS=theObjectList[target]->addEdge(theStart->index,newVertex);
+    unsigned int edgeE=theObjectList[target]->addEdge(newVertex,theEnd->index);
 
 	Face *theFace=theObjectList[target]->face(right);
 	if(theFace)
 	{
 		edgeCount=theFace->edge.size();
-		size_t e;
+        unsigned int e;
 		for(e=0;e<edgeCount;++e)
 		{
 			if(theFace->edge[e]==(int)removedEdge)
@@ -1713,7 +1713,7 @@ size_t Scene::insertVertex(int edgeID,float pos)
 	if(theFace)
 	{
 		edgeCount=theFace->edge.size();
-		size_t e;
+        unsigned int e;
 		for(e=0;e<edgeCount;++e)
 		{
 			if(theFace->edge[e]==-((int)removedEdge))
@@ -1735,8 +1735,8 @@ void Scene::split(int startV,int endV)
 	//printf("begin\n");
 	Vertex *theStart=theObjectList[target]->vertex(startV);
 	Vertex *theEnd=theObjectList[target]->vertex(endV);
-    size_t edgeCount=theStart->m_adjacentEdgeList.size();
-	size_t e;
+    unsigned int edgeCount=theStart->m_adjacentEdgeList.size();
+    unsigned int e;
 	Face *theFace=NULL;
 	for(e=0;e<edgeCount;++e)
 	{
@@ -1784,12 +1784,12 @@ void Scene::split(int startV,int endV)
 	//printf("begin2\n");
 	//到这一步可以说明这两个点不共边而且共享同一个面
 	//新建一个边
-	size_t newEdge=theObjectList[target]->addEdge(theStart->index,theEnd->index);
+    unsigned int newEdge=theObjectList[target]->addEdge(theStart->index,theEnd->index);
 	//printf("begin2.5\n");
 	edgeCount=theFace->edge.size();
-	size_t edgeS[2]={0};
-	size_t edgeE[2]={0};
-	for(size_t i=0;i<edgeCount;++i)
+    unsigned int edgeS[2]={0};
+    unsigned int edgeE[2]={0};
+    for(unsigned int i=0;i<edgeCount;++i)
 	{
 		if(theFace->edge[i]>0)
 		{
@@ -1822,9 +1822,9 @@ void Scene::split(int startV,int endV)
 	//printf("[%d]",theFace->index);
 	//得到theStart所在的第一个边
 	//生成两个新的面
-	size_t *tempFace=new size_t[theFace->edge.size()*2];
-	size_t b=edgeS[1];
-	size_t count=0;
+    unsigned int *tempFace=new unsigned int[theFace->edge.size()*2];
+    unsigned int b=edgeS[1];
+    unsigned int count=0;
 	while(b!=edgeE[1])
 	{
 		if(theFace->edge[b]>0)
@@ -1846,7 +1846,7 @@ void Scene::split(int startV,int endV)
 	//printf("count:%d,size:%d\n",count+1,theFace->edge.size()*2);
 	theObjectList[target]->addFace(tempFace,count+1);
 	delete tempFace;
-	tempFace=new size_t[theFace->edge.size()*2];
+    tempFace=new unsigned int[theFace->edge.size()*2];
 	//printf("begin3\n");
 	b=edgeE[1];
 	count=0;
@@ -1868,7 +1868,7 @@ void Scene::split(int startV,int endV)
 		b=b%theFace->edge.size();
 	}
 	tempFace[count]=newEdge;
-//	for(size_t i=0;i<count+1;i++)
+//	for(unsigned int i=0;i<count+1;i++)
 //	{
 		//printf("{%d}\n",tempFace[i]);
 	//}
@@ -1876,7 +1876,7 @@ void Scene::split(int startV,int endV)
 	//printf("begin4\n");
 	//printf("[%d]",theFace->index);
 
-	size_t fi=theFace->index;
+    unsigned int fi=theFace->index;
 	theFace=NULL;
 	theObjectList[target]->objectFaceRemove(fi);
 	delete tempFace;
@@ -1886,8 +1886,8 @@ void Scene::removeEdge()
 {
 	if(mode==SelectionMode::Edge && target){
 	//遍历所有的边
-	size_t removedEdgeCount=selection.size();
-	for(size_t i=0;i<removedEdgeCount;++i)
+    unsigned int removedEdgeCount=selection.size();
+    for(unsigned int i=0;i<removedEdgeCount;++i)
 	{
 		Edge *theEdge=theObjectList[target]->edge(selection[i]);
 		if(theEdge==NULL)
@@ -1899,8 +1899,8 @@ void Scene::removeEdge()
 		{
 			//保证每个边必有邻接的面
 			Face *theFace=theObjectList[target]->face(theEdge->right);
-			size_t adjEdgeCount=theFace->edge.size();
-			for(size_t e=0;e<adjEdgeCount;++e)
+            unsigned int adjEdgeCount=theFace->edge.size();
+            for(unsigned int e=0;e<adjEdgeCount;++e)
 			{
 				if(theFace->edge[e]>0)
 				{
@@ -1925,8 +1925,8 @@ void Scene::removeEdge()
 		if(theEdge->right==0)
 		{
 			Face *theFace=theObjectList[target]->face(theEdge->left);
-			size_t adjEdgeCount=theFace->edge.size();
-			for(size_t e=0;e<adjEdgeCount;++e)
+            unsigned int adjEdgeCount=theFace->edge.size();
+            for(unsigned int e=0;e<adjEdgeCount;++e)
 			{
 				if(theFace->edge[e]>0)
 				{
@@ -1952,18 +1952,18 @@ void Scene::removeEdge()
 			Face *theLeft=theObjectList[target]->face(theEdge->left);
 			Face *theRight=theObjectList[target]->face(theEdge->right);
 			//首先在右侧的面里面找到要删除的这个边
-			size_t adjEdgeCount=theRight->edge.size();
-			size_t e=0;
+            unsigned int adjEdgeCount=theRight->edge.size();
+            unsigned int e=0;
 			for(e=0;e<adjEdgeCount;++e)
 			{
 				if(theRight->edge[e]>0)
 				{
-					if(theEdge->index==(size_t)theRight->edge[e])
+                    if(theEdge->index==(unsigned int)theRight->edge[e])
 						break;
 				}
 				else
 				{
-					if(theEdge->index==(size_t)(-theRight->edge[e]))
+                    if(theEdge->index==(unsigned int)(-theRight->edge[e]))
 						break;
 				}
 			}
@@ -1972,7 +1972,7 @@ void Scene::removeEdge()
 			deleteEdgeH(target,theEdge->index);
             while(theStart->m_adjacentEdgeList.size()==1)
 			{
-				size_t next=0;
+                unsigned int next=0;
                 if(theStart->index==theObjectList[target]->edge(theStart->m_adjacentEdgeList[0])->end)
 				{
                     next=theObjectList[target]->edge(theStart->m_adjacentEdgeList[0])->start;
@@ -1987,7 +1987,7 @@ void Scene::removeEdge()
 
             while(theEnd->m_adjacentEdgeList.size()==1)
 			{
-				size_t next=0;
+                unsigned int next=0;
                 if(theEnd->index==theObjectList[target]->edge(theEnd->m_adjacentEdgeList[0])->end)
 				{
                     next=theObjectList[target]->edge(theEnd->m_adjacentEdgeList[0])->start;
@@ -2000,10 +2000,10 @@ void Scene::removeEdge()
 				theEnd=theObjectList[target]->vertex(next);
 			}
 			//开始生成新的面了;
-			size_t sEdgeR=0;
-			size_t eEdgeR=0;
-			size_t edgeCount=theRight->edge.size();
-			for(size_t e=0;e<edgeCount;++e)
+            unsigned int sEdgeR=0;
+            unsigned int eEdgeR=0;
+            unsigned int edgeCount=theRight->edge.size();
+            for(unsigned int e=0;e<edgeCount;++e)
 			{
 				if(theRight->edge[e]>0)
 				{
@@ -2035,10 +2035,10 @@ void Scene::removeEdge()
 				}
 			}
 
-			size_t sEdgeL=0;
-			size_t eEdgeL=0;
+            unsigned int sEdgeL=0;
+            unsigned int eEdgeL=0;
 			edgeCount=theLeft->edge.size();
-			for(size_t e=0;e<edgeCount;++e)
+            for(unsigned int e=0;e<edgeCount;++e)
 			{
 				if(theLeft->edge[e]>0)
 				{
@@ -2070,9 +2070,9 @@ void Scene::removeEdge()
 				}
 			}
 			//正式生成两个新的面
-			size_t b=sEdgeR;
-			size_t count=0;
-			size_t *tempEdge=new size_t[theRight->edge.size()+theLeft->edge.size()];
+            unsigned int b=sEdgeR;
+            unsigned int count=0;
+            unsigned int *tempEdge=new unsigned int[theRight->edge.size()+theLeft->edge.size()];
 			while(b!=eEdgeR)
 			{
 				tempEdge[count]=theRight->edge[b]>0?theRight->edge[b]:-theRight->edge[b];
@@ -2103,8 +2103,8 @@ void Scene::removeEdge()
 
 void Scene::clearIsInCache()
 {
-	size_t cacheSize=isInCache.size();
-	for(size_t i=0;i<cacheSize;++i)
+    unsigned int cacheSize=isInCache.size();
+    for(unsigned int i=0;i<cacheSize;++i)
 	{
 		if(isInCache[i])
 		{
@@ -2114,18 +2114,18 @@ void Scene::clearIsInCache()
 	isInCache.clear();
 }
 
-void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
+void Scene::targetWeldVertex(unsigned int vertexA,unsigned int vertexB)
 {
-	size_t mode=0;
+    unsigned int mode=0;
 	Vertex *theOriginal=theObjectList[target]->vertex(vertexA);
 	Vertex *theTarget=theObjectList[target]->vertex(vertexB);
-    size_t edgeCount=theOriginal->m_adjacentEdgeList.size();
+    unsigned int edgeCount=theOriginal->m_adjacentEdgeList.size();
 	std::vector<Edge *> OAdjEdge;
 	OAdjEdge.reserve(10);
 	std::vector<Vertex *> OEnd;
 	OEnd.reserve(10);
 	//首先要遍历第一个点的邻接边，要检测这两个点的邻接边，判断是否是边缘边，是否有共点等
-	size_t e=0;
+    unsigned int e=0;
 	bool isEdge=false;
 	for(e=0;e<edgeCount;++e)
 	{
@@ -2179,9 +2179,9 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
         Edge *theEdge=theObjectList[target]->edge(theOriginal->m_adjacentEdgeList[e]);
 		Vertex *theStart=NULL;
 		Vertex *theEnd=NULL;
-		size_t eIndex=theEdge->index;
-		size_t right=theEdge->right;
-		size_t left=theEdge->left;
+        unsigned int eIndex=theEdge->index;
+        unsigned int right=theEdge->right;
+        unsigned int left=theEdge->left;
 		if(theEdge->start==vertexB)
 		{
 			theStart=theObjectList[target]->vertex(theEdge->start);
@@ -2193,8 +2193,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 			theEnd=theObjectList[target]->vertex(theEdge->start);
 		}
 		deleteEdgeH(target,theEdge->index);
-        size_t edgeCount=theEnd->m_adjacentEdgeList.size();
-		for(size_t e=0;e<edgeCount;++e)
+        unsigned int edgeCount=theEnd->m_adjacentEdgeList.size();
+        for(unsigned int e=0;e<edgeCount;++e)
 		{
             theObjectList[target]->vertexAdjacentPush(theStart->index,theEnd->m_adjacentEdgeList[e]);
 			//更新这些边的端点
@@ -2211,8 +2211,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 		if(left>0)
 		{
 			Face  *theFace=theObjectList[target]->face(left);
-			size_t edgeCount=theFace->edge.size();
-			for(size_t i=0;i<edgeCount;++i)
+            unsigned int edgeCount=theFace->edge.size();
+            for(unsigned int i=0;i<edgeCount;++i)
 			{
 				if(theFace->edge[i]==-((int)eIndex))
 				{
@@ -2227,8 +2227,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 		{
 			
 			Face  *theFace=theObjectList[target]->face(right);
-			size_t edgeCount=theFace->edge.size();
-			for(size_t i=0;i<edgeCount;++i)
+            unsigned int edgeCount=theFace->edge.size();
+            for(unsigned int i=0;i<edgeCount;++i)
 			{
 				if(theFace->edge[i]==(int)eIndex)
 				{
@@ -2245,11 +2245,11 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 	if(isEdge)
 	{
 		isEdge=false;
-        size_t edgeCount=theTarget->m_adjacentEdgeList.size();
+        unsigned int edgeCount=theTarget->m_adjacentEdgeList.size();
 		Edge *edgeS[2]={NULL};
 		Edge *edgeE[2]={NULL};
-		size_t adjEdgeNum=0;
-		for(size_t e=0;e<edgeCount;++e)
+        unsigned int adjEdgeNum=0;
+        for(unsigned int e=0;e<edgeCount;++e)
 		{
             if(!theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->left || !theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->right)
 			{
@@ -2278,8 +2278,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 					{
 						//记录邻接边
                         edgeE[adjEdgeNum]=theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e]);
-						size_t OEndCount=OEnd.size();
-						for(size_t h=0;h<OEndCount;++h)
+                        unsigned int OEndCount=OEnd.size();
+                        for(unsigned int h=0;h<OEndCount;++h)
 						{
                             if(OEnd[h]->index==theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->start)
 							{
@@ -2299,8 +2299,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
                     if(theObjectList[target]->vertex(theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->end)->isIn)
 					{
                         edgeE[adjEdgeNum]=theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e]);
-						size_t OEndCount=OEnd.size();
-						for(size_t h=0;h<OEndCount;++h)
+                        unsigned int OEndCount=OEnd.size();
+                        for(unsigned int h=0;h<OEndCount;++h)
 						{
                             if(OEnd[h]->index==theObjectList[target]->edge(theTarget->m_adjacentEdgeList[e])->end)
 							{
@@ -2323,8 +2323,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 			if(adjEdgeNum==0)
 			{
 				//直接焊接
-                size_t edgeCount=theOriginal->m_adjacentEdgeList.size();
-				for(size_t h=0;h<edgeCount;++h)
+                unsigned int edgeCount=theOriginal->m_adjacentEdgeList.size();
+                for(unsigned int h=0;h<edgeCount;++h)
 				{
                     Edge *theEdge=theObjectList[target]->edge(theOriginal->m_adjacentEdgeList[h]);
 					theObjectList[target]->vertexAdjacentPush(theTarget->index,theEdge->index);
@@ -2342,8 +2342,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 			else
 			if(adjEdgeNum>0)
 			{
-				size_t wMode[2]={0};
-				for(size_t w=0;w<adjEdgeNum;++w)
+                unsigned int wMode[2]={0};
+                for(unsigned int w=0;w<adjEdgeNum;++w)
 				{
 					if(edgeS[w]->end==edgeE[w]->start)
 					{
@@ -2414,14 +2414,14 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 						}
 					}
 				}
-				size_t theOriginalIndex=theOriginal->index;
-				for(size_t w=0;w<adjEdgeNum;w++)
+                unsigned int theOriginalIndex=theOriginal->index;
+                for(unsigned int w=0;w<adjEdgeNum;w++)
 				{
 					if(wMode[w]==1)
 					{
 						Face *theF=theObjectList[target]->face(edgeS[w]->right);
-						size_t edgeCount=theF->edge.size();
-						for(size_t h=0;h<edgeCount;++h)
+                        unsigned int edgeCount=theF->edge.size();
+                        for(unsigned int h=0;h<edgeCount;++h)
 						{
 							if(theF->edge[h]==(int)(edgeS[w]->index))
 							{
@@ -2436,8 +2436,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 					if(wMode[w]==2)
 					{
 						Face *theF=theObjectList[target]->face(edgeS[w]->left);
-						size_t edgeCount=theF->edge.size();
-						for(size_t h=0;h<edgeCount;++h)
+                        unsigned int edgeCount=theF->edge.size();
+                        for(unsigned int h=0;h<edgeCount;++h)
 						{
 							if(theF->edge[h]==-((int)edgeS[w]->index))
 							{
@@ -2452,8 +2452,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 					if(wMode[w]==3)
 					{
 						Face *theF=theObjectList[target]->face(edgeS[w]->right);
-						size_t edgeCount=theF->edge.size();
-						for(size_t h=0;h<edgeCount;++h)
+                        unsigned int edgeCount=theF->edge.size();
+                        for(unsigned int h=0;h<edgeCount;++h)
 						{
 							if(theF->edge[h]==(int)edgeS[w]->index)
 							{
@@ -2468,8 +2468,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 					if(wMode[w]==4)
 					{
 						Face *theF=theObjectList[target]->face(edgeS[w]->left);
-						size_t edgeCount=theF->edge.size();
-						for(size_t h=0;h<edgeCount;++h)
+                        unsigned int edgeCount=theF->edge.size();
+                        for(unsigned int h=0;h<edgeCount;++h)
 						{
 							if(theF->edge[h]==-((int)edgeS[w]->index))
 							{
@@ -2484,8 +2484,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 					if(wMode[w]==5)
 					{
 						Face *theF=theObjectList[target]->face(edgeS[w]->left);
-						size_t edgeCount=theF->edge.size();
-						for(size_t h=0;h<edgeCount;++h)
+                        unsigned int edgeCount=theF->edge.size();
+                        for(unsigned int h=0;h<edgeCount;++h)
 						{
 							if(theF->edge[h]==-((int)edgeS[w]->index))
 							{
@@ -2500,8 +2500,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 					if(wMode[w]==6)
 					{
 						Face *theF=theObjectList[target]->face(edgeS[w]->right);
-						size_t edgeCount=theF->edge.size();
-						for(size_t h=0;h<edgeCount;++h)
+                        unsigned int edgeCount=theF->edge.size();
+                        for(unsigned int h=0;h<edgeCount;++h)
 						{
 							if(theF->edge[h]==(int)(edgeS[w]->index))
 							{
@@ -2516,8 +2516,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 					if(wMode[w]==7)
 					{
 						Face *theF=theObjectList[target]->face(edgeS[w]->left);
-						size_t edgeCount=theF->edge.size();
-						for(size_t h=0;h<edgeCount;++h)
+                        unsigned int edgeCount=theF->edge.size();
+                        for(unsigned int h=0;h<edgeCount;++h)
 						{
 							if(theF->edge[h]==-((int)edgeS[w]->index))
 							{
@@ -2532,8 +2532,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 					if(wMode[w]==8)
 					{
 						Face *theF=theObjectList[target]->face(edgeS[w]->right);
-						size_t edgeCount=theF->edge.size();
-						for(size_t h=0;h<edgeCount;++h)
+                        unsigned int edgeCount=theF->edge.size();
+                        for(unsigned int h=0;h<edgeCount;++h)
 						{
 							if(theF->edge[h]==(int)edgeS[w]->index)
 							{
@@ -2548,8 +2548,8 @@ void Scene::targetWeldVertex(size_t vertexA,size_t vertexB)
 				if(theObjectList[target]->vertex(theOriginalIndex))
 				{
 					theOriginal=theObjectList[target]->vertex(theOriginalIndex);
-                    size_t edgeCount=theOriginal->m_adjacentEdgeList.size();
-					for(size_t h=0;h<edgeCount;++h)
+                    unsigned int edgeCount=theOriginal->m_adjacentEdgeList.size();
+                    for(unsigned int h=0;h<edgeCount;++h)
 					{
                         theObjectList[target]->vertexAdjacentPush(theTarget->index,theOriginal->m_adjacentEdgeList[h]);
                         if(theObjectList[target]->edge(theOriginal->m_adjacentEdgeList[h])->end==theOriginal->index)
@@ -2581,10 +2581,10 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 	if(mode==SelectionMode::Face && target)
 	{
 		//首先要统计组
-		std::vector<size_t> newFaceSelected;
-		size_t faceCount=selection.size();
+        std::vector<unsigned int> newFaceSelected;
+        unsigned int faceCount=selection.size();
 		newFaceSelected.reserve(faceCount);
-		for(size_t i=0;i<faceCount;++i)
+        for(unsigned int i=0;i<faceCount;++i)
 		{
 			
 			//这里首先要得到一个面的连通区域
@@ -2606,8 +2606,8 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 						toBeHandled[0]->isIn=true;
 						isInCache.push_back(toBeHandled[0]);
 						theGroup.push_back(toBeHandled[0]);
-						size_t edgeCount=toBeHandled[0]->edge.size();
-						for(size_t h=0;h<edgeCount;++h)
+                        unsigned int edgeCount=toBeHandled[0]->edge.size();
+                        for(unsigned int h=0;h<edgeCount;++h)
 						{
 							if(toBeHandled[0]->edge[h]>0)
 							{
@@ -2631,15 +2631,15 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 				}
 				//这里就已经得到一个group了
 				//首先就是将group复制成一个新的
-				size_t groupSize=theGroup.size();
+                unsigned int groupSize=theGroup.size();
 				std::vector<int> eEdgeList;
 				eEdgeList.reserve(groupSize*5);
-				for(size_t e=0;e<groupSize;++e)
+                for(unsigned int e=0;e<groupSize;++e)
 				{
 					Face *theFace=theGroup[e];
-					size_t edgeCount=theFace->edge.size();
-					size_t *tempEdge=new size_t[edgeCount];
-					for(size_t h=0;h<edgeCount;++h)
+                    unsigned int edgeCount=theFace->edge.size();
+                    unsigned int *tempEdge=new unsigned int[edgeCount];
+                    for(unsigned int h=0;h<edgeCount;++h)
 					{
 						Edge *theEdge;
 						if(theFace->edge[h]>0)
@@ -2709,15 +2709,15 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 				}
 
 				//生成侧面的面
-				size_t eEdgeListSize=eEdgeList.size();
-				for(size_t e=0;e<eEdgeListSize;++e)
+                unsigned int eEdgeListSize=eEdgeList.size();
+                for(unsigned int e=0;e<eEdgeListSize;++e)
 				{
 					if(eEdgeList[e]>0)
 					{
 						Edge *theEdge=theObjectList[target]->edge(eEdgeList[e]);
 						Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
 						Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-						size_t tempEdge[4]={0};
+                        unsigned int tempEdge[4]={0};
                         if(!theObjectList[target]->vertex(theStart->m_clone)->isIn)
 						{
                             theObjectList[target]->vertex(theStart->m_clone)->m_clone=theObjectList[target]->addEdge(theStart->index,theStart->m_clone);
@@ -2741,7 +2741,7 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 						Edge *theEdge=theObjectList[target]->edge(-eEdgeList[e]);
 						Vertex *theStart=theObjectList[target]->vertex(theEdge->start);
 						Vertex *theEnd=theObjectList[target]->vertex(theEdge->end);
-						size_t tempEdge[4]={0};
+                        unsigned int tempEdge[4]={0};
                         if(!theObjectList[target]->vertex(theStart->m_clone)->isIn)
 						{
                             theObjectList[target]->vertex(theStart->m_clone)->m_clone=theObjectList[target]->addEdge(theStart->index,theStart->m_clone);
@@ -2763,11 +2763,11 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 				}
 				clearIsInCache();
 				//删除原来的面
-				for(size_t e=0;e<groupSize;++e)
+                for(unsigned int e=0;e<groupSize;++e)
 				{
 					Face *theFace=theGroup[e];
-					size_t edgeCount=theFace->edge.size();
-					for(size_t h=0;h<edgeCount;++h)
+                    unsigned int edgeCount=theFace->edge.size();
+                    for(unsigned int h=0;h<edgeCount;++h)
 					{
 						if(theFace->edge[h]>0)
 						{
@@ -2801,7 +2801,7 @@ void Scene::extrudeFaceGroup(float x,float y,float z)
 
 		clearSelection();
 
-		for(size_t i=0;i<newFaceSelected.size();++i)
+        for(unsigned int i=0;i<newFaceSelected.size();++i)
 		{
 			Face *theFace=theObjectList[target]->face(newFaceSelected[i]);
 			if(theFace)
@@ -2828,13 +2828,13 @@ void Scene::detach(Object *newObject)
 			sceneObjectAdd(newObject);
 			
 			//首先要统计组
-			size_t faceCount=selection.size();
-			for(size_t e=0;e<faceCount;++e)
+            unsigned int faceCount=selection.size();
+            for(unsigned int e=0;e<faceCount;++e)
 			{
 				Face *theFace=theObjectList[target]->face(selection[e]);
-				size_t edgeCount=theFace->edge.size();
-				size_t *tempEdge=new size_t[edgeCount];
-				for(size_t h=0;h<edgeCount;++h)
+                unsigned int edgeCount=theFace->edge.size();
+                unsigned int *tempEdge=new unsigned int[edgeCount];
+                for(unsigned int h=0;h<edgeCount;++h)
 				{
 					Edge *theEdge;
 					if(theFace->edge[h]>0)
@@ -2872,11 +2872,11 @@ void Scene::detach(Object *newObject)
 				delete tempEdge;
 			}
 			clearIsInCache();
-for(size_t e=0;e<faceCount;++e)
+for(unsigned int e=0;e<faceCount;++e)
 			{
 				Face *theFace=theObjectList[target]->face(selection[e]);
-size_t edgeCount=theFace->edge.size();
-				for(size_t h=0;h<edgeCount;++h)
+unsigned int edgeCount=theFace->edge.size();
+                for(unsigned int h=0;h<edgeCount;++h)
 				{
 					if(theFace->edge[h]>0)
 					{
@@ -2909,7 +2909,7 @@ newObject->scale=theObjectList[target]->scale;
 		
 	}
 
-void Scene::attach(size_t original,size_t toBeAttached)
+void Scene::attach(unsigned int original,unsigned int toBeAttached)
 	{
 		if(original && toBeAttached)
 		{
@@ -2943,8 +2943,8 @@ void Scene::attach(size_t original,size_t toBeAttached)
 			glGetFloatv(GL_MODELVIEW_MATRIX,(GLfloat*)(&transform.m));
 			glPopMatrix();
 
-			size_t vertexCount=theObjectList[toBeAttached]->vertexCount();
-			for(size_t i=0;i<vertexCount;++i)
+            unsigned int vertexCount=theObjectList[toBeAttached]->vertexCount();
+            for(unsigned int i=0;i<vertexCount;++i)
 			{
 				Vertex *theVertex=theObjectList[toBeAttached]->vertex(i);
 				if(theVertex)
@@ -2954,8 +2954,8 @@ void Scene::attach(size_t original,size_t toBeAttached)
 				}
 			}
 
-			size_t edgeCount=theObjectList[toBeAttached]->edgeCount();
-			for(size_t e=0;e<edgeCount;++e)
+            unsigned int edgeCount=theObjectList[toBeAttached]->edgeCount();
+            for(unsigned int e=0;e<edgeCount;++e)
 			{
 				Edge *theEdge=theObjectList[toBeAttached]->edge(e);
 				if(e)
@@ -2964,14 +2964,14 @@ void Scene::attach(size_t original,size_t toBeAttached)
 				}
 			}
 
-			size_t faceCount=theObjectList[toBeAttached]->faceCount();
-			for(size_t f=1;f<faceCount;++f)
+            unsigned int faceCount=theObjectList[toBeAttached]->faceCount();
+            for(unsigned int f=1;f<faceCount;++f)
 			{
 				Face *theFace=theObjectList[toBeAttached]->face(f);
 				if(theFace==NULL) continue;
-				size_t edgeCount=theFace->edge.size();
-				size_t *tempEdge=new size_t[edgeCount];
-				for(size_t e=0;e<edgeCount;++e)
+                unsigned int edgeCount=theFace->edge.size();
+                unsigned int *tempEdge=new unsigned int[edgeCount];
+                for(unsigned int e=0;e<edgeCount;++e)
 				{
 					if(theFace->edge[e]>0)
 					{
@@ -2992,10 +2992,10 @@ void Scene::attach(size_t original,size_t toBeAttached)
 
 void Scene::clearSelection()
 	{
-		size_t selectionSize=selection.size();
+        unsigned int selectionSize=selection.size();
 		if(mode==SelectionMode::Vertex)
 		{
-			for(size_t i=0;i<selectionSize;i++)
+            for(unsigned int i=0;i<selectionSize;i++)
 			{
 				if(theObjectList[target]->vertex(selection[i]))
 				{
@@ -3006,7 +3006,7 @@ void Scene::clearSelection()
 		else
 		if(mode==SelectionMode::Edge)
 		{
-			for(size_t i=0;i<selectionSize;i++)
+            for(unsigned int i=0;i<selectionSize;i++)
 			{
 				if(theObjectList[target]->edge(selection[i]))
 				{
@@ -3017,7 +3017,7 @@ void Scene::clearSelection()
 		else
 		if(mode==SelectionMode::Face)
 		{
-			for(size_t i=0;i<selectionSize;i++)
+            for(unsigned int i=0;i<selectionSize;i++)
 			{
 				if(theObjectList[target]->face(selection[i]))
 				{
@@ -3028,7 +3028,7 @@ void Scene::clearSelection()
 		else
 		if(mode==SelectionMode::Object)
 		{
-			for(size_t i=0;i<selectionSize;i++)
+            for(unsigned int i=0;i<selectionSize;i++)
 			{
 				if(theObjectList[selection[i]])
 				{

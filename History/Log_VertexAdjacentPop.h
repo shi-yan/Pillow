@@ -6,11 +6,11 @@ class Log_VertexAdjacentPop :
 	public HistoryLog
 {
 public:
-	const size_t index;
+    const unsigned int index;
 	const int o;
 
 public:
-	Log_VertexAdjacentPop(size_t theTarget,size_t theIndex,int o);
+    Log_VertexAdjacentPop(unsigned int theTarget,unsigned int theIndex,int o);
 	std::string toString()
 	{
 		char temp[256];

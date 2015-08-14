@@ -5,8 +5,8 @@
 class UILayer
 {
 public:
-	size_t width;
-	size_t height;
+    unsigned int width;
+    unsigned int height;
 	ToolStrip *fileStrip;
 	ToolStrip *modifyModeStrip;
 	ToolStrip *layoutModeStrip;
@@ -18,7 +18,7 @@ public:
 	ToolStrip *currentIn;
 	GLuint textureID;
 public:
-	UILayer(size_t theWidth,size_t theHeight):currentIn(NULL),width(theWidth),height(theHeight)
+    UILayer(unsigned int theWidth,unsigned int theHeight):currentIn(NULL),width(theWidth),height(theHeight)
 	{
 		//wxImage::AddHandler(new wxPNGHandler);
         textureID=loadTexture("://ui.dat");
@@ -236,7 +236,7 @@ public:
 		cameraStrip->onPaint();
 	};
 
-	void updateSize(size_t theWidth,size_t theHeight)
+    void updateSize(unsigned int theWidth,unsigned int theHeight)
 	{
 		width=theWidth;
 		height=theHeight;
