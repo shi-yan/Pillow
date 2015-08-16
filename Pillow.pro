@@ -77,7 +77,8 @@ HEADERS += \
     Core/Vertex.h \
     View/ViewportImage.h \
     MainWindow.h \
-    GLCanvas.h
+    GLCanvas.h \
+    Dialog/NewCubeDialog.h
 
 SOURCES += \
     UI/AxisCursor.cpp \
@@ -149,7 +150,8 @@ SOURCES += \
     View/ViewportImage.cpp \
     main.cpp \
     MainWindow.cpp \
-    GLCanvas.cpp
+    GLCanvas.cpp \
+    Dialog/NewCubeDialog.cpp
 
 
 unix:!mac {
@@ -160,7 +162,8 @@ macx {
 LIBS += -framework OpenGL
 }
 FORMS += \
-    MainWindow.ui
+    MainWindow.ui \
+    Dialog/NewCubeDialog.ui
 
 RESOURCES += \
     resources.qrc

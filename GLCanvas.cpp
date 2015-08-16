@@ -14,12 +14,8 @@ GLCanvas::GLCanvas(QWidget *parent) : QOpenGLWidget(parent),isDragging(false)
 
 void GLCanvas::initializeGL()
 {
-
     theScene=new Scene();
     theScene->initialize();
-
-
-
     theScreen=new Screen();
 	theScreen->initialize();
     int w = 800, h = 600;

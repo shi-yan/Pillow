@@ -3,7 +3,6 @@
 
 Quaternion::Quaternion(const Matrix &mat)
 {
-
 	float tr,s,q[4];
 	int i,j,k;
 

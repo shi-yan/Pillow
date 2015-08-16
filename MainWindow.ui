@@ -44,8 +44,479 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew_Scene"/>
+    <addaction name="actionOpen_Scene"/>
+    <addaction name="actionSave_Scene"/>
+    <addaction name="actionSave_Scene_as"/>
+    <addaction name="separator"/>
+    <addaction name="actionLoad_Into_Scene"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Console"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit_Pillow"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_Screenshot"/>
+    <addaction name="separator"/>
+    <addaction name="actionHistory"/>
+   </widget>
+   <widget class="QMenu" name="menuCreate">
+    <property name="title">
+     <string>Create</string>
+    </property>
+    <addaction name="actionCreate_Cube"/>
+    <addaction name="actionCreate_Cylindar"/>
+    <addaction name="actionCreate_Sphere"/>
+    <addaction name="actionCreate_Cone"/>
+    <addaction name="actionCreate_Torus"/>
+    <addaction name="actionCreate_Plane"/>
+    <addaction name="separator"/>
+    <addaction name="actionCreate_Clone"/>
+    <addaction name="actionCreate_Mirror"/>
+    <addaction name="separator"/>
+    <addaction name="actionCreate_Mirror_Instance"/>
+    <addaction name="actionRemove_Mirror_Instance"/>
+   </widget>
+   <widget class="QMenu" name="menuModify">
+    <property name="title">
+     <string>Modify</string>
+    </property>
+    <addaction name="actionMerge_Selection"/>
+    <addaction name="actionDetech_Selection"/>
+    <addaction name="actionDelete_Vertices"/>
+    <addaction name="actionExtrude"/>
+    <addaction name="actionSplit"/>
+    <addaction name="actionCollapse"/>
+    <addaction name="actionTarget_Weld"/>
+    <addaction name="actionUpdate_Normal"/>
+   </widget>
+   <widget class="QMenu" name="menuSubdivision">
+    <property name="title">
+     <string>Subdivision</string>
+    </property>
+    <addaction name="actionSubdivide"/>
+    <addaction name="actionUnsubdivide"/>
+    <addaction name="actionRedefine_Control_Point"/>
+   </widget>
+   <widget class="QMenu" name="menuSelection">
+    <property name="title">
+     <string>Selection</string>
+    </property>
+    <widget class="QMenu" name="menuSelection_Mode">
+     <property name="title">
+      <string>Selection Mode</string>
+     </property>
+     <addaction name="actionEdge"/>
+     <addaction name="actionFace"/>
+     <addaction name="actionObject"/>
+    </widget>
+    <addaction name="menuSelection_Mode"/>
+    <addaction name="actionSelect_All"/>
+    <addaction name="actionInvert_Selection"/>
+    <addaction name="actionFrame_Selection"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuDisplayMode">
+     <property name="title">
+      <string>Display Mode</string>
+     </property>
+     <addaction name="actionFrame"/>
+     <addaction name="actionFlat"/>
+     <addaction name="actionFlat_Wire"/>
+     <addaction name="actionSmooth"/>
+     <addaction name="actionSmooth_Wire"/>
+    </widget>
+    <widget class="QMenu" name="menuViewport_Layout">
+     <property name="title">
+      <string>Viewport Layout</string>
+     </property>
+     <addaction name="actionSingle"/>
+     <addaction name="actionFour"/>
+     <addaction name="actionVertically_Split"/>
+     <addaction name="actionThree_View"/>
+    </widget>
+    <widget class="QMenu" name="menuViewport_Camera">
+     <property name="title">
+      <string>Viewport Camera</string>
+     </property>
+     <addaction name="actionPerspective"/>
+     <addaction name="actionBottom"/>
+     <addaction name="actionTop"/>
+     <addaction name="actionLeft"/>
+     <addaction name="actionRight"/>
+     <addaction name="actionFront"/>
+     <addaction name="actionBack"/>
+    </widget>
+    <addaction name="actionMaterial"/>
+    <addaction name="menuDisplayMode"/>
+    <addaction name="actionHide_Selection"/>
+    <addaction name="actionHide_Unselection"/>
+    <addaction name="actionShow_All"/>
+    <addaction name="menuViewport_Layout"/>
+    <addaction name="menuViewport_Camera"/>
+    <addaction name="actionShow_Grid"/>
+    <addaction name="actionSet_Viewport_Image"/>
+    <addaction name="actionDelete_Viewport_Image"/>
+    <addaction name="actionScene_Info"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuCreate"/>
+   <addaction name="menuModify"/>
+   <addaction name="menuSubdivision"/>
+   <addaction name="menuSelection"/>
+   <addaction name="menuView"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNew_Scene">
+   <property name="text">
+    <string>New Scene</string>
+   </property>
+  </action>
+  <action name="actionOpen_Scene">
+   <property name="text">
+    <string>Open Scene</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave_Scene">
+   <property name="text">
+    <string>Save Scene</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSave_Scene_as">
+   <property name="text">
+    <string>Save Scene As...</string>
+   </property>
+  </action>
+  <action name="actionLoad_Into_Scene">
+   <property name="text">
+    <string>Load Into Scene</string>
+   </property>
+  </action>
+  <action name="actionOpen_Console">
+   <property name="text">
+    <string>Open Console</string>
+   </property>
+  </action>
+  <action name="actionExit_Pillow">
+   <property name="text">
+    <string>Exit Pillow</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="text">
+    <string>Undo</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+  </action>
+  <action name="actionSave_Screenshot">
+   <property name="text">
+    <string>Save Screenshot</string>
+   </property>
+  </action>
+  <action name="actionHistory">
+   <property name="text">
+    <string>History</string>
+   </property>
+  </action>
+  <action name="actionCreate_Cube">
+   <property name="text">
+    <string>Create Cube</string>
+   </property>
+  </action>
+  <action name="actionCreate_Cylindar">
+   <property name="text">
+    <string>Create Cylindar</string>
+   </property>
+  </action>
+  <action name="actionCreate_Sphere">
+   <property name="text">
+    <string>Create Sphere</string>
+   </property>
+  </action>
+  <action name="actionCreate_Cone">
+   <property name="text">
+    <string>Create Cone</string>
+   </property>
+  </action>
+  <action name="actionCreate_Torus">
+   <property name="text">
+    <string>Create Torus</string>
+   </property>
+  </action>
+  <action name="actionCreate_Plane">
+   <property name="text">
+    <string>Create Plane</string>
+   </property>
+  </action>
+  <action name="actionCreate_Clone">
+   <property name="text">
+    <string>Create Clone</string>
+   </property>
+  </action>
+  <action name="actionCreate_Mirror">
+   <property name="text">
+    <string>Create Mirror</string>
+   </property>
+  </action>
+  <action name="actionCreate_Mirror_Instance">
+   <property name="text">
+    <string>Create Mirror Instance</string>
+   </property>
+  </action>
+  <action name="actionRemove_Mirror_Instance">
+   <property name="text">
+    <string>Remove Mirror Instance</string>
+   </property>
+  </action>
+  <action name="actionMerge_Selection">
+   <property name="text">
+    <string>Merge Selection</string>
+   </property>
+  </action>
+  <action name="actionDetech_Selection">
+   <property name="text">
+    <string>Detach Selection</string>
+   </property>
+  </action>
+  <action name="actionDelete_Vertices">
+   <property name="text">
+    <string>Delete Vertex</string>
+   </property>
+  </action>
+  <action name="actionExtrude">
+   <property name="text">
+    <string>Extrude</string>
+   </property>
+  </action>
+  <action name="actionSplit">
+   <property name="text">
+    <string>Split</string>
+   </property>
+  </action>
+  <action name="actionCollapse">
+   <property name="text">
+    <string>Collapse</string>
+   </property>
+  </action>
+  <action name="actionTarget_Weld">
+   <property name="text">
+    <string>Target Weld</string>
+   </property>
+  </action>
+  <action name="actionUpdate_Normal">
+   <property name="text">
+    <string>Update Normal</string>
+   </property>
+  </action>
+  <action name="actionSubdivide">
+   <property name="text">
+    <string>Subdivide</string>
+   </property>
+  </action>
+  <action name="actionUnsubdivide">
+   <property name="text">
+    <string>Unsubdivide</string>
+   </property>
+  </action>
+  <action name="actionRedefine_Control_Point">
+   <property name="text">
+    <string>Redefine Control Mesh</string>
+   </property>
+  </action>
+  <action name="actionVertex">
+   <property name="text">
+    <string>Vertex</string>
+   </property>
+  </action>
+  <action name="actionEdge">
+   <property name="text">
+    <string>Edge</string>
+   </property>
+  </action>
+  <action name="actionFace">
+   <property name="text">
+    <string>Face</string>
+   </property>
+  </action>
+  <action name="actionObject">
+   <property name="text">
+    <string>Object</string>
+   </property>
+  </action>
+  <action name="actionSelect_All">
+   <property name="text">
+    <string>Select All</string>
+   </property>
+  </action>
+  <action name="actionInvert_Selection">
+   <property name="text">
+    <string>Invert Selection</string>
+   </property>
+  </action>
+  <action name="actionFrame_Selection">
+   <property name="text">
+    <string>Frame Selection</string>
+   </property>
+  </action>
+  <action name="actionFrame">
+   <property name="text">
+    <string>Wireframe</string>
+   </property>
+  </action>
+  <action name="actionFlat">
+   <property name="text">
+    <string>Flat</string>
+   </property>
+  </action>
+  <action name="actionFlat_Wire">
+   <property name="text">
+    <string>Flat Wire</string>
+   </property>
+  </action>
+  <action name="actionSmooth">
+   <property name="text">
+    <string>Smooth</string>
+   </property>
+  </action>
+  <action name="actionSmooth_Wire">
+   <property name="text">
+    <string>Smooth Wire</string>
+   </property>
+  </action>
+  <action name="actionHide_Selection">
+   <property name="text">
+    <string>Hide Selection</string>
+   </property>
+  </action>
+  <action name="actionHide_Unselection">
+   <property name="text">
+    <string>Hide Unselection</string>
+   </property>
+  </action>
+  <action name="actionMaterial">
+   <property name="text">
+    <string>Material</string>
+   </property>
+  </action>
+  <action name="actionShow_All">
+   <property name="text">
+    <string>Show All</string>
+   </property>
+  </action>
+  <action name="actionShow_Grid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Grid</string>
+   </property>
+  </action>
+  <action name="actionSet_Viewport_Image">
+   <property name="text">
+    <string>Set Viewport Image</string>
+   </property>
+  </action>
+  <action name="actionDelete_Viewport_Image">
+   <property name="text">
+    <string>Delete Viewport Image</string>
+   </property>
+  </action>
+  <action name="actionScene_Info">
+   <property name="text">
+    <string>Scene Info</string>
+   </property>
+  </action>
+  <action name="actionSingle">
+   <property name="text">
+    <string>Single</string>
+   </property>
+  </action>
+  <action name="actionFour">
+   <property name="text">
+    <string>Four View</string>
+   </property>
+  </action>
+  <action name="actionVertically_Split">
+   <property name="text">
+    <string>Vertically Splited</string>
+   </property>
+  </action>
+  <action name="actionThree_View">
+   <property name="text">
+    <string>Three View</string>
+   </property>
+  </action>
+  <action name="actionPerspective">
+   <property name="text">
+    <string>Perspective</string>
+   </property>
+  </action>
+  <action name="actionBottom">
+   <property name="text">
+    <string>Top</string>
+   </property>
+  </action>
+  <action name="actionTop">
+   <property name="text">
+    <string>Bottom</string>
+   </property>
+  </action>
+  <action name="actionLeft">
+   <property name="text">
+    <string>Left</string>
+   </property>
+  </action>
+  <action name="actionRight">
+   <property name="text">
+    <string>Right</string>
+   </property>
+  </action>
+  <action name="actionFront">
+   <property name="text">
+    <string>Front</string>
+   </property>
+  </action>
+  <action name="actionBack">
+   <property name="text">
+    <string>Back</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
