@@ -1,6 +1,11 @@
 #pragma once
+#ifdef __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
 
 #include "Enum.h"
 
@@ -61,17 +66,20 @@ public:
     Button(ButtonEventType::__Enum theType,float theTexCx1,float theTexCy1,float theTexCx2,float theTexCy2,unsigned int theSX,unsigned int theSY):type(theType),texCx1(theTexCx1),texCy1(theTexCy1),texCx2(theTexCx2),texCy2(theTexCy2),isIn(false),x(0),y(0),sx(theSX),sy(theSY),isPressed(false)
 	{
 		callID=glGenLists(1);	
-	};
+    }
+
 	void updatePosition(int theX,int theY)
 	{
 		x=theX;
 		y=theY;
-	};
+    }
+
     void updateSize(unsigned int theSx,unsigned int theSy)
 	{
 		sx=theSx;
 		sy=theSy;
-	};
+    }
+
 	void initialize()
 	{
 		glNewList(callID,GL_COMPILE);
@@ -86,7 +94,8 @@ public:
 		glVertex2i(x,y+sy);
 		glEnd();
 		glEndList();
-	};
+    }
+
 	bool onIn(int mx,int my)
 	{
 		if(mx>x && my>y && mx<x+(int)sx && my<y+(int)sy)
@@ -158,10 +167,11 @@ public:
 				glCallList(callID);
 			}
 		}
-	};
+    }
+
 public:
 	~Button(void)
 	{
 		glDeleteLists(callID,1);
-	};
+    }
 };

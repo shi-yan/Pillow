@@ -2,7 +2,11 @@
 #include "Enum.h"
 #include <string>
 #include "../Core/Vector.h"
+#ifdef __APPLE__
 #include <OpenGL/gl.h>
+#else
+#include <GL/gl.h>
+#endif
 #include "../View/ViewportImage.h"
 
 #define Epsilon 1.0e-5

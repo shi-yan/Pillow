@@ -1,6 +1,6 @@
 #include "SubdivideLevel.h"
 
-SubdivideLevel::SubdivideLevel(unsigned int v,unsigned int e,unsigned int f)
+SubdivideLevel::SubdivideLevel(unsigned int v, unsigned int e, unsigned int f)
     :m_vertex(),
       m_edge(),
       m_face()

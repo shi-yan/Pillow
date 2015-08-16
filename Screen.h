@@ -34,7 +34,7 @@ public:
 	int height;
 Screen(/*wxWindow *theMain*/);
 void updateScreen(unsigned int width,unsigned int height);
-	void refresh(){};
+    void refresh(){}
 	void onPaint();
 	void screenShot(const char *fileName);
 	void initialize();
@@ -62,12 +62,12 @@ void updateScreen(unsigned int width,unsigned int height);
 	void onCtrlDown()
 	{
 		isCtrlMode=true;
-	};
+    }
 
 	void onCtrlUp()
 	{
 		isCtrlMode=false;
-	};
+    }
 
 	void changeView(int type)
 	{
@@ -90,7 +90,7 @@ void updateScreen(unsigned int width,unsigned int height);
 		{
 			currentView=singleView;
 		}
-	};
+    }
 
 	void onAltDown()
 	{
@@ -451,12 +451,12 @@ void updateScreen(unsigned int width,unsigned int height);
 	void toolButtonSingleView()
 	{
 		changeView(Single);
-	};
+    }
 
 	void toolButtonTwoView()
 	{
 		changeView(Two);
-	};
+    }
 
 	void toolButtonThreeView()
 	{
@@ -466,7 +466,7 @@ void updateScreen(unsigned int width,unsigned int height);
 	void toolButtonFourView()
 	{
 		changeView(Four);	
-	};
+    }
 
 	void toolButtonFaced()
 	{
@@ -496,7 +496,7 @@ void updateScreen(unsigned int width,unsigned int height);
 			isSelectionMode=true;
 			return true;
 		}
-	};
+    }
 
 	bool onWheel(float step,int x,int y)
 	{
@@ -529,7 +529,7 @@ void updateScreen(unsigned int width,unsigned int height);
 			glDisable(GL_DEPTH_TEST);
 			glEnable (GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		};
+        }
 	
 		void End2D()
 		{
@@ -541,7 +541,7 @@ void updateScreen(unsigned int width,unsigned int height);
 			glPopMatrix();
 			glMatrixMode(GL_MODELVIEW);
 			glPopMatrix();
-		};
+        }
 public:
 	~Screen(void)
 	{
@@ -550,7 +550,7 @@ public:
 		delete threeView;
 		delete singleView;
 		delete uiLayer;
-	};
+    }
 };
 
 extern Screen *theScreen;

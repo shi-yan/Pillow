@@ -1,8 +1,12 @@
 #include "FourView.h"
 #include "Global.h"
+#ifdef __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
-
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
 
 FourView::FourView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height):SplitedView(splitX,splitY,width,height)
 {

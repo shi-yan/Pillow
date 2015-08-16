@@ -6,9 +6,13 @@
 #include "../Camera/BottomCamera.h"
 #include "../Camera/TopCamera.h"
 #include "../Camera/PerspectiveCamera.h"
-
+#ifdef __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
 
 class SplitedView
 {

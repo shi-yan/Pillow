@@ -152,11 +152,13 @@ SOURCES += \
     GLCanvas.cpp
 
 
+unix:!mac {
+LIBS += -lGLU
+}
 
-#LIBS += -lGLU
-
+macx {
 LIBS += -framework OpenGL
-
+}
 FORMS += \
     MainWindow.ui
 
