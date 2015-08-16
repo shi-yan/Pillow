@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,28 +125,93 @@
     </widget>
    </item>
    <item row="6" column="1">
-    <widget class="QSpinBox" name="segmentXSpinBox"/>
+    <widget class="QSpinBox" name="segmentXSpinBox">
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>999</number>
+     </property>
+    </widget>
    </item>
    <item row="7" column="1">
-    <widget class="QSpinBox" name="segmentYSpinBox"/>
+    <widget class="QSpinBox" name="segmentYSpinBox">
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>999</number>
+     </property>
+    </widget>
    </item>
    <item row="8" column="1">
-    <widget class="QSpinBox" name="segmentZSpinBox"/>
+    <widget class="QSpinBox" name="segmentZSpinBox">
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>999</number>
+     </property>
+    </widget>
    </item>
    <item row="5" column="1">
-    <widget class="QDoubleSpinBox" name="heightDoubleSpinBox"/>
+    <widget class="QDoubleSpinBox" name="heightDoubleSpinBox">
+     <property name="maximum">
+      <double>99999.990000000005239</double>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="value">
+      <double>100.000000000000000</double>
+     </property>
+    </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QDoubleSpinBox" name="widthDoubleSpinBox"/>
+    <widget class="QDoubleSpinBox" name="widthDoubleSpinBox">
+     <property name="maximum">
+      <double>99999.990000000005239</double>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="value">
+      <double>100.000000000000000</double>
+     </property>
+    </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QDoubleSpinBox" name="lengthDoubleSpinBox"/>
+    <widget class="QDoubleSpinBox" name="lengthDoubleSpinBox">
+     <property name="maximum">
+      <double>99999.990000000005239</double>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="value">
+      <double>100.000000000000000</double>
+     </property>
+    </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QDoubleSpinBox" name="zDoubleSpinBox"/>
+    <widget class="QDoubleSpinBox" name="zDoubleSpinBox">
+     <property name="minimum">
+      <double>-99999.990000000005239</double>
+     </property>
+     <property name="maximum">
+      <double>99999.990000000005239</double>
+     </property>
+    </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QDoubleSpinBox" name="yDoubleSpinBox"/>
+    <widget class="QDoubleSpinBox" name="yDoubleSpinBox">
+     <property name="minimum">
+      <double>-99999.990000000005239</double>
+     </property>
+     <property name="maximum">
+      <double>99999.990000000005239</double>
+     </property>
+    </widget>
    </item>
    <item row="0" column="1">
     <widget class="QDoubleSpinBox" name="xDoubleSpinBox">
@@ -155,6 +220,12 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="minimum">
+      <double>-99999.990000000005239</double>
+     </property>
+     <property name="maximum">
+      <double>99999.990000000005239</double>
      </property>
     </widget>
    </item>

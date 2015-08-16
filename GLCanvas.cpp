@@ -1,10 +1,9 @@
 #include "GLCanvas.h"
-#include "Scene.h"
-#include "Screen.h"
+
 #include <QDebug>
 
-Scene *theScene;
-Screen *theScreen;
+Scene *theScene = NULL;
+Screen *theScreen = NULL;
 
 GLCanvas::GLCanvas(QWidget *parent) : QOpenGLWidget(parent),isDragging(false)
 {

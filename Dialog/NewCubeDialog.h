@@ -15,6 +15,16 @@ public:
     explicit NewCubeDialog(QWidget *parent = 0);
     ~NewCubeDialog();
 
+    float getX();
+    float getY();
+    float getZ();
+    float getLength();
+    float getWidth();
+    float getHeight();
+    unsigned int getSegmentX();
+    unsigned int getSegmentY();
+    unsigned int getSegmentZ();
+
 private:
     Ui::NewCubeDialog *ui;
 };
