@@ -18,8 +18,9 @@ public:
 private:
     Ui::MainWindow *ui;
 
-public slots:
+private slots:
     void onCreateNewCube(bool);
+    void onCreateNewCylinder(bool);
 };
 
 #endif // MAINWINDOW_H

@@ -78,7 +78,8 @@ HEADERS += \
     View/ViewportImage.h \
     MainWindow.h \
     GLCanvas.h \
-    Dialog/NewCubeDialog.h
+    Dialog/NewCubeDialog.h \
+    Dialog/NewCylinderDialog.h
 
 SOURCES += \
     UI/AxisCursor.cpp \
@@ -151,7 +152,8 @@ SOURCES += \
     main.cpp \
     MainWindow.cpp \
     GLCanvas.cpp \
-    Dialog/NewCubeDialog.cpp
+    Dialog/NewCubeDialog.cpp \
+    Dialog/NewCylinderDialog.cpp
 
 
 unix:!mac {
@@ -163,7 +165,8 @@ LIBS += -framework OpenGL
 }
 FORMS += \
     MainWindow.ui \
-    Dialog/NewCubeDialog.ui
+    Dialog/NewCubeDialog.ui \
+    Dialog/NewCylinderDialog.ui
 
 RESOURCES += \
     resources.qrc

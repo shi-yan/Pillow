@@ -75,7 +75,7 @@
      <string>Create</string>
     </property>
     <addaction name="actionCreate_Cube"/>
-    <addaction name="actionCreate_Cylindar"/>
+    <addaction name="actionCreate_Cylinder"/>
     <addaction name="actionCreate_Sphere"/>
     <addaction name="actionCreate_Cone"/>
     <addaction name="actionCreate_Torus"/>
@@ -254,9 +254,12 @@
     <string>Create Cube</string>
    </property>
   </action>
-  <action name="actionCreate_Cylindar">
+  <action name="actionCreate_Cylinder">
    <property name="text">
-    <string>Create Cylindar</string>
+    <string>Create Cylinder</string>
+   </property>
+   <property name="toolTip">
+    <string>Create Cylinder</string>
    </property>
   </action>
   <action name="actionCreate_Sphere">
