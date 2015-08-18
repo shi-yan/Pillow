@@ -14,7 +14,7 @@ Edge::EdgeInfo Edge::getEdgeInfo() const
     result.end = m_end;
     result.left = m_left;
     result.right = m_right;
-	return result;
+    return result;
 }
 
 Edge::~Edge(void)

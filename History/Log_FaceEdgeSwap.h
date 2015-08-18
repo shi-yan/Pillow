@@ -2,7 +2,7 @@
 #include "HistoryLog.h"
 
 class Log_FaceEdgeSwap :
-	public HistoryLog
+    public HistoryLog
 {
 public:
     const unsigned int m_index;
@@ -11,18 +11,18 @@ public:
     const unsigned int tIndex;
 public:
     Log_FaceEdgeSwap(unsigned int theTarget,unsigned int theIndex,unsigned int theOIndex,unsigned int theTIndex);
-	std::string toString()
-	{
-		char temp[256];
+    std::string toString()
+    {
+        char temp[256];
         sprintf(temp,"\t\t\t<Log Type=\"FaceEdgeSwap\" Target=\"%d\" Index=\"%d\" OIndex=\"%d\" TIndex=\"%d\" />\n",target,index,oIndex,tIndex);
-		std::string out(temp);
-		return out;
+        std::string out(temp);
+        return out;
     }
 
-							void operator=(const Log_FaceEdgeSwap& in) 
-	{
-		in;
+                            void operator=(const Log_FaceEdgeSwap& in)
+    {
+        in;
     }
 public:
-	~Log_FaceEdgeSwap(void);
+    ~Log_FaceEdgeSwap(void);
 };

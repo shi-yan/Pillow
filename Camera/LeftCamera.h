@@ -4,7 +4,7 @@
 class LeftCamera : public Camera
 {
 public:
-	LeftCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
+    LeftCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
 
     void setCamera() override;
 
@@ -25,7 +25,7 @@ public:
     Vector getEye() const override;
 
     Vector getHorizontalDir() const override;
-		
+
     void onPanPress(int x,int y) override;
 
     void onPanRelease(int x,int y) override;

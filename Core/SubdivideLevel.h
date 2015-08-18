@@ -14,7 +14,7 @@ public:
     SubdivideLevel(unsigned int v = 0,unsigned int e = 0,unsigned int f = 0);
 
 public:
-	~SubdivideLevel(void)
-	{
+    ~SubdivideLevel(void)
+    {
     }
 };

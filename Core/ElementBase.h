@@ -9,8 +9,8 @@ public:
     unsigned int m_index;
 
 public:
-	ElementBase(void);
+    ElementBase(void);
 
 public:
-	virtual ~ElementBase(void);
+    virtual ~ElementBase(void);
 };

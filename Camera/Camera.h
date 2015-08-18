@@ -70,5 +70,5 @@ public:
     void updateSize(float theStartX,float theStartY,float theWidth,float theHeight);
 
     Camera(CameraMode::__Enum type, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up);
-	virtual ~Camera(void);
+    virtual ~Camera(void);
 };

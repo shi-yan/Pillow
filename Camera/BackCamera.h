@@ -34,7 +34,7 @@ public:
     void zoom(float step) override;
 
     void drawGird() const override;
-		
+
     void onPanPress(int x,int y) override;
 
     void onPanRelease(int x,int y) override;

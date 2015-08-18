@@ -16,12 +16,12 @@ void GLCanvas::initializeGL()
     theScene=new Scene();
     theScene->initialize();
     theScreen=new Screen();
-	theScreen->initialize();
+    theScreen->initialize();
     int w = 800, h = 600;
 
-		theScreen->width=w;
-		theScreen->height=h;
-		theScreen->updateScreen(w,h);
+        theScreen->width=w;
+        theScreen->height=h;
+        theScreen->updateScreen(w,h);
 
 
         {

@@ -3,7 +3,7 @@
 
 class SubdivideEdge : public ElementBase
 {
-	friend class Object;
+    friend class Object;
 public:
     unsigned int m_start;
     unsigned int m_end;

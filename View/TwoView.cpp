@@ -11,29 +11,29 @@ TwoView::TwoView(unsigned int splitX,unsigned int splitY,unsigned int width,unsi
 
 void TwoView::onPaint(void)
 {
-	glColor3ub(255,255,255);
-	glBegin(GL_QUADS);
+    glColor3ub(255,255,255);
+    glBegin(GL_QUADS);
         glVertex2i(m_splitX-1,0);
         glVertex2i(m_splitX+1,0);
         glVertex2i(m_splitX+1, m_height);
         glVertex2i(m_splitX-1, m_height);
-	glEnd();
-	glColor3ub(255,255,0);
+    glEnd();
+    glColor3ub(255,255,0);
     if( m_selected==0)
-	{		glBegin(GL_LINES);
-			glVertex2i(2,2);
+    {        glBegin(GL_LINES);
+            glVertex2i(2,2);
             glVertex2i( m_splitX-2,2);
             glVertex2i( m_splitX-2,2);
             glVertex2i( m_splitX-2, m_height-2);
             glVertex2i( m_splitX-2, m_height-2);
             glVertex2i(2, m_height-2);
             glVertex2i(2, m_height-2);
-			glVertex2i(2,2);
-		glEnd();		
-	}
+            glVertex2i(2,2);
+        glEnd();
+    }
     else if( m_selected==1)
-	{
-		glBegin(GL_LINES);
+    {
+        glBegin(GL_LINES);
             glVertex2i( m_splitX+2,2);
             glVertex2i( m_width-2,2);
             glVertex2i( m_width-2,2);
@@ -42,8 +42,8 @@ void TwoView::onPaint(void)
             glVertex2i( m_splitX+2, m_height-2);
             glVertex2i( m_splitX+2, m_height-2);
             glVertex2i( m_splitX+2,2);
-		glEnd();		
-	}
+        glEnd();
+    }
 
     if(m_isSelectionMode)
     {
@@ -57,7 +57,7 @@ void TwoView::onPaint(void)
         glEnd();
         glDisable(GL_ALPHA_TEST);
     }
-	glColor3ub(255,255,255);
+    glColor3ub(255,255,255);
 }
 
 TwoView::~TwoView(void)

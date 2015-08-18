@@ -5,7 +5,7 @@
 
 class Face : public ElementBase
 {
-	friend class Object;
+    friend class Object;
 public:
     typedef struct
     {
@@ -24,7 +24,7 @@ private:
     std::vector<int> m_subdivideFace;
 
 public:
-	Face(void);
+    Face(void);
     int operator [](unsigned int i) const;
     FaceInfo getFaceInfo() const;
 

@@ -9,5 +9,5 @@ Log_ObjectEdgeRemove::Log_ObjectEdgeRemove(unsigned int theTarget,unsigned int t
 
 Log_ObjectEdgeRemove::~Log_ObjectEdgeRemove(void)
 {
-	//delete o;
+    //delete o;
 }

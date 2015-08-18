@@ -10,7 +10,7 @@ public:
     Vector m_position;
     Vector m_normal;
     std::vector<int> m_adjacentEdgeList;
-	
+
 private:
     int m_nextLevel;
     int m_subdivideId;

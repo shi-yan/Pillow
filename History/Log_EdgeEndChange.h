@@ -2,29 +2,29 @@
 #include "HistoryLog.h"
 
 class Log_EdgeEndChange :
-	public HistoryLog
+    public HistoryLog
 {
 public:
     const unsigned int m_index;
 
 public:
-	const int end;
+    const int end;
 
 public:
     Log_EdgeEndChange(unsigned int theTarget,unsigned int theIndex,int theEnd);
-	std::string toString()
-	{
-		char temp[256];
+    std::string toString()
+    {
+        char temp[256];
         sprintf(temp,"\t\t\t<Log Type=\"EdgeEndChange\" Target=\"%d\" Index=\"%d\" End=\"%d\" />\n",target,index,end);
-		std::string out(temp);
-		return out;
+        std::string out(temp);
+        return out;
     }
 
-	void operator=(const Log_EdgeEndChange& in) 
-	{
-		in;
+    void operator=(const Log_EdgeEndChange& in)
+    {
+        in;
     }
 
 public:
-	~Log_EdgeEndChange(void);
+    ~Log_EdgeEndChange(void);
 };

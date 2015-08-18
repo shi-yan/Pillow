@@ -28,7 +28,7 @@ PerspectiveCamera::PerspectiveCamera(float angle,float width,float height,float 
     m_lightPosition[2]=500;
     m_lightPosition[3]=1;
 
-	rotate45V();
+    rotate45V();
 }
 
 
@@ -102,7 +102,7 @@ void PerspectiveCamera::rotate(int x,int y)
         Vector perp=perpendicular(m_eye-m_target,m_up);
         perp.normalize();
         Quaternion rotateQuaternion((float)dy,perp);
-    //	Matrix *rotateMatrix=new Matrix();
+    //    Matrix *rotateMatrix=new Matrix();
         Matrix rotateMatrix;
         rotateQuaternion.getMatrix(rotateMatrix);
         Vector cameraDirection=m_eye-m_target;

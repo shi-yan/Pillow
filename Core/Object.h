@@ -52,18 +52,18 @@
 extern HistoryManager *historyManager;
 
 DECLARE_ENUM(RenderType)
-	Wireframe=234,
-	WireframeFaced,
-	Wire,
-	Smooth,
-	Faced
+    Wireframe=234,
+    WireframeFaced,
+    Wire,
+    Smooth,
+    Faced
 END_ENUM()
 
 DECLARE_ENUM(MirrorMode)
-	MirrorXY=345,
-	MirrorYZ,
-	MirrorXZ,
-	Nothing
+    MirrorXY=345,
+    MirrorYZ,
+    MirrorXZ,
+    Nothing
 END_ENUM()
 
 class Object : public ElementBase
@@ -122,7 +122,7 @@ private:
     int m_subdivideId;
 
 public:
-	Object(char *theName);
+    Object(char *theName);
     unsigned int addVertex(float p1,float p2,float p3);
     unsigned int addVertex(float p1,float p2,float p3,float n1,float n2,float n3);
     unsigned int addVertex(Vector &pos);
@@ -139,56 +139,56 @@ public:
     unsigned int addFace(unsigned int theEdgeArray[],unsigned int size);
     unsigned int addFace(unsigned int ei,Face *theF);
 
-	void testOut(char *fileName);
-	void SubTestOut(char *fileName,int level);
-	void SubTestOut(char *fileName);
-	void subdivide();
-	void clearPSCache();
-	void buildPSCache(std::vector<Face*> &faceToBeSub);
-	void buildPSCacheFast(std::vector<Face*> &faceToBeSub);
-	void partialSubdivision();
-	void unSubdivide();
+    void testOut(char *fileName);
+    void SubTestOut(char *fileName,int level);
+    void SubTestOut(char *fileName);
+    void subdivide();
+    void clearPSCache();
+    void buildPSCache(std::vector<Face*> &faceToBeSub);
+    void buildPSCacheFast(std::vector<Face*> &faceToBeSub);
+    void partialSubdivision();
+    void unSubdivide();
 
     void buildPSCacheFromVID(std::vector<unsigned int> &vertexToBeSub);
     void buildPSCacheFromEID(std::vector<unsigned int> &edgeToBeSub);
     void buildPSCacheFromFID(std::vector<unsigned int> &faceToBeSub);
 
-	void mirror(MirrorMode type,Vector &theMirrorPosition);
-	void unMirror();
-	void updateSubdivision();
+    void mirror(MirrorMode type,Vector &theMirrorPosition);
+    void unMirror();
+    void updateSubdivision();
 
     ObjectInfo getObjectInfo();
-	void directPushVertex(Vertex *theVertex);
-	void directPushEdge(Edge *theEdge);
-	void directPushFace(Face *theFace);
-	
-	void drawWireframeFaced();
-	void selectionRenderObject();
-	void drawWireframe();
-	void drawWire(GLuint r=0,GLuint g=0,GLuint b=0);
-	void drawSmooth();
-	void drawNormal();
-	void drawFaced();
-	void drawWireEdgeSelected();
-	void drawWireFaceSelected();
-	void drawWireObjectSelected();
-	void drawWireVertexSelected();
-	void drawFacedEdgeSelected();
-	void drawFacedFaceSelected();
-	void drawFacedVertexSelected();
-	void drawFacedObjectSelected();
-	void drawSmoothObjectSelected();
-//	void drawWireObjectSelected();
-	void drawObjectSelected();
-	void drawMirror();
-	void draw();
-	void normalizeVertexNormal();
+    void directPushVertex(Vertex *theVertex);
+    void directPushEdge(Edge *theEdge);
+    void directPushFace(Face *theFace);
+
+    void drawWireframeFaced();
+    void selectionRenderObject();
+    void drawWireframe();
+    void drawWire(GLuint r=0,GLuint g=0,GLuint b=0);
+    void drawSmooth();
+    void drawNormal();
+    void drawFaced();
+    void drawWireEdgeSelected();
+    void drawWireFaceSelected();
+    void drawWireObjectSelected();
+    void drawWireVertexSelected();
+    void drawFacedEdgeSelected();
+    void drawFacedFaceSelected();
+    void drawFacedVertexSelected();
+    void drawFacedObjectSelected();
+    void drawSmoothObjectSelected();
+//    void drawWireObjectSelected();
+    void drawObjectSelected();
+    void drawMirror();
+    void draw();
+    void normalizeVertexNormal();
     void updateVNormal(SubdivideVertex *theVertex,unsigned int level);
-	void updateVNormal(Vertex *theVertex);
-	void updateFNormal(Face *theFace);
+    void updateVNormal(Vertex *theVertex);
+    void updateFNormal(Face *theFace);
     void updateFNormal(SubdivideFace *theFace,unsigned int level);
-	void updateAllNormal();
-	void updateAllSubNormal();
+    void updateAllNormal();
+    void updateAllSubNormal();
     unsigned int edgeCount();
     unsigned int vertexCount();
     unsigned int faceCount();
@@ -214,19 +214,19 @@ public:
     void vertexAdjacentSwap(unsigned int vertexID,unsigned int i1,unsigned int i2);
     void faceEdgeSwap(unsigned int faceID,unsigned int i1,unsigned int i2);
     void faceEdgeRemove(unsigned int faceID,unsigned int edgeID);
-	void testXMLOut(char *fileName);
-	void redefineControlPoint();
+    void testXMLOut(char *fileName);
+    void redefineControlPoint();
 
 private:
-	Vector EAdjacentVertex(Vertex *theVertex);
-	Vector EAdjacentVertex(SubdivideVertex *theVertex,int level);
-	Vector EAdjacentVertex(SubdivideVertex *theVertex);
-	void subdivideFace(Face *theFace);
-	void subdivideFace(SubdivideFace *theFace);
+    Vector EAdjacentVertex(Vertex *theVertex);
+    Vector EAdjacentVertex(SubdivideVertex *theVertex,int level);
+    Vector EAdjacentVertex(SubdivideVertex *theVertex);
+    void subdivideFace(Face *theFace);
+    void subdivideFace(SubdivideFace *theFace);
     void expandSubFace(std::vector<SubdivideFace*> &originalList,unsigned int level);
-	void expandSubFace(std::vector<Face*> &originalList);
-	void partialSubdivideFace(SubdivideFace *theFace,int level);
-	void partialSubdivideFace(Face *theFace,int level);
+    void expandSubFace(std::vector<Face*> &originalList);
+    void partialSubdivideFace(SubdivideFace *theFace,int level);
+    void partialSubdivideFace(Face *theFace,int level);
 
 public:
     ~Object(void) override;

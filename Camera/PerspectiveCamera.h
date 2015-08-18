@@ -22,7 +22,7 @@ public:
 
     Vector getEye() const override;
 
-	Vector rotateFromP2P(int x1,int y1,int x2,int y2);
+    Vector rotateFromP2P(int x1,int y1,int x2,int y2);
 
     void onRotateRelease() override;
 
@@ -33,12 +33,12 @@ public:
     void setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h) override;
 
     void setCameraForSelectionS() override;
-	
+
     void pan(int x,int y) override;
 
     Vector getHorizontalDir() const override;
 
-	PerspectiveCamera(float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
+    PerspectiveCamera(float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
 
     ~PerspectiveCamera(void) override;
 

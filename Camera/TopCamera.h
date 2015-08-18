@@ -4,7 +4,7 @@
 class TopCamera : public Camera
 {
 public:
-	TopCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
+    TopCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
 
     void setCamera() override;
 

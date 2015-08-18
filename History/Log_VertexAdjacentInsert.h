@@ -2,7 +2,7 @@
 #include "HistoryLog.h"
 
 class Log_VertexAdjacentInsert :
-	public HistoryLog
+    public HistoryLog
 {
 public:
     const unsigned int m_index;
@@ -12,18 +12,18 @@ public:
 
 public:
     Log_VertexAdjacentInsert(unsigned int theTarget,unsigned int theIndex,unsigned int adjIndex);
-	std::string toString()
-	{
-		char temp[256];
+    std::string toString()
+    {
+        char temp[256];
         sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentInsert\" Target=\"%d\" Index=\"%d\" AdjIndex=\"%d\" />\n",target,index,adjIndex);
-		std::string out(temp);
-		return out;
+        std::string out(temp);
+        return out;
     }
 
-	void operator=(const Log_VertexAdjacentInsert& in) 
-	{
-		in;
+    void operator=(const Log_VertexAdjacentInsert& in)
+    {
+        in;
     }
 public:
-	~Log_VertexAdjacentInsert(void);
+    ~Log_VertexAdjacentInsert(void);
 };

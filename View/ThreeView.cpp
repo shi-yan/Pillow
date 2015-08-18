@@ -13,53 +13,53 @@ ThreeView::ThreeView(unsigned int splitX,unsigned int splitY,unsigned int width,
 bool ThreeView::onLeftDown(unsigned int x,unsigned int y)
 {
     if(x< m_splitX)
-	{
+    {
         if(m_selected==0)
-		{
-			return false;
-		}
-		else
-		{
+        {
+            return false;
+        }
+        else
+        {
             m_selected=0;
-			return true;
-		}
-	}
-	else
+            return true;
+        }
+    }
+    else
     if(x> m_splitX&&y< m_splitY)
-	{
+    {
         if(m_selected==1)
-		{
-			return false;
-		}
-		else
-		{
+        {
+            return false;
+        }
+        else
+        {
             m_selected=1;
-			return true;
-		}
-	}
-	else
+            return true;
+        }
+    }
+    else
     if(x> m_splitX&&y> m_splitY)
-	{
+    {
         if(m_selected==2)
-		{
-			return false;
-		}
-		else
-		{
+        {
+            return false;
+        }
+        else
+        {
             m_selected=2;
-			return true;
-		}
-	}
-	else
-	{
-		return false;
-	}
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void ThreeView::onPaint(void)
 {
-	glColor3ub(255,255,255);
-	glBegin(GL_QUADS);
+    glColor3ub(255,255,255);
+    glBegin(GL_QUADS);
         glVertex2i( m_splitX-1,0);
         glVertex2i( m_splitX+1,0);
         glVertex2i( m_splitX+1, m_height);
@@ -68,24 +68,24 @@ void ThreeView::onPaint(void)
         glVertex2i( m_width, m_splitY-1);
         glVertex2i( m_width, m_splitY+1);
         glVertex2i( m_splitX-1, m_splitY+1);
-	glEnd();
-	glColor3ub(255,255,0);
+    glEnd();
+    glColor3ub(255,255,0);
     if(m_selected==0)
-	{
-		glBegin(GL_LINES);
-			glVertex2i(2,2);
+    {
+        glBegin(GL_LINES);
+            glVertex2i(2,2);
             glVertex2i( m_splitX-2,2);
             glVertex2i( m_splitX-2,2);
             glVertex2i( m_splitX-2, m_height-2);
             glVertex2i( m_splitX-2, m_height-2);
             glVertex2i(2, m_height-2);
             glVertex2i(2, m_height-2);
-			glVertex2i(2,2);
-		glEnd();		
-	}
+            glVertex2i(2,2);
+        glEnd();
+    }
     else if(m_selected==1)
-	{
-		glBegin(GL_LINES);
+    {
+        glBegin(GL_LINES);
             glVertex2i( m_splitX+2,2);
             glVertex2i( m_width-2,2);
             glVertex2i( m_width-2,2);
@@ -94,11 +94,11 @@ void ThreeView::onPaint(void)
             glVertex2i( m_splitX+2, m_splitY-2);
             glVertex2i( m_splitX+2, m_splitY-2);
             glVertex2i( m_splitX+2,2);
-		glEnd();		
-	}
+        glEnd();
+    }
     else if( m_selected==2)
-	{
-		glBegin(GL_LINES);
+    {
+        glBegin(GL_LINES);
             glVertex2i( m_splitX+2, m_splitY+2);
             glVertex2i( m_width-2, m_splitY+2);
             glVertex2i( m_width-2, m_splitY+2);
@@ -107,8 +107,8 @@ void ThreeView::onPaint(void)
             glVertex2i( m_splitX+2, m_height-2);
             glVertex2i( m_splitX+2, m_height-2);
             glVertex2i( m_splitX+2, m_splitY+2);
-		glEnd();		
-	}
+        glEnd();
+    }
 
     if(m_isSelectionMode)
     {
@@ -123,7 +123,7 @@ void ThreeView::onPaint(void)
         glDisable(GL_ALPHA_TEST);
     }
 
-	glColor3ub(255,255,255);
+    glColor3ub(255,255,255);
 }
 
 CameraMode::__Enum ThreeView::setView(unsigned int index)

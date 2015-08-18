@@ -9,5 +9,5 @@ Log_ObjectVertexRemove::Log_ObjectVertexRemove(unsigned int theTarget,unsigned i
 
 Log_ObjectVertexRemove::~Log_ObjectVertexRemove(void)
 {
-	//delete o;
+    //delete o;
 }

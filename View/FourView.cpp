@@ -21,63 +21,63 @@ FourView::FourView(unsigned int splitX,unsigned int splitY,unsigned int width,un
 bool FourView::onLeftDown(unsigned int x,unsigned int y)
 {
     if(x< m_splitX&&y< m_splitY)
-	{
+    {
         if(m_selected==0)
-		{
-			return false;
-		}
-		else
-		{
+        {
+            return false;
+        }
+        else
+        {
             m_selected=0;
             return true;
-		}
-	}
+        }
+    }
     else if(x> m_splitX&&y< m_splitY)
-	{
+    {
         if(m_selected==1)
-		{
-			return false;
-		}
-		else
-		{
+        {
+            return false;
+        }
+        else
+        {
             m_selected=1;
-			return true;
-		}
-	}
+            return true;
+        }
+    }
     else if(x< m_splitX&&y> m_splitY)
-	{
+    {
         if(m_selected==2)
-		{
-			return false;
-		}
-		else
-		{
+        {
+            return false;
+        }
+        else
+        {
             m_selected=2;
-			return true;
-		}
-	}
+            return true;
+        }
+    }
     else if(x> m_splitX&&y> m_splitY)
-	{
+    {
         if(m_selected==3)
-		{
-			return false;
-		}
-		else
-		{
+        {
+            return false;
+        }
+        else
+        {
             m_selected=3;
-			return true;
-		}
-	}
-	else
-	{
-		return false;
-	}
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void FourView::onPaint(void)
 {
-	glColor3ub(255,255,255);
-	glBegin(GL_QUADS);
+    glColor3ub(255,255,255);
+    glBegin(GL_QUADS);
         glVertex2i( m_splitX-1,0);
         glVertex2i( m_splitX+1,0);
         glVertex2i( m_splitX+1, m_height);
@@ -86,11 +86,11 @@ void FourView::onPaint(void)
         glVertex2i( m_width, m_splitY-1);
         glVertex2i( m_width, m_splitY+1);
         glVertex2i(0, m_splitY+1);
-	glEnd();
-	glColor3ub(255,255,0);
+    glEnd();
+    glColor3ub(255,255,0);
     if( m_selected==2)
-	{		
-		glBegin(GL_LINES);
+    {
+        glBegin(GL_LINES);
             glVertex2i(2, m_splitY+2);
             glVertex2i( m_splitX-2, m_splitY+2);
             glVertex2i( m_splitX-2, m_splitY+2);
@@ -99,11 +99,11 @@ void FourView::onPaint(void)
             glVertex2i(2, m_height-2);
             glVertex2i(2, m_height-2);
             glVertex2i(2, m_splitY+2);
-		glEnd();		
-	}
+        glEnd();
+    }
     else if( m_selected==3)
-	{
-		glBegin(GL_LINES);
+    {
+        glBegin(GL_LINES);
             glVertex2i( m_splitX+2, m_splitY+2);
             glVertex2i( m_width-2, m_splitY+2);
             glVertex2i( m_width-2, m_splitY+2);
@@ -112,24 +112,24 @@ void FourView::onPaint(void)
             glVertex2i( m_splitX+2, m_height-2);
             glVertex2i( m_splitX+2, m_height-2);
             glVertex2i( m_splitX+2, m_splitY+2);
-		glEnd();		
-	}
+        glEnd();
+    }
     else if( m_selected==0)
-	{
-		glBegin(GL_LINES);
-			glVertex2i(0,0);
+    {
+        glBegin(GL_LINES);
+            glVertex2i(0,0);
             glVertex2i( m_splitX-2,0);
             glVertex2i( m_splitX-2,0);
             glVertex2i( m_splitX-2, m_splitY-2);
             glVertex2i( m_splitX-2, m_splitY-2);
             glVertex2i(0, m_splitY-2);
             glVertex2i(0, m_splitY-2);
-			glVertex2i(0,0);
-		glEnd();		
-	}
+            glVertex2i(0,0);
+        glEnd();
+    }
     else if( m_selected==1)
-	{
-		glBegin(GL_LINES);
+    {
+        glBegin(GL_LINES);
             glVertex2i( m_splitX+2,2);
             glVertex2i( m_width-2,2);
             glVertex2i( m_width-2,2);
@@ -138,8 +138,8 @@ void FourView::onPaint(void)
             glVertex2i( m_splitX+2, m_splitY-2);
             glVertex2i( m_splitX+2, m_splitY-2);
             glVertex2i( m_splitX+2,2);
-		glEnd();		
-	}
+        glEnd();
+    }
 
     if(m_isSelectionMode)
     {
@@ -153,7 +153,7 @@ void FourView::onPaint(void)
         glEnd();
         glDisable(GL_ALPHA_TEST);
     }
-	glColor3ub(255,255,255);
+    glColor3ub(255,255,255);
 }
 
 FourView::~FourView(void)

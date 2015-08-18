@@ -21,7 +21,7 @@ Face::FaceInfo Face::getFaceInfo() const
     result.nx = m_normal.x;
     result.ny = m_normal.y;
     result.nz = m_normal.z;
-	return result;
+    return result;
 }
 
 Face::~Face(void)
