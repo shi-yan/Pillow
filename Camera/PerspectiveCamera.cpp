@@ -188,7 +188,7 @@ void PerspectiveCamera::onPanRelease(int x,int y)
 
 void PerspectiveCamera::setCamera()
 {
-    glMatrixMode(GL_MODELVIEW);
+    /*glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt( m_eye.x, m_eye.y, m_eye.z, m_target.x, m_target.y, m_target.z, m_up.x, m_up.y, m_up.z);
     glMatrixMode(GL_PROJECTION);
@@ -200,12 +200,12 @@ void PerspectiveCamera::setCamera()
     glLightfv(GL_LIGHT0, GL_AMBIENT, m_lightAmbient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, m_lightDiffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, m_lightSpecular);
-    glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
+    glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);*/
 }
 
 void PerspectiveCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h)
 {
-    glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
+   /* glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
     GLint viewport[4];
     glGetIntegerv (GL_VIEWPORT, viewport);
     glMatrixMode(GL_PROJECTION);
@@ -216,18 +216,18 @@ void PerspectiveCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,u
     gluPerspective(m_angle,m_width/m_height,m_nearPlane,m_farPlane);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(m_eye.x,m_eye.y,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
+    gluLookAt(m_eye.x,m_eye.y,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);*/
 }
 
 void PerspectiveCamera::setCameraForSelectionS()
 {
-    glMatrixMode(GL_MODELVIEW);
+ /*   glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt( m_eye.x, m_eye.y, m_eye.z, m_target.x, m_target.y, m_target.z, m_up.x, m_up.y, m_up.z);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(m_angle, m_width/ m_height, m_nearPlane, m_farPlane);
-    glViewport((GLint) m_startX,(GLint) m_startY,(GLint) m_width,(GLint) m_height);
+    glViewport((GLint) m_startX,(GLint) m_startY,(GLint) m_width,(GLint) m_height);*/
 }
 
 void PerspectiveCamera::pan(int x,int y)

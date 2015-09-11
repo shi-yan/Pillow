@@ -49,7 +49,7 @@ Vector FrontCamera::getHorizontalDir() const
 
 void FrontCamera::setCamera()
 {
-    glMatrixMode(GL_MODELVIEW);
+    /*glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(m_eye.x,990,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
     glMatrixMode(GL_PROJECTION);
@@ -65,7 +65,7 @@ void FrontCamera::setCamera()
     glLightfv(GL_LIGHT0, GL_AMBIENT, m_lightAmbient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, m_lightDiffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, m_lightSpecular);
-    glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
+    glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);*/
 }
 
 void FrontCamera::setReferenceImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height)
@@ -110,7 +110,7 @@ void FrontCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigne
     glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
     GLint viewport[4];
     glGetIntegerv (GL_VIEWPORT, viewport);
-    glMatrixMode(GL_PROJECTION);
+    /*glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     unsigned int sw=(x2-x1)>5?(x2-x1):5;
     unsigned int sh=(y2-y1)>5?(y2-y1):5;
@@ -118,18 +118,18 @@ void FrontCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigne
     glOrtho(-m_width*(m_eye.y)*0.005f,m_width*(m_eye.y)*0.005f,-m_height*(m_eye.y)*0.005f,m_height*(m_eye.y)*0.005f,m_nearPlane,m_farPlane);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(m_eye.x,990,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
+    gluLookAt(m_eye.x,990,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);*/
 }
 
 void FrontCamera::setCameraForSelectionS()
 {
-    glMatrixMode(GL_MODELVIEW);
+    /*glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(m_eye.x,990,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-m_width*(m_eye.y)*0.005f,m_width*(m_eye.y)*0.005f,-m_height*(m_eye.y)*0.005f,m_height*(m_eye.y)*0.005f,m_nearPlane,m_farPlane);
-    glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
+    glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);*/
 }
 
 void FrontCamera::zoom(float step)

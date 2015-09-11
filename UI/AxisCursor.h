@@ -1,8 +1,8 @@
 #pragma once
 #include "Enum.h"
 #ifdef __APPLE__
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
+#include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -46,7 +46,7 @@ public:
 
     void initialize()
     {
-        m_moveX=glGenLists(1);
+        /*m_moveX=glGenLists(1);
         m_moveY=glGenLists(1);
         m_moveZ=glGenLists(1);
 
@@ -57,9 +57,9 @@ public:
         m_scaleX=glGenLists(1);
         m_scaleY=glGenLists(1);
         m_scaleZ=glGenLists(1);
-        m_scaleC=glGenLists(1);
+        m_scaleC=glGenLists(1);*/
 
-        glNewList(m_moveX,GL_COMPILE);
+      /*  glNewList(m_moveX,GL_COMPILE);
         glColor3ub(255,0,0);
         glBegin(GL_TRIANGLES);
         glVertex3i(20,0,0);
@@ -371,12 +371,12 @@ public:
         glVertex3i(1,1,-1);
         glVertex3i(-1,1,-1);
         glEnd();
-        glEndList();
+        glEndList();*/
     };
 
     void onPaint(const Vector &eye,CameraMode::__Enum cameraMode)
     {
-        glDisable(GL_DEPTH_TEST);
+     /*   glDisable(GL_DEPTH_TEST);
         glDisable(GL_LIGHTING);
         float scaleFactor=m_position.distto(eye)*0.004f;
         glMatrixMode(GL_MODELVIEW);
@@ -504,7 +504,7 @@ public:
          }
          glPopMatrix();
          glEnable(GL_LIGHTING);
-         glEnable(GL_DEPTH_TEST);
+         glEnable(GL_DEPTH_TEST);*/
     }
 
 public:

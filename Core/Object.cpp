@@ -87,7 +87,7 @@ void Object::drawMirror()
     {
         if(!m_isHide && m_isMirror)
         {
-            glMatrixMode(GL_MODELVIEW);
+            /*glMatrixMode(GL_MODELVIEW);
             glPushMatrix();
             //glTranslatef(100,100,100);
             glTranslatef(m_mirrorPosition.x,m_mirrorPosition.y,m_mirrorPosition.z);
@@ -136,7 +136,7 @@ void Object::drawMirror()
                 drawWireframeFaced();
             }
 
-            glPopMatrix();
+            glPopMatrix();*/
         }
     }
 
@@ -1335,7 +1335,7 @@ void Object::draw()
     {
         if(!m_isHide)
         {
-            glMatrixMode(GL_MODELVIEW);
+            /*glMatrixMode(GL_MODELVIEW);
             glPushMatrix();
             glTranslatef(m_position.x,m_position.y,m_position.z);
             glTranslatef(m_center.x,m_center.y,m_center.z);
@@ -1363,14 +1363,14 @@ void Object::draw()
             {
                 drawWireframeFaced();
             }
-            glPopMatrix();
+            glPopMatrix();*/
         }
     }
 
 
 void Object::drawObjectSelected()
     {
-        glMatrixMode(GL_MODELVIEW);
+       /* glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glTranslatef(m_position.x,m_position.y,m_position.z);
         glTranslatef(m_center.x,m_center.y,m_center.z);
@@ -1390,12 +1390,12 @@ glScalef(m_scale.x,m_scale.y,m_scale.z);
         {
         drawWireObjectSelected();
         }
-            glPopMatrix();
+            glPopMatrix();*/
     }
 
 void Object::drawWireVertexSelected()
 {
-    glLineWidth(1);
+  /*  glLineWidth(1);
     glDisable(GL_LIGHTING);
     glColor3ub(114,150,250);
     glLineWidth(1);
@@ -1440,12 +1440,12 @@ void Object::drawWireVertexSelected()
         }
         glEnd();
     }
-    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHTING);*/
 }
 
 void Object::drawWireEdgeSelected()
 {
-            glLineWidth(1);
+      /*      glLineWidth(1);
         glDisable(GL_LIGHTING);
         glColor3ub(114,150,250);
         glLineWidth(1);
@@ -1490,12 +1490,12 @@ void Object::drawWireEdgeSelected()
             }
             glEnd();
         }
-        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);*/
     }
 
 void Object::drawWireFaceSelected()
 {
-        glLineWidth(1);
+    /*    glLineWidth(1);
         glDisable(GL_LIGHTING);
         glColor3ub(114,150,250);
         glLineWidth(1);
@@ -1540,13 +1540,13 @@ void Object::drawWireFaceSelected()
             }
             glEnd();
         }
-        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);*/
     }
 
 
 void Object::drawWireObjectSelected()
     {
-        glLineWidth(1);
+    /*    glLineWidth(1);
         glDisable(GL_LIGHTING);
         glColor3ub(114,150,250);
         glLineWidth(1);
@@ -1591,13 +1591,13 @@ void Object::drawWireObjectSelected()
             }
             glEnd();
         }
-        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);*/
     }
 
 
 void Object::drawSmoothObjectSelected()
     {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+    /*    glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
@@ -1741,13 +1741,13 @@ void Object::drawSmoothObjectSelected()
             }
             glEnd();
             glEnable(GL_LIGHTING);
-        }
+        }*/
 
     }
 
 void Object::drawFacedObjectSelected()
     {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+     /*   glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
@@ -1881,13 +1881,13 @@ void Object::drawFacedObjectSelected()
 
             glEnd();
             glEnable(GL_LIGHTING);
-        }
+        }*/
 
     }
 
 void Object::drawFacedVertexSelected()
     {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+   /*     glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
@@ -2055,13 +2055,13 @@ glScalef(m_scale.x,m_scale.y,m_scale.z);
             glEnd();
             glEnable(GL_LIGHTING);
         }
-        glPopMatrix();
+        glPopMatrix();*/
     }
 
 
 void Object::drawFacedFaceSelected()
     {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+     /*   glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
@@ -2204,12 +2204,12 @@ void Object::drawFacedFaceSelected()
             glEnd();
             glEnable(GL_LIGHTING);
         }
-        glPopMatrix();
+        glPopMatrix();*/
     }
 
 void Object::drawFacedEdgeSelected()
     {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+    /*    glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
@@ -2351,12 +2351,12 @@ void Object::drawFacedEdgeSelected()
             glEnd();
             glEnable(GL_LIGHTING);
         }
-        glPopMatrix();
+        glPopMatrix();*/
     }
 
 void Object::drawFaced()
     {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+    /*    glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
@@ -2437,14 +2437,14 @@ void Object::drawFaced()
                 }
             }
             glEnd();
-        }
+        }*/
 
     }
 
 
 void Object::drawNormal()
     {
-        glDisable(GL_LIGHTING);
+    /*    glDisable(GL_LIGHTING);
         glBegin(GL_LINES);
         for(unsigned int i=1;i<m_vertexArray.size();++i)
         {
@@ -2454,12 +2454,12 @@ void Object::drawNormal()
             glVertex3f(normal.x,normal.y,normal.z);
         }
         glEnd();
-        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);*/
     }
 
 void Object::drawSmooth()
     {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+    /*    glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
@@ -2557,14 +2557,14 @@ void Object::drawSmooth()
                 }
             }
             glEnd();
-        }
+        }*/
 
     }
 
 
 void Object::drawWire(GLuint r,GLuint g,GLuint b)
     {
-        glLineWidth(1);
+     /*   glLineWidth(1);
         glDisable(GL_LIGHTING);
         glColor3ub((GLubyte)r,(GLubyte)g,(GLubyte)b);
         glLineWidth(1);
@@ -2597,13 +2597,13 @@ void Object::drawWire(GLuint r,GLuint g,GLuint b)
             }
             glEnd();
         }
-        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);*/
     }
 
 
 void Object::drawWireframe()
     {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+    /*    glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
@@ -2736,13 +2736,13 @@ void Object::drawWireframe()
             glEnd();
             glEnable(GL_LIGHTING);
         }
-
+*/
     }
 
 
 void Object::selectionRenderObject()
     {
-        glMatrixMode(GL_MODELVIEW);
+   /*     glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glTranslatef(m_position.x,m_position.y,m_position.z);
         glTranslatef(m_center.x,m_center.y,m_center.z);
@@ -2824,12 +2824,12 @@ void Object::selectionRenderObject()
             }
             glEnd();
         }
-        glPopMatrix();
+        glPopMatrix();*/
     }
 
 void Object::drawWireframeFaced()
     {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+   /*     glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
@@ -2949,7 +2949,7 @@ void Object::drawWireframeFaced()
             }
             glEnd();
             glEnable(GL_LIGHTING);
-        }
+        }*/
 }
 
 Object::ObjectInfo Object::getObjectInfo()

@@ -3,7 +3,8 @@
 #include <string>
 #include "../Core/Vector.h"
 #ifdef __APPLE__
-#include <OpenGL/gl.h>
+#include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
 #else
 #include <GL/gl.h>
 #endif

@@ -114,7 +114,7 @@ public:
                     if(theOriginal->m_isMirror && theOriginal->m_mirrorMode!=MirrorMode::Nothing)
                     {
                         Matrix transform;
-                        glMatrixMode(GL_MODELVIEW);
+                        /*glMatrixMode(GL_MODELVIEW);
                         glPushMatrix();
                         glLoadIdentity();
                         if(theOriginal->m_mirrorMode==MirrorMode::MirrorXY)
@@ -163,7 +163,7 @@ public:
                                 delete tempEdgeSet;
                             }
                         }
-                        sceneObjectAdd(newObject);
+                        sceneObjectAdd(newObject);*/
                     }
                 }
             }
@@ -897,7 +897,7 @@ public:
         for(unsigned int i=1;i<theObjectList.size();++i)
         {
             struct SelectionResult selectBuffer[512];
-            glSelectBuffer(2048, (GLuint*)selectBuffer);
+          /*  glSelectBuffer(2048, (GLuint*)selectBuffer);
             glRenderMode(GL_SELECT);
             glInitNames();
             glPushName(0);
@@ -916,15 +916,15 @@ public:
             --i;
             glFlush();
             GLuint hits = glRenderMode(GL_RENDER);
-
-            for (unsigned int e=0; e<hits; e++)
+*/
+            /*for (unsigned int e=0; e<hits; e++)
             {
                 struct SelectionResult result=selectBuffer[e];
                 if(result.size==1)
                 {
                     selectionPush(theObjectList[result.id]);
                 }
-            }
+            }*/
         }
         updateAxisCursor();
     }
@@ -936,17 +936,17 @@ public:
             clearSelection();
         }
         Object *theObject=theObjectList[target];
-                glMatrixMode(GL_MODELVIEW);
+      /*          glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
         glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
         glRotatef(theObject->m_rotation.w,theObject->m_rotation.x,theObject->m_rotation.y,theObject->m_rotation.z);
         glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
         glTranslatef(-theObject->m_center.x,-theObject->m_center.y,-theObject->m_center.z);
-
+*/
         for(unsigned int i=1;i<theObject->vertexCount();++i)
         {
-            struct SelectionResult selectBuffer[512];
+        /*    struct SelectionResult selectBuffer[512];
             glSelectBuffer(2048, (GLuint*)selectBuffer);
             glRenderMode(GL_SELECT);
             glInitNames();
@@ -977,9 +977,9 @@ public:
                 {
                     selectionPush(theObject->vertex(result.id));
                 }
-            }
+            }*/
         }
-                    glPopMatrix();
+             //       glPopMatrix();
         updateAxisCursor();
             if(!selection.empty())
             {
@@ -994,7 +994,7 @@ public:
             clearSelection();
         }
         Object *theObject=theObjectList[target];
-    glMatrixMode(GL_MODELVIEW);
+    /*glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
                 glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
@@ -1049,7 +1049,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
                     if(!selection.empty())
             {
                 theObject->buildPSCacheFromEID(selection);
-            }
+            }*/
     }
 
     void redefineControlPoint()
@@ -1079,7 +1079,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             clearSelection();
         }
         Object *theObject=theObjectList[target];
-        glMatrixMode(GL_MODELVIEW);
+        /*glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
                 glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
@@ -1133,7 +1133,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
                 }
             }
         }
-        glPopMatrix();
+        glPopMatrix();*/
         updateAxisCursor();
                                 if(!selection.empty())
             {
@@ -1204,11 +1204,11 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             glClearColor(1.0f,1.0f,1.0f,1.0f);
             glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
             glDisable(GL_DITHER);
-            glDisable(GL_LIGHTING);
+            //glDisable(GL_LIGHTING);
             glDisable(GL_TEXTURE_2D);
-            glDisable(GL_ALPHA_TEST);
+           // glDisable(GL_ALPHA_TEST);
             glDisable(GL_BLEND);
-            glMatrixMode(GL_MODELVIEW);
+           /* glMatrixMode(GL_MODELVIEW);
             glPushMatrix();
             glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
             glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
@@ -1403,7 +1403,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
                         splitVertexID=cutVertex;
                     }
                 }
-            }
+            }*/
         }
     }
 
@@ -1474,7 +1474,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
         {
             glClearColor(1.0f,1.0f,1.0f,1.0f);
             glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-            glDisable(GL_DITHER);
+          /*  glDisable(GL_DITHER);
             glDisable(GL_LIGHTING);
             glDisable(GL_TEXTURE_2D);
             glDisable(GL_ALPHA_TEST);
@@ -1560,7 +1560,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             if(!selection.empty())
             {
                 theObject->buildPSCacheFromVID(selection);
-            }
+            }*/
         }
     }
 
@@ -1603,7 +1603,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             glClearColor(1.0f,1.0f,1.0f,1.0f);
             glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
             glDisable(GL_DITHER);
-            glDisable(GL_LIGHTING);
+            /*glDisable(GL_LIGHTING);
             glDisable(GL_TEXTURE_2D);
             glDisable(GL_ALPHA_TEST);
             glDisable(GL_BLEND);
@@ -1753,7 +1753,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             glEnable(GL_TEXTURE_2D);
             glEnable(GL_LIGHTING);
             glEnable(GL_DITHER);
-            glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);
+            glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);*/
             return result;
         }
     }
@@ -2609,7 +2609,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             GLint viewport[4];
             glGetIntegerv(GL_VIEWPORT, viewport);
             GLdouble modelMatrix[16];
-            glGetDoublev(GL_MODELVIEW_MATRIX,modelMatrix);
+            /*glGetDoublev(GL_MODELVIEW_MATRIX,modelMatrix);
             GLdouble projMatrix[16];
             glGetDoublev(GL_PROJECTION_MATRIX,projMatrix);
             gluProject(0,0,0,modelMatrix,projMatrix,viewport,&ox,&oy,&oz);
@@ -2662,7 +2662,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
                     moveFace(-offset.x,-offset.y,-offset.z);
                     theObjectList[target]->partialSubdivision();
                 }
-            }
+            }*/
         }
     }
 
@@ -2671,7 +2671,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
         GLint viewport[4];
         glGetIntegerv(GL_VIEWPORT, viewport);
         GLdouble modelMatrix[16];
-        glMatrixMode(GL_MODELVIEW);
+        /*glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glTranslatef(theAxisCursor->m_position.x,theAxisCursor->m_position.y,theAxisCursor->m_position.z);
         glRotatef(theAxisCursor->m_rotation.w,theAxisCursor->m_rotation.x,theAxisCursor->m_rotation.y,theAxisCursor->m_rotation.z);
@@ -2791,7 +2791,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
         else if(cursorMode==4)
         {
 
-        }
+        }*/
     }
 
     void unSubdivide()
@@ -2833,7 +2833,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             glClearColor(1.0f,1.0f,1.0f,1.0f);
             glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
             glDisable(GL_DITHER);
-            glDisable(GL_LIGHTING);
+            /*glDisable(GL_LIGHTING);
             glDisable(GL_TEXTURE_2D);
             glDisable(GL_ALPHA_TEST);
             glDisable(GL_BLEND);
@@ -2921,7 +2921,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             {
                 theObjectList[target]->clearPSCache();
                 theObject->buildPSCacheFromEID(selection);
-            }
+            }*/
         }
     }
 
@@ -2937,7 +2937,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             glClearColor(1.0f,1.0f,1.0f,1.0f);
             glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
             glDisable(GL_DITHER);
-            glDisable(GL_LIGHTING);
+            /*glDisable(GL_LIGHTING);
             glDisable(GL_TEXTURE_2D);
             glDisable(GL_ALPHA_TEST);
             glDisable(GL_BLEND);
@@ -3008,7 +3008,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             {
                 theObjectList[target]->clearPSCache();
                 theObject->buildPSCacheFromFID(selection);
-            }
+            }*/
         }
     }
 
@@ -3024,7 +3024,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             glClearColor(1.0f,1.0f,1.0f,1.0f);
             glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
             glDisable(GL_DITHER);
-            glDisable(GL_LIGHTING);
+            /*glDisable(GL_LIGHTING);
             glDisable(GL_TEXTURE_2D);
             glDisable(GL_ALPHA_TEST);
             glDisable(GL_BLEND);
@@ -3066,7 +3066,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             glEnable(GL_TEXTURE_2D);
             glEnable(GL_LIGHTING);
             glEnable(GL_DITHER);
-            glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);
+            glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);*/
             updateAxisCursor();
         }
     }
@@ -3287,7 +3287,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             Object *theObject=theObjectList[target];
             if(theObject)
             {
-                glMatrixMode(GL_MODELVIEW);
+                /*glMatrixMode(GL_MODELVIEW);
                 glPushMatrix();
                 glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
                 glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
@@ -3305,7 +3305,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
                 }
                 glEnd();
                 glEnable(GL_LIGHTING);
-                glPopMatrix();
+                glPopMatrix();*/
             }
         }
     }
@@ -3484,7 +3484,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             Object *theObject=theObjectList[target];
             if(theObject)
             {
-                                glMatrixMode(GL_MODELVIEW);
+                                /*glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
                 glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
         glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
@@ -3506,7 +3506,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
                 }
                 glEnd();
                 glEnable(GL_LIGHTING);
-                glPopMatrix();
+                glPopMatrix();*/
             }
             else
             {
@@ -3522,7 +3522,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
             Object *theObject=theObjectList[target];
             if(theObject)
             {
-                                glMatrixMode(GL_MODELVIEW);
+                                /*glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
                 glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
         glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
@@ -3546,7 +3546,7 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
                 }
                 glEnd();
                 glEnable(GL_LIGHTING);
-                glPopMatrix();
+                glPopMatrix();*/
             }
             else
             {
@@ -3563,7 +3563,7 @@ void drawSelectedFace()
             Object *theObject=theObjectList[target];
             if(theObject)
             {
-                                glMatrixMode(GL_MODELVIEW);
+                                /*glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
                 glTranslatef(theObject->m_position.x,theObject->m_position.y,theObject->m_position.z);
         glTranslatef(theObject->m_center.x,theObject->m_center.y,theObject->m_center.z);
@@ -3601,7 +3601,7 @@ void drawSelectedFace()
                 //glDisable(GL_ALPHA_TEST);
                 glDisable(GL_POLYGON_OFFSET_FILL);
                 glEnable(GL_LIGHTING);
-                glPopMatrix();
+                glPopMatrix();*/
             }
             else
             {

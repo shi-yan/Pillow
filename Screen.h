@@ -5,6 +5,7 @@
 #include "View/SingleView.h"
 #include "UI/UILayer.h"
 //#include "AboutDialog.h"
+#include "OpenGLBackend.h"
 enum
 {
     Four=32,
@@ -28,6 +29,8 @@ private:
     bool isCtrlMode;
     bool isExtrude;
     //wxWindow *mainFrame;
+
+    OpenGLBackend *m_graphicsBackend;
 public:
 
     int width;
@@ -514,7 +517,7 @@ void updateScreen(unsigned int width,unsigned int height);
     private:
         void Begin2D()
         {
-            glMatrixMode(GL_MODELVIEW);
+            /*glMatrixMode(GL_MODELVIEW);
             glPushMatrix();
             glLoadIdentity();
 
@@ -528,19 +531,19 @@ void updateScreen(unsigned int width,unsigned int height);
             glShadeModel(GL_SMOOTH);
             glDisable(GL_DEPTH_TEST);
             glEnable (GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
         }
 
         void End2D()
         {
-            glDisable(GL_BLEND);
+           /* glDisable(GL_BLEND);
             glEnable(GL_DEPTH_TEST);
             glDisable(GL_TEXTURE_2D);
             glEnable(GL_LIGHTING);
             glMatrixMode(GL_PROJECTION);
             glPopMatrix();
             glMatrixMode(GL_MODELVIEW);
-            glPopMatrix();
+            glPopMatrix();*/
         }
 public:
     ~Screen(void)

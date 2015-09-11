@@ -17,6 +17,7 @@ Gird *theGird;
 Screen::Screen(/*wxWindow *theMain*/)
     :/*mainFrame(theMain),*/isSelectionMode(false),isAxisMode(false),isAltMode(false),isCtrlMode(false),isExtrude(false)
 {
+    m_graphicsBackend = new OpenGLBackend();
 }
 
 void Screen::initialize()
@@ -26,12 +27,17 @@ void Screen::initialize()
     theScene->initialize();
     width=0;
     height=0;
+
+    m_graphicsBackend->initialize();
     glClearColor(128.0f/255.0f,128.0f/255.0f,128.0f/255.0f,1.0f);
+
+  //  glClearColor(1,0,0,1);
+
     fourView=new FourView(2,2,4,4);
     threeView=new ThreeView(2,2,4,4);
     currentView=singleView=new SingleView(2,2,4,4);
     twoView=new TwoView(2,2,4,4);
-    uiLayer=new UILayer(width,height);
+    uiLayer=new UILayer(m_graphicsBackend, width, height);
 }
 
 void Screen::updateScreen(unsigned int theWidth,unsigned int theHeight)
@@ -107,18 +113,29 @@ void Screen::screenShot(const char *fileName)
 
 void Screen::onPaint()
 { 
+    {
+        int k = glGetError();
+        if (k != GL_NO_ERROR)
+        {
+            qDebug() << "error happens when painting -1" << k ;
+        }
+    }
+//    glClearColor(0.0,0.0,1.0,1.0);
     glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-    for(int i=0;i<(int)currentView->m_viewCount;i++)
+ /*   for(int i=0;i<(int)currentView->m_viewCount;i++)
     {
         CameraMode::__Enum cameraMode=currentView->setView(i);
         theScene->onPaint();
         theScene->drawCursor(cameraMode,currentView->getEye(i));
-    }
+    }*/
     glViewport(0,0,(GLint)  width,(GLint)  height);
-    Begin2D();
-    glColor3ub(255,255,255);
-    glLineWidth(3);
-    currentView->onPaint();
+
+    m_graphicsBackend->beginUI(width, height);
+  //  Begin2D();
+    //glColor3ub(255,255,255);
+  //  glLineWidth(3);
+   // currentView->onPaint();
     uiLayer->onPaint();
-    End2D();
+    m_graphicsBackend->endUI();
+  //  End2D();
 }

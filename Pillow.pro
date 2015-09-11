@@ -79,7 +79,8 @@ HEADERS += \
     MainWindow.h \
     GLCanvas.h \
     Dialog/NewCubeDialog.h \
-    Dialog/NewCylinderDialog.h
+    Dialog/NewCylinderDialog.h \
+    OpenGLBackend.h
 
 SOURCES += \
     UI/AxisCursor.cpp \
@@ -153,7 +154,8 @@ SOURCES += \
     MainWindow.cpp \
     GLCanvas.cpp \
     Dialog/NewCubeDialog.cpp \
-    Dialog/NewCylinderDialog.cpp
+    Dialog/NewCylinderDialog.cpp \
+    OpenGLBackend.cpp
 
 
 unix:!mac {

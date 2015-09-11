@@ -1,7 +1,7 @@
 #pragma once
 #ifdef __APPLE__
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
+#include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -20,7 +20,7 @@ public:
 
     void initialize()
     {
-        xy=glGenLists(1);
+        /*xy=glGenLists(1);
         xz=glGenLists(1);
         yz=glGenLists(1);
         glNewList(xy,GL_COMPILE);
@@ -103,44 +103,44 @@ public:
             glVertex3i(0,-200,-z);
         }
         glEnd();
-        glEndList();
+        glEndList();*/
     }
 
     void drawXY() const
     {
-        glDisable(GL_LIGHTING);
+     /*   glDisable(GL_LIGHTING);
         glDisable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D,0);
         glLineWidth(1);
         glCallList(xy);
-        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);*/
     }
 
     void drawXZ() const
     {
-        glDisable(GL_LIGHTING);
+      /*  glDisable(GL_LIGHTING);
         glDisable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D,0);
         glLineWidth(1);
         glCallList(xz);
-        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);*/
     }
 
     void drawYZ() const
     {
-        glDisable(GL_LIGHTING);
+      /*  glDisable(GL_LIGHTING);
         glDisable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D,0);
         glLineWidth(1);
         glCallList(yz);
-        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);*/
     }
 public:
     ~Gird(void)
     {
-        glDeleteLists(xy,1);
+        /*glDeleteLists(xy,1);
         glDeleteLists(xz,1);
-        glDeleteLists(yz,1);
+        glDeleteLists(yz,1);*/
     }
 };
 

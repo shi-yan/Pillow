@@ -2924,7 +2924,7 @@ void Scene::attach(unsigned int original,unsigned int toBeAttached)
 
             Matrix transform;
 
-            glMatrixMode(GL_MODELVIEW);
+            /*glMatrixMode(GL_MODELVIEW);
             glPushMatrix();
             glLoadIdentity();
 
@@ -2940,7 +2940,7 @@ void Scene::attach(unsigned int original,unsigned int toBeAttached)
             glScalef(scale.x,scale.y,scale.z);
             glTranslatef(-center.x,-center.y,-center.z);
             glGetFloatv(GL_MODELVIEW_MATRIX,(GLfloat*)(&transform.m));
-            glPopMatrix();
+            glPopMatrix();*/
 
             unsigned int vertexCount=theObjectList[toBeAttached]->vertexCount();
             for(unsigned int i=0;i<vertexCount;++i)

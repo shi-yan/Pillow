@@ -38,7 +38,7 @@ RightCamera::~RightCamera(void)
 
 void RightCamera::setCamera()
     {
-        glMatrixMode(GL_MODELVIEW);
+        /*glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         gluLookAt(990,m_eye.y,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
         glMatrixMode(GL_PROJECTION);
@@ -55,7 +55,7 @@ void RightCamera::setCamera()
         glLightfv(GL_LIGHT0, GL_AMBIENT, m_lightAmbient);
         glLightfv(GL_LIGHT0, GL_DIFFUSE, m_lightDiffuse);
         glLightfv(GL_LIGHT0, GL_SPECULAR, m_lightSpecular);
-        glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
+        glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);*/
     }
             void RightCamera::zoom(float step)
     {
@@ -106,19 +106,19 @@ void RightCamera::setCamera()
 
                             void RightCamera::setCameraForSelectionS()
     {
-    glMatrixMode(GL_MODELVIEW);
+    /*glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         gluLookAt(990,m_eye.y,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         //gluPerspective( angle, width/ height, nearPlane, farPlane);
         glOrtho(-m_width*(m_eye.x)*0.005f,m_width*(m_eye.x)*0.005f,-m_height*(m_eye.x)*0.005f,m_height*(m_eye.x)*0.005f,m_nearPlane,m_farPlane);
-        glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
+        glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);*/
     }
 
                     void RightCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h)
     {
-        glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
+      /*  glViewport((GLint)m_startX,(GLint)m_startY,(GLint)m_width,(GLint)m_height);
         GLint viewport[4];
         glGetIntegerv (GL_VIEWPORT, viewport);
                 glMatrixMode(GL_PROJECTION);
@@ -129,7 +129,7 @@ void RightCamera::setCamera()
         glOrtho(-m_width*(m_eye.x)*0.005f,m_width*(m_eye.x)*0.005f,-m_height*(m_eye.x)*0.005f,m_height*(m_eye.x)*0.005f,m_nearPlane,m_farPlane);
     glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        gluLookAt(990,m_eye.y,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);
+        gluLookAt(990,m_eye.y,m_eye.z,m_target.x,m_target.y,m_target.z,m_up.x,m_up.y,m_up.z);*/
     }
 
 Vector RightCamera::getEye() const

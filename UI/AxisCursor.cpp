@@ -2,7 +2,7 @@
 
 AxisCursor::~AxisCursor(void)
 {
-    glDeleteLists(m_moveX,1);
+    /*glDeleteLists(m_moveX,1);
     glDeleteLists(m_rotateX,1);
     glDeleteLists(m_scaleX,1);
 
@@ -12,5 +12,5 @@ AxisCursor::~AxisCursor(void)
 
     glDeleteLists(m_moveZ,1);
     glDeleteLists(m_rotateZ,1);
-    glDeleteLists(m_scaleZ,1);
+    glDeleteLists(m_scaleZ,1);*/
 }

@@ -26,13 +26,13 @@ void GLCanvas::initializeGL()
 
         {
 
-            glMatrixMode(GL_PROJECTION);
+          /*  glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
             gluPerspective(25,(float)w/(float)h,1,8000);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             gluLookAt(100,100,100,0,0,0,0,0,1);
-            glViewport(0, 0, (GLint) w, (GLint) h);
+            glViewport(0, 0, (GLint) w, (GLint) h);*/
         }
         glLineWidth(3);
         glEnable(GL_DEPTH_TEST);
@@ -45,7 +45,6 @@ void GLCanvas::paintGL()
 {
     theScreen->onPaint();
 }
-
 
 void GLCanvas::mouseMoveEvent(QMouseEvent *e)
 {
@@ -71,6 +70,8 @@ void GLCanvas::mousePressEvent(QMouseEvent *e)
 {
     isDragging = true;
     theScreen->onLeftPress(e->x()*2.0, e->y()*2.0);
+
+    update();
 }
 
 void GLCanvas::mouseReleaseEvent(QMouseEvent *e)
@@ -79,7 +80,6 @@ void GLCanvas::mouseReleaseEvent(QMouseEvent *e)
 
     makeCurrent();
     theScreen->onLeftRelease(false);
-
 
     update();
 }
@@ -184,7 +184,6 @@ void GLCanvas::enterEvent(QEvent *e)
 
 void GLCanvas::wheelEvent(QWheelEvent *e)
 {
-    qDebug() << e->angleDelta();
   if( theScreen->onWheel(((float)e->angleDelta().y())*0.1,e->x()*2.0,e->y()*2.0))
   {
       update();
