@@ -5,7 +5,7 @@
 class ThreeView : public SplitedView
 {
 public:
-	ThreeView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
+    ThreeView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 
     void onPaint() override;
 

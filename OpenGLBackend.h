@@ -9,6 +9,9 @@
 #include <GL/glu.h>
 #endif
 
+#include <vector>
+#include "Core/Matrix.h"
+
 class OpenGLBackend
 {
 private:
@@ -21,6 +24,15 @@ private:
     GLuint m_UIScreenSizeUniform;
     GLuint m_UIOffsetUniform;
 
+    Matrix m_modelView;
+    Matrix m_projection;
+
+    GLuint m_gridShaderProgram;
+    GLuint m_gridVertexShader;
+    GLuint m_gridFragmentShader;
+    GLuint m_gridModelViewUniform;
+    GLuint m_gridProjectionUniform;
+
     GLuint loadTexture(const char *fileName) const;
 
 public:
@@ -28,6 +40,7 @@ public:
     {
         GLuint m_vbo;
         GLuint m_vao;
+        GLuint m_colorVbo;
 
     public:
         RenderableGeometryData(GLuint vbo, GLuint vao);
@@ -35,6 +48,10 @@ public:
 
         GLuint getVbo() const;
         GLuint getVao() const;
+
+        void setColorVbo(GLuint vbo);
+
+        GLuint getColorVbo() const;
     };
 
     OpenGLBackend();
@@ -51,8 +68,12 @@ public:
     void updateButtonGeometry(void **id, const float * const vertices) const;
     void drawButtonStripGeometry(const void * const id, int offsetX = 0, int offsetY = 0) const;
 
-    ~OpenGLBackend();
+    void setModelViewMatrix(const Matrix &in);
+    void setProjectionMatrix(const Matrix &in);
 
+    void updateGridGeometry(void **id, const std::vector<float> &vertices, const std::vector<float> &colors) const;
+    void drawGridGeometry(const void * const id) const;
+    ~OpenGLBackend();
 };
 
 #endif // OPENGLBACKEND_H

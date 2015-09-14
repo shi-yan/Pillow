@@ -13,7 +13,7 @@
 class BackCamera : public Camera
 {
 public:
-    BackCamera(float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up);
+    BackCamera(OpenGLBackend *backend, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up);
 
     void setCamera() override;
 

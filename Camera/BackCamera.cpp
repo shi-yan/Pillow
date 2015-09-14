@@ -6,8 +6,8 @@
 
 ViewportImage *backReference=NULL;
 
-BackCamera::BackCamera(float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up)
-    :Camera(CameraMode::Back, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
+BackCamera::BackCamera(OpenGLBackend *backend, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up)
+    :Camera(backend, CameraMode::Back, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
 {
     m_lightAmbient[0]=0.4f;
     m_lightAmbient[1]=0.4f;
@@ -141,7 +141,7 @@ void BackCamera::drawGird() const
 {
     if(m_showGird)
     {
-        theGird->drawXZ();
+        Grid::grid->drawXZ();
     }
 }
 

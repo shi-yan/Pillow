@@ -6,8 +6,8 @@
 
 ViewportImage *bottomReference=NULL;
 
-BottomCamera::BottomCamera(float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up)
-    :Camera(CameraMode::Bottom, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
+BottomCamera::BottomCamera(OpenGLBackend *backend, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up)
+    :Camera(backend, CameraMode::Bottom, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
 {
     m_lightAmbient[0]=0.4f;
     m_lightAmbient[1]=0.4f;
@@ -133,7 +133,7 @@ void BottomCamera::drawGird() const
 {
     if(m_showGird)
     {
-        theGird->drawXY();
+        Grid::grid->drawXY();
     }
 }
 

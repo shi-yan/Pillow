@@ -1,12 +1,12 @@
 #include "Global.h"
 #include "SingleView.h"
 
-SingleView::SingleView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
-:SplitedView(splitX,splitY,width,height)
+SingleView::SingleView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
+    :SplitedView(backend, splitX,splitY,width,height)
 {
     m_viewCount=1;
     m_selected=0;
-    m_camera[0]=new PerspectiveCamera(25.0f,(float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
+    m_camera[0]=new PerspectiveCamera(backend, 25.0f,(float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
     // camera[0]=new BottomCamera( width, height,1,8000,0,0,Vector(0,0,0),Vector(0,0,200),Vector(0,1,0));
     // camera[0]=new FrontCamera( width, height,1,8000,0,0,Vector(0,0,0),Vector(0,200,0),Vector(0,0,1));
     // camera[0]=new BackCamera( width, height,1,8000,0,0,Vector(0,0,0),Vector(0,200,0),Vector(0,0,1));
@@ -244,7 +244,7 @@ void SingleView::onPaint()
 {
     if(m_isSelectionMode)
     {
-        glEnable(GL_ALPHA_TEST);
+        /*glEnable(GL_ALPHA_TEST);
         glColor4ub(0,0,255,125);
         glBegin(GL_QUADS);
             glVertex2i(m_selectionSX,m_selectionSY);
@@ -253,7 +253,7 @@ void SingleView::onPaint()
             glVertex2i(m_selectionSX,m_selectionEY);
         glEnd();
         glDisable(GL_ALPHA_TEST);
-        glColor3ub(255,255,255);
+        glColor3ub(255,255,255);*/
     }
 }
 

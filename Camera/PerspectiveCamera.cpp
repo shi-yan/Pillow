@@ -4,8 +4,10 @@
 #include "../Core/Vector.cpp"
 #include "../Core/Quaternion.h"
 
-PerspectiveCamera::PerspectiveCamera(float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
-    :Camera(CameraMode::Perspective, width, height, nearPlane, farPlane, startX, startY, target, eye, up),
+#include <QMatrix4x4>
+
+PerspectiveCamera::PerspectiveCamera(OpenGLBackend *backend, float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
+    :Camera(backend, CameraMode::Perspective, width, height, nearPlane, farPlane, startX, startY, target, eye, up),
       m_angle(angle)
 {
     m_lightAmbient[0]=0.4f;
@@ -62,7 +64,7 @@ void PerspectiveCamera::drawGird() const
 {
     if(m_showGird)
     {
-        theGird->drawXY();
+        Grid::grid->drawXY();
     }
     else
     {
@@ -186,8 +188,88 @@ void PerspectiveCamera::onPanRelease(int x,int y)
     m_old.null();
 }
 
+static GLuint vbo = 0;
+static GLuint vao = 0;
+
 void PerspectiveCamera::setCamera()
 {
+    QMatrix4x4 modelView;
+    modelView.lookAt(QVector3D(m_eye.x, m_eye.y, m_eye.z), QVector3D(m_target.x, m_target.y, m_target.z), QVector3D(m_up.x, m_up.y, m_up.z));
+    Matrix modelViewMatrix;
+    int offset = 0;
+    for(int y = 0; y<4; ++y)
+    {
+        for(int x =0;x<4;++x)
+        {
+            modelViewMatrix.m[y][x] = *(modelView.data() + offset);
+            offset++;
+        }
+    }
+
+    m_backend->setModelViewMatrix(modelViewMatrix);
+
+    QMatrix4x4 projection;
+    projection.perspective(m_angle, m_width/m_height, m_nearPlane, m_farPlane);
+    Matrix projectionMatrix;
+    offset = 0;
+    for(int y = 0; y<4; ++y)
+    {
+        for(int x =0;x<4;++x)
+        {
+            projectionMatrix.m[y][x] = *(projection.data() + offset);
+            offset++;
+        }
+    }
+
+    m_backend->setProjectionMatrix(projectionMatrix);
+/*
+if (vbo == 0)
+{
+        glGenBuffers (1, &vbo);
+        glGenVertexArrays (1, &vao);
+
+        float m_x = 0;
+        float m_y = 0;
+        float m_sx = 100;
+        float m_sy = 100;
+
+        float m_texCx1 = 0;
+        float m_texCx2 = 0;
+
+        float points[] = {
+            (float) m_x,        (float) m_y,        (float) m_texCx1,
+            (float) m_x + m_sx, (float) m_y,        (float) m_texCx2,
+            (float) m_x + m_sx, (float) m_y + m_sy, (float) m_texCx2,
+            (float) m_x,        (float) m_y + m_sy, (float) m_texCx1
+        };
+
+            glBindBuffer (GL_ARRAY_BUFFER, vbo);
+            glBufferData (GL_ARRAY_BUFFER, 12 * sizeof (float), points, GL_STATIC_DRAW);
+
+            glBindVertexArray (vao);
+            glEnableVertexAttribArray (0);
+            glBindBuffer (GL_ARRAY_BUFFER, vbo);
+            glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+}
+
+glBindVertexArray (vao);
+glDrawArrays (GL_TRIANGLE_FAN, 0, 4);
+
+{
+    int k = glGetError();
+    if (k != GL_NO_ERROR)
+    {
+        qDebug() << "error happens when compiling shaders" << k;
+    }
+}*/
+    drawGird();
+    {
+        int k = glGetError();
+        if (k != GL_NO_ERROR)
+        {
+            qDebug() << "error happens when compiling shaders" << k;
+        }
+    }
     /*glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt( m_eye.x, m_eye.y, m_eye.z, m_target.x, m_target.y, m_target.z, m_up.x, m_up.y, m_up.z);

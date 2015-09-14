@@ -4,7 +4,7 @@
 class FrontCamera : public Camera
 {
 public:
-    FrontCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
+    FrontCamera(OpenGLBackend *backend, float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
 
     void drawGird() const override;
 

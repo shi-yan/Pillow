@@ -1,13 +1,13 @@
 #include "ThreeView.h"
 
-ThreeView::ThreeView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
-    :SplitedView(splitX,splitY,width,height)
+ThreeView::ThreeView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
+    :SplitedView(backend, splitX,splitY,width,height)
 {
     m_viewCount=3;
     m_selected=0;
-    m_camera[0]=new PerspectiveCamera(25.0f,(float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
-    m_camera[1]=new FrontCamera((float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(0.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
-    m_camera[2]=new RightCamera((float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,0.0f,0.0f),Vector(0.0f,0.0f,1.0f));
+    m_camera[0]=new PerspectiveCamera(m_backend, 25.0f,(float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
+    m_camera[1]=new FrontCamera(m_backend, (float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(0.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
+    m_camera[2]=new RightCamera(m_backend, (float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,0.0f,0.0f),Vector(0.0f,0.0f,1.0f));
 }
 
 bool ThreeView::onLeftDown(unsigned int x,unsigned int y)
@@ -58,7 +58,7 @@ bool ThreeView::onLeftDown(unsigned int x,unsigned int y)
 
 void ThreeView::onPaint(void)
 {
-    glColor3ub(255,255,255);
+    /*glColor3ub(255,255,255);
     glBegin(GL_QUADS);
         glVertex2i( m_splitX-1,0);
         glVertex2i( m_splitX+1,0);
@@ -123,7 +123,7 @@ void ThreeView::onPaint(void)
         glDisable(GL_ALPHA_TEST);
     }
 
-    glColor3ub(255,255,255);
+    glColor3ub(255,255,255);*/
 }
 
 CameraMode::__Enum ThreeView::setView(unsigned int index)

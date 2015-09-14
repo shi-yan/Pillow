@@ -4,7 +4,7 @@
 class BottomCamera : public Camera
 {
 public:
-    BottomCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
+    BottomCamera(OpenGLBackend *backend, float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
 
     void setCamera() override;
 

@@ -9,7 +9,7 @@
 #include <GL/gl.h>
 #endif
 #include "../View/ViewportImage.h"
-
+#include "../OpenGLBackend.h"
 #define Epsilon 1.0e-5
 
 class Camera
@@ -17,6 +17,7 @@ class Camera
 protected:
     Vector m_old;
     bool m_isDraging;
+    OpenGLBackend *m_backend;
 
 public:
     CameraMode m_type;
@@ -70,6 +71,6 @@ public:
 
     void updateSize(float theStartX,float theStartY,float theWidth,float theHeight);
 
-    Camera(CameraMode::__Enum type, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up);
+    Camera(OpenGLBackend *backend, CameraMode::__Enum type, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up);
     virtual ~Camera(void);
 };

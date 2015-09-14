@@ -6,7 +6,7 @@
 class SingleView : public SplitedView
 {
 public:
-    SingleView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
+    SingleView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 	
     CameraMode::__Enum setView(unsigned int index) override;
 

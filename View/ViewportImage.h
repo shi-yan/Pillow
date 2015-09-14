@@ -1,7 +1,7 @@
 #pragma once
 #ifdef __APPLE__
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
+#include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -35,11 +35,11 @@ public:
     ViewportImage(const char *thePath,GLuint theImageID,unsigned int width,unsigned int height,CameraMode::__Enum theCameraMode,Vector &thePosition);
 	void initialize()
 	{
-		callID=glGenLists(1);
-		glNewList(callID,GL_COMPILE);
+/*		callID=glGenLists(1);
+        glNewList(callID,GL_COMPILE);*/
 		if(cameraMode==CameraMode::Front)
 		{
-			glBegin(GL_QUADS);
+        /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
 			glVertex3f(position.x+width,position.y,position.z+height);
 			glTexCoord2f(1,0);
@@ -48,11 +48,11 @@ public:
 			glVertex3f(position.x,position.y,position.z);
 			glTexCoord2f(0,1);
 			glVertex3f(position.x+width,position.y,position.z);
-			glEnd();
+            glEnd();*/
 		}
 		else if(cameraMode==CameraMode::Back)
 		{
-			glBegin(GL_QUADS);
+        /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
 			glVertex3f(position.x,position.y,position.z+height);
 			glTexCoord2f(1,0);
@@ -61,11 +61,11 @@ public:
 			glVertex3f(position.x+width,position.y,position.z);
 			glTexCoord2f(0,1);
 			glVertex3f(position.x,position.y,position.z);
-			glEnd();			
+            glEnd();	*/
 		}
 		else if(cameraMode==CameraMode::Right)
 		{
-			glBegin(GL_QUADS);
+        /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
 			glVertex3f(position.x,position.y,position.z+height);
 			glTexCoord2f(1,0);
@@ -74,11 +74,11 @@ public:
 			glVertex3f(position.x,position.y+width,position.z);
 			glTexCoord2f(0,1);
 			glVertex3f(position.x,position.y,position.z);
-			glEnd();
+            glEnd();*/
 		}
 		else if(cameraMode==CameraMode::Left)
 		{
-			glBegin(GL_QUADS);
+        /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
 			glVertex3f(position.x,position.y+width,position.z+height);
 			glTexCoord2f(1,0);
@@ -87,11 +87,11 @@ public:
 			glVertex3f(position.x,position.y,position.z);
 			glTexCoord2f(0,1);
 			glVertex3f(position.x,position.y+width,position.z);
-			glEnd();
+            glEnd();*/
 		}
 		else if(cameraMode==CameraMode::Top)
 		{
-			glBegin(GL_QUADS);
+        /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
 			glVertex3f(position.x,position.y+height,position.z);
 			glTexCoord2f(1,0);
@@ -100,11 +100,11 @@ public:
 			glVertex3f(position.x+width,position.y,position.z);
 			glTexCoord2f(0,1);
 			glVertex3f(position.x,position.y,position.z);
-			glEnd();			
+            glEnd();			*/
 		}
 		else if(cameraMode==CameraMode::Bottom)
 		{
-			glBegin(GL_QUADS);
+        /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
 			glVertex3f(position.x+width,position.y,position.z);
 			glTexCoord2f(1,0);
@@ -113,20 +113,20 @@ public:
 			glVertex3f(position.x,position.y+height,position.z);
 			glTexCoord2f(0,1);
 			glVertex3f(position.x+width,position.y+height,position.z);
-			glEnd();						
+            glEnd();						*/
 		}
-		glEndList();
+    //	glEndList();
     }
 	void onPaint()
 	{
-		glDisable(GL_LIGHTING);
+    /*	glDisable(GL_LIGHTING);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D,imageID);
 		glColor3ub(255,255,255);
 		glCallList(callID);
 		glEnable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D,0);
+        glBindTexture(GL_TEXTURE_2D,0);*/
     }
 public:
 	~ViewportImage(void);

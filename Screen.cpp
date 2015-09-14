@@ -12,7 +12,6 @@
 #include "View/ViewportImage.h"
 
 extern Scene *theScene;
-Gird *theGird;
 
 Screen::Screen(/*wxWindow *theMain*/)
     :/*mainFrame(theMain),*/isSelectionMode(false),isAxisMode(false),isAltMode(false),isCtrlMode(false),isExtrude(false)
@@ -22,8 +21,8 @@ Screen::Screen(/*wxWindow *theMain*/)
 
 void Screen::initialize()
 {
-    theGird=new Gird();
-    theGird->initialize();
+    Grid::grid=new Grid(m_graphicsBackend);
+    Grid::grid->initialize();
     theScene->initialize();
     width=0;
     height=0;
@@ -33,10 +32,10 @@ void Screen::initialize()
 
   //  glClearColor(1,0,0,1);
 
-    fourView=new FourView(2,2,4,4);
-    threeView=new ThreeView(2,2,4,4);
-    currentView=singleView=new SingleView(2,2,4,4);
-    twoView=new TwoView(2,2,4,4);
+    fourView=new FourView(m_graphicsBackend, 2,2,4,4);
+    threeView=new ThreeView(m_graphicsBackend, 2,2,4,4);
+    currentView=singleView=new SingleView(m_graphicsBackend, 2,2,4,4);
+    twoView=new TwoView(m_graphicsBackend, 2,2,4,4);
     uiLayer=new UILayer(m_graphicsBackend, width, height);
 }
 
@@ -113,22 +112,16 @@ void Screen::screenShot(const char *fileName)
 
 void Screen::onPaint()
 { 
-    {
-        int k = glGetError();
-        if (k != GL_NO_ERROR)
-        {
-            qDebug() << "error happens when painting -1" << k ;
-        }
-    }
-//    glClearColor(0.0,0.0,1.0,1.0);
     glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
- /*   for(int i=0;i<(int)currentView->m_viewCount;i++)
-    {
-        CameraMode::__Enum cameraMode=currentView->setView(i);
-        theScene->onPaint();
-        theScene->drawCursor(cameraMode,currentView->getEye(i));
-    }*/
     glViewport(0,0,(GLint)  width,(GLint)  height);
+
+    for(int i=0;i<(int)currentView->m_viewCount;i++)
+    {
+        CameraMode::__Enum cameraMode = currentView->setView(i);
+        //theScene->onPaint();
+        //theScene->drawCursor(cameraMode,currentView->getEye(i));
+    }
+
 
     m_graphicsBackend->beginUI(width, height);
   //  Begin2D();

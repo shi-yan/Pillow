@@ -5,7 +5,7 @@
 class TwoView : public SplitedView
 {
 public:
-    TwoView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
+    TwoView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 	
     void onPaint() override;
 

@@ -10,7 +10,9 @@ OpenGLBackend::OpenGLBackend()
      m_screenWidth(0),
      m_screenHeight(0),
      m_UIScreenSizeUniform(0),
-     m_UIOffsetUniform(0)
+     m_UIOffsetUniform(0),
+     m_modelView(),
+     m_projection()
 {
 
 }
@@ -83,6 +85,64 @@ void OpenGLBackend::initialize()
    m_UIScreenSizeUniform = glGetUniformLocation(m_UIShaderProgram, "screenSize");
    m_UIOffsetUniform = glGetUniformLocation(m_UIShaderProgram, "offset");
    m_UITextureID = loadTexture("://ui.dat");
+
+   const char* vertex_shader_grid =
+   "#version 150\n"
+   "in vec3 vp;"
+   "in vec3 col;"
+   "uniform mat4 modelView;"
+   "uniform mat4 projection;"
+   "out vec3 color;"
+   "void main () {"
+   "  color = col;"
+   "  gl_Position = projection * modelView * vec4 (vp.xyz, 1.0);"
+   "}";
+
+   const char* fragment_shader_grid =
+   "#version 150\n"
+   "out vec4 frag_colour;"
+   "in vec3 color;"
+   "void main () {"
+   "  frag_colour = vec4(color.xyz, 1.0);"
+   "}";
+
+   m_gridVertexShader = glCreateShader (GL_VERTEX_SHADER);
+   glShaderSource (m_gridVertexShader, 1, &vertex_shader_grid, NULL);
+   glCompileShader (m_gridVertexShader);
+   glGetShaderiv(m_gridVertexShader, GL_COMPILE_STATUS, &isCompiled);
+   if (isCompiled == GL_FALSE)
+   {
+       qDebug() << "not compiled vs";
+   }
+
+   m_gridFragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
+   glShaderSource (m_gridFragmentShader, 1, &fragment_shader_grid, NULL);
+   glCompileShader (m_gridFragmentShader);
+   glGetShaderiv(m_gridFragmentShader, GL_COMPILE_STATUS, &isCompiled);
+   if (isCompiled == GL_FALSE)
+   {
+       qDebug() << "not compiled fs";
+   }
+
+   m_gridShaderProgram = glCreateProgram ();
+   glAttachShader(m_gridShaderProgram, m_gridFragmentShader);
+   glAttachShader(m_gridShaderProgram, m_gridVertexShader);
+
+   glBindAttribLocation (m_gridShaderProgram, 0, "vp");
+   glBindAttribLocation (m_gridShaderProgram, 1, "col");
+
+   glLinkProgram(m_gridShaderProgram);
+
+   glGetProgramiv(m_gridShaderProgram, GL_LINK_STATUS, &isLinked);
+   if (!isLinked)
+   {
+       qDebug() << "not linked";
+   }
+   glUseProgram (m_gridShaderProgram);
+
+   m_gridModelViewUniform = glGetUniformLocation(m_gridShaderProgram, "modelView");
+   m_gridProjectionUniform = glGetUniformLocation(m_gridShaderProgram, "projection");
+
 }
 
 void OpenGLBackend::deinitialize()
@@ -90,6 +150,9 @@ void OpenGLBackend::deinitialize()
     glDeleteProgram(m_UIShaderProgram);
     glDeleteShader(m_UIVertexShader);
     glDeleteShader(m_UIFragmentShader);
+    glDeleteProgram(m_gridShaderProgram);
+    glDeleteShader(m_gridVertexShader);
+    glDeleteShader(m_gridFragmentShader);
     glDeleteTextures(1, &m_UITextureID);
 }
 
@@ -146,14 +209,25 @@ GLuint OpenGLBackend::loadTexture(const char *fileName) const
 
 OpenGLBackend::RenderableGeometryData::RenderableGeometryData(GLuint vbo, GLuint vao)
     :m_vbo(vbo),
-      m_vao(vao)
+      m_vao(vao),
+      m_colorVbo(0)
 {
 }
 
 OpenGLBackend::RenderableGeometryData::~RenderableGeometryData()
 {
-    glDeleteVertexArrays(1, &m_vao);
-    glDeleteVertexArrays(1, &m_vbo);
+    if (m_vao)
+    {
+        glDeleteVertexArrays(1, &m_vao);
+    }
+    if(m_vbo)
+    {
+        glDeleteVertexArrays(1, &m_vbo);
+    }
+    if (m_colorVbo)
+    {
+        glDeleteVertexArrays(1, &m_colorVbo);
+    }
 }
 
 GLuint OpenGLBackend::RenderableGeometryData::getVbo() const
@@ -164,6 +238,16 @@ GLuint OpenGLBackend::RenderableGeometryData::getVbo() const
 GLuint OpenGLBackend::RenderableGeometryData::getVao() const
 {
     return m_vao;
+}
+
+void OpenGLBackend::RenderableGeometryData::setColorVbo(GLuint vbo)
+{
+    m_colorVbo = vbo;
+}
+
+GLuint OpenGLBackend::RenderableGeometryData::getColorVbo() const
+{
+    return m_colorVbo;
 }
 
 void OpenGLBackend::updateToolStripGeometry(void **id, const float * const vertices) const
@@ -230,4 +314,62 @@ void OpenGLBackend::drawButtonStripGeometry(const void * const id, int offsetX, 
     const RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
     glBindVertexArray (renderableData->getVao());
     glDrawArrays (GL_TRIANGLE_FAN, 0, 4);
+}
+
+void OpenGLBackend::setModelViewMatrix(const Matrix &in)
+{
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+    glUseProgram(m_gridShaderProgram);
+    m_modelView = in;
+    glUniformMatrix4fv(m_gridModelViewUniform, 1, false, &m_modelView.m[0][0]);
+}
+
+void OpenGLBackend::setProjectionMatrix(const Matrix &in)
+{
+    glUseProgram(m_gridShaderProgram);
+    m_projection = in;
+    glUniformMatrix4fv(m_gridProjectionUniform, 1, false, &m_projection.m[0][0]);
+}
+
+void OpenGLBackend::updateGridGeometry(void **id, const std::vector<float> &vertices, const std::vector<float> &colors) const
+{
+    if (*id == nullptr)
+    {
+        GLuint vbo = 0;
+        GLuint vao = 0;
+        glGenBuffers (1, &vbo);
+        glGenVertexArrays (1, &vao);
+        *id = new RenderableGeometryData(vbo, vao);
+
+        GLuint colorVbo = 0;
+
+        glGenBuffers(1, &colorVbo);
+
+        RenderableGeometryData *renderableData = (RenderableGeometryData*)(*id);
+        renderableData->setColorVbo(colorVbo);
+    }
+
+    RenderableGeometryData *renderableData = (RenderableGeometryData*)(*id);
+
+    glBindVertexArray (renderableData->getVao());
+
+    glBindBuffer (GL_ARRAY_BUFFER, renderableData->getVbo());
+    glBufferData (GL_ARRAY_BUFFER, vertices.size() * sizeof (float), &vertices[0], GL_STATIC_DRAW);
+    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+    glBindBuffer(GL_ARRAY_BUFFER, renderableData->getColorVbo());
+    glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), &colors[0], GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+}
+
+void OpenGLBackend::drawGridGeometry(const void * const id) const
+{
+    RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
+    glUseProgram (m_gridShaderProgram);
+    glBindVertexArray (renderableData->getVao());
+    glDrawArrays (GL_LINES, 0, 252);
 }

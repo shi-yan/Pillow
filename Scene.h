@@ -3021,8 +3021,8 @@ glScalef(theObject->m_scale.x,theObject->m_scale.y,theObject->m_scale.z);
         }
         if(theObjectList.size()<16777215)
         {
-            glClearColor(1.0f,1.0f,1.0f,1.0f);
-            glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+            //glClearColor(1.0f,1.0f,1.0f,1.0f);
+            //glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
             glDisable(GL_DITHER);
             /*glDisable(GL_LIGHTING);
             glDisable(GL_TEXTURE_2D);

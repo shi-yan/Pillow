@@ -6,8 +6,8 @@
 
 ViewportImage *frontReference=NULL;
 
-FrontCamera::FrontCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
-    :Camera(CameraMode::Front, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
+FrontCamera::FrontCamera(OpenGLBackend *backend, float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
+    :Camera(backend, CameraMode::Front, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
 {
     m_lightAmbient[0]=0.4f;
     m_lightAmbient[1]=0.4f;
@@ -38,7 +38,7 @@ void FrontCamera::drawGird() const
 {
     if(m_showGird)
     {
-        theGird->drawXZ();
+        Grid::grid->drawXZ();
     }
 }
 

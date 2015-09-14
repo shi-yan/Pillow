@@ -7,8 +7,8 @@
 #include "../Camera/TopCamera.h"
 #include "../Camera/PerspectiveCamera.h"
 #ifdef __APPLE__
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
+#include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -17,6 +17,7 @@
 class SplitedView
 {
 protected:
+    OpenGLBackend *m_backend;
     unsigned int m_splitX;
     unsigned int m_splitY;
     unsigned int m_width;
@@ -108,7 +109,7 @@ public:
 
     virtual bool onDualSideSelectionRelease(bool isAppend);
 
-    SplitedView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
+    SplitedView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 
 public:
     virtual ~SplitedView(void);

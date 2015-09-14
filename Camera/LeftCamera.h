@@ -4,7 +4,7 @@
 class LeftCamera : public Camera
 {
 public:
-    LeftCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
+    LeftCamera(OpenGLBackend *backend, float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
 
     void setCamera() override;
 

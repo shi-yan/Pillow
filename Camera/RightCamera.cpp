@@ -7,8 +7,8 @@
 ViewportImage *rightReference=NULL;
 
 
-RightCamera::RightCamera(float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
-    :Camera(CameraMode::Right, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
+RightCamera::RightCamera(OpenGLBackend *backend, float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
+    :Camera(backend, CameraMode::Right, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
 {
     m_lightAmbient[0]=0.4f;
     m_lightAmbient[1]=0.4f;
@@ -142,11 +142,11 @@ Vector RightCamera::getHorizontalDir() const
         return Vector(0,-1,0);
     }
 
-            void RightCamera::drawGird() const
+         void RightCamera::drawGird() const
     {
         if(m_showGird)
         {
-            theGird->drawYZ();
+            Grid::grid->drawYZ();
         }
     }
 

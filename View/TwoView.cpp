@@ -1,17 +1,17 @@
 #include "TwoView.h"
 
-TwoView::TwoView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
-    :SplitedView(splitX,splitY,width,height)
+TwoView::TwoView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
+    :SplitedView(backend, splitX,splitY,width,height)
 {
     m_viewCount=2;
     m_selected=0;
-    m_camera[0]=new PerspectiveCamera(25.0f,(float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
-    m_camera[1]=new LeftCamera((float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,0.0f,0.0f),Vector(0.0f,0.0f,1.0f));
+    m_camera[0]=new PerspectiveCamera(m_backend, 25.0f,(float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
+    m_camera[1]=new LeftCamera(m_backend, (float)m_width,(float)m_height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,0.0f,0.0f),Vector(0.0f,0.0f,1.0f));
 }
 
 void TwoView::onPaint(void)
 {
-    glColor3ub(255,255,255);
+    /*glColor3ub(255,255,255);
     glBegin(GL_QUADS);
         glVertex2i(m_splitX-1,0);
         glVertex2i(m_splitX+1,0);
@@ -57,7 +57,7 @@ void TwoView::onPaint(void)
         glEnd();
         glDisable(GL_ALPHA_TEST);
     }
-    glColor3ub(255,255,255);
+    glColor3ub(255,255,255);*/
 }
 
 TwoView::~TwoView(void)

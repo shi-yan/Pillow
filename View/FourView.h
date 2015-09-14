@@ -5,7 +5,7 @@
 class FourView : public SplitedView
 {
 public:
-	FourView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
+    FourView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height);
 
     void onPaint() override;
 

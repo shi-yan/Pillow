@@ -1,7 +1,8 @@
 #include "SplitedView.h"
 
-SplitedView::SplitedView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned height)
-    :m_isAxisMode(false),
+SplitedView::SplitedView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned height)
+    :m_backend(backend),
+      m_isAxisMode(false),
       m_isSelectionMode(false),
       m_selectionSX(0),
       m_selectionSY(0),
@@ -44,31 +45,31 @@ void SplitedView::changeCamera(CameraMode::__Enum type)
     m_camera[m_selected]=NULL;
     if(type==CameraMode::Perspective)
     {
-        m_camera[m_selected]=new PerspectiveCamera(25,(float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(200,200,0),Vector(0,0,1));
+        m_camera[m_selected]=new PerspectiveCamera(m_backend, 25,(float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(200,200,0),Vector(0,0,1));
     }
     else if(type==CameraMode::Top)
     {
-        m_camera[m_selected]=new TopCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,0,200),Vector(0,1,0));
+        m_camera[m_selected]=new TopCamera(m_backend, (float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,0,200),Vector(0,1,0));
     }
     else if(type==CameraMode::Bottom)
     {
-        m_camera[m_selected]=new BottomCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,0,200),Vector(0,1,0));
+        m_camera[m_selected]=new BottomCamera(m_backend, (float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,0,200),Vector(0,1,0));
     }
     else if(type==CameraMode::Front)
     {
-        m_camera[m_selected]=new FrontCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,200,0),Vector(0,0,1));
+        m_camera[m_selected]=new FrontCamera(m_backend, (float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,200,0),Vector(0,0,1));
     }
     else if(type==CameraMode::Back)
     {
-        m_camera[m_selected]=new BackCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,200,0),Vector(0,0,1));
+        m_camera[m_selected]=new BackCamera(m_backend, (float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(0,200,0),Vector(0,0,1));
     }
     else if(type==CameraMode::Left)
     {
-        m_camera[m_selected]=new LeftCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(200,0,0),Vector(0,0,1));
+        m_camera[m_selected]=new LeftCamera(m_backend, (float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(200,0,0),Vector(0,0,1));
     }
     else if(type==CameraMode::Right)
     {
-        m_camera[m_selected]=new RightCamera((float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(200,0,0),Vector(0,0,1));
+        m_camera[m_selected]=new RightCamera(m_backend, (float)cameraWidth,(float)cameraHeight,1,8000,(float)cameraStartX,(float)cameraStartY,Vector(0,0,0),Vector(200,0,0),Vector(0,0,1));
     }
 }
 

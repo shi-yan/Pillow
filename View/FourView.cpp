@@ -1,21 +1,22 @@
 #include "FourView.h"
 #include "Global.h"
 #ifdef __APPLE__
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
+#include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
 #endif
 
-FourView::FourView(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height):SplitedView(splitX,splitY,width,height)
+FourView::FourView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
+    :SplitedView(backend, splitX,splitY,width,height)
 {
      m_viewCount=4;
      m_selected=3;
-    m_camera[0]=new TopCamera((float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(0.0f,0.0f,200.0f),Vector(0.0f,1.0f,0.0f));
-    m_camera[1]=new FrontCamera((float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(0.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
-    m_camera[2]=new LeftCamera((float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,0.0f,0.0f),Vector(0.0f,0.0f,1.0f));
-    m_camera[3]=new PerspectiveCamera(25.0f,(float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
+    m_camera[0]=new TopCamera(m_backend, (float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(0.0f,0.0f,200.0f),Vector(0.0f,1.0f,0.0f));
+    m_camera[1]=new FrontCamera(m_backend, (float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(0.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
+    m_camera[2]=new LeftCamera(m_backend, (float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,0.0f,0.0f),Vector(0.0f,0.0f,1.0f));
+    m_camera[3]=new PerspectiveCamera(m_backend, 25.0f,(float)width,(float)height,1.0f,8000.0f,0.0f,0.0f,Vector(0.0f,0.0f,0.0f),Vector(200.0f,200.0f,0.0f),Vector(0.0f,0.0f,1.0f));
 }
 
 bool FourView::onLeftDown(unsigned int x,unsigned int y)
@@ -76,7 +77,7 @@ bool FourView::onLeftDown(unsigned int x,unsigned int y)
 
 void FourView::onPaint(void)
 {
-    glColor3ub(255,255,255);
+    /*glColor3ub(255,255,255);
     glBegin(GL_QUADS);
         glVertex2i( m_splitX-1,0);
         glVertex2i( m_splitX+1,0);
@@ -153,7 +154,7 @@ void FourView::onPaint(void)
         glEnd();
         glDisable(GL_ALPHA_TEST);
     }
-    glColor3ub(255,255,255);
+    glColor3ub(255,255,255);*/
 }
 
 FourView::~FourView(void)

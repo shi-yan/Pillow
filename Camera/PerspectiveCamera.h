@@ -38,7 +38,7 @@ public:
 
     Vector getHorizontalDir() const override;
 
-    PerspectiveCamera(float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
+    PerspectiveCamera(OpenGLBackend *backend, float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
 
     ~PerspectiveCamera(void) override;
 
