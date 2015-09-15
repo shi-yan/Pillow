@@ -1,5 +1,5 @@
 #include "Quaternion.h"
-#include "TheMath.h"
+#include "Math.h"
 
 Quaternion::Quaternion(const Matrix &mat)
 {

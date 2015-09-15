@@ -67,7 +67,7 @@ HEADERS += \
     Core/SubdivideFace.h \
     Core/SubdivideLevel.h \
     Core/SubdivideVertex.h \
-    Core/TheMath.h \
+    Core/Math.h \
     View/ThreeView.h \
     UI/ToolStrip.h \
     Camera/TopCamera.h \
