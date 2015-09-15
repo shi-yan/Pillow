@@ -59,7 +59,7 @@ HEADERS += \
     Camera/PerspectiveCamera.h \
     Core/Quaternion.h \
     Camera/RightCamera.h \
-    Scene.h \
+    Core/Scene.h \
     Screen.h \
     View/SingleView.h \
     View/SplitedView.h \
@@ -80,7 +80,7 @@ HEADERS += \
     GLCanvas.h \
     Dialog/NewCubeDialog.h \
     Dialog/NewCylinderDialog.h \
-    OpenGLBackend.h
+    GraphicsBackend/OpenGLBackend.h
 
 SOURCES += \
     UI/AxisCursor.cpp \
@@ -134,7 +134,7 @@ SOURCES += \
     Camera/PerspectiveCamera.cpp \
     Core/Quaternion.cpp \
     Camera/RightCamera.cpp \
-    Scene.cpp \
+    Core/Scene.cpp \
     Screen.cpp \
     View/SingleView.cpp \
     View/SplitedView.cpp \
@@ -155,7 +155,7 @@ SOURCES += \
     GLCanvas.cpp \
     Dialog/NewCubeDialog.cpp \
     Dialog/NewCylinderDialog.cpp \
-    OpenGLBackend.cpp
+    GraphicsBackend/OpenGLBackend.cpp
 
 
 unix:!mac {

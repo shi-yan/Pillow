@@ -18,7 +18,7 @@ Camera::Camera(OpenGLBackend *backend, CameraMode::__Enum type, float width, flo
       m_target(target),
       m_eye(eye),
       m_up(up),
-      m_showGird(true)
+      m_showGrid(true)
 {
 }
 

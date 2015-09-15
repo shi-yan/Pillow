@@ -36,7 +36,7 @@ FrontCamera::~FrontCamera(void)
 
 void FrontCamera::drawGird() const
 {
-    if(m_showGird)
+    if(m_showGrid)
     {
         Grid::grid->drawXZ();
     }

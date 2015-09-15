@@ -132,7 +132,7 @@ Vector TopCamera::getHorizontalDir() const
 
 void TopCamera::drawGird() const
 {
-    if(m_showGird)
+    if(m_showGrid)
     {
         Grid::grid->drawXY();
     }

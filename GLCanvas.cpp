@@ -3,7 +3,6 @@
 #include <QDebug>
 
 Scene *theScene = NULL;
-Screen *theScreen = NULL;
 
 GLCanvas::GLCanvas(QWidget *parent) : QOpenGLWidget(parent),isDragging(false)
 {
@@ -13,15 +12,14 @@ GLCanvas::GLCanvas(QWidget *parent) : QOpenGLWidget(parent),isDragging(false)
 
 void GLCanvas::initializeGL()
 {
-    theScreen=new Screen();
-    theScene=new Scene(theScreen->m_graphicsBackend);
+    Screen::screen = new Screen();
+    theScene=new Scene(Screen::screen->m_graphicsBackend);
     theScene->initialize();
-    theScreen->initialize();
+    Screen::screen->initialize();
     int w = 800, h = 600;
 
-        theScreen->width=w;
-        theScreen->height=h;
-        theScreen->updateScreen(w,h);
+
+        Screen::screen->updateScreenSize(w,h);
 
 
         {
@@ -43,24 +41,24 @@ void GLCanvas::initializeGL()
 
 void GLCanvas::paintGL()
 {
-    theScreen->onPaint();
+    Screen::screen->onPaint();
 }
 
 void GLCanvas::mouseMoveEvent(QMouseEvent *e)
 {
     if (e->buttons() == Qt::NoButton)
     {
-        theScreen->onMoving(e->x()*2.0, e->y()*2.0);
+        Screen::screen->onMoving(e->x()*2.0, e->y()*2.0);
     }
     else
     {
         if (e->buttons() == Qt::LeftButton)
         {
-            theScreen->onLeftDrag(e->x()*2.0,e->y()*2.0);
+            Screen::screen->onLeftDrag(e->x()*2.0,e->y()*2.0);
         }
         else if (e->buttons() == Qt::MiddleButton)
         {
-            theScreen->onMiddleDrag(e->x()*2.0, e->y()*2.0);
+            Screen::screen->onMiddleDrag(e->x()*2.0, e->y()*2.0);
         }
     }
     update();
@@ -69,7 +67,7 @@ void GLCanvas::mouseMoveEvent(QMouseEvent *e)
 void GLCanvas::mousePressEvent(QMouseEvent *e)
 {
     isDragging = true;
-    theScreen->onLeftPress(e->x()*2.0, e->y()*2.0);
+    Screen::screen->onLeftPress(e->x()*2.0, e->y()*2.0);
 
     update();
 }
@@ -79,29 +77,29 @@ void GLCanvas::mouseReleaseEvent(QMouseEvent *e)
     isDragging = false;
 
     makeCurrent();
-    theScreen->onLeftRelease(false);
+    Screen::screen->onLeftRelease(false);
 
     update();
 }
 
 void GLCanvas::resizeGL(int w, int h)
 {
-    theScreen->updateScreen(w*2.0, h*2.0);
+    Screen::screen->updateScreenSize(w*2.0, h*2.0);
 }
 
 void GLCanvas::keyPressEvent(QKeyEvent *e)
 {
     if(e->key() == Qt::Key_Alt)
     {
-        theScreen->onAltDown();
+        Screen::screen->onAltDown();
     }
     else if(e->key() == Qt::Key_Control)
     {
-        theScreen->onCtrlDown();
+        Screen::screen->onCtrlDown();
     }
     else if(e->key() == Qt::Key_Z)//z
     {
-        theScreen->onExtrudePress();
+        Screen::screen->onExtrudePress();
     }
 }
 
@@ -110,11 +108,11 @@ void GLCanvas::keyReleaseEvent(QKeyEvent *e)
     int keyCode=e->key();
     if(keyCode==Qt::Key_Alt)
     {
-        theScreen->onAltUp();
+        Screen::screen->onAltUp();
     }
     else if(keyCode==Qt::Key_Control)
     {
-        theScreen->onCtrlUp();
+        Screen::screen->onCtrlUp();
     }
     else if(keyCode==Qt::Key_W) //w
     {
@@ -138,7 +136,7 @@ void GLCanvas::keyReleaseEvent(QKeyEvent *e)
     }
     else if(keyCode==Qt::Key_Z) //z
     {
-        theScreen->onExtrudeRelease();
+        Screen::screen->onExtrudeRelease();
     }
     else if(keyCode==Qt::Key_Delete)
     {
@@ -146,31 +144,31 @@ void GLCanvas::keyReleaseEvent(QKeyEvent *e)
     }
     else if(keyCode==49)
     {
-        theScreen->changeCamera(CameraMode::Top);
+        Screen::screen->changeCamera(CameraMode::Top);
     }
     else if(keyCode==50)
     {
-        theScreen->changeCamera(CameraMode::Bottom);
+        Screen::screen->changeCamera(CameraMode::Bottom);
     }
     else if(keyCode==51)
     {
-        theScreen->changeCamera(CameraMode::Front);
+        Screen::screen->changeCamera(CameraMode::Front);
     }
     else if(keyCode==52)
     {
-        theScreen->changeCamera(CameraMode::Back);
+        Screen::screen->changeCamera(CameraMode::Back);
     }
     else if(keyCode==53)
     {
-        theScreen->changeCamera(CameraMode::Left);
+        Screen::screen->changeCamera(CameraMode::Left);
     }
     else if(keyCode==54)
     {
-        theScreen->changeCamera(CameraMode::Right);
+        Screen::screen->changeCamera(CameraMode::Right);
     }
     else if(keyCode==55)
     {
-        theScreen->changeCamera(CameraMode::Perspective);
+        Screen::screen->changeCamera(CameraMode::Perspective);
     }
 
     update();
@@ -184,7 +182,7 @@ void GLCanvas::enterEvent(QEvent *e)
 
 void GLCanvas::wheelEvent(QWheelEvent *e)
 {
-  if( theScreen->onWheel(((float)e->angleDelta().y())*0.1,e->x()*2.0,e->y()*2.0))
+  if( Screen::screen->onWheel(((float)e->angleDelta().y())*0.1,e->x()*2.0,e->y()*2.0))
   {
       update();
   }

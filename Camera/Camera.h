@@ -9,7 +9,7 @@
 #include <GL/gl.h>
 #endif
 #include "../View/ViewportImage.h"
-#include "../OpenGLBackend.h"
+#include "../GraphicsBackend/OpenGLBackend.h"
 #define Epsilon 1.0e-5
 
 class Camera
@@ -30,7 +30,7 @@ public:
     Vector m_target;
     Vector m_eye;
     Vector m_up;
-    bool m_showGird;
+    bool m_showGrid;
 
     GLfloat m_lightAmbient[4];
     GLfloat m_lightDiffuse[4];

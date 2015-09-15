@@ -62,7 +62,7 @@ void PerspectiveCamera::onRotatePress(int x,int y)
 
 void PerspectiveCamera::drawGird() const
 {
-    if(m_showGird)
+    if(m_showGrid)
     {
         Grid::grid->drawXY();
     }
@@ -188,9 +188,6 @@ void PerspectiveCamera::onPanRelease(int x,int y)
     m_old.null();
 }
 
-static GLuint vbo = 0;
-static GLuint vao = 0;
-
 void PerspectiveCamera::setCamera()
 {
     QMatrix4x4 modelView;
@@ -222,46 +219,8 @@ void PerspectiveCamera::setCamera()
     }
 
     m_backend->setProjectionMatrix(projectionMatrix);
-/*
-if (vbo == 0)
-{
-        glGenBuffers (1, &vbo);
-        glGenVertexArrays (1, &vao);
 
-        float m_x = 0;
-        float m_y = 0;
-        float m_sx = 100;
-        float m_sy = 100;
-
-        float m_texCx1 = 0;
-        float m_texCx2 = 0;
-
-        float points[] = {
-            (float) m_x,        (float) m_y,        (float) m_texCx1,
-            (float) m_x + m_sx, (float) m_y,        (float) m_texCx2,
-            (float) m_x + m_sx, (float) m_y + m_sy, (float) m_texCx2,
-            (float) m_x,        (float) m_y + m_sy, (float) m_texCx1
-        };
-
-            glBindBuffer (GL_ARRAY_BUFFER, vbo);
-            glBufferData (GL_ARRAY_BUFFER, 12 * sizeof (float), points, GL_STATIC_DRAW);
-
-            glBindVertexArray (vao);
-            glEnableVertexAttribArray (0);
-            glBindBuffer (GL_ARRAY_BUFFER, vbo);
-            glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-}
-
-glBindVertexArray (vao);
-glDrawArrays (GL_TRIANGLE_FAN, 0, 4);
-
-{
-    int k = glGetError();
-    if (k != GL_NO_ERROR)
-    {
-        qDebug() << "error happens when compiling shaders" << k;
-    }
-}*/
+    glViewport((GLint) m_startX,(GLint) m_startY,(GLint) m_width,(GLint) m_height);
     drawGird();
     {
         int k = glGetError();

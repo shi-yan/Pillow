@@ -8,7 +8,7 @@
 #endif
 
 #include "Enum.h"
-#include "OpenGLBackend.h"
+#include "../GraphicsBackend/OpenGLBackend.h"
 
 DECLARE_ENUM(ButtonEventType)
     Nothing=823,

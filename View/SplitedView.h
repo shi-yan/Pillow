@@ -59,7 +59,7 @@ public:
 
     void onExtrudeRelease();
 
-    void switchGird();
+    void toggleGrid();
 
     virtual bool onCtrlPress(unsigned int x,unsigned int y);
 

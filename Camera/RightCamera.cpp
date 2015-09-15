@@ -144,7 +144,7 @@ Vector RightCamera::getHorizontalDir() const
 
          void RightCamera::drawGird() const
     {
-        if(m_showGird)
+        if(m_showGrid)
         {
             Grid::grid->drawYZ();
         }

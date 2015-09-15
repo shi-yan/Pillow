@@ -139,7 +139,7 @@ void BackCamera::zoom(float step)
 
 void BackCamera::drawGird() const
 {
-    if(m_showGird)
+    if(m_showGrid)
     {
         Grid::grid->drawXZ();
     }

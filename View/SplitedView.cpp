@@ -98,9 +98,9 @@ void SplitedView::onExtrudeRelease()
     m_isExtrude=false;
 }
 
-void SplitedView::switchGird()
+void SplitedView::toggleGrid()
 {
-    m_camera[m_selected]->m_showGird=!(m_camera[m_selected]->m_showGird);
+    m_camera[m_selected]->m_showGrid = !(m_camera[m_selected]->m_showGrid);
 }
 
 bool SplitedView::onCtrlPress(unsigned int x,unsigned int y)
