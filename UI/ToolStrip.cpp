@@ -152,7 +152,7 @@ void ToolStrip::updateGeometry()
             (float) (m_x + m_width),      (float) m_y,            (float) m_textRightX2, (float) m_textRightY1,
             (float) (m_x + m_width),      (float) m_y + m_height, (float) m_textRightX2, (float) m_textRightY2,
         };
-        m_backend->updateToolStripGeometry(&m_renderable, vertices);
+        m_backend->updateGeometryWithVertices(&m_renderable, vertices, 32, 4);
     }
     else
     {
@@ -167,7 +167,7 @@ void ToolStrip::updateGeometry()
             (float) m_x,           (float) m_y + m_height, (float) m_textRightX1, (float) m_textRightY2,
             (float) m_x + m_width, (float) m_y + m_height, (float) m_textRightX2, (float) m_textRightY2
         };
-        m_backend->updateToolStripGeometry(&m_renderable, vertices);
+        m_backend->updateGeometryWithVertices(&m_renderable, vertices, 32, 4);
     }
 
     for(unsigned int i = 0; i < m_buttonSet.size(); ++i)

@@ -29,9 +29,9 @@ private:
     bool isCtrlMode;
     bool isExtrude;
     //wxWindow *mainFrame;
-
-    OpenGLBackend *m_graphicsBackend;
 public:
+    OpenGLBackend *m_graphicsBackend;
+
 
     int width;
     int height;

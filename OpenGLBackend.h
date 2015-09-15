@@ -33,6 +33,15 @@ private:
     GLuint m_gridModelViewUniform;
     GLuint m_gridProjectionUniform;
 
+    GLuint m_axisCursorShaderProgram;
+    GLuint m_axisCursorVertexShader;
+    GLuint m_axisCursorFragmentShader;
+    GLuint m_axisCursorModelViewUniform;
+    GLuint m_axisCursorProjectionUniform;
+    GLuint m_axisCursorTransformUniform;
+    GLuint m_axisCursorColorUniform;
+
+
     GLuint loadTexture(const char *fileName) const;
 
 public:
@@ -61,18 +70,22 @@ public:
     void beginUI(unsigned int width, unsigned int height);
     void endUI();
 
-    void updateToolStripGeometry(void **id, const float * const vertices) const;
+    void updateGeometryWithVertices(void **id, const float * const vertices, unsigned int count, unsigned int size = 4) const;
     void deleteRenderableGeometryData(const void *id) const;
-    void drawToolStripGeometry(const void * const id) const;
 
-    void updateButtonGeometry(void **id, const float * const vertices) const;
+    void drawToolStripGeometry(const void * const id) const;
     void drawButtonStripGeometry(const void * const id, int offsetX = 0, int offsetY = 0) const;
 
     void setModelViewMatrix(const Matrix &in);
     void setProjectionMatrix(const Matrix &in);
 
-    void updateGridGeometry(void **id, const std::vector<float> &vertices, const std::vector<float> &colors) const;
+    void updateGeometryWithVerticesAndColors(void **id, const std::vector<float> &vertices, const std::vector<unsigned char> &colors) const;
     void drawGridGeometry(const void * const id) const;
+
+    void drawAxisCursorMove(const void * const id, const Matrix &transform, const Vector &color) const;
+    void drawAxisCursorRotate(const void * const id, const Matrix &transform, const Vector &color) const;
+    void drawAxisCursorScale(const void * const id, const Matrix &transform, const Vector &color) const;
+
     ~OpenGLBackend();
 };
 

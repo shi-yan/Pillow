@@ -41,7 +41,7 @@ void Button::updateGeometry()
         (float) m_x,        (float) m_y + m_sy, (float) m_texCx1, (float) m_texCy2
     };
 
-    m_backend->updateButtonGeometry(&m_renderable, points);
+    m_backend->updateGeometryWithVertices(&m_renderable, points, 16, 4);
 }
 
 bool Button::onIn(int mx, int my)

@@ -55,6 +55,7 @@ struct SceneInfo
 class Scene
 {
 private:
+    OpenGLBackend *m_backend;
     std::vector<ElementBase *> isInCache;
     AxisCursor *theAxisCursor;
     AxisCursorMode currentACMode;
@@ -70,7 +71,7 @@ public:
     //unsigned int splitVX;
     //unsigned int splitVY;
 
-    Scene(void);
+    Scene(OpenGLBackend *backend);
     unsigned int newCube(float x,float y,float z,float lx,float ly,float lz,unsigned int sx,unsigned int sy,unsigned int sz);
     void newCube(Object *theCube,float x,float y,float z,float lx,float ly,float lz,unsigned int sx,unsigned int sy,unsigned int sz);
     unsigned int newCylinder(float x,float y,float z,float r,float h,AxisMode::__Enum axis,unsigned int sa,unsigned int sr,unsigned int sh);

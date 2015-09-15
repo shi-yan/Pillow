@@ -25,7 +25,7 @@ Vector positionAAxis(AxisMode::__Enum axis,float x,float y,float z,float ax,floa
 void Scene::initialize()
 {
     isInCache.reserve(1000);
-    theAxisCursor=new AxisCursor();
+    theAxisCursor = new AxisCursor(m_backend);
     theAxisCursor->initialize();
 }
 
@@ -288,7 +288,13 @@ void Scene::clearDualEdge(unsigned int tt,unsigned int vertexID)
     }
 
 
-Scene::Scene(void):mode(SelectionMode::Object),target(0),currentACMode(AxisCursorMode::MoveAxis),isSplitMode(false),splitVertexID(0)
+Scene::Scene(OpenGLBackend *backend)
+    :m_backend(backend),
+      mode(SelectionMode::Object),
+      target(0),
+      currentACMode(AxisCursorMode::MoveAxis),
+      isSplitMode(false),
+      splitVertexID(0)
 {
 
 }

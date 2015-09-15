@@ -143,6 +143,65 @@ void OpenGLBackend::initialize()
    m_gridModelViewUniform = glGetUniformLocation(m_gridShaderProgram, "modelView");
    m_gridProjectionUniform = glGetUniformLocation(m_gridShaderProgram, "projection");
 
+   const char* vertex_shader_axisCursor =
+   "#version 150\n"
+   "in vec3 vp;"
+   "uniform vec3 col;"
+   "uniform mat4 modelView;"
+   "uniform mat4 projection;"
+   "uniform mat4 transform;"
+   "out vec3 color;"
+   "void main () {"
+   "  color = col;"
+   "  gl_Position = projection * modelView * transform * vec4 (vp.xyz, 1.0);"
+   "}";
+
+   const char* fragment_shader_axisCursor =
+   "#version 150\n"
+   "out vec4 frag_colour;"
+   "in vec3 color;"
+   "void main () {"
+   "  frag_colour = vec4(color.xyz, 1.0);"
+   "}";
+
+   m_axisCursorVertexShader = glCreateShader (GL_VERTEX_SHADER);
+   glShaderSource (m_axisCursorVertexShader, 1, &vertex_shader_axisCursor, NULL);
+   glCompileShader (m_axisCursorVertexShader);
+   glGetShaderiv(m_axisCursorVertexShader, GL_COMPILE_STATUS, &isCompiled);
+   if (isCompiled == GL_FALSE)
+   {
+       qDebug() << "not compiled vs";
+   }
+
+   m_axisCursorFragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
+   glShaderSource (m_axisCursorFragmentShader, 1, &fragment_shader_axisCursor, NULL);
+   glCompileShader (m_axisCursorFragmentShader);
+   glGetShaderiv(m_axisCursorFragmentShader, GL_COMPILE_STATUS, &isCompiled);
+   if (isCompiled == GL_FALSE)
+   {
+       qDebug() << "not compiled fs";
+   }
+
+   m_axisCursorShaderProgram = glCreateProgram ();
+   glAttachShader(m_axisCursorShaderProgram, m_axisCursorFragmentShader);
+   glAttachShader(m_axisCursorShaderProgram, m_axisCursorVertexShader);
+
+   glBindAttribLocation (m_axisCursorShaderProgram, 0, "vp");
+   glBindAttribLocation (m_axisCursorShaderProgram, 1, "col");
+
+   glLinkProgram(m_axisCursorShaderProgram);
+
+   glGetProgramiv(m_axisCursorShaderProgram, GL_LINK_STATUS, &isLinked);
+   if (!isLinked)
+   {
+       qDebug() << "not linked";
+   }
+   glUseProgram (m_axisCursorShaderProgram);
+
+   m_axisCursorModelViewUniform = glGetUniformLocation(m_axisCursorShaderProgram, "modelView");
+   m_axisCursorProjectionUniform = glGetUniformLocation(m_axisCursorShaderProgram, "projection");
+   m_axisCursorTransformUniform = glGetUniformLocation(m_axisCursorShaderProgram, "transform");
+   m_axisCursorColorUniform = glGetUniformLocation(m_axisCursorShaderProgram, "col");
 }
 
 void OpenGLBackend::deinitialize()
@@ -153,6 +212,9 @@ void OpenGLBackend::deinitialize()
     glDeleteProgram(m_gridShaderProgram);
     glDeleteShader(m_gridVertexShader);
     glDeleteShader(m_gridFragmentShader);
+    glDeleteProgram(m_axisCursorShaderProgram);
+    glDeleteShader(m_axisCursorVertexShader);
+    glDeleteShader(m_axisCursorFragmentShader);
     glDeleteTextures(1, &m_UITextureID);
 }
 
@@ -250,7 +312,7 @@ GLuint OpenGLBackend::RenderableGeometryData::getColorVbo() const
     return m_colorVbo;
 }
 
-void OpenGLBackend::updateToolStripGeometry(void **id, const float * const vertices) const
+void OpenGLBackend::updateGeometryWithVertices(void **id, const float * const vertices, unsigned int count, unsigned int size) const
 {
     if (*id == nullptr)
     {
@@ -264,12 +326,12 @@ void OpenGLBackend::updateToolStripGeometry(void **id, const float * const verti
     RenderableGeometryData *renderableData = (RenderableGeometryData*)(*id);
 
     glBindBuffer (GL_ARRAY_BUFFER, renderableData->getVbo());
-    glBufferData (GL_ARRAY_BUFFER, 32 * sizeof (float), vertices, GL_STATIC_DRAW);
+    glBufferData (GL_ARRAY_BUFFER, count * sizeof (float), vertices, GL_STATIC_DRAW);
 
     glBindVertexArray (renderableData->getVao());
     glEnableVertexAttribArray (0);
     glBindBuffer (GL_ARRAY_BUFFER, renderableData->getVbo());
-    glVertexAttribPointer (0, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer (0, size, GL_FLOAT, GL_FALSE, 0, NULL);
 }
 
 void OpenGLBackend::deleteRenderableGeometryData(const void *id) const
@@ -286,28 +348,6 @@ void OpenGLBackend::drawToolStripGeometry(const void * const id) const
     glDrawArrays (GL_TRIANGLE_STRIP, 0, 8);
 }
 
-void OpenGLBackend::updateButtonGeometry(void **id, const float * const vertices) const
-{
-    if (*id == nullptr)
-    {
-        GLuint vbo = 0;
-        GLuint vao = 0;
-        glGenBuffers (1, &vbo);
-        glGenVertexArrays (1, &vao);
-        *id = new RenderableGeometryData(vbo, vao);
-    }
-
-    RenderableGeometryData *renderableData = (RenderableGeometryData*)(*id);
-
-    glBindBuffer (GL_ARRAY_BUFFER, renderableData->getVbo());
-    glBufferData (GL_ARRAY_BUFFER, 16 * sizeof (float), vertices, GL_STATIC_DRAW);
-
-    glBindVertexArray (renderableData->getVao());
-    glEnableVertexAttribArray (0);
-    glBindBuffer (GL_ARRAY_BUFFER, renderableData->getVbo());
-    glVertexAttribPointer (0, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
-}
-
 void OpenGLBackend::drawButtonStripGeometry(const void * const id, int offsetX, int offsetY) const
 {
     glUniform2f(m_UIOffsetUniform, offsetX, offsetY);
@@ -320,19 +360,23 @@ void OpenGLBackend::setModelViewMatrix(const Matrix &in)
 {
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
-    glUseProgram(m_gridShaderProgram);
     m_modelView = in;
+    glUseProgram(m_axisCursorShaderProgram);
+    glUniformMatrix4fv(m_axisCursorModelViewUniform, 1, false, &m_modelView.m[0][0]);
+    glUseProgram(m_gridShaderProgram);
     glUniformMatrix4fv(m_gridModelViewUniform, 1, false, &m_modelView.m[0][0]);
 }
 
 void OpenGLBackend::setProjectionMatrix(const Matrix &in)
 {
-    glUseProgram(m_gridShaderProgram);
     m_projection = in;
+    glUseProgram(m_axisCursorShaderProgram);
+    glUniformMatrix4fv(m_axisCursorProjectionUniform, 1, false, &m_projection.m[0][0]);
+    glUseProgram(m_gridShaderProgram);
     glUniformMatrix4fv(m_gridProjectionUniform, 1, false, &m_projection.m[0][0]);
 }
 
-void OpenGLBackend::updateGridGeometry(void **id, const std::vector<float> &vertices, const std::vector<float> &colors) const
+void OpenGLBackend::updateGeometryWithVerticesAndColors(void **id, const std::vector<float> &vertices, const std::vector<unsigned char> &colors) const
 {
     if (*id == nullptr)
     {
@@ -359,8 +403,8 @@ void OpenGLBackend::updateGridGeometry(void **id, const std::vector<float> &vert
     glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, renderableData->getColorVbo());
-    glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), &colors[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(unsigned char), &colors[0], GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, nullptr);
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -373,3 +417,43 @@ void OpenGLBackend::drawGridGeometry(const void * const id) const
     glBindVertexArray (renderableData->getVao());
     glDrawArrays (GL_LINES, 0, 252);
 }
+
+void OpenGLBackend::drawAxisCursorMove(const void * const id, const Matrix &transform, const Vector &color) const
+{
+    RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
+    glUseProgram (m_axisCursorShaderProgram);
+    glUniformMatrix4fv(m_axisCursorTransformUniform, 1, false, &transform.m[0][0]);
+    glUniform3f(m_axisCursorColorUniform, color.x, color.y, color.z);
+    glBindVertexArray (renderableData->getVao());
+    glDrawArrays (GL_TRIANGLES, 0, 12);
+    glDrawArrays (GL_TRIANGLE_FAN, 12, 4);
+    glDrawArrays(GL_LINES, 16, 2);
+}
+
+void OpenGLBackend::drawAxisCursorRotate(const void * const id, const Matrix &transform, const Vector &color) const
+{
+    RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
+    glUseProgram (m_axisCursorShaderProgram);
+    glUniformMatrix4fv(m_axisCursorTransformUniform, 1, false, &transform.m[0][0]);
+    glUniform3f(m_axisCursorColorUniform, color.x, color.y, color.z);
+    glBindVertexArray (renderableData->getVao());
+    glDrawArrays (GL_TRIANGLES, 0, 21);
+    glDrawArrays(GL_LINES, 21, 2);
+}
+
+void OpenGLBackend::drawAxisCursorScale(const void * const id, const Matrix &transform, const Vector &color) const
+{
+    RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
+    glUseProgram (m_axisCursorShaderProgram);
+    glUniformMatrix4fv(m_axisCursorTransformUniform, 1, false, &transform.m[0][0]);
+    glUniform3f(m_axisCursorColorUniform, color.x, color.y, color.z);
+    glBindVertexArray (renderableData->getVao());
+    glDrawArrays (GL_TRIANGLE_FAN, 0, 4);
+    glDrawArrays (GL_TRIANGLE_FAN, 4, 4);
+    glDrawArrays (GL_TRIANGLE_FAN, 8, 4);
+    glDrawArrays (GL_TRIANGLE_FAN, 12, 4);
+    glDrawArrays (GL_TRIANGLE_FAN, 16, 4);
+    glDrawArrays (GL_TRIANGLE_FAN, 20, 4);
+    glDrawArrays(GL_LINES, 24, 2);
+}
+
