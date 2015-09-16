@@ -4,7 +4,7 @@
 #include "../Core/Vector.cpp"
 #include "../Core/Quaternion.h"
 
-Camera::Camera(OpenGLBackend *backend, CameraMode::__Enum type, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up)
+Camera::Camera(OpenGLBackend *backend, CameraMode::__Enum type, float width, float height, float nearPlane, float farPlane, float startX, float startY, const Vector &target, const Vector &eye, const Vector &up)
     : m_backend(backend),
       m_old(0),
       m_isDraging(false),

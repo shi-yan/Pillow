@@ -2,12 +2,6 @@
 #include "Enum.h"
 #include <string>
 #include "../Core/Vector.h"
-#ifdef __APPLE__
-#include <OpenGL/gl3.h>
-#include <OpenGL/gl3ext.h>
-#else
-#include <GL/gl.h>
-#endif
 #include "../View/ViewportImage.h"
 #include "../GraphicsBackend/OpenGLBackend.h"
 #define Epsilon 1.0e-5
@@ -43,23 +37,23 @@ public:
 
     virtual void disableReference();
 
-    virtual void getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height);
+    virtual void getViewportImage(GLuint &texID, std::string &path, Vector &position, unsigned int &width, unsigned int &height);
 
-    virtual void setReferenceImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height);
+    virtual void setReferenceImage(const char *path, GLuint imageID, Vector &position, unsigned int width, unsigned int height);
 
-    virtual void onRotatePress(int x,int y);
+    virtual void onRotatePress(int x, int y);
 
     virtual Vector getEye() const;
 
-    virtual void rotate(int x,int y);
+    virtual void rotate(int x, int y);
 
     virtual void onRotateRelease();
 
-    virtual void onPanRelease(int x,int y);
+    virtual void onPanRelease(int x, int y);
 
     virtual void setCamera();
 
-    virtual void setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h);
+    virtual void setCameraForSelectionD(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int h);
 
     virtual void setCameraForSelectionS();
 
@@ -69,8 +63,8 @@ public:
 
     virtual void pan(int x, int y);
 
-    void updateSize(float theStartX,float theStartY,float theWidth,float theHeight);
+    void updateSize(float theStartX, float theStartY, float theWidth, float theHeight);
 
-    Camera(OpenGLBackend *backend, CameraMode::__Enum type, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up);
+    Camera(OpenGLBackend *backend, CameraMode::__Enum type, float width, float height, float nearPlane, float farPlane, float startX, float startY, const Vector &target, const Vector &eye, const Vector &up);
     virtual ~Camera(void);
 };

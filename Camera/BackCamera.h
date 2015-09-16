@@ -2,28 +2,20 @@
 #include "Camera.h"
 #include <iostream>
 
-#ifdef __APPLE__
-#include <OpenGL/gl3.h>
-#include <OpenGL/gl3ext.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
-
 class BackCamera : public Camera
 {
 public:
-    BackCamera(OpenGLBackend *backend, float width, float height, float nearPlane, float farPlane, float startX, float startY, Vector target, Vector eye, Vector up);
+    BackCamera(OpenGLBackend *backend, float width, float height, float nearPlane, float farPlane, float startX, float startY, const Vector &target, const Vector &eye, const Vector &up);
 
     void setCamera() override;
 
     void setCameraForSelectionS() override;
 
-    void setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h) override;
+    void setCameraForSelectionD(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int h) override;
 
-    void setReferenceImage(const char *path,GLuint imageID,Vector &position,unsigned int width,unsigned int height) override;
+    void setReferenceImage(const char *path, GLuint imageID, Vector &position, unsigned int width, unsigned int height) override;
 
-    void getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height) override;
+    void getViewportImage(GLuint &texID, std::string &path, Vector &position, unsigned int &width, unsigned int &height) override;
 
     void disableReference() override;
 

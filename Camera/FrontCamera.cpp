@@ -6,7 +6,7 @@
 
 ViewportImage *frontReference=NULL;
 
-FrontCamera::FrontCamera(OpenGLBackend *backend, float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
+FrontCamera::FrontCamera(OpenGLBackend *backend, float width, float height, float nearPlane, float farPlane, float startX, float startY, const Vector &target, const Vector &eye, const Vector &up)
     :Camera(backend, CameraMode::Front, width, height, nearPlane, farPlane, startX, startY, target, eye, up)
 {
     m_lightAmbient[0]=0.4f;

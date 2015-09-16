@@ -30,7 +30,7 @@ public:
 
     void setCamera() override;
 
-    void setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h) override;
+    void setCameraForSelectionD(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int h) override;
 
     void setCameraForSelectionS() override;
 
@@ -38,10 +38,10 @@ public:
 
     Vector getHorizontalDir() const override;
 
-    PerspectiveCamera(OpenGLBackend *backend, float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up);
+    PerspectiveCamera(OpenGLBackend *backend, float angle, float width, float height, float nearPlane, float farPlane, float startX, float startY, const Vector &target, const Vector &eye, const Vector &up);
 
     ~PerspectiveCamera(void) override;
 
 private:
-    Vector mapToSphere(const int x,const int y) const;
+    Vector mapToSphere(int x, int y) const;
 };

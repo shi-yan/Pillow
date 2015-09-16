@@ -6,7 +6,7 @@
 
 #include <QMatrix4x4>
 
-PerspectiveCamera::PerspectiveCamera(OpenGLBackend *backend, float angle,float width,float height,float nearPlane,float farPlane,float startX,float startY,Vector target,Vector eye,Vector up)
+PerspectiveCamera::PerspectiveCamera(OpenGLBackend *backend, float angle, float width, float height, float nearPlane, float farPlane, float startX, float startY, const Vector &target, const Vector &eye, const Vector &up)
     :Camera(backend, CameraMode::Perspective, width, height, nearPlane, farPlane, startX, startY, target, eye, up),
       m_angle(angle)
 {
@@ -293,7 +293,7 @@ Vector PerspectiveCamera::getHorizontalDir() const
     return horizontalDirection;
 }
 
-Vector PerspectiveCamera::mapToSphere(const int x,const int y) const
+Vector PerspectiveCamera::mapToSphere(int x, int y) const
 {
     float tempX;
     float tempY;
