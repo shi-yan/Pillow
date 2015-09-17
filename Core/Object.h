@@ -13,6 +13,8 @@
 #include "Edge.h"
 #include "Face.h"
 
+#include "GraphicsBackend/OpenGLBackend.h"
+
 #include <iostream>
 #include <string>
 
@@ -108,6 +110,7 @@ public:
     GLfloat m_matEmission[4];
     GLfloat m_matShininess[4];
     RenderType m_renderMode;
+    OpenGLBackend *m_backend;
 
 private:
     IndexArray<Vertex> m_vertexArray;

@@ -29,9 +29,11 @@ OpenGLBackend::OpenGLBackend()
      m_objectPhongVertexShader(0),
      m_objectPhongFragmentShader(0),
      m_objectPhongModelViewUniform(0),
-     m_objectPhoneProjectionUniform(0),
-     m_objectPhoneNormalUniform(0),
-     m_objectTransformUniform(0)
+     m_objectPhongProjectionUniform(0),
+     m_objectPhongNormalUniform(0),
+     m_objectPhongTransformUniform(0),
+     m_objectPolygonVbo(0),
+     m_objectPolygonVao(0)
 {
 }
 
@@ -133,14 +135,14 @@ void OpenGLBackend::initialize()
    "in vec3 np;"
    "uniform mat4 modelView;"
    "uniform mat4 projection;"
-   "uniform mat4 transform;"
+  // "uniform mat4 transform;"
    "uniform mat3 normal;"
    "out vec3 v;"
    "out vec3 N;"
    "void main () {"
-   "    v = vec3(modelView * transform * vec4(vp.xyz, 1.0));"
+   "    v = vec3(modelView  * vec4(vp.xyz, 1.0));"
    "    N = normalize(normal * np);"
-   "    gl_Position = projection * modelView * transform * vec4(vp.xyz, 1.0);"
+   "    gl_Position = projection * modelView  * vec4(vp.xyz, 1.0);"
    "}";
 
    const char* fragment_shader_phong =
@@ -154,6 +156,16 @@ void OpenGLBackend::initialize()
 
     compileShader(m_objectPhongShaderProgram, m_objectPhongVertexShader, m_objectPhongFragmentShader, vertex_shader_phong, fragment_shader_phong);
 
+    glUseProgram(m_objectPhongShaderProgram);
+    glBindAttribLocation (m_objectPhongShaderProgram, 0, "vp");
+    glBindAttribLocation (m_objectPhongShaderProgram, 1, "np");
+    m_objectPhongModelViewUniform = glGetUniformLocation(m_objectPhongShaderProgram, "modelView");
+    m_objectPhongProjectionUniform = glGetUniformLocation(m_objectPhongShaderProgram, "projection");
+    m_objectPhongTransformUniform = glGetUniformLocation(m_objectPhongShaderProgram, "transform");
+    m_objectPhongTransformUniform = glGetUniformLocation(m_objectPhongShaderProgram, "normal");
+
+    glGenBuffers (1, &m_objectPolygonVbo);
+    glGenVertexArrays (1, &m_objectPolygonVao);
 }
 
 void OpenGLBackend::deinitialize()
@@ -171,6 +183,14 @@ void OpenGLBackend::deinitialize()
     glDeleteShader(m_objectPhongVertexShader);
     glDeleteShader(m_objectPhongFragmentShader);
     glDeleteTextures(1, &m_UITextureID);
+    if (m_objectPolygonVao)
+    {
+        glDeleteVertexArrays(1, &m_objectPolygonVao);
+    }
+    if(m_objectPolygonVbo)
+    {
+        glDeleteVertexArrays(1, &m_objectPolygonVbo);
+    }
 }
 
 OpenGLBackend::~OpenGLBackend()
@@ -320,6 +340,8 @@ void OpenGLBackend::setModelViewMatrix(const Matrix &in)
     glUniformMatrix4fv(m_axisCursorModelViewUniform, 1, false, &m_modelView.m[0][0]);
     glUseProgram(m_gridShaderProgram);
     glUniformMatrix4fv(m_gridModelViewUniform, 1, false, &m_modelView.m[0][0]);
+    glUseProgram(m_objectPhongShaderProgram);
+    glUniformMatrix4fv(m_objectPhongModelViewUniform, 1, false, &m_modelView.m[0][0]);
 }
 
 void OpenGLBackend::setProjectionMatrix(const Matrix &in)
@@ -329,6 +351,8 @@ void OpenGLBackend::setProjectionMatrix(const Matrix &in)
     glUniformMatrix4fv(m_axisCursorProjectionUniform, 1, false, &m_projection.m[0][0]);
     glUseProgram(m_gridShaderProgram);
     glUniformMatrix4fv(m_gridProjectionUniform, 1, false, &m_projection.m[0][0]);
+    glUseProgram(m_objectPhongShaderProgram);
+    glUniformMatrix4fv(m_objectPhongProjectionUniform, 1, false, &m_projection.m[0][0]);
 }
 
 void OpenGLBackend::updateGeometryWithVerticesAndColors(void **id, const std::vector<float> &vertices, const std::vector<unsigned char> &colors) const
@@ -454,3 +478,18 @@ void OpenGLBackend::compileShader(GLuint &programId, GLuint &vertexShaderId, GLu
         qDebug() << "not linked";
     }
 }
+
+void OpenGLBackend::drawObjectPolygon(const std::vector<float> &vertices) const
+{
+    glEnable(GL_DEPTH_TEST);
+    glUseProgram (m_objectPhongShaderProgram);
+    glBindBuffer (GL_ARRAY_BUFFER, m_objectPolygonVbo);
+    glBufferData (GL_ARRAY_BUFFER, vertices.size() * sizeof (float), &vertices[0], GL_DYNAMIC_DRAW);
+    glBindVertexArray (m_objectPolygonVao);
+    glEnableVertexAttribArray (0);
+    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE,  6*sizeof(float),(void*) (3*sizeof(float)));
+    glEnableVertexAttribArray (1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,  6*sizeof(float),  0);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, vertices.size()/6);
+}
+

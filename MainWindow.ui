@@ -55,8 +55,6 @@
     <addaction name="separator"/>
     <addaction name="actionLoad_Into_Scene"/>
     <addaction name="separator"/>
-    <addaction name="actionOpen_Console"/>
-    <addaction name="separator"/>
     <addaction name="actionExit_Pillow"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -217,11 +215,6 @@
   <action name="actionLoad_Into_Scene">
    <property name="text">
     <string>Load Into Scene</string>
-   </property>
-  </action>
-  <action name="actionOpen_Console">
-   <property name="text">
-    <string>Open Console</string>
    </property>
   </action>
   <action name="actionExit_Pillow">

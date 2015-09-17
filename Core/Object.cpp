@@ -1,6 +1,8 @@
 #include "Object.h"
 #include <iostream>
 
+#include "../Screen.h"
+
 Object::Object(char *theName)
     :ElementBase(),
       m_center(),
@@ -1342,12 +1344,12 @@ void Object::draw()
             glRotatef(m_rotation.w,m_rotation.x,m_rotation.y,m_rotation.z);
             glScalef(m_scale.x,m_scale.y,m_scale.z);
             glTranslatef(-m_center.x,-m_center.y,-m_center.z);
-
-            if(m_renderMode==RenderType::Faced)
+*/
+          //  if(m_renderMode==RenderType::Faced)
             {
                 drawFaced();
             }
-            else if(m_renderMode==RenderType::Smooth)
+         /*   else if(m_renderMode==RenderType::Smooth)
             {
                 drawSmooth();
             }
@@ -2355,92 +2357,141 @@ void Object::drawFacedEdgeSelected()
     }
 
 void Object::drawFaced()
-    {
+{
     /*  glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
         glMaterialfv(GL_FRONT, GL_EMISSION, m_matEmission);
         glEnable(GL_LIGHTING);
-        if(m_subdivideLevelSize==0)
+  */
+    m_backend = Screen::screen->m_graphicsBackend;
+    if(m_subdivideLevelSize == 0)
+    {
+        for(unsigned int i = 1; i < m_faceArray.size(); ++i)
         {
-            for(unsigned int i=1;i<m_faceArray.size();++i)
+            if(m_faceArray[i])
             {
-                if(m_faceArray[i])
+                Face *face = m_faceArray[i];
+                std::vector<float> vertices;
+                vertices.reserve(face->m_edge.size() * 6);
+                for(unsigned int e = 0; e < face->m_edge.size(); ++e)
                 {
-                    Face *theFace=m_faceArray[i];
-                    glBegin(GL_POLYGON);
-                    glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    Vertex *v = nullptr;
+                    if(face->m_edge[e] > 0)
                     {
-                        if(theFace->m_edge[e]>0)
-                        {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
-                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                        }
-                        else
-                        {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
-                            glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                        }
+                         v = m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                     }
-                    glEnd();
+                    else
+                    {
+                        v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
+                    }
+                    vertices.push_back(face->m_normal.x);
+                    vertices.push_back(face->m_normal.y);
+                    vertices.push_back(face->m_normal.z);
+                    vertices.push_back(v->m_position.x);
+                    vertices.push_back(v->m_position.y);
+                    vertices.push_back(v->m_position.z);
                 }
+                m_backend->drawObjectPolygon(vertices);
             }
         }
-        else
-        {
-            glBegin(GL_QUADS);
-            for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
-            {
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-                glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                if(theFace->m_edge[0]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[1]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[3]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-            }
-            glEnd();
-        }*/
-
     }
+    else
+    {
+        for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
+        {
+            std::vector<float> vertices;
+            vertices.reserve(4 * 6);
+            SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
 
+            if(face->m_edge[0]>0)
+            {
+                SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
+                vertices.push_back(face->m_normal.x);
+                vertices.push_back(face->m_normal.y);
+                vertices.push_back(face->m_normal.z);
+                vertices.push_back(v->m_position.x);
+                vertices.push_back(v->m_position.y);
+                vertices.push_back(v->m_position.z);
+            }
+            else
+            {
+                SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
+                vertices.push_back(face->m_normal.x);
+                vertices.push_back(face->m_normal.y);
+                vertices.push_back(face->m_normal.z);
+                vertices.push_back(v->m_position.x);
+                vertices.push_back(v->m_position.y);
+                vertices.push_back(v->m_position.z);
+            }
+
+            if(face->m_edge[1]>0)
+            {
+                SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
+                vertices.push_back(face->m_normal.x);
+                vertices.push_back(face->m_normal.y);
+                vertices.push_back(face->m_normal.z);
+                vertices.push_back(v->m_position.x);
+                vertices.push_back(v->m_position.y);
+                vertices.push_back(v->m_position.z);
+            }
+            else
+            {
+                SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
+                vertices.push_back(face->m_normal.x);
+                vertices.push_back(face->m_normal.y);
+                vertices.push_back(face->m_normal.z);
+                vertices.push_back(v->m_position.x);
+                vertices.push_back(v->m_position.y);
+                vertices.push_back(v->m_position.z);
+            }
+
+            if(face->m_edge[2]>0)
+            {
+                SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
+                vertices.push_back(face->m_normal.x);
+                vertices.push_back(face->m_normal.y);
+                vertices.push_back(face->m_normal.z);
+                vertices.push_back(v->m_position.x);
+                vertices.push_back(v->m_position.y);
+                vertices.push_back(v->m_position.z);
+            }
+            else
+            {
+                SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                vertices.push_back(face->m_normal.x);
+                vertices.push_back(face->m_normal.y);
+                vertices.push_back(face->m_normal.z);
+                vertices.push_back(v->m_position.x);
+                vertices.push_back(v->m_position.y);
+                vertices.push_back(v->m_position.z);
+            }
+
+            if(face->m_edge[3] > 0)
+            {
+                SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                vertices.push_back(face->m_normal.x);
+                vertices.push_back(face->m_normal.y);
+                vertices.push_back(face->m_normal.z);
+                vertices.push_back(v->m_position.x);
+                vertices.push_back(v->m_position.y);
+                vertices.push_back(v->m_position.z);
+            }
+            else
+            {
+                SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
+                vertices.push_back(face->m_normal.x);
+                vertices.push_back(face->m_normal.y);
+                vertices.push_back(face->m_normal.z);
+                vertices.push_back(v->m_position.x);
+                vertices.push_back(v->m_position.y);
+                vertices.push_back(v->m_position.z);
+            }
+            m_backend->drawObjectPolygon(vertices);
+        }
+    }
+}
 
 void Object::drawNormal()
     {

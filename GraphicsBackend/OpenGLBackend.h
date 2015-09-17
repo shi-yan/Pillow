@@ -46,11 +46,12 @@ private:
     GLuint m_objectPhongFragmentShader;
 
     GLuint m_objectPhongModelViewUniform;
-    GLuint m_objectPhoneProjectionUniform;
-    GLuint m_objectPhoneNormalUniform;
-    GLuint m_objectTransformUniform;
+    GLuint m_objectPhongProjectionUniform;
+    GLuint m_objectPhongNormalUniform;
+    GLuint m_objectPhongTransformUniform;
 
-
+    GLuint m_objectPolygonVbo;
+    GLuint m_objectPolygonVao;
 
     GLuint loadTexture(const char *fileName) const;
 
@@ -95,6 +96,9 @@ public:
     void drawAxisCursorMove(const void * const id, const Matrix &transform, const Vector &color) const;
     void drawAxisCursorRotate(const void * const id, const Matrix &transform, const Vector &color) const;
     void drawAxisCursorScale(const void * const id, const Matrix &transform, const Vector &color) const;
+
+    void setObjectMaterialAndTransform(const Matrix &transform);
+    void drawObjectPolygon(const std::vector<float> &vertices) const;
 
     ~OpenGLBackend();
 

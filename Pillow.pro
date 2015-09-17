@@ -18,7 +18,6 @@ HEADERS += \
     View/FourView.h \
     Camera/FrontCamera.h \
     UI/Grid.h \
-    Global.h \
     History/HistoryLog.h \
     History/HistoryManager.h \
     History/HistoryRecord.h \

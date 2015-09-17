@@ -122,7 +122,7 @@ void Screen::onPaint()
     for(int i=0;i<(int)m_currentView->m_viewCount;i++)
     {
         CameraMode::__Enum cameraMode = m_currentView->setView(i);
-      //  theScene->onPaint();
+        theScene->onPaint();
         theScene->drawCursor(cameraMode,m_currentView->getEye(i));
     }
 
