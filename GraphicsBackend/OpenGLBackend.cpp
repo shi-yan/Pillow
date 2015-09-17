@@ -12,14 +12,34 @@ OpenGLBackend::OpenGLBackend()
      m_UIScreenSizeUniform(0),
      m_UIOffsetUniform(0),
      m_modelView(),
-     m_projection()
+     m_projection(),
+     m_gridShaderProgram(0),
+     m_gridVertexShader(0),
+     m_gridFragmentShader(0),
+     m_gridModelViewUniform(0),
+     m_gridProjectionUniform(0),
+     m_axisCursorShaderProgram(0),
+     m_axisCursorVertexShader(0),
+     m_axisCursorFragmentShader(0),
+     m_axisCursorModelViewUniform(0),
+     m_axisCursorProjectionUniform(0),
+     m_axisCursorTransformUniform(0),
+     m_axisCursorColorUniform(0),
+     m_objectPhongShaderProgram(0),
+     m_objectPhongVertexShader(0),
+     m_objectPhongFragmentShader(0),
+     m_objectPhongModelViewUniform(0),
+     m_objectPhoneProjectionUniform(0),
+     m_objectPhoneNormalUniform(0),
+     m_objectTransformUniform(0)
 {
-
 }
 
 void OpenGLBackend::initialize()
 {
-    const char* vertex_shader =
+    m_UITextureID = loadTexture("://ui.dat");
+
+    const char* vertex_shader_ui =
     "#version 150\n"
     "in vec4 vp;"
     "uniform vec2 screenSize;"
@@ -31,7 +51,7 @@ void OpenGLBackend::initialize()
     "  texCoord = vp.zw;"
     "}";
 
-    const char* fragment_shader =
+    const char* fragment_shader_ui =
     "#version 150\n"
     "uniform sampler2D asset;"
     "in vec2 texCoord;"
@@ -41,50 +61,13 @@ void OpenGLBackend::initialize()
     //"frag_colour = vec4(1.0,0.0,0.0,1.0);"
     "}";
 
-   m_UIVertexShader = glCreateShader (GL_VERTEX_SHADER);
-   glShaderSource (m_UIVertexShader, 1, &vertex_shader, NULL);
-   glCompileShader (m_UIVertexShader);
-   GLint isCompiled = 0;
-   glGetShaderiv(m_UIVertexShader, GL_COMPILE_STATUS, &isCompiled);
-   if (isCompiled == GL_FALSE)
-   {
-       qDebug() << "not compiled vs";
-   }
-
-   m_UIFragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
-   glShaderSource (m_UIFragmentShader, 1, &fragment_shader, NULL);
-   glCompileShader (m_UIFragmentShader);
-   glGetShaderiv(m_UIFragmentShader, GL_COMPILE_STATUS, &isCompiled);
-   if (isCompiled == GL_FALSE)
-   {
-       qDebug() << "not compiled fs";
-   }
-
-   m_UIShaderProgram = glCreateProgram ();
-   glAttachShader(m_UIShaderProgram, m_UIFragmentShader);
-   glAttachShader(m_UIShaderProgram, m_UIVertexShader);
-   glLinkProgram(m_UIShaderProgram);
-   int isLinked = 0;
-
-   glGetProgramiv(m_UIShaderProgram, GL_LINK_STATUS, &isLinked);
-   if (!isLinked)
-   {
-       qDebug() << "not linked";
-   }
-
-   int k = glGetError();
-   if (k != GL_NO_ERROR)
-   {
-       qDebug() << "error happens when compiling shaders" << k;
-   }
+   compileShader(m_UIShaderProgram, m_UIVertexShader, m_UIFragmentShader, vertex_shader_ui, fragment_shader_ui);
 
    glUseProgram (m_UIShaderProgram);
    GLuint texLoc = glGetUniformLocation(m_UIShaderProgram, "asset");
    glUniform1i(texLoc, 0);
-
    m_UIScreenSizeUniform = glGetUniformLocation(m_UIShaderProgram, "screenSize");
    m_UIOffsetUniform = glGetUniformLocation(m_UIShaderProgram, "offset");
-   m_UITextureID = loadTexture("://ui.dat");
 
    const char* vertex_shader_grid =
    "#version 150\n"
@@ -106,38 +89,8 @@ void OpenGLBackend::initialize()
    "  frag_colour = vec4(color.xyz, 1.0);"
    "}";
 
-   m_gridVertexShader = glCreateShader (GL_VERTEX_SHADER);
-   glShaderSource (m_gridVertexShader, 1, &vertex_shader_grid, NULL);
-   glCompileShader (m_gridVertexShader);
-   glGetShaderiv(m_gridVertexShader, GL_COMPILE_STATUS, &isCompiled);
-   if (isCompiled == GL_FALSE)
-   {
-       qDebug() << "not compiled vs";
-   }
+   compileShader(m_gridShaderProgram, m_gridVertexShader, m_gridFragmentShader, vertex_shader_grid, fragment_shader_grid);
 
-   m_gridFragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
-   glShaderSource (m_gridFragmentShader, 1, &fragment_shader_grid, NULL);
-   glCompileShader (m_gridFragmentShader);
-   glGetShaderiv(m_gridFragmentShader, GL_COMPILE_STATUS, &isCompiled);
-   if (isCompiled == GL_FALSE)
-   {
-       qDebug() << "not compiled fs";
-   }
-
-   m_gridShaderProgram = glCreateProgram ();
-   glAttachShader(m_gridShaderProgram, m_gridFragmentShader);
-   glAttachShader(m_gridShaderProgram, m_gridVertexShader);
-
-   glBindAttribLocation (m_gridShaderProgram, 0, "vp");
-   glBindAttribLocation (m_gridShaderProgram, 1, "col");
-
-   glLinkProgram(m_gridShaderProgram);
-
-   glGetProgramiv(m_gridShaderProgram, GL_LINK_STATUS, &isLinked);
-   if (!isLinked)
-   {
-       qDebug() << "not linked";
-   }
    glUseProgram (m_gridShaderProgram);
 
    m_gridModelViewUniform = glGetUniformLocation(m_gridShaderProgram, "modelView");
@@ -164,44 +117,43 @@ void OpenGLBackend::initialize()
    "  frag_colour = vec4(color.xyz, 1.0);"
    "}";
 
-   m_axisCursorVertexShader = glCreateShader (GL_VERTEX_SHADER);
-   glShaderSource (m_axisCursorVertexShader, 1, &vertex_shader_axisCursor, NULL);
-   glCompileShader (m_axisCursorVertexShader);
-   glGetShaderiv(m_axisCursorVertexShader, GL_COMPILE_STATUS, &isCompiled);
-   if (isCompiled == GL_FALSE)
-   {
-       qDebug() << "not compiled vs";
-   }
+   compileShader(m_axisCursorShaderProgram,m_axisCursorVertexShader, m_axisCursorFragmentShader,vertex_shader_axisCursor,fragment_shader_axisCursor);
 
-   m_axisCursorFragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
-   glShaderSource (m_axisCursorFragmentShader, 1, &fragment_shader_axisCursor, NULL);
-   glCompileShader (m_axisCursorFragmentShader);
-   glGetShaderiv(m_axisCursorFragmentShader, GL_COMPILE_STATUS, &isCompiled);
-   if (isCompiled == GL_FALSE)
-   {
-       qDebug() << "not compiled fs";
-   }
-
-   m_axisCursorShaderProgram = glCreateProgram ();
-   glAttachShader(m_axisCursorShaderProgram, m_axisCursorFragmentShader);
-   glAttachShader(m_axisCursorShaderProgram, m_axisCursorVertexShader);
-
+   glUseProgram (m_axisCursorShaderProgram);
    glBindAttribLocation (m_axisCursorShaderProgram, 0, "vp");
    glBindAttribLocation (m_axisCursorShaderProgram, 1, "col");
-
-   glLinkProgram(m_axisCursorShaderProgram);
-
-   glGetProgramiv(m_axisCursorShaderProgram, GL_LINK_STATUS, &isLinked);
-   if (!isLinked)
-   {
-       qDebug() << "not linked";
-   }
-   glUseProgram (m_axisCursorShaderProgram);
-
    m_axisCursorModelViewUniform = glGetUniformLocation(m_axisCursorShaderProgram, "modelView");
    m_axisCursorProjectionUniform = glGetUniformLocation(m_axisCursorShaderProgram, "projection");
    m_axisCursorTransformUniform = glGetUniformLocation(m_axisCursorShaderProgram, "transform");
    m_axisCursorColorUniform = glGetUniformLocation(m_axisCursorShaderProgram, "col");
+
+   const char* vertex_shader_phong =
+   "#version 150\n"
+   "in vec3 vp;"
+   "in vec3 np;"
+   "uniform mat4 modelView;"
+   "uniform mat4 projection;"
+   "uniform mat4 transform;"
+   "uniform mat3 normal;"
+   "out vec3 v;"
+   "out vec3 N;"
+   "void main () {"
+   "    v = vec3(modelView * transform * vec4(vp.xyz, 1.0));"
+   "    N = normalize(normal * np);"
+   "    gl_Position = projection * modelView * transform * vec4(vp.xyz, 1.0);"
+   "}";
+
+   const char* fragment_shader_phong =
+   "#version 150\n"
+   "out vec4 frag_colour;"
+   "in vec3 v;"
+   "in vec3 N;"
+   "void main () {"
+   "  frag_colour = vec4(1.0, 0.0, 0.0, 1.0);"
+   "}";
+
+    compileShader(m_objectPhongShaderProgram, m_objectPhongVertexShader, m_objectPhongFragmentShader, vertex_shader_phong, fragment_shader_phong);
+
 }
 
 void OpenGLBackend::deinitialize()
@@ -215,6 +167,9 @@ void OpenGLBackend::deinitialize()
     glDeleteProgram(m_axisCursorShaderProgram);
     glDeleteShader(m_axisCursorVertexShader);
     glDeleteShader(m_axisCursorFragmentShader);
+    glDeleteProgram(m_objectPhongShaderProgram);
+    glDeleteShader(m_objectPhongVertexShader);
+    glDeleteShader(m_objectPhongFragmentShader);
     glDeleteTextures(1, &m_UITextureID);
 }
 
@@ -457,3 +412,45 @@ void OpenGLBackend::drawAxisCursorScale(const void * const id, const Matrix &tra
     glDrawArrays(GL_LINES, 24, 2);
 }
 
+void OpenGLBackend::compileShader(GLuint &programId, GLuint &vertexShaderId, GLuint &fragmentShaderId, const char *vertexSource, const char *fragmentSource)
+{
+    GLint isCompiled = 0;
+    vertexShaderId = glCreateShader (GL_VERTEX_SHADER);
+    glShaderSource (vertexShaderId, 1, &vertexSource, NULL);
+    glCompileShader (vertexShaderId);
+    glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &isCompiled);
+    if (isCompiled == GL_FALSE)
+    {
+        qDebug() << "not compiled vs";
+        GLchar log[1024];
+        GLsizei length;
+        glGetShaderInfoLog(m_objectPhongVertexShader,1024, &length, log);
+        qDebug() << log;
+    }
+
+    fragmentShaderId = glCreateShader (GL_FRAGMENT_SHADER);
+    glShaderSource (fragmentShaderId, 1, &fragmentSource, NULL);
+    glCompileShader (fragmentShaderId);
+    glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &isCompiled);
+    if (isCompiled == GL_FALSE)
+    {
+        qDebug() << "not compiled fs";
+        GLchar log[1024];
+        GLsizei length;
+        glGetShaderInfoLog(m_objectPhongVertexShader,1024, &length, log);
+        qDebug() << log;
+    }
+
+    programId = glCreateProgram ();
+    glAttachShader(programId, fragmentShaderId);
+    glAttachShader(programId, vertexShaderId);
+
+    glLinkProgram(programId);
+    int isLinked = 0;
+
+    glGetProgramiv(programId, GL_LINK_STATUS, &isLinked);
+    if (!isLinked)
+    {
+        qDebug() << "not linked";
+    }
+}

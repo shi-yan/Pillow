@@ -117,20 +117,18 @@ void Screen::screenShot(const char *fileName)
 void Screen::onPaint()
 { 
     glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-    glViewport(0,0,(GLint) m_width, (GLint) m_height);
+    glViewport(0,0,(GLint) m_width*2, (GLint) m_height*2);
 
     for(int i=0;i<(int)m_currentView->m_viewCount;i++)
     {
         CameraMode::__Enum cameraMode = m_currentView->setView(i);
-        //theScene->onPaint();
+      //  theScene->onPaint();
         theScene->drawCursor(cameraMode,m_currentView->getEye(i));
     }
 
-
     m_graphicsBackend->beginUI(m_width, m_height);
-    //glColor3ub(255,255,255);
-  //  glLineWidth(3);
-   // currentView->onPaint();
+//    glLineWidth(3);
+  //  m_currentView->onPaint();
     m_uiLayer->onPaint();
     m_graphicsBackend->endUI();
 }

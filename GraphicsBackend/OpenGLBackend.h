@@ -41,6 +41,16 @@ private:
     GLuint m_axisCursorTransformUniform;
     GLuint m_axisCursorColorUniform;
 
+    GLuint m_objectPhongShaderProgram;
+    GLuint m_objectPhongVertexShader;
+    GLuint m_objectPhongFragmentShader;
+
+    GLuint m_objectPhongModelViewUniform;
+    GLuint m_objectPhoneProjectionUniform;
+    GLuint m_objectPhoneNormalUniform;
+    GLuint m_objectTransformUniform;
+
+
 
     GLuint loadTexture(const char *fileName) const;
 
@@ -87,6 +97,9 @@ public:
     void drawAxisCursorScale(const void * const id, const Matrix &transform, const Vector &color) const;
 
     ~OpenGLBackend();
+
+private:
+    void compileShader(GLuint &programId, GLuint &vertexShaderId, GLuint &fragmentShaderId, const char *vertexSource, const char *fragmentSource);
 };
 
 #endif // OPENGLBACKEND_H

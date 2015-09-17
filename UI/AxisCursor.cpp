@@ -490,6 +490,8 @@ void AxisCursor::onPaint(const Vector &eye, CameraMode::__Enum cameraMode)
             break;
         }
         break;
+    case AxisCursorMode::NoAxis:
+        break;
     default:
         qDebug() << "error";
     }

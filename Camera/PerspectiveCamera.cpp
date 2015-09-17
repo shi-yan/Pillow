@@ -220,7 +220,7 @@ void PerspectiveCamera::setCamera()
 
     m_backend->setProjectionMatrix(projectionMatrix);
 
-    glViewport((GLint) m_startX,(GLint) m_startY,(GLint) m_width,(GLint) m_height);
+    glViewport((GLint) m_startX,(GLint) m_startY,(GLint) m_width*2,(GLint) m_height*2);
     drawGird();
     {
         int k = glGetError();

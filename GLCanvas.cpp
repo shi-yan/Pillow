@@ -48,17 +48,17 @@ void GLCanvas::mouseMoveEvent(QMouseEvent *e)
 {
     if (e->buttons() == Qt::NoButton)
     {
-        Screen::screen->onMoving(e->x()*2.0, e->y()*2.0);
+        Screen::screen->onMoving(e->x()*1.0, e->y()*1.0);
     }
     else
     {
         if (e->buttons() == Qt::LeftButton)
         {
-            Screen::screen->onLeftDrag(e->x()*2.0,e->y()*2.0);
+            Screen::screen->onLeftDrag(e->x()*1.0,e->y()*1.0);
         }
         else if (e->buttons() == Qt::MiddleButton)
         {
-            Screen::screen->onMiddleDrag(e->x()*2.0, e->y()*2.0);
+            Screen::screen->onMiddleDrag(e->x()*1.0, e->y()*1.0);
         }
     }
     update();
@@ -67,7 +67,7 @@ void GLCanvas::mouseMoveEvent(QMouseEvent *e)
 void GLCanvas::mousePressEvent(QMouseEvent *e)
 {
     isDragging = true;
-    Screen::screen->onLeftPress(e->x()*2.0, e->y()*2.0);
+    Screen::screen->onLeftPress(e->x()*1.0, e->y()*1.0);
 
     update();
 }
@@ -84,7 +84,7 @@ void GLCanvas::mouseReleaseEvent(QMouseEvent *e)
 
 void GLCanvas::resizeGL(int w, int h)
 {
-    Screen::screen->updateScreenSize(w*2.0, h*2.0);
+    Screen::screen->updateScreenSize(w*1.0, h*1.0);
 }
 
 void GLCanvas::keyPressEvent(QKeyEvent *e)
@@ -182,7 +182,7 @@ void GLCanvas::enterEvent(QEvent *e)
 
 void GLCanvas::wheelEvent(QWheelEvent *e)
 {
-  if( Screen::screen->onWheel(((float)e->angleDelta().y())*0.1,e->x()*2.0,e->y()*2.0))
+  if( Screen::screen->onWheel(((float)e->angleDelta().y())*0.1,e->x()*1.0,e->y()*1.0))
   {
       update();
   }

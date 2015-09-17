@@ -155,7 +155,9 @@ SOURCES += \
     GLCanvas.cpp \
     Dialog/NewCubeDialog.cpp \
     Dialog/NewCylinderDialog.cpp \
-    GraphicsBackend/OpenGLBackend.cpp
+    GraphicsBackend/OpenGLBackend.cpp \
+    Core/Scene_Draw.cpp \
+    Core/Scene_File.cpp
 
 
 unix:!mac {

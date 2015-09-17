@@ -2356,7 +2356,7 @@ void Object::drawFacedEdgeSelected()
 
 void Object::drawFaced()
     {
-    /*    glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
+    /*  glMaterialfv(GL_FRONT, GL_AMBIENT, m_matAmbient);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, m_matSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, m_matShininess);
