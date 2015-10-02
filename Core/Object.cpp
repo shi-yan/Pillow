@@ -42,11 +42,8 @@ Object::Object(char *theName)
     m_matShininess[2] = 10.0f;
     m_matShininess[3] = 10.0f;
 
-    //m_vertexArray.clear();
     m_vertexArray.reserve(5000);
-    //m_edgeArray.clear();
     m_edgeArray.reserve(5000);
-    //m_faceArray.clear();
     m_faceArray.reserve(5000);
     m_subdivideLevel[0]=NULL;
     m_subdivideLevel[1]=NULL;
@@ -55,7 +52,6 @@ Object::Object(char *theName)
     m_subdivideLevel[4]=NULL;
     m_renderMode=RenderType::WireframeFaced;
 }
-
 
 unsigned int Object::addVertex(float p1,float p2,float p3)
 {
