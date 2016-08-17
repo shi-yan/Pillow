@@ -2,8 +2,6 @@
 
 #include <QDebug>
 
-Scene *theScene = NULL;
-
 GLCanvas::GLCanvas(QWidget *parent) : QOpenGLWidget(parent),isDragging(false)
 {
     setMouseTracking(true);
@@ -13,8 +11,8 @@ GLCanvas::GLCanvas(QWidget *parent) : QOpenGLWidget(parent),isDragging(false)
 void GLCanvas::initializeGL()
 {
     Screen::screen = new Screen();
-    theScene=new Scene(Screen::screen->m_graphicsBackend);
-    theScene->initialize();
+    Scene::scene=new Scene(Screen::screen->m_graphicsBackend);
+    Scene::scene->initialize();
     Screen::screen->initialize();
     int w = 800, h = 600;
 
@@ -116,23 +114,23 @@ void GLCanvas::keyReleaseEvent(QKeyEvent *e)
     }
     else if(keyCode==Qt::Key_W) //w
     {
-        theScene->changeAxisCursorMode(AxisCursorMode::MoveAxis);
+        Scene::scene->changeAxisCursorMode(AxisCursorMode::MoveAxis);
     }
     else if(keyCode==Qt::Key_E) //e
     {
-        theScene->changeAxisCursorMode(AxisCursorMode::RotateAxis);
+        Scene::scene->changeAxisCursorMode(AxisCursorMode::RotateAxis);
     }
     else if(keyCode==Qt::Key_R) //r
     {
-        theScene->changeAxisCursorMode(AxisCursorMode::ScaleAxis);
+        Scene::scene->changeAxisCursorMode(AxisCursorMode::ScaleAxis);
     }
     else if(keyCode==Qt::Key_C) //c
     {
-        theScene->subdivide();
+        Scene::scene->subdivide();
     }
     else if(keyCode==Qt::Key_V) //v
     {
-        theScene->unSubdivide();
+        Scene::scene->unSubdivide();
     }
     else if(keyCode==Qt::Key_Z) //z
     {
@@ -140,7 +138,7 @@ void GLCanvas::keyReleaseEvent(QKeyEvent *e)
     }
     else if(keyCode==Qt::Key_Delete)
     {
-        theScene->onDelete();
+        Scene::scene->onDelete();
     }
     else if(keyCode==49)
     {

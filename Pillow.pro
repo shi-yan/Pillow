@@ -158,9 +158,8 @@ SOURCES += \
     Core/Scene_Draw.cpp \
     Core/Scene_File.cpp
 
-
 unix:!mac {
-LIBS += -lGLU
+LIBS += -lGLU -lGLEW
 }
 
 macx {

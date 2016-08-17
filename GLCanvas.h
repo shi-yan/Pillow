@@ -5,7 +5,6 @@
 #include <QMouseEvent>
 #include "Core/Scene.h"
 #include "Screen.h"
-extern Scene *theScene;
 
 class GLCanvas : public QOpenGLWidget
 {

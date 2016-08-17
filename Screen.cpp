@@ -13,8 +13,6 @@
 
 Screen *Screen::screen = nullptr;
 
-extern Scene *theScene;
-
 Screen::Screen()
     :m_isSelectionMode(false),
       m_isAxisMode(false),
@@ -31,7 +29,7 @@ void Screen::initialize()
 {
     Grid::grid=new Grid(m_graphicsBackend);
     Grid::grid->initialize();
-    theScene->initialize();
+    Scene::scene->initialize();
 
     m_graphicsBackend->initialize();
     glClearColor(128.0f/255.0f, 128.0f/255.0f, 128.0f/255.0f, 1.0f);
@@ -100,8 +98,8 @@ void Screen::screenShot(const char *fileName)
         for(int i=0;i<(int)  currentView->viewCount;++i)
         {
             CameraMode::__Enum cameraMode=currentView->setView(i);
-            theScene->onPaint();
-            theScene->drawCursor(cameraMode,currentView->getEye(i));
+            Scene::scene->onPaint();
+            Scene::scene->drawCursor(cameraMode,currentView->getEye(i));
         }
         glViewport(0,0,(GLint)width,(GLint)height);
         glFlush();
@@ -122,8 +120,8 @@ void Screen::onPaint()
     for(int i=0;i<(int)m_currentView->m_viewCount;i++)
     {
         CameraMode::__Enum cameraMode = m_currentView->setView(i);
-        theScene->onPaint();
-        theScene->drawCursor(cameraMode,m_currentView->getEye(i));
+        Scene::scene->onPaint();
+        Scene::scene->drawCursor(cameraMode,m_currentView->getEye(i));
     }
 
     m_graphicsBackend->beginUI(m_width, m_height);
@@ -329,31 +327,31 @@ bool Screen::onLeftRelease(bool isAppend)
                 toolButtonFourView();
                 break;
             case ButtonEventType::VertexSelectionMode:
-                theScene->changeSelectionMode(SelectionMode::Vertex);
+                Scene::scene->changeSelectionMode(SelectionMode::Vertex);
                 break;
             case ButtonEventType::EdgeSelectionMode:
-                theScene->changeSelectionMode(SelectionMode::Edge);
+                Scene::scene->changeSelectionMode(SelectionMode::Edge);
                 break;
             case ButtonEventType::FaceSelectionMode:
-                theScene->changeSelectionMode(SelectionMode::Face);
+                Scene::scene->changeSelectionMode(SelectionMode::Face);
                 break;
             case ButtonEventType::ObjectSelectionMode:
-                theScene->changeSelectionMode(SelectionMode::Object);
+                Scene::scene->changeSelectionMode(SelectionMode::Object);
                 break;
             case ButtonEventType::Help:
                 //wxLaunchDefaultBrowser(_T("http://billconan.blogspot.com"));
                 break;
             case ButtonEventType::CreateCube:
-                theScene->newCube(0, 0, 0, 100, 100, 100, 1, 1, 1);
+                Scene::scene->newCube(0, 0, 0, 100, 100, 100, 1, 1, 1);
                 break;
             case ButtonEventType::CreateCylinder:
-                theScene->newCylinder(0, 0, 0, 20, 80, AxisMode::axisZ, 8, 1, 1);
+                Scene::scene->newCylinder(0, 0, 0, 20, 80, AxisMode::axisZ, 8, 1, 1);
                 break;
             case ButtonEventType::CreateSphere:
-                theScene->newSphere(0,0,0,50,AxisMode::axisZ,8,4);
+                Scene::scene->newSphere(0,0,0,50,AxisMode::axisZ,8,4);
                 break;
             case ButtonEventType::CreatePlane:
-                theScene->newPlane(0, 0, 0, 100, 100, AxisMode::axisZ, 1, 1);
+                Scene::scene->newPlane(0, 0, 0, 100, 100, AxisMode::axisZ, 1, 1);
                 break;
             case ButtonEventType::CameraBack:
                 changeCamera(CameraMode::Back);
@@ -391,7 +389,7 @@ bool Screen::onLeftRelease(bool isAppend)
             }
                 break;
             case ButtonEventType::New:
-                theScene->clearScene();
+                Scene::scene->clearScene();
                 break;
            case ButtonEventType::Open:
            {
@@ -404,15 +402,15 @@ bool Screen::onLeftRelease(bool isAppend)
                     dialog.GetFilenames(filenames);
                     if(dialog.GetFilterIndex()==0)
                     {
-                        theScene->clearScene();
-                        theScene->loadFromPWB(paths[0].c_str());
+                        Scene::scene->clearScene();
+                        Scene::scene->loadFromPWB(paths[0].c_str());
                     }
                 }*/
             }
                 break;
             case ButtonEventType::Save:
             {
-                if(theScene->fileName=="")
+                if(Scene::scene->fileName=="")
                 {
                     /*wxFileDialog dialog(mainFrame,_T("Save file:"),wxEmptyString,_T("untitle"),_T("Pillow Binary Files (*.pwb)|*.pwb"),wxSAVE|wxOVERWRITE_PROMPT);
                     dialog.SetFilterIndex(1);
@@ -421,14 +419,14 @@ bool Screen::onLeftRelease(bool isAppend)
                         //wxLogMessage(_T("%s, filter %d"),dialog.GetPath().c_str(), dialog.GetFilterIndex());
                         if(dialog.GetFilterIndex()==0)
                         {
-                            theScene->fileName=dialog.GetPath().c_str();
-                            theScene->saveToFilePWB(dialog.GetPath().c_str());
+                            Scene::scene->fileName=dialog.GetPath().c_str();
+                            Scene::scene->saveToFilePWB(dialog.GetPath().c_str());
                         }
                     }*/
                 }
                 else
                 {
-                    theScene->saveToFilePWB(theScene->fileName.c_str());
+                    Scene::scene->saveToFilePWB(Scene::scene->fileName.c_str());
                 }
             }
                 break;
@@ -441,35 +439,35 @@ bool Screen::onLeftRelease(bool isAppend)
                     //wxLogMessage(_T("%s, filter %d"),dialog.GetPath().c_str(), dialog.GetFilterIndex());
                     if(dialog.GetFilterIndex()==0)
                     {
-                        theScene->fileName=dialog.GetPath().c_str();
-                        theScene->saveToFilePWB(dialog.GetPath().c_str());
+                        Scene::scene->fileName=dialog.GetPath().c_str();
+                        Scene::scene->saveToFilePWB(dialog.GetPath().c_str());
                     }
                     else if(dialog.GetFilterIndex()==1)
                     {
-                        theScene->fileName=dialog.GetPath().c_str();
-                        theScene->saveToFileOBJ(dialog.GetPath().c_str());
+                        Scene::scene->fileName=dialog.GetPath().c_str();
+                        Scene::scene->saveToFileOBJ(dialog.GetPath().c_str());
                     }
                 }*/
             }
                 break;
             case ButtonEventType::DeleteVertex:
-                theScene->deleteVertex();
+                Scene::scene->deleteVertex();
                 break;
             case ButtonEventType::Split:
-                if(!theScene->isSplitMode)
+                if(!Scene::scene->isSplitMode)
                 {
-                    theScene->beginSplit();
+                    Scene::scene->beginSplit();
                 }
                 else
                 {
-                    theScene->endSplit();
+                    Scene::scene->endSplit();
                 }
                 break;
             case ButtonEventType::Extrude:
-                theScene->extrudeFaceGroup(1, 1, 1);
+                Scene::scene->extrudeFaceGroup(1, 1, 1);
                 break;
             case ButtonEventType::Collapse:
-                theScene->weldVertex();
+                Scene::scene->weldVertex();
                 break;
             default:
                 qDebug() << "error: undefined event";
@@ -504,7 +502,7 @@ bool Screen::onLeftRelease(bool isAppend)
 
 void Screen::toolButtonWireframeFaced()
 {
-    theScene->changeShadeMode(RenderType::WireframeFaced);
+    Scene::scene->changeShadeMode(RenderType::WireframeFaced);
 }
 
 void Screen::toggleGrid()
@@ -514,7 +512,7 @@ void Screen::toggleGrid()
 
 void Screen::toolButtonSmooth()
 {
-    theScene->changeShadeMode(RenderType::Smooth);
+    Scene::scene->changeShadeMode(RenderType::Smooth);
 }
 
 void Screen::toolButtonSingleView()
@@ -539,17 +537,17 @@ void Screen::toolButtonFourView()
 
 void Screen::toolButtonFaced()
 {
-    theScene->changeShadeMode(RenderType::Faced);
+    Scene::scene->changeShadeMode(RenderType::Faced);
 }
 
 void Screen::toolButtonWireframe()
 {
-    theScene->changeShadeMode(RenderType::Wireframe);
+    Scene::scene->changeShadeMode(RenderType::Wireframe);
 }
 
 void Screen::toolButtonWire()
 {
-    theScene->changeShadeMode(RenderType::Wire);
+    Scene::scene->changeShadeMode(RenderType::Wire);
 }
 
 bool Screen::onMiddlePress(int x, int y)

@@ -24,7 +24,7 @@ void MainWindow::onCreateNewCube(bool)
     NewCubeDialog *newCubeDialog=new NewCubeDialog(this);
     if (newCubeDialog->exec() == QDialog::Accepted)
     {
-        theScene->newCube(newCubeDialog->getX(), newCubeDialog->getY(), newCubeDialog->getZ(),
+        Scene::scene->newCube(newCubeDialog->getX(), newCubeDialog->getY(), newCubeDialog->getZ(),
                           newCubeDialog->getLength(), newCubeDialog->getWidth(), newCubeDialog->getHeight(),
                           newCubeDialog->getSegmentX(), newCubeDialog->getSegmentY(), newCubeDialog->getSegmentZ());
     }
@@ -50,7 +50,7 @@ void MainWindow::onCreateNewCylinder(bool)
             axis = AxisMode::axisZ;
         }
 
-        theScene->newCylinder(newCylinderDialog->getX(), newCylinderDialog->getY(), newCylinderDialog->getZ(),
+        Scene::scene->newCylinder(newCylinderDialog->getX(), newCylinderDialog->getY(), newCylinderDialog->getZ(),
                               newCylinderDialog->getRadius(), newCylinderDialog->getHeight(), axis._value,
                               newCylinderDialog->getSegmentA(), newCylinderDialog->getSegmentR(), newCylinderDialog->getSegmentH());
     }
