@@ -9,11 +9,11 @@ public:
 public:
     const unsigned int right;
 public:
-    Log_EdgeRightChange(unsigned int theTarget,unsigned int theIndex,unsigned int theRight);
+    Log_EdgeRightChange(unsigned int target,unsigned int theIndex,unsigned int theRight);
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"EdgeRightChange\" Target=\"%d\" Index=\"%d\" Right=\"%d\" />\n",target,index,right);
+        //sprintf(temp,"\t\t\t<Log Type=\"EdgeRightChange\" Target=\"%d\" Index=\"%d\" Right=\"%d\" />\n",target,index,right);
         std::string out(temp);
         return out;
     }

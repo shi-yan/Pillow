@@ -1,6 +1,11 @@
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include "OpenGLBackend.h"
 #include <QDebug>
 #include <QImage>
+
 
 OpenGLBackend::OpenGLBackend()
     :m_UITextureID(0),

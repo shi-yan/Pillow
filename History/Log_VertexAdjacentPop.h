@@ -14,7 +14,7 @@ public:
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentPop\" Target=\"%d\" Index=\"%d\" O=\"%d\" />\n",target,index,o);
+        //sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentPop\" Target=\"%d\" Index=\"%d\" O=\"%d\" />\n",target,index,o);
         std::string out(temp);
         return out;
     }

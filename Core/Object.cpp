@@ -3,13 +3,13 @@
 
 #include "../Screen.h"
 
-Object::Object(char *theName)
+Object::Object(const char *name)
     :ElementBase(),
       m_center(),
       m_position(),
       m_rotation(),
       m_scale(1,1,1,1),
-      m_name(theName),
+      m_name(name),
       m_subdivideId(0),
       m_subdivideLevelSize(0),
       m_isHide(false),
@@ -67,16 +67,16 @@ unsigned int Object::addVertex(float p1,float p2,float p3,float n1,float n2,floa
     return vi;
 }
 
-unsigned int Object::addEdge(unsigned int ei,Edge *theE)
+unsigned int Object::addEdge(unsigned int ei, Edge *edge)
     {
-        m_edgeArray.addI(ei,theE);
+        m_edgeArray.addI(ei, edge);
         historyManager->record(new Log_ObjectEdgeAdd(m_index,ei));
         return ei;
     }
 
-unsigned int Object::addFace(unsigned int ei,Face *theF)
+unsigned int Object::addFace(unsigned int ei, Face *face)
     {
-        m_faceArray.addI(ei,theF);
+        m_faceArray.addI(ei, face);
         historyManager->record(new Log_ObjectFaceAdd(m_index,ei));
         return ei;
     }
@@ -145,14 +145,14 @@ unsigned int Object::addVertex(Vector &pos)
     return vi;
 }
 
-unsigned int Object::addVertex(unsigned int ei,Vertex *theV)
+unsigned int Object::addVertex(unsigned int ei, Vertex *vertex)
 {
-    m_vertexArray.addI(ei,theV);
+    m_vertexArray.addI(ei, vertex);
     historyManager->record(new Log_ObjectVertexAdd(m_index,ei));
     return ei;
 }
 
-unsigned int Object::addVertex(Vector &pos,Vector &nor)
+unsigned int Object::addVertex(Vector &pos, Vector &nor)
 {
     unsigned int vi=m_vertexArray.add(new Vertex(pos,nor));
     historyManager->record(new Log_ObjectVertexAdd(m_index,vi));
@@ -201,9 +201,9 @@ unsigned int Object::addEdge(int start,int end)
     unsigned int ei=m_edgeArray.add(new Edge(start,end));
     //printf("cao0.5");
 //    printf("!%d,%d!",index,ei);
-    Log_ObjectEdgeAdd *theLog=new Log_ObjectEdgeAdd(m_index,ei);
+    Log_ObjectEdgeAdd *log=new Log_ObjectEdgeAdd(m_index,ei);
     //printf("cao0.6");
-    historyManager->record(theLog);
+    historyManager->record(log);
     //printf("cao1");
     m_vertexArray[start]->m_adjacentEdgeList.push_back((int)ei);
     historyManager->record(new Log_VertexAdjacentPush(m_index,start));
@@ -229,30 +229,30 @@ Face * Object::face(unsigned int index)
     return m_faceArray[index];
 }
 
-unsigned int Object::addFace(unsigned int them_edgeArray[],unsigned int size)
+unsigned int Object::addFace(unsigned int edgeArray[],unsigned int size)
 {
     //printf("start\n");
-    Face *theFace=new Face();
-    unsigned int resultIndex=m_faceArray.add(theFace);
+    Face *face=new Face();
+    unsigned int resultIndex=m_faceArray.add(face);
     historyManager->record(new Log_ObjectFaceAdd(m_index,resultIndex));
     for(unsigned int i=0;i<size;++i)
     {
-        unsigned int i1=them_edgeArray[i];
-        unsigned int i2=them_edgeArray[(i+1)%size];
+        unsigned int i1=edgeArray[i];
+        unsigned int i2=edgeArray[(i+1)%size];
         if(m_edgeArray[i1]->m_end==m_edgeArray[i2]->m_start || m_edgeArray[i1]->m_end==m_edgeArray[i2]->m_end)
         {
-            m_edgeArray[i1]->m_right=theFace->m_index;
-            historyManager->record(new Log_EdgeRightChange(m_index,i1,theFace->m_index));
-            theFace->m_edge.push_back(i1);
-            historyManager->record(new Log_FaceEdgePush(m_index,theFace->m_index));
+            m_edgeArray[i1]->m_right=face->m_index;
+            historyManager->record(new Log_EdgeRightChange(m_index,i1,face->m_index));
+            face->m_edge.push_back(i1);
+            historyManager->record(new Log_FaceEdgePush(m_index,face->m_index));
         }
         else
         if(m_edgeArray[i1]->m_start==m_edgeArray[i2]->m_start || m_edgeArray[i1]->m_start==m_edgeArray[i2]->m_end)
         {
-            m_edgeArray[i1]->m_left=theFace->m_index;
-            historyManager->record(new Log_EdgeLeftChange(m_index,i1,theFace->m_index));
-            theFace->m_edge.push_back(-((int)i1));
-            historyManager->record(new Log_FaceEdgePush(m_index,theFace->m_index));
+            m_edgeArray[i1]->m_left=face->m_index;
+            historyManager->record(new Log_EdgeLeftChange(m_index,i1,face->m_index));
+            face->m_edge.push_back(-((int)i1));
+            historyManager->record(new Log_FaceEdgePush(m_index,face->m_index));
         }
     }
     //printf("end\n");
@@ -263,25 +263,25 @@ void Object::SubTestOut(char *fileName,int level)
 {
     FILE *fp=NULL;
     fp=fopen(fileName,"w");
-    SubdivideLevel *theSub=m_subdivideLevel[level];
-    unsigned int vertexCount=theSub->m_vertex.size();
+    SubdivideLevel *sub=m_subdivideLevel[level];
+    unsigned int vertexCount=sub->m_vertex.size();
     for(unsigned int i=1;i<vertexCount;++i)
     {
-        fprintf(fp,"v %f %f %f\n",theSub->m_vertex[i]->m_position.x,theSub->m_vertex[i]->m_position.y,theSub->m_vertex[i]->m_position.z);
+        fprintf(fp,"v %f %f %f\n",sub->m_vertex[i]->m_position.x,sub->m_vertex[i]->m_position.y,sub->m_vertex[i]->m_position.z);
     }
     fprintf(fp,"g box01\n");
-    for(unsigned int i=1;i<theSub->m_face.size();++i)
+    for(unsigned int i=1;i<sub->m_face.size();++i)
     {
         fprintf(fp,"f ");
         for(unsigned int e=0;e<4;e++)
         {
-            if(theSub->m_face[i]->m_edge[e]>0)
+            if(sub->m_face[i]->m_edge[e]>0)
             {
-                fprintf(fp,"%d ",theSub->m_edge[theSub->m_face[i]->m_edge[e]]->m_start);
+                fprintf(fp,"%d ",sub->m_edge[sub->m_face[i]->m_edge[e]]->m_start);
             }
             else
             {
-                fprintf(fp,"%d ",theSub->m_edge[-theSub->m_face[i]->m_edge[e]]->m_end);
+                fprintf(fp,"%d ",sub->m_edge[-sub->m_face[i]->m_edge[e]]->m_end);
             }
         }
         fprintf(fp,"\n");
@@ -331,40 +331,40 @@ void Object::subdivide()
     updateAllSubNormal();
 }
 
-Vector Object::EAdjacentVertex(Vertex *theVertex)
+Vector Object::EAdjacentVertex(Vertex *vertex)
 {
-    theVertex->m_edgeVertex=false;
+    vertex->m_edgeVertex=false;
     Vector result(0);
-    unsigned int vertexCount=theVertex->m_adjacentEdgeList.size();
+    unsigned int vertexCount=vertex->m_adjacentEdgeList.size();
     for(unsigned int i=0;i<vertexCount;++i)
     {
-        if(m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_left && m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_right && !theVertex->m_edgeVertex)
+        if(m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_left && m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_right && !vertex->m_edgeVertex)
         {
-            if(theVertex->m_index==m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_end)
+            if(vertex->m_index==m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_end)
             {
-                result+=m_vertexArray[m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_start]->m_position;
+                result+=m_vertexArray[m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_start]->m_position;
             }
             else
             {
-                result+=m_vertexArray[m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_end]->m_position;
+                result+=m_vertexArray[m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_end]->m_position;
             }
         }
         else
         {
-            if(!theVertex->m_edgeVertex)
+            if(!vertex->m_edgeVertex)
             {
-                theVertex->m_edgeVertex=true;
+                vertex->m_edgeVertex=true;
                 result.null();
             }
-            if(!m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_left || !m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_right)
+            if(!m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_left || !m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_right)
             {
-                if(theVertex->m_index==m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_end)
+                if(vertex->m_index==m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_end)
                 {
-                    result+=m_vertexArray[m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_start]->m_position;
+                    result+=m_vertexArray[m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_start]->m_position;
                 }
                 else
                 {
-                    result+=m_vertexArray[m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_end]->m_position;
+                    result+=m_vertexArray[m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_end]->m_position;
                 }
             }
         }
@@ -372,40 +372,40 @@ Vector Object::EAdjacentVertex(Vertex *theVertex)
     return result;
 }
 
-Vector Object::EAdjacentVertex(SubdivideVertex *theVertex,int level)
+Vector Object::EAdjacentVertex(SubdivideVertex *vertex,int level)
 {
-    theVertex->m_edgeVertex=false;
+    vertex->m_edgeVertex=false;
     Vector result(0);
-    unsigned int vertexCount=theVertex->m_adjacentEdgeList.size();
+    unsigned int vertexCount=vertex->m_adjacentEdgeList.size();
     for(unsigned int i=0;i<vertexCount;++i)
     {
-        if(m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_left!=0 && m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_right!=0 && !theVertex->m_edgeVertex)
+        if(m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_left!=0 && m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_right!=0 && !vertex->m_edgeVertex)
         {
-            if(theVertex->m_index==m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_end)
+            if(vertex->m_index==m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_end)
             {
-                result+=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_start]->m_position;
+                result+=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_start]->m_position;
             }
             else
             {
-                result+=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_end]->m_position;
+                result+=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_end]->m_position;
             }
         }
         else
         {
-            if(!theVertex->m_edgeVertex)
+            if(!vertex->m_edgeVertex)
             {
-                theVertex->m_edgeVertex=true;
+                vertex->m_edgeVertex=true;
                 result.null();
             }
-            if(m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_left==0 || m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_right==0)
+            if(m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_left==0 || m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_right==0)
             {
-                if(theVertex->m_index==m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_end)
+                if(vertex->m_index==m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_end)
                 {
-                    result+=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_start]->m_position;
+                    result+=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_start]->m_position;
                 }
                 else
                 {
-                    result+=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_end]->m_position;
+                    result+=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_end]->m_position;
                 }
             }
         }
@@ -413,40 +413,40 @@ Vector Object::EAdjacentVertex(SubdivideVertex *theVertex,int level)
     return result;
 }
 
-Vector Object::EAdjacentVertex(SubdivideVertex *theVertex)
+Vector Object::EAdjacentVertex(SubdivideVertex *vertex)
 {
-    theVertex->m_edgeVertex=false;
+    vertex->m_edgeVertex=false;
     Vector result(0);
-    unsigned int vertexCount=theVertex->m_adjacentEdgeList.size();
+    unsigned int vertexCount=vertex->m_adjacentEdgeList.size();
     for(unsigned int i=0;i<vertexCount;++i)
     {
-        if(m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_left!=0 && m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_right!=0 && !theVertex->m_edgeVertex)
+        if(m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_left!=0 && m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_right!=0 && !vertex->m_edgeVertex)
         {
-            if(theVertex->m_index==m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_end)
+            if(vertex->m_index==m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_end)
             {
-                result+=m_subdivideLevel[1]->m_vertex[m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_start]->m_position;
+                result+=m_subdivideLevel[1]->m_vertex[m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_start]->m_position;
             }
             else
             {
-                result+=m_subdivideLevel[1]->m_vertex[m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_end]->m_position;
+                result+=m_subdivideLevel[1]->m_vertex[m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_end]->m_position;
             }
         }
         else
         {
-            if(!theVertex->m_edgeVertex)
+            if(!vertex->m_edgeVertex)
             {
-                theVertex->m_edgeVertex=true;
+                vertex->m_edgeVertex=true;
                 result.null();
             }
-            if(m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_left==0 || m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_right==0)
+            if(m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_left==0 || m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_right==0)
             {
-                if(theVertex->m_index==m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_end)
+                if(vertex->m_index==m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_end)
                 {
-                    result+=m_subdivideLevel[1]->m_vertex[m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_start]->m_position;
+                    result+=m_subdivideLevel[1]->m_vertex[m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_start]->m_position;
                 }
                 else
                 {
-                    result+=m_subdivideLevel[1]->m_vertex[m_subdivideLevel[1]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_end]->m_position;
+                    result+=m_subdivideLevel[1]->m_vertex[m_subdivideLevel[1]->m_edge[vertex->m_adjacentEdgeList[i]]->m_end]->m_position;
                 }
             }
         }
@@ -454,216 +454,215 @@ Vector Object::EAdjacentVertex(SubdivideVertex *theVertex)
     return result;
 }
 
-void Object::subdivideFace(Face *theFace)
+void Object::subdivideFace(Face *face)
 {
     //Ê×ÏÈÒªµÃµ½Õâ¸öÃæµÄ¶Ëµã
     //µÃµ½¶ËµãºÍ±ßµÄÊýÄ¿
-    unsigned int edgeCount=theFace->m_edge.size();
+    unsigned int edgeCount=face->m_edge.size();
     //ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
-    Vertex **theVertexList=new Vertex*[edgeCount];
-    theFace->m_center=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex());
-    //m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_adjacentEdgeList.clear();
-    m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_adjacentEdgeList.reserve(4);
+    Vertex **vertexList=new Vertex*[edgeCount];
+    face->m_center=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex());
+    //m_subdivideLevel[0]->m_vertex[face->m_center]->m_adjacentEdgeList.clear();
+    m_subdivideLevel[0]->m_vertex[face->m_center]->m_adjacentEdgeList.reserve(4);
     for(unsigned int e=0;e<edgeCount;++e)
     {
-        if(theFace->m_edge[e]<0)
+        if(face->m_edge[e]<0)
         {
-            theVertexList[e]=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_start];
+            vertexList[e]=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_start];
         }
         else
         {
-            theVertexList[e]=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_end];
+            vertexList[e]=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_end];
         }
-        m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_position+=theVertexList[e]->m_position;
-        //m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_normal+=theVertexList[e]->m_normal;
+        m_subdivideLevel[0]->m_vertex[face->m_center]->m_position+=vertexList[e]->m_position;
+        //m_subdivideLevel[0]->m_vertex[face->m_center]->m_normal+=vertexList[e]->m_normal;
     }
-    m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_position/=(float)edgeCount;
-    //m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_normal/=edgeCount;
+    m_subdivideLevel[0]->m_vertex[face->m_center]->m_position/=(float)edgeCount;
+    //m_subdivideLevel[0]->m_vertex[face->m_center]->m_normal/=edgeCount;
     //¼ÆËãÐÂµÄ¶¥µã
     for(unsigned int i=0;i<edgeCount;++i)
     {
-        Vertex *theV=theVertexList[i];
-        if(theV->m_subdivideId!=m_subdivideId)
+        Vertex *vertex=vertexList[i];
+        if(vertex->m_subdivideId!=m_subdivideId)
         {
             //Èç¹ûÊÇµÚÒ»´Î¼ÆËãµ½Õâ¸öµã
             //³õÊ¼»¯Ï¸·Ö²½Êý
-            theV->m_subdivideId=m_subdivideId;
-            theV->m_subdivideStep=0;
+            vertex->m_subdivideId=m_subdivideId;
+            vertex->m_subdivideStep=0;
             //Éú³ÉÕâ¸öµãµÄÏ¸·Öµã
-            theV->m_nextLevel=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex());
-            //m_subdivideLevel[0]->m_vertex[theV->m_nextLevel]->m_adjacentEdgeList.clear();
-            m_subdivideLevel[0]->m_vertex[theV->m_nextLevel]->m_adjacentEdgeList.reserve(theV->m_adjacentEdgeList.size());
+            vertex->m_nextLevel=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex());
+            //m_subdivideLevel[0]->m_vertex[vertex->m_nextLevel]->m_adjacentEdgeList.clear();
+            m_subdivideLevel[0]->m_vertex[vertex->m_nextLevel]->m_adjacentEdgeList.reserve(vertex->m_adjacentEdgeList.size());
             //Ê×ÏÈ¼ÆËãÏàÁÚµãµÄ×ø±êºÍEv
-            m_subdivideLevel[0]->m_vertex[theV->m_nextLevel]->m_position+=EAdjacentVertex(theV);
-            if(theV->m_edgeVertex)
+            m_subdivideLevel[0]->m_vertex[vertex->m_nextLevel]->m_position+=EAdjacentVertex(vertex);
+            if(vertex->m_edgeVertex)
             {
-                m_subdivideLevel[0]->m_vertex[theV->m_nextLevel]->m_position+=theV->m_position*6;
-                m_subdivideLevel[0]->m_vertex[theV->m_nextLevel]->m_position/=8;
+                m_subdivideLevel[0]->m_vertex[vertex->m_nextLevel]->m_position+=vertex->m_position*6;
+                m_subdivideLevel[0]->m_vertex[vertex->m_nextLevel]->m_position/=8;
             }
             else
             {
                 //¼ÓÉÏÕâ¸öÃæµÄÖÐµã
-                m_subdivideLevel[0]->m_vertex[theV->m_nextLevel]->m_position+=m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_position;
+                m_subdivideLevel[0]->m_vertex[vertex->m_nextLevel]->m_position+=m_subdivideLevel[0]->m_vertex[face->m_center]->m_position;
             }
-            ++(theV->m_subdivideStep);
+            ++(vertex->m_subdivideStep);
         }
         else
         {
-            if(!theV->m_edgeVertex)
+            if(!vertex->m_edgeVertex)
             {
-                m_subdivideLevel[0]->m_vertex[theV->m_nextLevel]->m_position+=m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_position;
-                ++(theV->m_subdivideStep);
-                unsigned int n=theV->m_adjacentEdgeList.size();
-                if(n==(unsigned int)theV->m_subdivideStep)
+                m_subdivideLevel[0]->m_vertex[vertex->m_nextLevel]->m_position+=m_subdivideLevel[0]->m_vertex[face->m_center]->m_position;
+                ++(vertex->m_subdivideStep);
+                unsigned int n=vertex->m_adjacentEdgeList.size();
+                if(n==(unsigned int)vertex->m_subdivideStep)
                 {
-                    m_subdivideLevel[0]->m_vertex[theV->m_nextLevel]->m_position+=theV->m_position*(float)(n*n-2*n);
-                    m_subdivideLevel[0]->m_vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
+                    m_subdivideLevel[0]->m_vertex[vertex->m_nextLevel]->m_position+=vertex->m_position*(float)(n*n-2*n);
+                    m_subdivideLevel[0]->m_vertex[vertex->m_nextLevel]->m_position/=(float)(n*n);
                 }
             }
         }
     }
-    delete theVertexList;
-    //Ö®ºó´¦ÀíÃ¿Ò»¸ö±ß
+    delete vertexList;
     for(unsigned int i=0;i<edgeCount;++i)
     {
-        Edge *theEdge;
-        if(theFace->m_edge[i]>0)
+        Edge *edge = nullptr;
+        if(face->m_edge[i]>0)
         {
-            theEdge=m_edgeArray[theFace->m_edge[i]];
-            if(theEdge->m_subdivideId!=m_subdivideId)
+            edge=m_edgeArray[face->m_edge[i]];
+            if(edge->m_subdivideId!=m_subdivideId)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
-                theEdge->m_subdivideId=m_subdivideId;
-                Vector theN=m_vertexArray[theEdge->m_start]->m_position+m_vertexArray[theEdge->m_end]->m_position;
-                theEdge->m_middle=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex(theN));
-                //m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.clear();
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.reserve(4);
-                if(theEdge->m_left && theEdge->m_right)
+                edge->m_subdivideId=m_subdivideId;
+                Vector theN=m_vertexArray[edge->m_start]->m_position+m_vertexArray[edge->m_end]->m_position;
+                edge->m_middle=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex(theN));
+                //m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.clear();
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.reserve(4);
+                if(edge->m_left && edge->m_right)
                 {
-                    m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_position+=m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_position;
+                    m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_position+=m_subdivideLevel[0]->m_vertex[face->m_center]->m_position;
                 }
                 else
                 {
-                    m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_position/=2;
+                    m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_position/=2;
                 }
-                theEdge->m_startEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(m_vertexArray[theEdge->m_start]->m_nextLevel,theEdge->m_middle));
-                m_subdivideLevel[0]->m_vertex[m_vertexArray[theEdge->m_start]->m_nextLevel]->m_adjacentEdgeList.push_back(theEdge->m_startEdge);
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_startEdge);
-                theEdge->m_endEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(theEdge->m_middle,m_vertexArray[theEdge->m_end]->m_nextLevel));
-                m_subdivideLevel[0]->m_vertex[m_vertexArray[theEdge->m_end]->m_nextLevel]->m_adjacentEdgeList.push_back(theEdge->m_endEdge);
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_endEdge);
-                theEdge->m_rightEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(theEdge->m_middle,theFace->m_center));
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_rightEdge);
-                m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_adjacentEdgeList.push_back(theEdge->m_rightEdge);
+                edge->m_startEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(m_vertexArray[edge->m_start]->m_nextLevel,edge->m_middle));
+                m_subdivideLevel[0]->m_vertex[m_vertexArray[edge->m_start]->m_nextLevel]->m_adjacentEdgeList.push_back(edge->m_startEdge);
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_startEdge);
+                edge->m_endEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(edge->m_middle,m_vertexArray[edge->m_end]->m_nextLevel));
+                m_subdivideLevel[0]->m_vertex[m_vertexArray[edge->m_end]->m_nextLevel]->m_adjacentEdgeList.push_back(edge->m_endEdge);
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_endEdge);
+                edge->m_rightEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(edge->m_middle,face->m_center));
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_rightEdge);
+                m_subdivideLevel[0]->m_vertex[face->m_center]->m_adjacentEdgeList.push_back(edge->m_rightEdge);
             }
             else
             {
                 //Èç¹û²»ÊÇµÚÒ»´Î¼ÆËã
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_position+=m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_position;
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_position/=4;
-                theEdge->m_rightEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(theEdge->m_middle,theFace->m_center));
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_rightEdge);
-                m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_adjacentEdgeList.push_back(theEdge->m_rightEdge);
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_position+=m_subdivideLevel[0]->m_vertex[face->m_center]->m_position;
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_position/=4;
+                edge->m_rightEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(edge->m_middle,face->m_center));
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_rightEdge);
+                m_subdivideLevel[0]->m_vertex[face->m_center]->m_adjacentEdgeList.push_back(edge->m_rightEdge);
             }
         }
         else
         {
-            theEdge=m_edgeArray[-theFace->m_edge[i]];
-            if(theEdge->m_subdivideId!=m_subdivideId)
+            edge=m_edgeArray[-face->m_edge[i]];
+            if(edge->m_subdivideId!=m_subdivideId)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
-                theEdge->m_subdivideId=m_subdivideId;
-                Vector theN=m_vertexArray[theEdge->m_start]->m_position+m_vertexArray[theEdge->m_end]->m_position;
-                theEdge->m_middle=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex(theN));
-                //m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.clear();
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.reserve(4);
-                if(theEdge->m_left!=0 && theEdge->m_right!=0)
+                edge->m_subdivideId=m_subdivideId;
+                Vector theN=m_vertexArray[edge->m_start]->m_position+m_vertexArray[edge->m_end]->m_position;
+                edge->m_middle=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex(theN));
+                //m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.clear();
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.reserve(4);
+                if(edge->m_left!=0 && edge->m_right!=0)
                 {
-                    m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_position+=m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_position;
+                    m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_position+=m_subdivideLevel[0]->m_vertex[face->m_center]->m_position;
                 }
                 else
                 {
-                    m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_position/=2;
+                    m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_position/=2;
                 }
-                theEdge->m_startEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(m_vertexArray[theEdge->m_start]->m_nextLevel,theEdge->m_middle));
-                m_subdivideLevel[0]->m_vertex[m_vertexArray[theEdge->m_start]->m_nextLevel]->m_adjacentEdgeList.push_back(theEdge->m_startEdge);
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_startEdge);
-                theEdge->m_endEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(theEdge->m_middle,m_vertexArray[theEdge->m_end]->m_nextLevel));
-                m_subdivideLevel[0]->m_vertex[m_vertexArray[theEdge->m_end]->m_nextLevel]->m_adjacentEdgeList.push_back(theEdge->m_endEdge);
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_endEdge);
-                theEdge->m_leftEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(theEdge->m_middle,theFace->m_center));
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_leftEdge);
-                m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_adjacentEdgeList.push_back(theEdge->m_leftEdge);
+                edge->m_startEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(m_vertexArray[edge->m_start]->m_nextLevel,edge->m_middle));
+                m_subdivideLevel[0]->m_vertex[m_vertexArray[edge->m_start]->m_nextLevel]->m_adjacentEdgeList.push_back(edge->m_startEdge);
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_startEdge);
+                edge->m_endEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(edge->m_middle,m_vertexArray[edge->m_end]->m_nextLevel));
+                m_subdivideLevel[0]->m_vertex[m_vertexArray[edge->m_end]->m_nextLevel]->m_adjacentEdgeList.push_back(edge->m_endEdge);
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_endEdge);
+                edge->m_leftEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(edge->m_middle,face->m_center));
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_leftEdge);
+                m_subdivideLevel[0]->m_vertex[face->m_center]->m_adjacentEdgeList.push_back(edge->m_leftEdge);
             }
             else
             {
                 //Èç¹û²»ÊÇµÚÒ»´Î¼ÆËã
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_position+=m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_position;
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_position/=4;
-                theEdge->m_leftEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(theEdge->m_middle,theFace->m_center));
-                m_subdivideLevel[0]->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_leftEdge);
-                m_subdivideLevel[0]->m_vertex[theFace->m_center]->m_adjacentEdgeList.push_back(theEdge->m_leftEdge);
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_position+=m_subdivideLevel[0]->m_vertex[face->m_center]->m_position;
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_position/=4;
+                edge->m_leftEdge=m_subdivideLevel[0]->m_edge.add(new SubdivideEdge(edge->m_middle,face->m_center));
+                m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_leftEdge);
+                m_subdivideLevel[0]->m_vertex[face->m_center]->m_adjacentEdgeList.push_back(edge->m_leftEdge);
             }
         }
     }
     //½¨Á¢Ï¸·ÖÖ®ºóµÄÃæ
-    //theFace->m_subdivideFace.clear();
-    theFace->m_subdivideFace.reserve(edgeCount);
+    //face->m_subdivideFace.clear();
+    face->m_subdivideFace.reserve(edgeCount);
     for(unsigned int i=0;i<edgeCount;++i)
     {
         unsigned int i2=(i+1)%edgeCount;
-        if(theFace->m_edge[i]>0)
+        if(face->m_edge[i]>0)
         {
-            Edge *theEdge1=m_edgeArray[theFace->m_edge[i]];
-            if(theFace->m_edge[i2]>0)
+            Edge *edge1=m_edgeArray[face->m_edge[i]];
+            if(face->m_edge[i2]>0)
             {
-                Edge *theEdge2=m_edgeArray[theFace->m_edge[i2]];
+                Edge *edge2=m_edgeArray[face->m_edge[i2]];
                 unsigned int faceId=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_rightEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_endEdge]->m_right=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_startEdge]->m_right=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_rightEdge]->m_right=m_subdivideLevel[0]->m_face.add(new SubdivideFace(-theEdge1->m_rightEdge,theEdge1->m_endEdge,theEdge2->m_startEdge,theEdge2->m_rightEdge));
-                theFace->m_subdivideFace.push_back(faceId);
+                m_subdivideLevel[0]->m_edge[edge1->m_rightEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge1->m_endEdge]->m_right=
+                m_subdivideLevel[0]->m_edge[edge2->m_startEdge]->m_right=
+                m_subdivideLevel[0]->m_edge[edge2->m_rightEdge]->m_right=m_subdivideLevel[0]->m_face.add(new SubdivideFace(-edge1->m_rightEdge,edge1->m_endEdge,edge2->m_startEdge,edge2->m_rightEdge));
+                face->m_subdivideFace.push_back(faceId);
             }
             else
             {
-                Edge *theEdge2=m_edgeArray[-theFace->m_edge[i2]];
+                Edge *edge2=m_edgeArray[-face->m_edge[i2]];
                 unsigned int faceId=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_rightEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_endEdge]->m_right=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_endEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_leftEdge]->m_right=m_subdivideLevel[0]->m_face.add(new SubdivideFace(-theEdge1->m_rightEdge,theEdge1->m_endEdge,-theEdge2->m_endEdge,theEdge2->m_leftEdge));
-                theFace->m_subdivideFace.push_back(faceId);
+                m_subdivideLevel[0]->m_edge[edge1->m_rightEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge1->m_endEdge]->m_right=
+                m_subdivideLevel[0]->m_edge[edge2->m_endEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge2->m_leftEdge]->m_right=m_subdivideLevel[0]->m_face.add(new SubdivideFace(-edge1->m_rightEdge,edge1->m_endEdge,-edge2->m_endEdge,edge2->m_leftEdge));
+                face->m_subdivideFace.push_back(faceId);
             }
         }
         else
         {
-            Edge *theEdge1=m_edgeArray[-theFace->m_edge[i]];
-            if(theFace->m_edge[i2]>0)
+            Edge *edge1=m_edgeArray[-face->m_edge[i]];
+            if(face->m_edge[i2]>0)
             {
-                Edge *theEdge2=m_edgeArray[theFace->m_edge[i2]];
+                Edge *edge2=m_edgeArray[face->m_edge[i2]];
                 unsigned int faceId=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_leftEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_startEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_startEdge]->m_right=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_rightEdge]->m_right=m_subdivideLevel[0]->m_face.add(new SubdivideFace(-theEdge1->m_leftEdge,-theEdge1->m_startEdge,theEdge2->m_startEdge,theEdge2->m_rightEdge));
-                theFace->m_subdivideFace.push_back(faceId);
+                m_subdivideLevel[0]->m_edge[edge1->m_leftEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge1->m_startEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge2->m_startEdge]->m_right=
+                m_subdivideLevel[0]->m_edge[edge2->m_rightEdge]->m_right=m_subdivideLevel[0]->m_face.add(new SubdivideFace(-edge1->m_leftEdge,-edge1->m_startEdge,edge2->m_startEdge,edge2->m_rightEdge));
+                face->m_subdivideFace.push_back(faceId);
             }
             else
             {
-                Edge *theEdge2=m_edgeArray[-theFace->m_edge[i2]];
+                Edge *edge2=m_edgeArray[-face->m_edge[i2]];
                 unsigned int faceId=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_leftEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_startEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_endEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_leftEdge]->m_right=m_subdivideLevel[0]->m_face.add(new SubdivideFace(-theEdge1->m_leftEdge,-theEdge1->m_startEdge,-theEdge2->m_endEdge,theEdge2->m_leftEdge));
-                theFace->m_subdivideFace.push_back(faceId);
+                m_subdivideLevel[0]->m_edge[edge1->m_leftEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge1->m_startEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge2->m_endEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge2->m_leftEdge]->m_right=m_subdivideLevel[0]->m_face.add(new SubdivideFace(-edge1->m_leftEdge,-edge1->m_startEdge,-edge2->m_endEdge,edge2->m_leftEdge));
+                face->m_subdivideFace.push_back(faceId);
             }
         }
     }
 }
 
-void Object::subdivideFace(SubdivideFace *theFace)
+void Object::subdivideFace(SubdivideFace *face)
 {
     //Ê×ÏÈÒªµÃµ½Õâ¸öÃæµÄ¶Ëµã
     //µÃµ½¶ËµãºÍ±ßµÄÊýÄ¿
@@ -671,150 +670,150 @@ void Object::subdivideFace(SubdivideFace *theFace)
     SubdivideLevel *target=m_subdivideLevel[0];
     SubdivideLevel *original=m_subdivideLevel[1];
     //ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
-    SubdivideVertex **theVertexList=new SubdivideVertex*[edgeCount];
-    theFace->m_center=target->m_vertex.add(new SubdivideVertex());
-    //target->m_vertex[theFace->m_center]->m_adjacentEdgeList.clear();
-    target->m_vertex[theFace->m_center]->m_adjacentEdgeList.reserve(4);
+    SubdivideVertex **vertexList=new SubdivideVertex*[edgeCount];
+    face->m_center=target->m_vertex.add(new SubdivideVertex());
+    //target->m_vertex[face->m_center]->m_adjacentEdgeList.clear();
+    target->m_vertex[face->m_center]->m_adjacentEdgeList.reserve(4);
     for(unsigned int e=0;e<edgeCount;++e)
     {
-        if(theFace->m_edge[e]<0)
+        if(face->m_edge[e]<0)
         {
-            theVertexList[e]=original->m_vertex[original->m_edge[-theFace->m_edge[e]]->m_start];
+            vertexList[e]=original->m_vertex[original->m_edge[-face->m_edge[e]]->m_start];
         }
         else
         {
-            theVertexList[e]=original->m_vertex[original->m_edge[theFace->m_edge[e]]->m_end];
+            vertexList[e]=original->m_vertex[original->m_edge[face->m_edge[e]]->m_end];
         }
-        target->m_vertex[theFace->m_center]->m_position+=theVertexList[e]->m_position;
-        //target->m_vertex[theFace->m_center]->m_normal+=theVertexList[e]->m_normal;
+        target->m_vertex[face->m_center]->m_position+=vertexList[e]->m_position;
+        //target->m_vertex[face->m_center]->m_normal+=vertexList[e]->m_normal;
     }
     //¼ÆËãÕâ¸öÃæµÄÖÐµã
-    target->m_vertex[theFace->m_center]->m_position/=(float)edgeCount;
-    //target->m_vertex[theFace->m_center]->m_normal/=edgeCount;
+    target->m_vertex[face->m_center]->m_position/=(float)edgeCount;
+    //target->m_vertex[face->m_center]->m_normal/=edgeCount;
     //¼ÆËãÐÂµÄ¶¥µã
     for(unsigned int i=0;i<edgeCount;++i)
     {
-        SubdivideVertex *theV=theVertexList[i];
-        if(theV->m_subdivideId!=m_subdivideId)
+        SubdivideVertex *vertex=vertexList[i];
+        if(vertex->m_subdivideId!=m_subdivideId)
         {
             //Èç¹ûÊÇµÚÒ»´Î¼ÆËãµ½Õâ¸öµã
             //³õÊ¼»¯Ï¸·Ö²½Êý
-            theV->m_subdivideId=m_subdivideId;
-            theV->m_subdivideStep=0;
+            vertex->m_subdivideId=m_subdivideId;
+            vertex->m_subdivideStep=0;
             //Éú³ÉÕâ¸öµãµÄÏ¸·Öµã
-            theV->m_nextLevel=target->m_vertex.add(new SubdivideVertex());
-            //target->m_vertex[theV->m_nextLevel]->m_adjacentEdgeList.clear();
-            target->m_vertex[theV->m_nextLevel]->m_adjacentEdgeList.reserve(theV->m_adjacentEdgeList.size());
+            vertex->m_nextLevel=target->m_vertex.add(new SubdivideVertex());
+            //target->m_vertex[vertex->m_nextLevel]->m_adjacentEdgeList.clear();
+            target->m_vertex[vertex->m_nextLevel]->m_adjacentEdgeList.reserve(vertex->m_adjacentEdgeList.size());
             //Ê×ÏÈ¼ÆËãÏàÁÚµãµÄ×ø±êºÍEv
-            target->m_vertex[theV->m_nextLevel]->m_position+=EAdjacentVertex(theV);
-            if(theV->m_edgeVertex)
+            target->m_vertex[vertex->m_nextLevel]->m_position+=EAdjacentVertex(vertex);
+            if(vertex->m_edgeVertex)
             {
-                target->m_vertex[theV->m_nextLevel]->m_position+=theV->m_position*6;
-                target->m_vertex[theV->m_nextLevel]->m_position/=8;
+                target->m_vertex[vertex->m_nextLevel]->m_position+=vertex->m_position*6;
+                target->m_vertex[vertex->m_nextLevel]->m_position/=8;
             }
             else
             {
                 //¼ÓÉÏÕâ¸öÃæµÄÖÐµã
-                target->m_vertex[theV->m_nextLevel]->m_position+=target->m_vertex[theFace->m_center]->m_position;
+                target->m_vertex[vertex->m_nextLevel]->m_position+=target->m_vertex[face->m_center]->m_position;
             }
-            ++(theV->m_subdivideStep);
+            ++(vertex->m_subdivideStep);
         }
         else
         {
-            if(!theV->m_edgeVertex)
+            if(!vertex->m_edgeVertex)
             {
-                target->m_vertex[theV->m_nextLevel]->m_position+=target->m_vertex[theFace->m_center]->m_position;
-                theV->m_subdivideStep++;
-                int n=theV->m_adjacentEdgeList.size();
-                if(n==theV->m_subdivideStep)
+                target->m_vertex[vertex->m_nextLevel]->m_position+=target->m_vertex[face->m_center]->m_position;
+                vertex->m_subdivideStep++;
+                int n=vertex->m_adjacentEdgeList.size();
+                if(n==vertex->m_subdivideStep)
                 {
-                    target->m_vertex[theV->m_nextLevel]->m_position+=theV->m_position*(float)(n*n-2*n);
-                    target->m_vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
+                    target->m_vertex[vertex->m_nextLevel]->m_position+=vertex->m_position*(float)(n*n-2*n);
+                    target->m_vertex[vertex->m_nextLevel]->m_position/=(float)(n*n);
                 }
             }
         }
     }
-    delete theVertexList;
+    delete vertexList;
     //Ö®ºó´¦ÀíÃ¿Ò»¸ö±ß
     for(unsigned int i=0;i<edgeCount;++i)
     {
-        SubdivideEdge *theEdge;
-        if(theFace->m_edge[i]>0)
+        SubdivideEdge *edge;
+        if(face->m_edge[i]>0)
         {
-            theEdge=original->m_edge[theFace->m_edge[i]];
-            if(theEdge->m_subdivideId!=m_subdivideId)
+            edge=original->m_edge[face->m_edge[i]];
+            if(edge->m_subdivideId!=m_subdivideId)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
-                theEdge->m_subdivideId=m_subdivideId;
-                Vector theN=original->m_vertex[theEdge->m_start]->m_position+original->m_vertex[theEdge->m_end]->m_position;
-                theEdge->m_middle=target->m_vertex.add(new SubdivideVertex(theN));
-                //target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.clear();
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.reserve(4);
-                if(theEdge->m_left && theEdge->m_right)
+                edge->m_subdivideId=m_subdivideId;
+                Vector theN=original->m_vertex[edge->m_start]->m_position+original->m_vertex[edge->m_end]->m_position;
+                edge->m_middle=target->m_vertex.add(new SubdivideVertex(theN));
+                //target->m_vertex[edge->m_middle]->m_adjacentEdgeList.clear();
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.reserve(4);
+                if(edge->m_left && edge->m_right)
                 {
-                    target->m_vertex[theEdge->m_middle]->m_position+=target->m_vertex[theFace->m_center]->m_position;
+                    target->m_vertex[edge->m_middle]->m_position+=target->m_vertex[face->m_center]->m_position;
                 }
                 else
                 {
-                    target->m_vertex[theEdge->m_middle]->m_position/=2;
+                    target->m_vertex[edge->m_middle]->m_position/=2;
                 }
-                theEdge->m_startEdge=target->m_edge.add(new SubdivideEdge(original->m_vertex[theEdge->m_start]->m_nextLevel,theEdge->m_middle));
-                target->m_vertex[original->m_vertex[theEdge->m_start]->m_nextLevel]->m_adjacentEdgeList.push_back(theEdge->m_startEdge);
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_startEdge);
-                theEdge->m_endEdge=target->m_edge.add(new SubdivideEdge(theEdge->m_middle,original->m_vertex[theEdge->m_end]->m_nextLevel));
-                target->m_vertex[original->m_vertex[theEdge->m_end]->m_nextLevel]->m_adjacentEdgeList.push_back(theEdge->m_endEdge);
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_endEdge);
-                theEdge->m_rightEdge=target->m_edge.add(new SubdivideEdge(theEdge->m_middle,theFace->m_center));
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_rightEdge);
-                target->m_vertex[theFace->m_center]->m_adjacentEdgeList.push_back(theEdge->m_rightEdge);
+                edge->m_startEdge=target->m_edge.add(new SubdivideEdge(original->m_vertex[edge->m_start]->m_nextLevel,edge->m_middle));
+                target->m_vertex[original->m_vertex[edge->m_start]->m_nextLevel]->m_adjacentEdgeList.push_back(edge->m_startEdge);
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_startEdge);
+                edge->m_endEdge=target->m_edge.add(new SubdivideEdge(edge->m_middle,original->m_vertex[edge->m_end]->m_nextLevel));
+                target->m_vertex[original->m_vertex[edge->m_end]->m_nextLevel]->m_adjacentEdgeList.push_back(edge->m_endEdge);
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_endEdge);
+                edge->m_rightEdge=target->m_edge.add(new SubdivideEdge(edge->m_middle,face->m_center));
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_rightEdge);
+                target->m_vertex[face->m_center]->m_adjacentEdgeList.push_back(edge->m_rightEdge);
             }
             else
             {
                 //Èç¹û²»ÊÇµÚÒ»´Î¼ÆËã
-                target->m_vertex[theEdge->m_middle]->m_position+=target->m_vertex[theFace->m_center]->m_position;
-                target->m_vertex[theEdge->m_middle]->m_position/=4;
-                theEdge->m_rightEdge=target->m_edge.add(new SubdivideEdge(theEdge->m_middle,theFace->m_center));
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_rightEdge);
-                target->m_vertex[theFace->m_center]->m_adjacentEdgeList.push_back(theEdge->m_rightEdge);
+                target->m_vertex[edge->m_middle]->m_position+=target->m_vertex[face->m_center]->m_position;
+                target->m_vertex[edge->m_middle]->m_position/=4;
+                edge->m_rightEdge=target->m_edge.add(new SubdivideEdge(edge->m_middle,face->m_center));
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_rightEdge);
+                target->m_vertex[face->m_center]->m_adjacentEdgeList.push_back(edge->m_rightEdge);
             }
         }
         else
         {
-            theEdge=original->m_edge[-theFace->m_edge[i]];
-            if(theEdge->m_subdivideId!=m_subdivideId)
+            edge=original->m_edge[-face->m_edge[i]];
+            if(edge->m_subdivideId!=m_subdivideId)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
-                theEdge->m_subdivideId=m_subdivideId;
-                Vector theN=original->m_vertex[theEdge->m_start]->m_position+original->m_vertex[theEdge->m_end]->m_position;
-                theEdge->m_middle=target->m_vertex.add(new SubdivideVertex(theN));
-                //target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.clear();
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.reserve(4);
-                if(theEdge->m_left && theEdge->m_right)
+                edge->m_subdivideId=m_subdivideId;
+                Vector theN=original->m_vertex[edge->m_start]->m_position+original->m_vertex[edge->m_end]->m_position;
+                edge->m_middle=target->m_vertex.add(new SubdivideVertex(theN));
+                //target->m_vertex[edge->m_middle]->m_adjacentEdgeList.clear();
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.reserve(4);
+                if(edge->m_left && edge->m_right)
                 {
-                    target->m_vertex[theEdge->m_middle]->m_position+=target->m_vertex[theFace->m_center]->m_position;
+                    target->m_vertex[edge->m_middle]->m_position+=target->m_vertex[face->m_center]->m_position;
                 }
                 else
                 {
-                    target->m_vertex[theEdge->m_middle]->m_position/=2;
+                    target->m_vertex[edge->m_middle]->m_position/=2;
                 }
-                theEdge->m_startEdge=target->m_edge.add(new SubdivideEdge(original->m_vertex[theEdge->m_start]->m_nextLevel,theEdge->m_middle));
-                target->m_vertex[original->m_vertex[theEdge->m_start]->m_nextLevel]->m_adjacentEdgeList.push_back(theEdge->m_startEdge);
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_startEdge);
-                theEdge->m_endEdge=target->m_edge.add(new SubdivideEdge(theEdge->m_middle,original->m_vertex[theEdge->m_end]->m_nextLevel));
-                target->m_vertex[original->m_vertex[theEdge->m_end]->m_nextLevel]->m_adjacentEdgeList.push_back(theEdge->m_endEdge);
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_endEdge);
-                theEdge->m_leftEdge=target->m_edge.add(new SubdivideEdge(theEdge->m_middle,theFace->m_center));
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_leftEdge);
-                target->m_vertex[theFace->m_center]->m_adjacentEdgeList.push_back(theEdge->m_leftEdge);
+                edge->m_startEdge=target->m_edge.add(new SubdivideEdge(original->m_vertex[edge->m_start]->m_nextLevel,edge->m_middle));
+                target->m_vertex[original->m_vertex[edge->m_start]->m_nextLevel]->m_adjacentEdgeList.push_back(edge->m_startEdge);
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_startEdge);
+                edge->m_endEdge=target->m_edge.add(new SubdivideEdge(edge->m_middle,original->m_vertex[edge->m_end]->m_nextLevel));
+                target->m_vertex[original->m_vertex[edge->m_end]->m_nextLevel]->m_adjacentEdgeList.push_back(edge->m_endEdge);
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_endEdge);
+                edge->m_leftEdge=target->m_edge.add(new SubdivideEdge(edge->m_middle,face->m_center));
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_leftEdge);
+                target->m_vertex[face->m_center]->m_adjacentEdgeList.push_back(edge->m_leftEdge);
             }
             else
             {
                 //Èç¹û²»ÊÇµÚÒ»´Î¼ÆËã
-                target->m_vertex[theEdge->m_middle]->m_position+=target->m_vertex[theFace->m_center]->m_position;
-                target->m_vertex[theEdge->m_middle]->m_position/=4;
-                theEdge->m_leftEdge=target->m_edge.add(new SubdivideEdge(theEdge->m_middle,theFace->m_center));
-                target->m_vertex[theEdge->m_middle]->m_adjacentEdgeList.push_back(theEdge->m_leftEdge);
-                target->m_vertex[theFace->m_center]->m_adjacentEdgeList.push_back(theEdge->m_leftEdge);
+                target->m_vertex[edge->m_middle]->m_position+=target->m_vertex[face->m_center]->m_position;
+                target->m_vertex[edge->m_middle]->m_position/=4;
+                edge->m_leftEdge=target->m_edge.add(new SubdivideEdge(edge->m_middle,face->m_center));
+                target->m_vertex[edge->m_middle]->m_adjacentEdgeList.push_back(edge->m_leftEdge);
+                target->m_vertex[face->m_center]->m_adjacentEdgeList.push_back(edge->m_leftEdge);
             }
         }
     }
@@ -822,51 +821,51 @@ void Object::subdivideFace(SubdivideFace *theFace)
     for(unsigned int i=0;i<edgeCount;++i)
     {
         unsigned int i2=(i+1)%edgeCount;
-        if(theFace->m_edge[i]>0)
+        if(face->m_edge[i]>0)
         {
-            SubdivideEdge *theEdge1=original->m_edge[theFace->m_edge[i]];
-            if(theFace->m_edge[i2]>0)
+            SubdivideEdge *edge1=original->m_edge[face->m_edge[i]];
+            if(face->m_edge[i2]>0)
             {
-                SubdivideEdge *theEdge2=original->m_edge[theFace->m_edge[i2]];
-                m_subdivideLevel[0]->m_edge[theEdge1->m_rightEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_endEdge]->m_right=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_startEdge]->m_right=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_rightEdge]->m_right=theFace->m_subFace[i]=
-                target->m_face.add(new SubdivideFace(-theEdge1->m_rightEdge,theEdge1->m_endEdge,theEdge2->m_startEdge,theEdge2->m_rightEdge));
+                SubdivideEdge *edge2=original->m_edge[face->m_edge[i2]];
+                m_subdivideLevel[0]->m_edge[edge1->m_rightEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge1->m_endEdge]->m_right=
+                m_subdivideLevel[0]->m_edge[edge2->m_startEdge]->m_right=
+                m_subdivideLevel[0]->m_edge[edge2->m_rightEdge]->m_right=face->m_subFace[i]=
+                target->m_face.add(new SubdivideFace(-edge1->m_rightEdge,edge1->m_endEdge,edge2->m_startEdge,edge2->m_rightEdge));
             }
             else
             {
-                SubdivideEdge *theEdge2=original->m_edge[-theFace->m_edge[i2]];
-                m_subdivideLevel[0]->m_edge[theEdge1->m_rightEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_endEdge]->m_right=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_endEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_leftEdge]->m_right=
-                theFace->m_subFace[i]=
-                target->m_face.add(new SubdivideFace(-theEdge1->m_rightEdge,theEdge1->m_endEdge,-theEdge2->m_endEdge,theEdge2->m_leftEdge));
+                SubdivideEdge *edge2=original->m_edge[-face->m_edge[i2]];
+                m_subdivideLevel[0]->m_edge[edge1->m_rightEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge1->m_endEdge]->m_right=
+                m_subdivideLevel[0]->m_edge[edge2->m_endEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge2->m_leftEdge]->m_right=
+                face->m_subFace[i]=
+                target->m_face.add(new SubdivideFace(-edge1->m_rightEdge,edge1->m_endEdge,-edge2->m_endEdge,edge2->m_leftEdge));
             }
         }
         else
         {
-            SubdivideEdge *theEdge1=original->m_edge[-theFace->m_edge[i]];
-            if(theFace->m_edge[i2]>0)
+            SubdivideEdge *edge1=original->m_edge[-face->m_edge[i]];
+            if(face->m_edge[i2]>0)
             {
-                SubdivideEdge *theEdge2=original->m_edge[theFace->m_edge[i2]];
-                m_subdivideLevel[0]->m_edge[theEdge1->m_leftEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_startEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_startEdge]->m_right=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_rightEdge]->m_right=
-                theFace->m_subFace[i]=
-                target->m_face.add(new SubdivideFace(-theEdge1->m_leftEdge,-theEdge1->m_startEdge,theEdge2->m_startEdge,theEdge2->m_rightEdge));
+                SubdivideEdge *edge2=original->m_edge[face->m_edge[i2]];
+                m_subdivideLevel[0]->m_edge[edge1->m_leftEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge1->m_startEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge2->m_startEdge]->m_right=
+                m_subdivideLevel[0]->m_edge[edge2->m_rightEdge]->m_right=
+                face->m_subFace[i]=
+                target->m_face.add(new SubdivideFace(-edge1->m_leftEdge,-edge1->m_startEdge,edge2->m_startEdge,edge2->m_rightEdge));
             }
             else
             {
-                SubdivideEdge *theEdge2=original->m_edge[-theFace->m_edge[i2]];
-                m_subdivideLevel[0]->m_edge[theEdge1->m_leftEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge1->m_startEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_endEdge]->m_left=
-                m_subdivideLevel[0]->m_edge[theEdge2->m_leftEdge]->m_right=
-                theFace->m_subFace[i]=
-                target->m_face.add(new SubdivideFace(-theEdge1->m_leftEdge,-theEdge1->m_startEdge,-theEdge2->m_endEdge,theEdge2->m_leftEdge));
+                SubdivideEdge *edge2=original->m_edge[-face->m_edge[i2]];
+                m_subdivideLevel[0]->m_edge[edge1->m_leftEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge1->m_startEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge2->m_endEdge]->m_left=
+                m_subdivideLevel[0]->m_edge[edge2->m_leftEdge]->m_right=
+                face->m_subFace[i]=
+                target->m_face.add(new SubdivideFace(-edge1->m_leftEdge,-edge1->m_startEdge,-edge2->m_endEdge,edge2->m_leftEdge));
             }
         }
     }
@@ -907,11 +906,11 @@ void Object::unMirror()
         m_isMirror=false;
     }
 
-void Object::directPushVertex(Vertex *theVertex)
+void Object::directPushVertex(Vertex *vertex)
     {
-        if(theVertex)
+        if(vertex)
         {
-            m_vertexArray.directPush(theVertex);
+            m_vertexArray.directPush(vertex);
         }
         else
         {
@@ -919,11 +918,11 @@ void Object::directPushVertex(Vertex *theVertex)
         }
     }
 
-void Object::directPushEdge(Edge *theEdge)
+void Object::directPushEdge(Edge *edge)
     {
-        if(theEdge)
+        if(edge)
         {
-            m_edgeArray.directPush(theEdge);
+            m_edgeArray.directPush(edge);
         }
         else
         {
@@ -931,11 +930,11 @@ void Object::directPushEdge(Edge *theEdge)
         }
     }
 
-void Object::directPushFace(Face *theFace)
+void Object::directPushFace(Face *face)
         {
-            if(theFace)
+            if(face)
             {
-                m_faceArray.directPush(theFace);
+                m_faceArray.directPush(face);
             }
             else
             {
@@ -951,53 +950,53 @@ void Object::normalizeVertexNormal()
         }
     }
 
-void Object::updateFNormal(Face *theFace)
+void Object::updateFNormal(Face *face)
     {
-        unsigned int edgeCount=theFace->m_edge.size();
-        Vector *theVector=new Vector[edgeCount];
+        unsigned int edgeCount=face->m_edge.size();
+        Vector *vertexector=new Vector[edgeCount];
         for(unsigned int i=0;i<edgeCount;++i)
         {
-            theVector[i].null();
-            if(theFace->m_edge[i]>0)
+            vertexector[i].null();
+            if(face->m_edge[i]>0)
             {
-                theVector[i]=m_vertexArray[m_edgeArray[theFace->m_edge[i]]->m_end]->m_position-m_vertexArray[m_edgeArray[theFace->m_edge[i]]->m_start]->m_position;
+                vertexector[i]=m_vertexArray[m_edgeArray[face->m_edge[i]]->m_end]->m_position-m_vertexArray[m_edgeArray[face->m_edge[i]]->m_start]->m_position;
             }
             else
             {
-                theVector[i]=m_vertexArray[m_edgeArray[-theFace->m_edge[i]]->m_start]->m_position-m_vertexArray[m_edgeArray[-theFace->m_edge[i]]->m_end]->m_position;
+                vertexector[i]=m_vertexArray[m_edgeArray[-face->m_edge[i]]->m_start]->m_position-m_vertexArray[m_edgeArray[-face->m_edge[i]]->m_end]->m_position;
             }
         }
         --edgeCount;
         for(unsigned int i=0;i<edgeCount;++i)
         {
-            theFace->m_normal+=perpendicular(theVector[i],theVector[i+1]);
+            face->m_normal+=perpendicular(vertexector[i],vertexector[i+1]);
         }
-        theFace->m_normal+=perpendicular(theVector[edgeCount],theVector[0]);
-        theFace->m_normal.normalize();
-        delete theVector;
+        face->m_normal+=perpendicular(vertexector[edgeCount],vertexector[0]);
+        face->m_normal.normalize();
+        delete vertexector;
     }
 
-void Object::updateFNormal(SubdivideFace *theFace,unsigned int level)
+void Object::updateFNormal(SubdivideFace *face,unsigned int level)
     {
-        Vector theVector[4];
+        Vector vertexector[4];
         for(unsigned int i=0;i<4;++i)
         {
-            theVector[i].null();
-            if(theFace->m_edge[i]>0)
+            vertexector[i].null();
+            if(face->m_edge[i]>0)
             {
-                theVector[i]=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[theFace->m_edge[i]]->m_end]->m_position-m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[theFace->m_edge[i]]->m_start]->m_position;
+                vertexector[i]=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[face->m_edge[i]]->m_end]->m_position-m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[face->m_edge[i]]->m_start]->m_position;
             }
             else
             {
-                theVector[i]=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[-theFace->m_edge[i]]->m_start]->m_position-m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[-theFace->m_edge[i]]->m_end]->m_position;
+                vertexector[i]=m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[-face->m_edge[i]]->m_start]->m_position-m_subdivideLevel[level]->m_vertex[m_subdivideLevel[level]->m_edge[-face->m_edge[i]]->m_end]->m_position;
             }
         }
         for(unsigned int i=0;i<3;++i)
         {
-            theFace->m_normal+=perpendicular(theVector[i],theVector[i+1]);
+            face->m_normal+=perpendicular(vertexector[i],vertexector[i+1]);
         }
-        theFace->m_normal+=perpendicular(theVector[3],theVector[0]);
-        theFace->m_normal.normalize();
+        face->m_normal+=perpendicular(vertexector[3],vertexector[0]);
+        face->m_normal.normalize();
     }
 
 void Object::updateAllSubNormal()
@@ -1032,20 +1031,20 @@ unsigned int Object::faceCount()
 
 void Object::vertexPositionChangeR(unsigned int vertexID,float nx,float ny,float nz)
     {
-        Vertex *theVertex=m_vertexArray[vertexID];
-        historyManager->record(new Log_VertexPositionChange(m_index,vertexID,theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z));
-        theVertex->m_position.x+=nx;
-        theVertex->m_position.y+=ny;
-        theVertex->m_position.z+=nz;
+        Vertex *vertex=m_vertexArray[vertexID];
+        historyManager->record(new Log_VertexPositionChange(m_index,vertexID,vertex->m_position.x,vertex->m_position.y,vertex->m_position.z));
+        vertex->m_position.x+=nx;
+        vertex->m_position.y+=ny;
+        vertex->m_position.z+=nz;
     }
 
 void Object::vertexNormalChange(unsigned int vertexID,float nx,float ny,float nz)
     {
-        Vertex *theVertex=m_vertexArray[vertexID];
-        historyManager->record(new Log_VertexNormalChange(m_index,vertexID,theVertex->m_normal.x,theVertex->m_normal.y,theVertex->m_normal.z));
-        theVertex->m_normal.x=nx;
-        theVertex->m_normal.y=ny;
-        theVertex->m_normal.z=nz;
+        Vertex *vertex=m_vertexArray[vertexID];
+        historyManager->record(new Log_VertexNormalChange(m_index,vertexID,vertex->m_normal.x,vertex->m_normal.y,vertex->m_normal.z));
+        vertex->m_normal.x=nx;
+        vertex->m_normal.y=ny;
+        vertex->m_normal.z=nz;
     }
 
 void Object::objectEdgeRemove(unsigned int edgeID)
@@ -1113,13 +1112,13 @@ void Object::faceEdgeChange(unsigned int faceID,unsigned int edgeID,int nEdge)
 void Object::faceEdgeInsert(unsigned int faceID,unsigned int edgeID,int nEdge)
     {
         historyManager->record(new Log_FaceEdgeInsert(m_index,faceID,edgeID));
-        Face *theFace=m_faceArray[faceID];
-        theFace->m_edge.push_back(0);
-        for(unsigned int h=theFace->m_edge.size()-1;h>edgeID;--h)
+        Face *face=m_faceArray[faceID];
+        face->m_edge.push_back(0);
+        for(unsigned int h=face->m_edge.size()-1;h>edgeID;--h)
         {
-            theFace->m_edge[h]=theFace->m_edge[h-1];
+            face->m_edge[h]=face->m_edge[h-1];
         }
-        theFace->m_edge[edgeID]=nEdge;
+        face->m_edge[edgeID]=nEdge;
     }
 
 void Object::vertexAdjacentPush(unsigned int vertexID,unsigned int ne)
@@ -1148,14 +1147,14 @@ void Object::faceEdgeSwap(unsigned int faceID,unsigned int i1,unsigned int i2)
     }
 void Object::faceEdgeRemove(unsigned int faceID,unsigned int edgeID)
     {
-        Face *theFace=m_faceArray[faceID];
-        historyManager->record(new Log_FaceEdgeRemove(m_index,faceID,edgeID,theFace->m_edge[edgeID]));
-        unsigned int edgeCount=theFace->m_edge.size();
+        Face *face=m_faceArray[faceID];
+        historyManager->record(new Log_FaceEdgeRemove(m_index,faceID,edgeID,face->m_edge[edgeID]));
+        unsigned int edgeCount=face->m_edge.size();
         for(unsigned int e=edgeID+1;e<edgeCount;++e)
         {
-            theFace->m_edge[e-1]=theFace->m_edge[e];
+            face->m_edge[e-1]=face->m_edge[e];
         }
-        theFace->m_edge.pop_back();
+        face->m_edge.pop_back();
     }
 
 void Object::redefineControlPoint()
@@ -1188,12 +1187,12 @@ void Object::redefineControlPoint()
         for(unsigned int i=1;i<faceCount;i++)
         {
             //printf("-%d--",i);
-            SubdivideFace *theSF=m_subdivideLevel[0]->m_face[i];
+            SubdivideFace *subdividedFace=m_subdivideLevel[0]->m_face[i];
             unsigned int tempEdge[4]={0};
-            tempEdge[0]=theSF->m_edge[0]>0?theSF->m_edge[0]:-(theSF->m_edge[0]);
-            tempEdge[1]=theSF->m_edge[1]>0?theSF->m_edge[1]:-(theSF->m_edge[1]);
-            tempEdge[2]=theSF->m_edge[2]>0?theSF->m_edge[2]:-(theSF->m_edge[2]);
-            tempEdge[3]=theSF->m_edge[3]>0?theSF->m_edge[3]:-(theSF->m_edge[3]);
+            tempEdge[0]=subdividedFace->m_edge[0]>0?subdividedFace->m_edge[0]:-(subdividedFace->m_edge[0]);
+            tempEdge[1]=subdividedFace->m_edge[1]>0?subdividedFace->m_edge[1]:-(subdividedFace->m_edge[1]);
+            tempEdge[2]=subdividedFace->m_edge[2]>0?subdividedFace->m_edge[2]:-(subdividedFace->m_edge[2]);
+            tempEdge[3]=subdividedFace->m_edge[3]>0?subdividedFace->m_edge[3]:-(subdividedFace->m_edge[3]);
             addFace(tempEdge,4);
         }
 
@@ -1275,57 +1274,57 @@ void Object::objectFaceRemove(unsigned int faceID)
 
     void Object::vertexPositionChangeA(unsigned int vertexID,float nx,float ny,float nz)
     {
-        Vertex *theVertex=m_vertexArray[vertexID];
-        historyManager->record(new Log_VertexPositionChange(m_index,vertexID,theVertex->m_position.x,theVertex->m_position.y,theVertex->m_position.z));
-        theVertex->m_position.x=nx;
-        theVertex->m_position.y=ny;
-        theVertex->m_position.z=nz;
+        Vertex *vertex=m_vertexArray[vertexID];
+        historyManager->record(new Log_VertexPositionChange(m_index,vertexID,vertex->m_position.x,vertex->m_position.y,vertex->m_position.z));
+        vertex->m_position.x=nx;
+        vertex->m_position.y=ny;
+        vertex->m_position.z=nz;
     }
 
 
-void Object::updateVNormal(Vertex *theVertex)
+void Object::updateVNormal(Vertex *vertex)
     {
-        unsigned int adjCount=theVertex->m_adjacentEdgeList.size();
-        theVertex->m_normal.null();
+        unsigned int adjCount=vertex->m_adjacentEdgeList.size();
+        vertex->m_normal.null();
         for(unsigned int i=0;i<adjCount;++i)
         {
-            if(m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_start==theVertex->m_index)
+            if(m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_start==vertex->m_index)
             {
-                Face *theFace=m_faceArray[m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_left];
-                if(theFace)
-                theVertex->m_normal+=theFace->m_normal;
+                Face *face=m_faceArray[m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_left];
+                if(face)
+                vertex->m_normal+=face->m_normal;
             }
             else
             {
-                Face *theFace=m_faceArray[m_edgeArray[theVertex->m_adjacentEdgeList[i]]->m_right];
-                if(theFace)
-                theVertex->m_normal+=theFace->m_normal;
+                Face *face=m_faceArray[m_edgeArray[vertex->m_adjacentEdgeList[i]]->m_right];
+                if(face)
+                vertex->m_normal+=face->m_normal;
             }
         }
-        theVertex->m_normal.normalize();
+        vertex->m_normal.normalize();
     }
 
 
-void Object::updateVNormal(SubdivideVertex *theVertex,unsigned int level)
+void Object::updateVNormal(SubdivideVertex *vertex,unsigned int level)
     {
-        unsigned int adjCount=theVertex->m_adjacentEdgeList.size();
-        theVertex->m_normal.null();
+        unsigned int adjCount=vertex->m_adjacentEdgeList.size();
+        vertex->m_normal.null();
         for(unsigned int i=0;i<adjCount;++i)
         {
-            if(m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_start==theVertex->m_index)
+            if(m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_start==vertex->m_index)
             {
-                SubdivideFace *theFace=m_subdivideLevel[level]->m_face[m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_left];
-                if(theFace)
-                theVertex->m_normal+=theFace->m_normal;
+                SubdivideFace *face=m_subdivideLevel[level]->m_face[m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_left];
+                if(face)
+                vertex->m_normal+=face->m_normal;
             }
             else
             {
-                SubdivideFace *theFace=m_subdivideLevel[level]->m_face[m_subdivideLevel[level]->m_edge[theVertex->m_adjacentEdgeList[i]]->m_right];
-                if(theFace)
-                theVertex->m_normal+=theFace->m_normal;
+                SubdivideFace *face=m_subdivideLevel[level]->m_face[m_subdivideLevel[level]->m_edge[vertex->m_adjacentEdgeList[i]]->m_right];
+                if(face)
+                vertex->m_normal+=face->m_normal;
             }
         }
-        theVertex->m_normal.normalize();
+        vertex->m_normal.normalize();
     }
 
 
@@ -1609,19 +1608,19 @@ void Object::drawSmoothObjectSelected()
             {
                 if(m_faceArray[i])
                 {
-                    Face *theFace=m_faceArray[i];
+                    Face *face=m_faceArray[i];
                     glBegin(GL_POLYGON);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    for(unsigned int e=0;e<face->m_edge.size();++e)
                     {
-                        if(theFace->m_edge[e]>0)
+                        if(face->m_edge[e]>0)
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
+                            Vertex *v=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                             glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                         else
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
+                            Vertex *v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
                             glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
@@ -1658,53 +1657,53 @@ void Object::drawSmoothObjectSelected()
             for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
             {
                 //glBegin(GL_POLYGON);
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-            //    glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                if(theFace->m_edge[0]>0)
+                SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
+            //    glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                if(face->m_edge[0]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[1]>0)
+                if(face->m_edge[1]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[3]>0)
+                if(face->m_edge[2]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                if(face->m_edge[3]>0)
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                else
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
@@ -1759,19 +1758,19 @@ void Object::drawFacedObjectSelected()
             {
                 if(m_faceArray[i])
                 {
-                    Face *theFace=m_faceArray[i];
+                    Face *face=m_faceArray[i];
                     glBegin(GL_POLYGON);
-                    glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                    for(unsigned int e=0;e<face->m_edge.size();++e)
                     {
-                        if(theFace->m_edge[e]>0)
+                        if(face->m_edge[e]>0)
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
+                            Vertex *v=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                         else
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
+                            Vertex *v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                     }
@@ -1805,46 +1804,46 @@ void Object::drawFacedObjectSelected()
             glBegin(GL_QUADS);
             for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
             {
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-                glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                if(theFace->m_edge[0]>0)
+                SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
+                glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                if(face->m_edge[0]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[1]>0)
+                if(face->m_edge[1]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[3]>0)
+                if(face->m_edge[2]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                if(face->m_edge[3]>0)
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                else
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
             }
@@ -1907,19 +1906,19 @@ glScalef(m_scale.x,m_scale.y,m_scale.z);
             {
                 if(m_faceArray[i])
                 {
-                    Face *theFace=m_faceArray[i];
+                    Face *face=m_faceArray[i];
                     glBegin(GL_POLYGON);
-                    glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                    for(unsigned int e=0;e<face->m_edge.size();++e)
                     {
-                        if(theFace->m_edge[e]>0)
+                        if(face->m_edge[e]>0)
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
+                            Vertex *v=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                         else
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
+                            Vertex *v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                     }
@@ -1966,46 +1965,46 @@ glScalef(m_scale.x,m_scale.y,m_scale.z);
             glBegin(GL_QUADS);
             for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
             {
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-                glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                if(theFace->m_edge[0]>0)
+                SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
+                glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                if(face->m_edge[0]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[1]>0)
+                if(face->m_edge[1]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[3]>0)
+                if(face->m_edge[2]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                if(face->m_edge[3]>0)
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                else
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
             }
@@ -2081,19 +2080,19 @@ void Object::drawFacedFaceSelected()
             {
                 if(m_faceArray[i] && !m_faceArray[i]->m_isSelected)
                 {
-                    Face *theFace=m_faceArray[i];
+                    Face *face=m_faceArray[i];
                     glBegin(GL_POLYGON);
-                    glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                    for(unsigned int e=0;e<face->m_edge.size();++e)
                     {
-                        if(theFace->m_edge[e]>0)
+                        if(face->m_edge[e]>0)
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
+                            Vertex *v=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                         else
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
+                            Vertex *v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                     }
@@ -2127,46 +2126,46 @@ void Object::drawFacedFaceSelected()
             glBegin(GL_QUADS);
             for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
             {
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-                glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                if(theFace->m_edge[0]>0)
+                SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
+                glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                if(face->m_edge[0]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[1]>0)
+                if(face->m_edge[1]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[3]>0)
+                if(face->m_edge[2]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                if(face->m_edge[3]>0)
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                else
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
             }
@@ -2229,19 +2228,19 @@ void Object::drawFacedEdgeSelected()
             {
                 if(m_faceArray[i])
                 {
-                    Face *theFace=m_faceArray[i];
+                    Face *face=m_faceArray[i];
                     glBegin(GL_POLYGON);
-                    glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                    for(unsigned int e=0;e<face->m_edge.size();++e)
                     {
-                        if(theFace->m_edge[e]>0)
+                        if(face->m_edge[e]>0)
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
+                            Vertex *v=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                         else
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
+                            Vertex *v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                     }
@@ -2275,46 +2274,46 @@ void Object::drawFacedEdgeSelected()
             glBegin(GL_QUADS);
             for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
             {
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-                glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                if(theFace->m_edge[0]>0)
+                SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
+                glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                if(face->m_edge[0]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[1]>0)
+                if(face->m_edge[1]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[3]>0)
+                if(face->m_edge[2]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                if(face->m_edge[3]>0)
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                else
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
             }
@@ -2518,8 +2517,8 @@ void Object::drawSmooth()
             {
                 if(m_faceArray[i])
                 {
-                    Face *theFace=m_faceArray[i];
-                    if(theFace->m_isSelected)
+                    Face *face=m_faceArray[i];
+                    if(face->m_isSelected)
                     {
                         GLfloat diffuse[4]={1.0f,0.0f,0.0f,1.0f};
                         glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
@@ -2529,17 +2528,17 @@ void Object::drawSmooth()
                         glMaterialfv(GL_FRONT, GL_DIFFUSE, m_matDiffuse);
                     }
                     glBegin(GL_POLYGON);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    for(unsigned int e=0;e<face->m_edge.size();++e)
                     {
-                        if(theFace->m_edge[e]>0)
+                        if(face->m_edge[e]>0)
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
+                            Vertex *v=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                             glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                         else
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
+                            Vertex *v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
                             glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
@@ -2553,52 +2552,52 @@ void Object::drawSmooth()
             glBegin(GL_QUADS);
             for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
             {
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-                if(theFace->m_edge[0]>0)
+                SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
+                if(face->m_edge[0]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[1]>0)
+                if(face->m_edge[1]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[3]>0)
+                if(face->m_edge[2]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                if(face->m_edge[3]>0)
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                else
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
@@ -2664,19 +2663,19 @@ void Object::drawWireframe()
             {
                 if(m_faceArray[i])
                 {
-                    Face *theFace=m_faceArray[i];
+                    Face *face=m_faceArray[i];
                     glBegin(GL_POLYGON);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    for(unsigned int e=0;e<face->m_edge.size();++e)
                     {
-                        if(theFace->m_edge[e]>0)
+                        if(face->m_edge[e]>0)
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
+                            Vertex *v=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                             glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                         else
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
+                            Vertex *v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
                             glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
@@ -2713,53 +2712,53 @@ void Object::drawWireframe()
             for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
             {
                 //glBegin(GL_POLYGON);
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-            //    glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                if(theFace->m_edge[0]>0)
+                SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
+            //    glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                if(face->m_edge[0]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[1]>0)
+                if(face->m_edge[1]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[3]>0)
+                if(face->m_edge[2]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                if(face->m_edge[3]>0)
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                    glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                else
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
                     glNormal3f(v->m_normal.x,v->m_normal.y,v->m_normal.z);
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
@@ -2803,18 +2802,18 @@ void Object::selectionRenderObject()
             {
                 if(m_faceArray[i])
                 {
-                    Face *theFace=m_faceArray[i];
+                    Face *face=m_faceArray[i];
                     glBegin(GL_POLYGON);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    for(unsigned int e=0;e<face->m_edge.size();++e)
                     {
-                        if(theFace->m_edge[e]>0)
+                        if(face->m_edge[e]>0)
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
+                            Vertex *v=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                         else
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
+                            Vertex *v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                     }
@@ -2827,45 +2826,45 @@ void Object::selectionRenderObject()
             glBegin(GL_QUADS);
             for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
             {
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-                if(theFace->m_edge[0]>0)
+                SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
+                if(face->m_edge[0]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[1]>0)
+                if(face->m_edge[1]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[3]>0)
+                if(face->m_edge[2]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                if(face->m_edge[3]>0)
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                else
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
             }
@@ -2890,19 +2889,19 @@ void Object::drawWireframeFaced()
             {
                 if(m_faceArray[i])
                 {
-                    Face *theFace=m_faceArray[i];
+                    Face *face=m_faceArray[i];
                     glBegin(GL_POLYGON);
-                    glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                    for(unsigned int e=0;e<theFace->m_edge.size();++e)
+                    glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                    for(unsigned int e=0;e<face->m_edge.size();++e)
                     {
-                        if(theFace->m_edge[e]>0)
+                        if(face->m_edge[e]>0)
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_start];
+                            Vertex *v=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_start];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                         else
                         {
-                            Vertex *v=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_end];
+                            Vertex *v=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_end];
                             glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                         }
                     }
@@ -2936,46 +2935,46 @@ void Object::drawWireframeFaced()
             glBegin(GL_QUADS);
             for(unsigned int i=1;i<m_subdivideLevel[0]->m_face.size();++i)
             {
-                SubdivideFace *theFace=m_subdivideLevel[0]->m_face[i];
-                glNormal3f(theFace->m_normal.x,theFace->m_normal.y,theFace->m_normal.z);
-                if(theFace->m_edge[0]>0)
+                SubdivideFace *face=m_subdivideLevel[0]->m_face[i];
+                glNormal3f(face->m_normal.x,face->m_normal.y,face->m_normal.z);
+                if(face->m_edge[0]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[0]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[0]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[0]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[0]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[1]>0)
+                if(face->m_edge[1]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[1]]->m_start];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                else
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[1]]->m_end];
-                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
-                }
-                if(theFace->m_edge[2]>0)
-                {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[2]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[1]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[2]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[1]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
-                if(theFace->m_edge[3]>0)
+                if(face->m_edge[2]>0)
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[theFace->m_edge[3]]->m_start];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[2]]->m_start];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
                 else
                 {
-                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-theFace->m_edge[3]]->m_end];
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[2]]->m_end];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                if(face->m_edge[3]>0)
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[face->m_edge[3]]->m_start];
+                    glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
+                }
+                else
+                {
+                    SubdivideVertex *v=m_subdivideLevel[0]->m_vertex[m_subdivideLevel[0]->m_edge[-face->m_edge[3]]->m_end];
                     glVertex3f(v->m_position.x,v->m_position.y,v->m_position.z);
                 }
             }
@@ -3059,19 +3058,19 @@ void Object::buildPSCacheFromEID(std::vector<unsigned int> &edgeToBeSub)
         vertexToBeSub.reserve(1000);
         for(unsigned int i=0;i<edgeToBeSub.size();++i)
         {
-            Edge *theEdge=m_edgeArray[edgeToBeSub[i]];
-            if(theEdge)
+            Edge *edge=m_edgeArray[edgeToBeSub[i]];
+            if(edge)
             {
-                if(!m_vertexArray[theEdge->m_start]->m_isSub)
+                if(!m_vertexArray[edge->m_start]->m_isSub)
                 {
-                    vertexToBeSub.push_back(theEdge->m_start);
-                    m_vertexArray[theEdge->m_start]->m_isSub=true;
+                    vertexToBeSub.push_back(edge->m_start);
+                    m_vertexArray[edge->m_start]->m_isSub=true;
                 }
 
-                if(!m_vertexArray[theEdge->m_end]->m_isSub)
+                if(!m_vertexArray[edge->m_end]->m_isSub)
                 {
-                    vertexToBeSub.push_back(theEdge->m_end);
-                    m_vertexArray[theEdge->m_start]->m_isSub=true;
+                    vertexToBeSub.push_back(edge->m_end);
+                    m_vertexArray[edge->m_start]->m_isSub=true;
                 }
             }
         }
@@ -3094,37 +3093,37 @@ void Object::buildPSCacheFromFID(std::vector<unsigned int> &faceToBeSub)
         vertexToBeSub.reserve(1000);
         for(unsigned int i=0;i<faceToBeSub.size();++i)
         {
-            Face *theFace=m_faceArray[faceToBeSub[i]];
-            for(unsigned int e=0;e<theFace->m_edge.size();++e)
+            Face *face=m_faceArray[faceToBeSub[i]];
+            for(unsigned int e=0;e<face->m_edge.size();++e)
             {
-                if(theFace->m_edge[e]>0)
+                if(face->m_edge[e]>0)
                 {
-                    Edge *theEdge=m_edgeArray[theFace->m_edge[e]];
-                    if(!m_vertexArray[theEdge->m_start]->m_isSub)
+                    Edge *edge=m_edgeArray[face->m_edge[e]];
+                    if(!m_vertexArray[edge->m_start]->m_isSub)
                     {
-                        vertexToBeSub.push_back(theEdge->m_start);
-                        m_vertexArray[theEdge->m_start]->m_isSub=true;
+                        vertexToBeSub.push_back(edge->m_start);
+                        m_vertexArray[edge->m_start]->m_isSub=true;
                     }
 
-                    if(!m_vertexArray[theEdge->m_end]->m_isSub)
+                    if(!m_vertexArray[edge->m_end]->m_isSub)
                     {
-                        vertexToBeSub.push_back(theEdge->m_end);
-                        m_vertexArray[theEdge->m_end]->m_isSub=true;
+                        vertexToBeSub.push_back(edge->m_end);
+                        m_vertexArray[edge->m_end]->m_isSub=true;
                     }
                 }
                 else
                 {
-                    Edge *theEdge=m_edgeArray[-theFace->m_edge[e]];
-                    if(!m_vertexArray[theEdge->m_start]->m_isSub)
+                    Edge *edge=m_edgeArray[-face->m_edge[e]];
+                    if(!m_vertexArray[edge->m_start]->m_isSub)
                     {
-                        vertexToBeSub.push_back(theEdge->m_start);
-                        m_vertexArray[theEdge->m_start]->m_isSub=true;
+                        vertexToBeSub.push_back(edge->m_start);
+                        m_vertexArray[edge->m_start]->m_isSub=true;
                     }
 
-                    if(!m_vertexArray[theEdge->m_end]->m_isSub)
+                    if(!m_vertexArray[edge->m_end]->m_isSub)
                     {
-                        vertexToBeSub.push_back(theEdge->m_end);
-                        m_vertexArray[theEdge->m_end]->m_isSub=true;
+                        vertexToBeSub.push_back(edge->m_end);
+                        m_vertexArray[edge->m_end]->m_isSub=true;
                     }
                 }
             }
@@ -3148,28 +3147,28 @@ void Object::buildPSCacheFromVID(std::vector<unsigned int> &vertexToBeSub)
         faceToBeSub.reserve(1000);
         for(unsigned int i=0;i<vertexToBeSub.size();++i)
         {
-            Vertex *theVertex=m_vertexArray[vertexToBeSub[i]];
-            if(theVertex)
+            Vertex *vertex=m_vertexArray[vertexToBeSub[i]];
+            if(vertex)
             {
-                for(unsigned int e=0;e<theVertex->m_adjacentEdgeList.size();++e)
+                for(unsigned int e=0;e<vertex->m_adjacentEdgeList.size();++e)
                 {
-                    Edge *theEdge=m_edgeArray[theVertex->m_adjacentEdgeList[e]];
-                    if(theEdge)
+                    Edge *edge=m_edgeArray[vertex->m_adjacentEdgeList[e]];
+                    if(edge)
                     {
-                        if(theEdge->m_start==theVertex->m_index)
+                        if(edge->m_start==vertex->m_index)
                         {
-                            if(theEdge->m_right && !m_faceArray[theEdge->m_right]->m_isSub)
+                            if(edge->m_right && !m_faceArray[edge->m_right]->m_isSub)
                             {
-                                faceToBeSub.push_back(m_faceArray[theEdge->m_right]);
-                                m_faceArray[theEdge->m_right]->m_isSub=true;
+                                faceToBeSub.push_back(m_faceArray[edge->m_right]);
+                                m_faceArray[edge->m_right]->m_isSub=true;
                             }
                         }
                         else
                         {
-                            if(theEdge->m_left && !m_faceArray[theEdge->m_left]->m_isSub)
+                            if(edge->m_left && !m_faceArray[edge->m_left]->m_isSub)
                             {
-                                faceToBeSub.push_back(m_faceArray[theEdge->m_left]);
-                                m_faceArray[theEdge->m_left]->m_isSub=true;
+                                faceToBeSub.push_back(m_faceArray[edge->m_left]);
+                                m_faceArray[edge->m_left]->m_isSub=true;
                             }
                         }
                     }
@@ -3184,32 +3183,32 @@ void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,unsigned in
 {
     //ÕâÀïoriginalListÓ¦¸Ã·ÖÅäºÃ¿Õ¼ä
     //originalListÖÐµÄidÓ¦¸ÃÊÇ´ýÏ¸·ÖµÄ×´Ì¬
-    SubdivideLevel *theLevel=m_subdivideLevel[level];
+    SubdivideLevel *subdivideLevel=m_subdivideLevel[level];
     unsigned int originalCount=originalList.size();
     std::vector<SubdivideVertex *> tempVertexList;
     //tempVertexList.clear();
     tempVertexList.reserve(originalCount*4);
     for(unsigned int i=0;i<originalCount;++i)
     {
-        SubdivideFace *theFace=originalList[i];
+        SubdivideFace *face=originalList[i];
         for(unsigned int e=0;e<4;++e)
         {
-            if(theFace->m_edge[e]>0)
+            if(face->m_edge[e]>0)
             {
-                SubdivideVertex *theVertex=theLevel->m_vertex[theLevel->m_edge[theFace->m_edge[e]]->m_end];
-                if(!theVertex->m_isSub)
+                SubdivideVertex *vertex=subdivideLevel->m_vertex[subdivideLevel->m_edge[face->m_edge[e]]->m_end];
+                if(!vertex->m_isSub)
                 {
-                    tempVertexList.push_back(theVertex);
-                    theVertex->m_isSub=true;
+                    tempVertexList.push_back(vertex);
+                    vertex->m_isSub=true;
                 }
             }
             else
             {
-                SubdivideVertex *theVertex=theLevel->m_vertex[theLevel->m_edge[-theFace->m_edge[e]]->m_start];
-                if(!theVertex->m_isSub)
+                SubdivideVertex *vertex=subdivideLevel->m_vertex[subdivideLevel->m_edge[-face->m_edge[e]]->m_start];
+                if(!vertex->m_isSub)
                 {
-                    tempVertexList.push_back(theVertex);
-                    theVertex->m_isSub=true;
+                    tempVertexList.push_back(vertex);
+                    vertex->m_isSub=true;
                 }
             }
         }
@@ -3217,27 +3216,27 @@ void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,unsigned in
 
     for(unsigned int i=0;i<tempVertexList.size();++i)
     {
-        SubdivideVertex *theVertex=tempVertexList[i];
-        theVertex->m_isSub=false;
-        for(unsigned int e=0;e<theVertex->m_adjacentEdgeList.size();++e)
+        SubdivideVertex *vertex=tempVertexList[i];
+        vertex->m_isSub=false;
+        for(unsigned int e=0;e<vertex->m_adjacentEdgeList.size();++e)
         {
-            SubdivideEdge *theEdge=theLevel->m_edge[theVertex->m_adjacentEdgeList[e]];
-            if(theEdge->m_start==theVertex->m_index)
+            SubdivideEdge *edge=subdivideLevel->m_edge[vertex->m_adjacentEdgeList[e]];
+            if(edge->m_start==vertex->m_index)
             {
-                SubdivideFace *theFace=theLevel->m_face[theEdge->m_right];
-                if(theFace && !theFace->m_isSub)
+                SubdivideFace *face=subdivideLevel->m_face[edge->m_right];
+                if(face && !face->m_isSub)
                 {
-                    originalList.push_back(theFace);
-                    theFace->m_isSub=true;
+                    originalList.push_back(face);
+                    face->m_isSub=true;
                 }
             }
             else
             {
-                SubdivideFace *theFace=theLevel->m_face[theEdge->m_left];
-                if(theFace && !theFace->m_isSub)
+                SubdivideFace *face=subdivideLevel->m_face[edge->m_left];
+                if(face && !face->m_isSub)
                 {
-                    originalList.push_back(theFace);
-                    theFace->m_isSub=true;
+                    originalList.push_back(face);
+                    face->m_isSub=true;
                 }
             }
         }
@@ -3251,37 +3250,37 @@ void Object::expandSubFace(std::vector<SubdivideFace*> &originalList,unsigned in
     unsigned int originalCount=originalList.size();
     for(unsigned int i=0;i<originalCount;++i)
     {
-        SubdivideFace *theFace=originalList[i];
+        SubdivideFace *face=originalList[i];
         for(unsigned int e=0;e<4;++e)
         {
-            SubdivideVertex *theVertex;
-            SubdivideLevel *theLevel=m_subdivideLevel[level];
-            if(theFace->m_edge[e]>0)
+            SubdivideVertex *vertex;
+            SubdivideLevel *subdivideLevel=m_subdivideLevel[level];
+            if(face->m_edge[e]>0)
             {
-                if(theLevel->m_edge[theFace->m_edge[e]]->m_left && theLevel->m_face[theLevel->m_edge[theFace->m_edge[e]]->m_left]->m_isSub)
+                if(subdivideLevel->m_edge[face->m_edge[e]]->m_left && subdivideLevel->m_face[subdivideLevel->m_edge[face->m_edge[e]]->m_left]->m_isSub)
                     continue;
-                theVertex=theLevel->m_vertex[theLevel->m_edge[theFace->m_edge[e]]->m_end];
+                vertex=subdivideLevel->m_vertex[subdivideLevel->m_edge[face->m_edge[e]]->m_end];
             }
             else
             {
-                if(theLevel->m_edge[-theFace->m_edge[e]]->m_right>0 && theLevel->m_face[theLevel->m_edge[-theFace->m_edge[e]]->m_right]->m_isSub)
+                if(subdivideLevel->m_edge[-face->m_edge[e]]->m_right>0 && subdivideLevel->m_face[subdivideLevel->m_edge[-face->m_edge[e]]->m_right]->m_isSub)
                     continue;
-                theVertex=theLevel->m_vertex[theLevel->m_edge[-theFace->m_edge[e]]->m_start];
+                vertex=subdivideLevel->m_vertex[subdivideLevel->m_edge[-face->m_edge[e]]->m_start];
             }
-            unsigned int adjacentEdgeCount=theVertex->adjacentEdge.size();
+            unsigned int adjacentEdgeCount=vertex->adjacentEdge.size();
             for(unsigned int h=0;h<adjacentEdgeCount;++h)
             {
-                if(theLevel->m_edge[theVertex->adjacentEdge[h]]->m_right && !theLevel->m_face[theLevel->m_edge[theVertex->adjacentEdge[h]]->m_right]->m_isSub)
+                if(subdivideLevel->m_edge[vertex->adjacentEdge[h]]->m_right && !subdivideLevel->m_face[subdivideLevel->m_edge[vertex->adjacentEdge[h]]->m_right]->m_isSub)
                 {
-                    SubdivideFace *theSubFace=theLevel->m_face[theLevel->m_edge[theVertex->adjacentEdge[h]]->m_right];
-                    originalList.push_back(theSubFace);
-                    theSubFace->m_isSub=true;
+                    SubdivideFace *subFace=subdivideLevel->m_face[subdivideLevel->m_edge[vertex->adjacentEdge[h]]->m_right];
+                    originalList.push_back(subFace);
+                    subFace->m_isSub=true;
                 }
-                if(theLevel->m_edge[theVertex->adjacentEdge[h]]->m_left && !theLevel->m_face[theLevel->m_edge[theVertex->adjacentEdge[h]]->m_left]->m_isSub)
+                if(subdivideLevel->m_edge[vertex->adjacentEdge[h]]->m_left && !subdivideLevel->m_face[subdivideLevel->m_edge[vertex->adjacentEdge[h]]->m_left]->m_isSub)
                 {
-                    SubdivideFace *theSubFace=theLevel->m_face[theLevel->m_edge[theVertex->adjacentEdge[h]]->m_left];
-                    originalList.push_back(theSubFace);
-                    theSubFace->m_isSub=true;
+                    SubdivideFace *subFace=subdivideLevel->m_face[subdivideLevel->m_edge[vertex->adjacentEdge[h]]->m_left];
+                    originalList.push_back(subFace);
+                    subFace->m_isSub=true;
                 }
             }
         }
@@ -3298,46 +3297,46 @@ void Object::expandSubFace(std::vector<Face*> &originalList)
     tempVertexList.reserve(originalCount*5);
     for(unsigned int i=0;i<originalCount;++i)
     {
-        Face *theFace=originalList[i];
-        unsigned int edgeCount=theFace->m_edge.size();
+        Face *face=originalList[i];
+        unsigned int edgeCount=face->m_edge.size();
         for(unsigned int e=0;e<edgeCount;++e)
         {
-            if(theFace->m_edge[e]>0)
+            if(face->m_edge[e]>0)
             {
-                Vertex *theVertex=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_end];
-                if(!theVertex->m_isSub)
+                Vertex *vertex=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_end];
+                if(!vertex->m_isSub)
                 {
-                    tempVertexList.push_back(theVertex);
+                    tempVertexList.push_back(vertex);
                 }
             }
             else
             {
-                Vertex *theVertex=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_start];
-                if(!theVertex->m_isSub)
+                Vertex *vertex=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_start];
+                if(!vertex->m_isSub)
                 {
-                    tempVertexList.push_back(theVertex);
+                    tempVertexList.push_back(vertex);
                 }
             }
         }
     }
     for(unsigned int i=0;i<tempVertexList.size();++i)
     {
-        Vertex *theVertex=tempVertexList[i];
-        theVertex->m_isSub=false;
-        for(unsigned int e=0;e<theVertex->m_adjacentEdgeList.size();++e)
+        Vertex *vertex=tempVertexList[i];
+        vertex->m_isSub=false;
+        for(unsigned int e=0;e<vertex->m_adjacentEdgeList.size();++e)
         {
-            Edge *theEdge=m_edgeArray[theVertex->m_adjacentEdgeList[e]];
-            if(theEdge->m_start==theVertex->m_index)
+            Edge *edge=m_edgeArray[vertex->m_adjacentEdgeList[e]];
+            if(edge->m_start==vertex->m_index)
             {
-                Face *theFace=m_faceArray[theEdge->m_right];
-                if(theFace && !theFace->m_isSub)
-                originalList.push_back(theFace);
+                Face *face=m_faceArray[edge->m_right];
+                if(face && !face->m_isSub)
+                originalList.push_back(face);
             }
             else
             {
-                Face *theFace=m_faceArray[theEdge->m_left];
-                if(theFace && !theFace->m_isSub)
-                originalList.push_back(theFace);
+                Face *face=m_faceArray[edge->m_left];
+                if(face && !face->m_isSub)
+                originalList.push_back(face);
             }
         }
     }
@@ -3350,37 +3349,37 @@ void Object::expandSubFace(std::vector<Face*> &originalList)
     unsigned int originalCount=originalList.size();
     for(unsigned int i=0;i<originalCount;++i)
     {
-        Face *theFace=originalList[i];
-        unsigned int edgeCount=theFace->m_edge.size();
+        Face *face=originalList[i];
+        unsigned int edgeCount=face->m_edge.size();
         for(unsigned int e=0;e<edgeCount;++e)
         {
-            Vertex *theVertex;
-            if(theFace->m_edge[e]>0)
+            Vertex *vertex;
+            if(face->m_edge[e]>0)
             {
-                if(m_edgeArray[theFace->m_edge[e]]->m_left && m_faceArray[m_edgeArray[theFace->m_edge[e]]->m_left]->m_isSub)
+                if(m_edgeArray[face->m_edge[e]]->m_left && m_faceArray[m_edgeArray[face->m_edge[e]]->m_left]->m_isSub)
                     continue;
-                theVertex=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_end];
+                vertex=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_end];
             }
             else
             {
-                if(m_edgeArray[-theFace->m_edge[e]]->m_right>0 && m_faceArray[m_edgeArray[-theFace->m_edge[e]]->m_right]->m_isSub)
+                if(m_edgeArray[-face->m_edge[e]]->m_right>0 && m_faceArray[m_edgeArray[-face->m_edge[e]]->m_right]->m_isSub)
                     continue;
-                theVertex=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_start];
+                vertex=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_start];
             }
-            unsigned int adjacentEdgeCount=theVertex->adjacentEdge.size();
+            unsigned int adjacentEdgeCount=vertex->adjacentEdge.size();
             for(unsigned int h=0;h<adjacentEdgeCount;++h)
             {
-                if(m_edgeArray[theVertex->adjacentEdge[h]]->m_right && !m_faceArray[m_edgeArray[theVertex->adjacentEdge[h]]->m_right]->m_isSub)
+                if(m_edgeArray[vertex->adjacentEdge[h]]->m_right && !m_faceArray[m_edgeArray[vertex->adjacentEdge[h]]->m_right]->m_isSub)
                 {
-                    Face *theSubFace=m_faceArray[m_edgeArray[theVertex->adjacentEdge[h]]->m_right];
-                    originalList.push_back(theSubFace);
-                    theSubFace->m_isSub=true;
+                    Face *subFace=m_faceArray[m_edgeArray[vertex->adjacentEdge[h]]->m_right];
+                    originalList.push_back(subFace);
+                    subFace->m_isSub=true;
                 }
-                if(m_edgeArray[theVertex->adjacentEdge[h]]->m_left && !m_faceArray[m_edgeArray[theVertex->adjacentEdge[h]]->m_left]->m_isSub)
+                if(m_edgeArray[vertex->adjacentEdge[h]]->m_left && !m_faceArray[m_edgeArray[vertex->adjacentEdge[h]]->m_left]->m_isSub)
                 {
-                    Face *theSubFace=m_faceArray[m_edgeArray[theVertex->adjacentEdge[h]]->m_left];
-                    originalList.push_back(theSubFace);
-                    theSubFace->m_isSub=true;
+                    Face *subFace=m_faceArray[m_edgeArray[vertex->adjacentEdge[h]]->m_left];
+                    originalList.push_back(subFace);
+                    subFace->m_isSub=true;
                 }
             }
         }
@@ -3405,9 +3404,9 @@ void Object::buildPSCache(std::vector<Face*> &faceToBeSub)
             unsigned int subFaceCount=faceToBeSub[i]->m_subdivideFace.size();
             for(unsigned int h=0;h<subFaceCount;++h)
             {
-                SubdivideFace *theSubF=m_subdivideLevel[level]->m_face[faceToBeSub[i]->m_subdivideFace[h]];
-                m_PSSubFaceCache[level].push_back(theSubF);
-                theSubF->m_isSub=true;
+                SubdivideFace *subF=m_subdivideLevel[level]->m_face[faceToBeSub[i]->m_subdivideFace[h]];
+                m_PSSubFaceCache[level].push_back(subF);
+                subF->m_isSub=true;
             }
         }
         expandSubFace(m_PSSubFaceCache[level],level);
@@ -3420,18 +3419,18 @@ void Object::buildPSCache(std::vector<Face*> &faceToBeSub)
             m_PSSubFaceCache[e2].reserve(faceCount*5);
             for(unsigned int i=0;i<faceCount;++i)
             {
-                SubdivideFace *theSubFace=m_subdivideLevel[e2]->m_face[(m_PSSubFaceCache[e1])[i]->m_subFace[0]];
-                m_PSSubFaceCache[e2].push_back(theSubFace);
-                theSubFace->m_isSub=true;
-                theSubFace=m_subdivideLevel[e2]->m_face[(m_PSSubFaceCache[e1])[i]->m_subFace[1]];
-                m_PSSubFaceCache[e2].push_back(theSubFace);
-                theSubFace->m_isSub=true;
-                theSubFace=m_subdivideLevel[e2]->m_face[(m_PSSubFaceCache[e1])[i]->m_subFace[2]];
-                m_PSSubFaceCache[e2].push_back(theSubFace);
-                theSubFace->m_isSub=true;
-                theSubFace=m_subdivideLevel[e2]->m_face[(m_PSSubFaceCache[e1])[i]->m_subFace[3]];
-                m_PSSubFaceCache[e2].push_back(theSubFace);
-                theSubFace->m_isSub=true;
+                SubdivideFace *subFace=m_subdivideLevel[e2]->m_face[(m_PSSubFaceCache[e1])[i]->m_subFace[0]];
+                m_PSSubFaceCache[e2].push_back(subFace);
+                subFace->m_isSub=true;
+                subFace=m_subdivideLevel[e2]->m_face[(m_PSSubFaceCache[e1])[i]->m_subFace[1]];
+                m_PSSubFaceCache[e2].push_back(subFace);
+                subFace->m_isSub=true;
+                subFace=m_subdivideLevel[e2]->m_face[(m_PSSubFaceCache[e1])[i]->m_subFace[2]];
+                m_PSSubFaceCache[e2].push_back(subFace);
+                subFace->m_isSub=true;
+                subFace=m_subdivideLevel[e2]->m_face[(m_PSSubFaceCache[e1])[i]->m_subFace[3]];
+                m_PSSubFaceCache[e2].push_back(subFace);
+                subFace->m_isSub=true;
             }
             expandSubFace(m_PSSubFaceCache[e2],e2);
         }
@@ -3508,171 +3507,171 @@ void Object::unSubdivide()
     }
 }
 
-void Object::partialSubdivideFace(SubdivideFace *theFace,int level)
+void Object::partialSubdivideFace(SubdivideFace *face,int level)
 {
-    SubdivideLevel *theSubLevel=m_subdivideLevel[level-1];
-    SubdivideLevel *theLevel=m_subdivideLevel[level];
+    SubdivideLevel *subLevel=m_subdivideLevel[level-1];
+    SubdivideLevel *subdivideLevel=m_subdivideLevel[level];
     //Ê×ÏÈÒªµÃµ½Õâ¸öÃæµÄ¶Ëµã
     //µÃµ½¶ËµãºÍ±ßµÄÊýÄ¿
     unsigned int edgeCount=4;
     //ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
-    SubdivideVertex **theVertexList=new SubdivideVertex*[edgeCount];
+    SubdivideVertex **vertexList=new SubdivideVertex*[edgeCount];
     //¼ÆËãÕâ¸öÃæµÄÖÐµã
     //½«Ô­Ê¼µÄÖÐµãÇåÁã
-    theSubLevel->m_vertex[theFace->m_center]->m_position.null();
-    theSubLevel->m_vertex[theFace->m_center]->m_normal.null();
+    subLevel->m_vertex[face->m_center]->m_position.null();
+    subLevel->m_vertex[face->m_center]->m_normal.null();
     for(unsigned int e=0;e<edgeCount;++e)
     {
-        if(theFace->m_edge[e]<0)
+        if(face->m_edge[e]<0)
         {
-            theVertexList[e]=theLevel->m_vertex[theLevel->m_edge[-theFace->m_edge[e]]->m_start];
+            vertexList[e]=subdivideLevel->m_vertex[subdivideLevel->m_edge[-face->m_edge[e]]->m_start];
         }
         else
         {
-            theVertexList[e]=theLevel->m_vertex[theLevel->m_edge[theFace->m_edge[e]]->m_end];
+            vertexList[e]=subdivideLevel->m_vertex[subdivideLevel->m_edge[face->m_edge[e]]->m_end];
         }
-        theSubLevel->m_vertex[theFace->m_center]->m_position+=theVertexList[e]->m_position;
-        theSubLevel->m_vertex[theFace->m_center]->m_normal+=theVertexList[e]->m_normal;
+        subLevel->m_vertex[face->m_center]->m_position+=vertexList[e]->m_position;
+        subLevel->m_vertex[face->m_center]->m_normal+=vertexList[e]->m_normal;
     }
-    theSubLevel->m_vertex[theFace->m_center]->m_position/=(float)edgeCount;
-    theSubLevel->m_vertex[theFace->m_center]->m_normal/=(float)edgeCount;
+    subLevel->m_vertex[face->m_center]->m_position/=(float)edgeCount;
+    subLevel->m_vertex[face->m_center]->m_normal/=(float)edgeCount;
     //¼ÆËãÐÂµÄ¶¥µã
     for(unsigned int i=0;i<edgeCount;++i)
     {
-        SubdivideVertex *theV=theVertexList[i];
-        if(theV->m_subdivideId!=m_subdivideId)
+        SubdivideVertex *vertex=vertexList[i];
+        if(vertex->m_subdivideId!=m_subdivideId)
         {
             //Èç¹ûÊÇµÚÒ»´Î¼ÆËãµ½Õâ¸öµã
             //³õÊ¼»¯Ï¸·Ö²½Êý
-            theV->m_subdivideId=m_subdivideId;
-            theV->m_subdivideStep=0;
+            vertex->m_subdivideId=m_subdivideId;
+            vertex->m_subdivideStep=0;
             //Éú³ÉÕâ¸öµãµÄÏ¸·Öµã
             //Ê×ÏÈ¼ÆËãÏàÁÚµãµÄ×ø±êºÍEv
-            theSubLevel->m_vertex[theV->m_nextLevel]->m_position.null();
-            theSubLevel->m_vertex[theV->m_nextLevel]->m_position+=EAdjacentVertex(theV,level);
-            if(theV->m_edgeVertex)
+            subLevel->m_vertex[vertex->m_nextLevel]->m_position.null();
+            subLevel->m_vertex[vertex->m_nextLevel]->m_position+=EAdjacentVertex(vertex,level);
+            if(vertex->m_edgeVertex)
             {
-                theSubLevel->m_vertex[theV->m_nextLevel]->m_position+=theV->m_position*6;
-                theSubLevel->m_vertex[theV->m_nextLevel]->m_position/=8;
+                subLevel->m_vertex[vertex->m_nextLevel]->m_position+=vertex->m_position*6;
+                subLevel->m_vertex[vertex->m_nextLevel]->m_position/=8;
             }
             else
             {
                 //¼ÓÉÏÕâ¸öÃæµÄÖÐµã
-                theSubLevel->m_vertex[theV->m_nextLevel]->m_position+=theSubLevel->m_vertex[theFace->m_center]->m_position;
-                theV->m_subdivideStep++;
-                unsigned int adjEdgeCount=theV->m_adjacentEdgeList.size();
+                subLevel->m_vertex[vertex->m_nextLevel]->m_position+=subLevel->m_vertex[face->m_center]->m_position;
+                vertex->m_subdivideStep++;
+                unsigned int adjEdgeCount=vertex->m_adjacentEdgeList.size();
                 for(unsigned int h=0;h<adjEdgeCount;++h)
                 {
-                    if(theLevel->m_edge[theV->m_adjacentEdgeList[h]]->m_end==theV->m_index)
+                    if(subdivideLevel->m_edge[vertex->m_adjacentEdgeList[h]]->m_end==vertex->m_index)
                     {
-                        if(!theLevel->m_face[theLevel->m_edge[theV->m_adjacentEdgeList[h]]->m_left]->m_isSub)
+                        if(!subdivideLevel->m_face[subdivideLevel->m_edge[vertex->m_adjacentEdgeList[h]]->m_left]->m_isSub)
                         {
-                            theSubLevel->m_vertex[theV->m_nextLevel]->m_position+=theSubLevel->m_vertex[theLevel->m_face[theLevel->m_edge[theV->m_adjacentEdgeList[h]]->m_left]->m_center]->m_position;
-                            theV->m_subdivideStep++;
+                            subLevel->m_vertex[vertex->m_nextLevel]->m_position+=subLevel->m_vertex[subdivideLevel->m_face[subdivideLevel->m_edge[vertex->m_adjacentEdgeList[h]]->m_left]->m_center]->m_position;
+                            vertex->m_subdivideStep++;
                         }
                     }
                     else
                     {
-                        if(!theLevel->m_face[theLevel->m_edge[theV->m_adjacentEdgeList[h]]->m_right]->m_isSub)
+                        if(!subdivideLevel->m_face[subdivideLevel->m_edge[vertex->m_adjacentEdgeList[h]]->m_right]->m_isSub)
                         {
-                            theSubLevel->m_vertex[theV->m_nextLevel]->m_position+=theSubLevel->m_vertex[theLevel->m_face[theLevel->m_edge[theV->m_adjacentEdgeList[h]]->m_right]->m_center]->m_position;
-                            theV->m_subdivideStep++;
+                            subLevel->m_vertex[vertex->m_nextLevel]->m_position+=subLevel->m_vertex[subdivideLevel->m_face[subdivideLevel->m_edge[vertex->m_adjacentEdgeList[h]]->m_right]->m_center]->m_position;
+                            vertex->m_subdivideStep++;
                         }
                     }
                 }
-                unsigned int n=theV->m_adjacentEdgeList.size();
-                if(n==(unsigned int)(theV->m_subdivideStep))
+                unsigned int n=vertex->m_adjacentEdgeList.size();
+                if(n==(unsigned int)(vertex->m_subdivideStep))
                 {
-                    theSubLevel->m_vertex[theV->m_nextLevel]->m_position+=theV->m_position*(float)(n*n-2*n);
-                    theSubLevel->m_vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
+                    subLevel->m_vertex[vertex->m_nextLevel]->m_position+=vertex->m_position*(float)(n*n-2*n);
+                    subLevel->m_vertex[vertex->m_nextLevel]->m_position/=(float)(n*n);
                 }
             }
         }
         else
         {
-            if(!theV->m_edgeVertex)
+            if(!vertex->m_edgeVertex)
             {
-                theSubLevel->m_vertex[theV->m_nextLevel]->m_position+=theSubLevel->m_vertex[theFace->m_center]->m_position;
-                theV->m_subdivideStep++;
-                unsigned int n=theV->m_adjacentEdgeList.size();
-                if(n==(unsigned int)(theV->m_subdivideStep))
+                subLevel->m_vertex[vertex->m_nextLevel]->m_position+=subLevel->m_vertex[face->m_center]->m_position;
+                vertex->m_subdivideStep++;
+                unsigned int n=vertex->m_adjacentEdgeList.size();
+                if(n==(unsigned int)(vertex->m_subdivideStep))
                 {
-                    theSubLevel->m_vertex[theV->m_nextLevel]->m_position+=theV->m_position*(float)(n*n-2*n);
-                    theSubLevel->m_vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
+                    subLevel->m_vertex[vertex->m_nextLevel]->m_position+=vertex->m_position*(float)(n*n-2*n);
+                    subLevel->m_vertex[vertex->m_nextLevel]->m_position/=(float)(n*n);
                 }
             }
         }
     }
-    delete theVertexList;
+    delete vertexList;
     //Ö®ºó´¦ÀíÃ¿Ò»¸ö±ß
     for(unsigned int i=0;i<edgeCount;++i)
     {
-        SubdivideEdge *theEdge;
-        if(theFace->m_edge[i]>0)
+        SubdivideEdge *edge;
+        if(face->m_edge[i]>0)
         {
-            theEdge=theLevel->m_edge[theFace->m_edge[i]];
-            if(theEdge->m_subdivideId!=m_subdivideId)
+            edge=subdivideLevel->m_edge[face->m_edge[i]];
+            if(edge->m_subdivideId!=m_subdivideId)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
-                theEdge->m_subdivideId=m_subdivideId;
-                theSubLevel->m_vertex[theEdge->m_middle]->m_position.null();
-                theSubLevel->m_vertex[theEdge->m_middle]->m_position+=theLevel->m_vertex[theEdge->m_start]->m_position+theLevel->m_vertex[theEdge->m_end]->m_position;
-                if(theEdge->m_left!=0 )
+                edge->m_subdivideId=m_subdivideId;
+                subLevel->m_vertex[edge->m_middle]->m_position.null();
+                subLevel->m_vertex[edge->m_middle]->m_position+=subdivideLevel->m_vertex[edge->m_start]->m_position+subdivideLevel->m_vertex[edge->m_end]->m_position;
+                if(edge->m_left!=0 )
                 {
-                    if(theLevel->m_face[theEdge->m_left]->m_isSub)
+                    if(subdivideLevel->m_face[edge->m_left]->m_isSub)
                     {
                         //Èç¹ûÕâ¸ö±ßµÄÁ½±ß¶¼ÔÚ¾Ö²¿Ï¸·ÖµÄ·¶Î§Ö®ÄÚ
-                        theSubLevel->m_vertex[theEdge->m_middle]->m_position+=theSubLevel->m_vertex[theFace->m_center]->m_position;
+                        subLevel->m_vertex[edge->m_middle]->m_position+=subLevel->m_vertex[face->m_center]->m_position;
                     }
                     else
                     {
-                        theSubLevel->m_vertex[theEdge->m_middle]->m_position+=theSubLevel->m_vertex[theLevel->m_face[theEdge->m_left]->m_center]->m_position+theSubLevel->m_vertex[theFace->m_center]->m_position;
-                        theSubLevel->m_vertex[theEdge->m_middle]->m_position/=4;
+                        subLevel->m_vertex[edge->m_middle]->m_position+=subLevel->m_vertex[subdivideLevel->m_face[edge->m_left]->m_center]->m_position+subLevel->m_vertex[face->m_center]->m_position;
+                        subLevel->m_vertex[edge->m_middle]->m_position/=4;
                     }
                 }
                 else
                 {
-                    theSubLevel->m_vertex[theEdge->m_middle]->m_position/=2;
+                    subLevel->m_vertex[edge->m_middle]->m_position/=2;
                 }
             }
             else
             {
                 //Èç¹û²»ÊÇµÚÒ»´Î¼ÆËã
-                theSubLevel->m_vertex[theEdge->m_middle]->m_position+=theSubLevel->m_vertex[theFace->m_center]->m_position;
-                theSubLevel->m_vertex[theEdge->m_middle]->m_position/=4;
+                subLevel->m_vertex[edge->m_middle]->m_position+=subLevel->m_vertex[face->m_center]->m_position;
+                subLevel->m_vertex[edge->m_middle]->m_position/=4;
             }
         }
         else
         {
-            theEdge=theLevel->m_edge[-theFace->m_edge[i]];
-            if(theEdge->m_subdivideId!=m_subdivideId)
+            edge=subdivideLevel->m_edge[-face->m_edge[i]];
+            if(edge->m_subdivideId!=m_subdivideId)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
-                theEdge->m_subdivideId=m_subdivideId;
-                theSubLevel->m_vertex[theEdge->m_middle]->m_position.null();
-                theSubLevel->m_vertex[theEdge->m_middle]->m_position+=theLevel->m_vertex[theEdge->m_start]->m_position+theLevel->m_vertex[theEdge->m_end]->m_position;
-                if( theEdge->m_right!=0)
+                edge->m_subdivideId=m_subdivideId;
+                subLevel->m_vertex[edge->m_middle]->m_position.null();
+                subLevel->m_vertex[edge->m_middle]->m_position+=subdivideLevel->m_vertex[edge->m_start]->m_position+subdivideLevel->m_vertex[edge->m_end]->m_position;
+                if( edge->m_right!=0)
                 {
-                    if(theLevel->m_face[theEdge->m_right]->m_isSub)
+                    if(subdivideLevel->m_face[edge->m_right]->m_isSub)
                     {
-                        theSubLevel->m_vertex[theEdge->m_middle]->m_position+=theSubLevel->m_vertex[theFace->m_center]->m_position;
+                        subLevel->m_vertex[edge->m_middle]->m_position+=subLevel->m_vertex[face->m_center]->m_position;
                     }
                     else
                     {
-                        theSubLevel->m_vertex[theEdge->m_middle]->m_position+=theSubLevel->m_vertex[theLevel->m_face[theEdge->m_right]->m_center]->m_position+theSubLevel->m_vertex[theFace->m_center]->m_position;
-                        theSubLevel->m_vertex[theEdge->m_middle]->m_position/=4;
+                        subLevel->m_vertex[edge->m_middle]->m_position+=subLevel->m_vertex[subdivideLevel->m_face[edge->m_right]->m_center]->m_position+subLevel->m_vertex[face->m_center]->m_position;
+                        subLevel->m_vertex[edge->m_middle]->m_position/=4;
                     }
                 }
                 else
                 {
-                    theSubLevel->m_vertex[theEdge->m_middle]->m_position/=2;
+                    subLevel->m_vertex[edge->m_middle]->m_position/=2;
                 }
             }
             else
             {
                 //Èç¹û²»ÊÇµÚÒ»´Î¼ÆËã
-                theSubLevel->m_vertex[theEdge->m_middle]->m_position+=theSubLevel->m_vertex[theFace->m_center]->m_position;
-                theSubLevel->m_vertex[theEdge->m_middle]->m_position/=4;
+                subLevel->m_vertex[edge->m_middle]->m_position+=subLevel->m_vertex[face->m_center]->m_position;
+                subLevel->m_vertex[edge->m_middle]->m_position/=4;
             }
         }
     }
@@ -3725,169 +3724,169 @@ void Object::buildPSCacheFast(std::vector<Face*> &faceToBeSub)
     }
 }
 
-void Object::partialSubdivideFace(Face *theFace,int level)
+void Object::partialSubdivideFace(Face *face,int level)
 {
     //Ê×ÏÈÒªµÃµ½Õâ¸öÃæµÄ¶Ëµã
     //µÃµ½¶ËµãºÍ±ßµÄÊýÄ¿
-    unsigned int edgeCount=theFace->m_edge.size();
-    SubdivideLevel *theLevel=m_subdivideLevel[level];
+    unsigned int edgeCount=face->m_edge.size();
+    SubdivideLevel *subdivideLevel=m_subdivideLevel[level];
     //ÐÂ½¨´æ·Å¶¥µãµÄÊý×é
-    Vertex **theVertexList=new Vertex*[edgeCount];
-    theLevel->m_vertex[theFace->m_center]->m_position.null();
-    theLevel->m_vertex[theFace->m_center]->m_normal.null();
+    Vertex **vertexList=new Vertex*[edgeCount];
+    subdivideLevel->m_vertex[face->m_center]->m_position.null();
+    subdivideLevel->m_vertex[face->m_center]->m_normal.null();
     for(unsigned int e=0;e<edgeCount;++e)
     {
-        if(theFace->m_edge[e]<0)
+        if(face->m_edge[e]<0)
         {
-            theVertexList[e]=m_vertexArray[m_edgeArray[-theFace->m_edge[e]]->m_start];
+            vertexList[e]=m_vertexArray[m_edgeArray[-face->m_edge[e]]->m_start];
         }
         else
         {
-            theVertexList[e]=m_vertexArray[m_edgeArray[theFace->m_edge[e]]->m_end];
+            vertexList[e]=m_vertexArray[m_edgeArray[face->m_edge[e]]->m_end];
         }
-        theLevel->m_vertex[theFace->m_center]->m_position+=theVertexList[e]->m_position;
-        theLevel->m_vertex[theFace->m_center]->m_normal+=theVertexList[e]->m_normal;
+        subdivideLevel->m_vertex[face->m_center]->m_position+=vertexList[e]->m_position;
+        subdivideLevel->m_vertex[face->m_center]->m_normal+=vertexList[e]->m_normal;
     }
     //¼ÆËãÕâ¸öÃæµÄÖÐµã
-    theLevel->m_vertex[theFace->m_center]->m_position/=(float)edgeCount;
-    theLevel->m_vertex[theFace->m_center]->m_normal/=(float)edgeCount;
+    subdivideLevel->m_vertex[face->m_center]->m_position/=(float)edgeCount;
+    subdivideLevel->m_vertex[face->m_center]->m_normal/=(float)edgeCount;
     //¼ÆËãÐÂµÄ¶¥µã
     for(unsigned int i=0;i<edgeCount;++i)
     {
-        Vertex *theV=theVertexList[i];
-        if(theV->m_subdivideId!=m_subdivideId)
+        Vertex *vertex=vertexList[i];
+        if(vertex->m_subdivideId!=m_subdivideId)
         {
             //Èç¹ûÊÇµÚÒ»´Î¼ÆËãµ½Õâ¸öµã
             //³õÊ¼»¯Ï¸·Ö²½Êý
-            theV->m_subdivideId=m_subdivideId;
-            theV->m_subdivideStep=0;
+            vertex->m_subdivideId=m_subdivideId;
+            vertex->m_subdivideStep=0;
             //Éú³ÉÕâ¸öµãµÄÏ¸·Öµã
             //Ê×ÏÈ¼ÆËãÏàÁÚµãµÄ×ø±êºÍEv
-            theLevel->m_vertex[theV->m_nextLevel]->m_position.null();
-            theLevel->m_vertex[theV->m_nextLevel]->m_position+=EAdjacentVertex(theV);
-            if(theV->m_edgeVertex)
+            subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position.null();
+            subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position+=EAdjacentVertex(vertex);
+            if(vertex->m_edgeVertex)
             {
-                theLevel->m_vertex[theV->m_nextLevel]->m_position+=theV->m_position*6;
-                theLevel->m_vertex[theV->m_nextLevel]->m_position/=8;
+                subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position+=vertex->m_position*6;
+                subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position/=8;
             }
             else
             {
                 //¼ÓÉÏÕâ¸öÃæµÄÖÐµã
-                theLevel->m_vertex[theV->m_nextLevel]->m_position+=theLevel->m_vertex[theFace->m_center]->m_position;
-                theV->m_subdivideStep++;
-                unsigned int adjEdgeCount=theV->m_adjacentEdgeList.size();
+                subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position+=subdivideLevel->m_vertex[face->m_center]->m_position;
+                vertex->m_subdivideStep++;
+                unsigned int adjEdgeCount=vertex->m_adjacentEdgeList.size();
                 for(unsigned int h=0;h<adjEdgeCount;++h)
                 {
-                    if(m_edgeArray[theV->m_adjacentEdgeList[h]]->m_end==theV->m_index)
+                    if(m_edgeArray[vertex->m_adjacentEdgeList[h]]->m_end==vertex->m_index)
                     {
-                        if(!m_faceArray[m_edgeArray[theV->m_adjacentEdgeList[h]]->m_left]->m_isSub)
+                        if(!m_faceArray[m_edgeArray[vertex->m_adjacentEdgeList[h]]->m_left]->m_isSub)
                         {
-                            theLevel->m_vertex[theV->m_nextLevel]->m_position+=theLevel->m_vertex[m_faceArray[m_edgeArray[theV->m_adjacentEdgeList[h]]->m_left]->m_center]->m_position;
-                            ++(theV->m_subdivideStep);
+                            subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position+=subdivideLevel->m_vertex[m_faceArray[m_edgeArray[vertex->m_adjacentEdgeList[h]]->m_left]->m_center]->m_position;
+                            ++(vertex->m_subdivideStep);
                         }
                     }
                     else
                     {
-                        if(!m_faceArray[m_edgeArray[theV->m_adjacentEdgeList[h]]->m_right]->m_isSub)
+                        if(!m_faceArray[m_edgeArray[vertex->m_adjacentEdgeList[h]]->m_right]->m_isSub)
                         {
-                            theLevel->m_vertex[theV->m_nextLevel]->m_position+=theLevel->m_vertex[m_faceArray[m_edgeArray[theV->m_adjacentEdgeList[h]]->m_right]->m_center]->m_position;
-                            ++(theV->m_subdivideStep);
+                            subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position+=subdivideLevel->m_vertex[m_faceArray[m_edgeArray[vertex->m_adjacentEdgeList[h]]->m_right]->m_center]->m_position;
+                            ++(vertex->m_subdivideStep);
                         }
                     }
                 }
-                unsigned int n=theV->m_adjacentEdgeList.size();
-                if(n==(unsigned int)(theV->m_subdivideStep))
+                unsigned int n=vertex->m_adjacentEdgeList.size();
+                if(n==(unsigned int)(vertex->m_subdivideStep))
                 {
-                    theLevel->m_vertex[theV->m_nextLevel]->m_position+=theV->m_position*(float)(n*n-2*n);
-                    theLevel->m_vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
+                    subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position+=vertex->m_position*(float)(n*n-2*n);
+                    subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position/=(float)(n*n);
                 }
             }
         }
         else
         {
-            if(!theV->m_edgeVertex)
+            if(!vertex->m_edgeVertex)
             {
-                theLevel->m_vertex[theV->m_nextLevel]->m_position+=theLevel->m_vertex[theFace->m_center]->m_position;
-                ++(theV->m_subdivideStep);
-                unsigned int n=theV->m_adjacentEdgeList.size();
-                if(n==(unsigned int)(theV->m_subdivideStep))
+                subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position+=subdivideLevel->m_vertex[face->m_center]->m_position;
+                ++(vertex->m_subdivideStep);
+                unsigned int n=vertex->m_adjacentEdgeList.size();
+                if(n==(unsigned int)(vertex->m_subdivideStep))
                 {
-                    theLevel->m_vertex[theV->m_nextLevel]->m_position+=theVertexList[i]->m_position*(float)(n*n-2*n);
-                    theLevel->m_vertex[theV->m_nextLevel]->m_position/=(float)(n*n);
+                    subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position+=vertexList[i]->m_position*(float)(n*n-2*n);
+                    subdivideLevel->m_vertex[vertex->m_nextLevel]->m_position/=(float)(n*n);
                 }
             }
         }
     }
-    delete theVertexList;
+    delete vertexList;
     //Ö®ºó´¦ÀíÃ¿Ò»¸ö±ß
     for(unsigned int i=0;i<edgeCount;++i)
     {
-        Edge *theEdge;
-        if(theFace->m_edge[i]>0)
+        Edge *edge;
+        if(face->m_edge[i]>0)
         {
-            theEdge=m_edgeArray[theFace->m_edge[i]];
-            if(theEdge->m_subdivideId!=m_subdivideId)
+            edge=m_edgeArray[face->m_edge[i]];
+            if(edge->m_subdivideId!=m_subdivideId)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
-                theEdge->m_subdivideId=m_subdivideId;
-                theLevel->m_vertex[theEdge->m_middle]->m_position.null();
-                theLevel->m_vertex[theEdge->m_middle]->m_position+=m_vertexArray[theEdge->m_start]->m_position+m_vertexArray[theEdge->m_end]->m_position;
-                if(theEdge->m_left)
+                edge->m_subdivideId=m_subdivideId;
+                subdivideLevel->m_vertex[edge->m_middle]->m_position.null();
+                subdivideLevel->m_vertex[edge->m_middle]->m_position+=m_vertexArray[edge->m_start]->m_position+m_vertexArray[edge->m_end]->m_position;
+                if(edge->m_left)
                 {
-                    if(m_faceArray[theEdge->m_left]->m_isSub)
+                    if(m_faceArray[edge->m_left]->m_isSub)
                     {
                         //Èç¹ûÕâ¸ö±ßµÄÁ½±ß¶¼ÔÚ¾Ö²¿Ï¸·ÖµÄ·¶Î§Ö®ÄÚ
-                        theLevel->m_vertex[theEdge->m_middle]->m_position+=theLevel->m_vertex[theFace->m_center]->m_position;
+                        subdivideLevel->m_vertex[edge->m_middle]->m_position+=subdivideLevel->m_vertex[face->m_center]->m_position;
                     }
                     else
                     {
-                        theLevel->m_vertex[theEdge->m_middle]->m_position+=theLevel->m_vertex[m_faceArray[theEdge->m_left]->m_center]->m_position+theLevel->m_vertex[theFace->m_center]->m_position;
-                        theLevel->m_vertex[theEdge->m_middle]->m_position/=4;
+                        subdivideLevel->m_vertex[edge->m_middle]->m_position+=subdivideLevel->m_vertex[m_faceArray[edge->m_left]->m_center]->m_position+subdivideLevel->m_vertex[face->m_center]->m_position;
+                        subdivideLevel->m_vertex[edge->m_middle]->m_position/=4;
                     }
                 }
                 else
                 {
-                    theLevel->m_vertex[theEdge->m_middle]->m_position/=2;
+                    subdivideLevel->m_vertex[edge->m_middle]->m_position/=2;
                 }
             }
             else
             {
                 //Èç¹û²»ÊÇµÚÒ»´Î¼ÆËã
-                theLevel->m_vertex[theEdge->m_middle]->m_position+=theLevel->m_vertex[theFace->m_center]->m_position;
-                theLevel->m_vertex[theEdge->m_middle]->m_position/=4;
+                subdivideLevel->m_vertex[edge->m_middle]->m_position+=subdivideLevel->m_vertex[face->m_center]->m_position;
+                subdivideLevel->m_vertex[edge->m_middle]->m_position/=4;
             }
         }
         else
         {
-            theEdge=m_edgeArray[-theFace->m_edge[i]];
-            if(theEdge->m_subdivideId!=m_subdivideId)
+            edge=m_edgeArray[-face->m_edge[i]];
+            if(edge->m_subdivideId!=m_subdivideId)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
-                theEdge->m_subdivideId=m_subdivideId;
-                theLevel->m_vertex[theEdge->m_middle]->m_position.null();
-                theLevel->m_vertex[theEdge->m_middle]->m_position+=m_vertexArray[theEdge->m_start]->m_position+m_vertexArray[theEdge->m_end]->m_position;
-                if(theEdge->m_right)
+                edge->m_subdivideId=m_subdivideId;
+                subdivideLevel->m_vertex[edge->m_middle]->m_position.null();
+                subdivideLevel->m_vertex[edge->m_middle]->m_position+=m_vertexArray[edge->m_start]->m_position+m_vertexArray[edge->m_end]->m_position;
+                if(edge->m_right)
                 {
-                    if(m_faceArray[theEdge->m_right]->m_isSub)
+                    if(m_faceArray[edge->m_right]->m_isSub)
                     {
-                        theLevel->m_vertex[theEdge->m_middle]->m_position+=theLevel->m_vertex[theFace->m_center]->m_position;
+                        subdivideLevel->m_vertex[edge->m_middle]->m_position+=subdivideLevel->m_vertex[face->m_center]->m_position;
                     }
                     else
                     {
-                        theLevel->m_vertex[theEdge->m_middle]->m_position+=theLevel->m_vertex[m_faceArray[theEdge->m_right]->m_center]->m_position+theLevel->m_vertex[theFace->m_center]->m_position;
-                        theLevel->m_vertex[theEdge->m_middle]->m_position/=4;
+                        subdivideLevel->m_vertex[edge->m_middle]->m_position+=subdivideLevel->m_vertex[m_faceArray[edge->m_right]->m_center]->m_position+subdivideLevel->m_vertex[face->m_center]->m_position;
+                        subdivideLevel->m_vertex[edge->m_middle]->m_position/=4;
                     }
                 }
                 else
                 {
-                    theLevel->m_vertex[theEdge->m_middle]->m_position/=2;
+                    subdivideLevel->m_vertex[edge->m_middle]->m_position/=2;
                 }
             }
             else
             {
                 //Èç¹û²»ÊÇµÚÒ»´Î¼ÆËã
-                theLevel->m_vertex[theEdge->m_middle]->m_position+=theLevel->m_vertex[theFace->m_center]->m_position;
-                theLevel->m_vertex[theEdge->m_middle]->m_position/=4;
+                subdivideLevel->m_vertex[edge->m_middle]->m_position+=subdivideLevel->m_vertex[face->m_center]->m_position;
+                subdivideLevel->m_vertex[edge->m_middle]->m_position/=4;
             }
         }
     }

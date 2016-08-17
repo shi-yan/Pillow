@@ -8,11 +8,11 @@ public:
     const unsigned int m_index;
     const unsigned int edgeIndex;
 public:
-    Log_FaceEdgeInsert(unsigned int theTarget,unsigned int theIndex,unsigned int theEdgeIndex);
+    Log_FaceEdgeInsert(unsigned int target,unsigned int theIndex,unsigned int theEdgeIndex);
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"FaceEdgeInsert\" Target=\"%d\" Index=\"%d\" EdgeIndex=\"%d\" />\n",target,index,edgeIndex);
+        //sprintf(temp,"\t\t\t<Log Type=\"FaceEdgeInsert\" Target=\"%d\" Index=\"%d\" EdgeIndex=\"%d\" />\n",target,index,edgeIndex);
         std::string out(temp);
         return out;
     }

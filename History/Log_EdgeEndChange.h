@@ -11,11 +11,11 @@ public:
     const int end;
 
 public:
-    Log_EdgeEndChange(unsigned int theTarget,unsigned int theIndex,int theEnd);
+    Log_EdgeEndChange(unsigned int target,unsigned int theIndex,int theEnd);
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"EdgeEndChange\" Target=\"%d\" Index=\"%d\" End=\"%d\" />\n",target,index,end);
+        //sprintf(temp,"\t\t\t<Log Type=\"EdgeEndChange\" Target=\"%d\" Index=\"%d\" End=\"%d\" />\n",target,index,end);
         std::string out(temp);
         return out;
     }

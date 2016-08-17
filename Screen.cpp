@@ -105,10 +105,10 @@ void Screen::screenShot(const char *fileName)
         glFlush();
         unsigned char *pixel=(unsigned char *)malloc(sizeof(unsigned char)*width*height*3);
         glReadPixels(0,0,width,height, GL_RGB, GL_UNSIGNED_BYTE, pixel);
-        wxImage theScreenShot(width,height,true);
-        theScreenShot.SetData(pixel);
-        theScreenShot=theScreenShot.Mirror(false);
-        theScreenShot.SaveFile(_T(fileName),wxBITMAP_TYPE_JPEG);*/
+        wxImage screenshot(width,height,true);
+        screenshot.SetData(pixel);
+        screenshot=screenshot.Mirror(false);
+        screenshot.SaveFile(_T(fileName),wxBITMAP_TYPE_JPEG);*/
         //delete pixel;
 }
 
@@ -410,7 +410,7 @@ bool Screen::onLeftRelease(bool isAppend)
                 break;
             case ButtonEventType::Save:
             {
-                if(Scene::scene->fileName=="")
+                if(Scene::scene->m_fileName=="")
                 {
                     /*wxFileDialog dialog(mainFrame,_T("Save file:"),wxEmptyString,_T("untitle"),_T("Pillow Binary Files (*.pwb)|*.pwb"),wxSAVE|wxOVERWRITE_PROMPT);
                     dialog.SetFilterIndex(1);
@@ -426,7 +426,7 @@ bool Screen::onLeftRelease(bool isAppend)
                 }
                 else
                 {
-                    Scene::scene->saveToFilePWB(Scene::scene->fileName.c_str());
+                    Scene::scene->saveToFilePWB(Scene::scene->m_fileName.c_str());
                 }
             }
                 break;
@@ -454,7 +454,7 @@ bool Screen::onLeftRelease(bool isAppend)
                 Scene::scene->deleteVertex();
                 break;
             case ButtonEventType::Split:
-                if(!Scene::scene->isSplitMode)
+                if(!Scene::scene->m_isSplitMode)
                 {
                     Scene::scene->beginSplit();
                 }

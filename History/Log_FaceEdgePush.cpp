@@ -1,7 +1,7 @@
 #include "Log_FaceEdgePush.h"
 
-Log_FaceEdgePush::Log_FaceEdgePush(unsigned int theTarget,unsigned int theIndex)
-    :HistoryLog(LogType::Face_Edge_Push,theTarget),
+Log_FaceEdgePush::Log_FaceEdgePush(unsigned int target,unsigned int theIndex)
+    :HistoryLog(LogType::Face_Edge_Push,target),
       m_index(theIndex)
 {
 }

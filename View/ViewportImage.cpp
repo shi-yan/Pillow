@@ -1,8 +1,14 @@
 #include "ViewportImage.h"
 
 
-ViewportImage::ViewportImage(const char *thePath,GLuint theImageID,unsigned int theWidth,unsigned int theHeight,CameraMode::__Enum theCameraMode,Vector &thePosition)
-        :path(thePath),imageID(theImageID),width(theWidth),height(theHeight),cameraMode(theCameraMode),position(thePosition),isShow(true)
+ViewportImage::ViewportImage(const char *path, GLuint imageID, unsigned int width, unsigned int height, CameraMode::__Enum cameraMode, Vector &position)
+        :m_path(path),
+          m_imageID(imageID),
+          m_width(width),
+          m_height(height),
+          m_cameraMode(cameraMode),
+          m_position(position),
+          m_isShow(true)
 {
 }
 

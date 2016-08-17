@@ -77,18 +77,18 @@ void FrontCamera::setReferenceImage(const char *path,GLuint imageID,Vector &posi
 
     frontReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
     frontReference->initialize();
-    frontReference->isShow=true;
+    frontReference->m_isShow=true;
 }
 
 void FrontCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 {
     if(frontReference)
     {
-        texID=frontReference->imageID;
-        path=frontReference->path;
-        position=frontReference->position;
-        width=frontReference->width;
-        height=frontReference->height;
+        texID=frontReference->m_imageID;
+        path=frontReference->m_path;
+        position=frontReference->m_position;
+        width=frontReference->m_width;
+        height=frontReference->m_height;
     }
     else
     {
@@ -102,7 +102,7 @@ void FrontCamera::getViewportImage(GLuint &texID,std::string &path,Vector &posit
 
 void FrontCamera::disableReference()
 {
-    frontReference->isShow=false;
+    frontReference->m_isShow=false;
 }
 
 void FrontCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int h)

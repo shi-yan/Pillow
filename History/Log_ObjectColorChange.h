@@ -14,7 +14,7 @@ public:
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"ObjectColorChange\" Target=\"%d\" R=\"%d\" G=\"%d\" B=\"%d\" A=\"%d\" />\n",target,r,g,b,a);
+        sprintf(temp,"\t\t\t<Log Type=\"ObjectColorChange\" Target=\"%d\" R=\"%d\" G=\"%d\" B=\"%d\" A=\"%d\" />\n",m_target,r,g,b,a);
         std::string out(temp);
         return out;
     }

@@ -1,7 +1,7 @@
 #include "Edge.h"
 
-Edge::Edge(int theStart, int theEnd)
-    :SubdivideEdge(theStart, theEnd),
+Edge::Edge(int start, int end)
+    :SubdivideEdge(start, end),
       m_clone(0)
 {
 }

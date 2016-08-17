@@ -91,18 +91,18 @@ void BackCamera::setCameraForSelectionD(unsigned int x1,unsigned int y1,unsigned
 
         backReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
         backReference->initialize();
-        backReference->isShow=true;
+        backReference->m_isShow=true;
 }
 
 void BackCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 {
     if(backReference)
     {
-        texID=backReference->imageID;
-        path=backReference->path;
-        position=backReference->position;
-        width=backReference->width;
-        height=backReference->height;
+        texID=backReference->m_imageID;
+        path=backReference->m_path;
+        position=backReference->m_position;
+        width=backReference->m_width;
+        height=backReference->m_height;
     }
     else
     {
@@ -116,7 +116,7 @@ void BackCamera::getViewportImage(GLuint &texID,std::string &path,Vector &positi
 
 void BackCamera::disableReference()
 {
-    backReference->isShow=false;
+    backReference->m_isShow=false;
 }
 
 Vector BackCamera::getHorizontalDir() const

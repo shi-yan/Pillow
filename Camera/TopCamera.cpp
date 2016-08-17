@@ -91,18 +91,18 @@ void TopCamera::setReferenceImage(const char *path,GLuint imageID,Vector &positi
 
         topReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
         topReference->initialize();
-        topReference->isShow=true;
+        topReference->m_isShow=true;
 }
 
 void TopCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 {
     if(topReference)
     {
-        texID=topReference->imageID;
-        path=topReference->path;
-        position=topReference->position;
-        width=topReference->width;
-        height=topReference->height;
+        texID=topReference->m_imageID;
+        path=topReference->m_path;
+        position=topReference->m_position;
+        width=topReference->m_width;
+        height=topReference->m_height;
     }
     else
     {
@@ -116,7 +116,7 @@ void TopCamera::getViewportImage(GLuint &texID,std::string &path,Vector &positio
 
     void TopCamera::disableReference()
 {
-    topReference->isShow=false;
+    topReference->m_isShow=false;
 }
 
 

@@ -125,22 +125,22 @@ private:
     int m_subdivideId;
 
 public:
-    Object(char *theName);
+    Object(const char *name);
     unsigned int addVertex(float p1,float p2,float p3);
     unsigned int addVertex(float p1,float p2,float p3,float n1,float n2,float n3);
     unsigned int addVertex(Vector &pos);
-    unsigned int addVertex(unsigned int ei,Vertex *theV);
+    unsigned int addVertex(unsigned int ei,Vertex *vertex);
     unsigned int addVertex(Vector &pos,Vector &nor);
 
     unsigned int addEdge(int start,int end);
-    unsigned int addEdge(unsigned int ei,Edge *theE);
+    unsigned int addEdge(unsigned int ei,Edge *edge);
 
     Vertex * vertex(unsigned int index);
     Edge * edge(unsigned int index);
     Face * face(unsigned int index);
 
-    unsigned int addFace(unsigned int theEdgeArray[],unsigned int size);
-    unsigned int addFace(unsigned int ei,Face *theF);
+    unsigned int addFace(unsigned int edgeArray[],unsigned int size);
+    unsigned int addFace(unsigned int ei,Face *face);
 
     void testOut(char *fileName);
     void SubTestOut(char *fileName,int level);
@@ -156,14 +156,14 @@ public:
     void buildPSCacheFromEID(std::vector<unsigned int> &edgeToBeSub);
     void buildPSCacheFromFID(std::vector<unsigned int> &faceToBeSub);
 
-    void mirror(MirrorMode type,Vector &theMirrorPosition);
+    void mirror(MirrorMode type,Vector &mirrorPosition);
     void unMirror();
     void updateSubdivision();
 
     ObjectInfo getObjectInfo();
-    void directPushVertex(Vertex *theVertex);
-    void directPushEdge(Edge *theEdge);
-    void directPushFace(Face *theFace);
+    void directPushVertex(Vertex *vertex);
+    void directPushEdge(Edge *edge);
+    void directPushFace(Face *face);
 
     void drawWireframeFaced();
     void selectionRenderObject();
@@ -186,10 +186,10 @@ public:
     void drawMirror();
     void draw();
     void normalizeVertexNormal();
-    void updateVNormal(SubdivideVertex *theVertex,unsigned int level);
-    void updateVNormal(Vertex *theVertex);
-    void updateFNormal(Face *theFace);
-    void updateFNormal(SubdivideFace *theFace,unsigned int level);
+    void updateVNormal(SubdivideVertex *vertex,unsigned int level);
+    void updateVNormal(Vertex *vertex);
+    void updateFNormal(Face *face);
+    void updateFNormal(SubdivideFace *face,unsigned int level);
     void updateAllNormal();
     void updateAllSubNormal();
     unsigned int edgeCount();
@@ -221,15 +221,15 @@ public:
     void redefineControlPoint();
 
 private:
-    Vector EAdjacentVertex(Vertex *theVertex);
-    Vector EAdjacentVertex(SubdivideVertex *theVertex,int level);
-    Vector EAdjacentVertex(SubdivideVertex *theVertex);
-    void subdivideFace(Face *theFace);
-    void subdivideFace(SubdivideFace *theFace);
+    Vector EAdjacentVertex(Vertex *vertex);
+    Vector EAdjacentVertex(SubdivideVertex *vertex,int level);
+    Vector EAdjacentVertex(SubdivideVertex *vertex);
+    void subdivideFace(Face *face);
+    void subdivideFace(SubdivideFace *face);
     void expandSubFace(std::vector<SubdivideFace*> &originalList,unsigned int level);
     void expandSubFace(std::vector<Face*> &originalList);
-    void partialSubdivideFace(SubdivideFace *theFace,int level);
-    void partialSubdivideFace(Face *theFace,int level);
+    void partialSubdivideFace(SubdivideFace *face,int level);
+    void partialSubdivideFace(Face *face,int level);
 
 public:
     ~Object(void) override;

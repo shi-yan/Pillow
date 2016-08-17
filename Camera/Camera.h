@@ -63,7 +63,7 @@ public:
 
     virtual void pan(int x, int y);
 
-    void updateSize(float theStartX, float theStartY, float theWidth, float theHeight);
+    void updateSize(float startX, float startY, float width, float height);
 
     Camera(OpenGLBackend *backend, CameraMode::__Enum type, float width, float height, float nearPlane, float farPlane, float startX, float startY, const Vector &target, const Vector &eye, const Vector &up);
     virtual ~Camera(void);

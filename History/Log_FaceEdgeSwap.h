@@ -10,11 +10,11 @@ public:
     const unsigned int oIndex;
     const unsigned int tIndex;
 public:
-    Log_FaceEdgeSwap(unsigned int theTarget,unsigned int theIndex,unsigned int theOIndex,unsigned int theTIndex);
+    Log_FaceEdgeSwap(unsigned int target,unsigned int theIndex,unsigned int theOIndex,unsigned int theTIndex);
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"FaceEdgeSwap\" Target=\"%d\" Index=\"%d\" OIndex=\"%d\" TIndex=\"%d\" />\n",target,index,oIndex,tIndex);
+        //sprintf(temp,"\t\t\t<Log Type=\"FaceEdgeSwap\" Target=\"%d\" Index=\"%d\" OIndex=\"%d\" TIndex=\"%d\" />\n",target,index,oIndex,tIndex);
         std::string out(temp);
         return out;
     }

@@ -16,7 +16,7 @@ public:
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentChange\" Target=\"%d\" Index=\"%d\" AdjIndex=\"%d\" Original=\"%d\" />\n",target,index,adjIndex,original);
+        //sprintf(temp,"\t\t\t<Log Type=\"VertexAdjacentChange\" Target=\"%d\" Index=\"%d\" AdjIndex=\"%d\" Original=\"%d\" />\n",target,index,adjIndex,original);
         std::string out(temp);
         return out;
     }

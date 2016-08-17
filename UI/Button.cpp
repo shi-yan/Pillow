@@ -1,5 +1,10 @@
 #include "Button.h"
+
+#ifdef __linux__
+#include <GL/gl.h>
+#else
 #include <OpenGL/gl3.h>
+#endif
 
 static GLuint vs = 0;
 

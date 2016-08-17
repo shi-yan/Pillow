@@ -34,7 +34,7 @@ private:
 public:
     OpenGLBackend *m_graphicsBackend;
 
-    Screen(/*wxWindow *theMain*/);
+    Screen();
     void updateScreenSize(unsigned int width, unsigned int height);
     void onPaint();
     void screenShot(const char *fileName);

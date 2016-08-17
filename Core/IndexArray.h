@@ -5,64 +5,64 @@
 template<class ElementType> class IndexArray
 {
 private:
-    std::vector<ElementType*> theArray;
-    std::deque<unsigned int> theSpace;
+    std::vector<ElementType*> m_array;
+    std::deque<unsigned int> m_space;
 
 public:
     IndexArray(void)
     {
-        theArray.push_back(nullptr);
+        m_array.push_back(nullptr);
     }
 
     IndexArray(unsigned int space)
     {
-        theSpace.clear();
-        theArray.reserve(space+1);
-        theArray.push_back(nullptr);
+        m_space.clear();
+        m_array.reserve(space+1);
+        m_array.push_back(nullptr);
     }
 
     void clear()
     {
-        for(unsigned int i=0;i<theArray.size();++i)
+        for(unsigned int i=0;i<m_array.size();++i)
         {
-            if(theArray[i])
+            if(m_array[i])
             {
-                delete theArray[i];
+                delete m_array[i];
             }
         }
 
-        theArray.clear();
-        theArray.push_back(nullptr);
-        theSpace.clear();
+        m_array.clear();
+        m_array.push_back(nullptr);
+        m_space.clear();
     }
 
     void reserve(unsigned int space)
     {
-        theArray.reserve(space);
+        m_array.reserve(space);
     }
 
     void pushNull()
     {
-        theArray.push_back(nullptr);
+        m_array.push_back(nullptr);
     }
 
     void pushNullS()
     {
-        theSpace.push_back(theArray.size());
-        theArray.push_back(nullptr);
+        m_space.push_back(m_array.size());
+        m_array.push_back(nullptr);
     }
 
-    unsigned int addI(unsigned int ei,ElementType *theElement)
+    unsigned int addI(unsigned int ei,ElementType *element)
     {
-        if(theArray[ei]==nullptr)
+        if(m_array[ei]==nullptr)
         {
-            for(unsigned int e=0;e<theSpace.size();++e)
+            for(unsigned int e=0;e<m_space.size();++e)
             {
-                if(theSpace[e]==ei)
+                if(m_space[e]==ei)
                 {
-                    theSpace[e]=theSpace[0];
-                    theSpace.pop_front();
-                    theArray[ei]=theElement;
+                    m_space[e]=m_space[0];
+                    m_space.pop_front();
+                    m_array[ei]=element;
                     return ei;
                 }
             }
@@ -74,26 +74,26 @@ public:
         }
     }
 
-    void directPush(ElementType *theElement)
+    void directPush(ElementType *element)
     {
-        theArray.push_back(theElement);
+        m_array.push_back(element);
     }
 
-    unsigned int add(ElementType *theElement)
+    unsigned int add(ElementType *element)
     {
-        if(theSpace.empty())
+        if(m_space.empty())
         {
-            unsigned int tempIndex=theArray.size();
-            theArray.push_back(theElement);
-            theElement->m_index=tempIndex;
+            unsigned int tempIndex=m_array.size();
+            m_array.push_back(element);
+            element->m_index=tempIndex;
             return tempIndex;
         }
         else
         {
-            unsigned int tempIndex=theSpace[0];
-            theSpace.pop_front();
-            theArray[tempIndex]=theElement;
-            theElement->m_index=tempIndex;
+            unsigned int tempIndex=m_space[0];
+            m_space.pop_front();
+            m_array[tempIndex]=element;
+            element->m_index=tempIndex;
             return tempIndex;
         }
     }
@@ -102,32 +102,32 @@ public:
     {
         if(index)
         {
-            theArray[index]= nullptr;
-            theSpace.push_back(index);
+            m_array[index]= nullptr;
+            m_space.push_back(index);
         }
         return;
     }
 
     ElementType* operator [](unsigned int i)
     {
-        return theArray[i];
+        return m_array[i];
     }
 
     unsigned int size()
     {
-        return theArray.size();
+        return m_array.size();
     }
 
     ~IndexArray(void)
     {
-        unsigned int length=theArray.size();
+        unsigned int length=m_array.size();
         for(unsigned int i=1;i<length;i++)
         {
-            if(theArray[i])
+            if(m_array[i])
             {
-                delete theArray[i];
+                delete m_array[i];
             }
         }
-        theArray.clear();
+        m_array.clear();
     }
 };

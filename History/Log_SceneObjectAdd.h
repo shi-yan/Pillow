@@ -9,7 +9,7 @@ public:
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"SceneObjectAdd\" Target=\"%d\" />\n",target);
+        sprintf(temp,"\t\t\t<Log Type=\"SceneObjectAdd\" Target=\"%d\" />\n",m_target);
         std::string out(temp);
         return out;
     }

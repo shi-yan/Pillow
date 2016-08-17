@@ -15,7 +15,7 @@ public:
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"ObjectEdgeRemove\" Target=\"%d\" Index=\"%d\" />\n",target,index);
+        //sprintf(temp,"\t\t\t<Log Type=\"ObjectEdgeRemove\" Target=\"%d\" Index=\"%d\" />\n",target,index);
         std::string out(temp);
         return out;
     }

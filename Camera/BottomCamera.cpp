@@ -91,18 +91,18 @@ void BottomCamera::setReferenceImage(const char *path,GLuint imageID,Vector &pos
 
     bottomReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
     bottomReference->initialize();
-    bottomReference->isShow=true;
+    bottomReference->m_isShow=true;
 }
 
 void BottomCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 {
     if(bottomReference)
     {
-        texID=bottomReference->imageID;
-        path=bottomReference->path;
-        position=bottomReference->position;
-        width=bottomReference->width;
-        height=bottomReference->height;
+        texID=bottomReference->m_imageID;
+        path=bottomReference->m_path;
+        position=bottomReference->m_position;
+        width=bottomReference->m_width;
+        height=bottomReference->m_height;
     }
     else
     {
@@ -116,7 +116,7 @@ void BottomCamera::getViewportImage(GLuint &texID,std::string &path,Vector &posi
 
 void BottomCamera::disableReference()
 {
-    bottomReference->isShow=false;
+    bottomReference->m_isShow=false;
 }
 
 Vector BottomCamera::getEye() const

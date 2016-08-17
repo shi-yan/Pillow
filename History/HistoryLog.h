@@ -48,8 +48,8 @@ END_ENUM()
 class HistoryLog
 {
 public:
-    const LogType type;
-    const unsigned int target;
+    const LogType m_type;
+    const unsigned int m_target;
 public:
     HistoryLog(LogType::__Enum theType,unsigned int theTarget);
     virtual std::string toString()

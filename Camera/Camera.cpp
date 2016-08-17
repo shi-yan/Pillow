@@ -116,10 +116,10 @@ void Camera::pan(int x,int y)
     UNUSED(y);
 }
 
-void Camera::updateSize(float theStartX, float theStartY, float theWidth, float theHeight)
+void Camera::updateSize(float startX, float startY, float width, float height)
 {
-    m_startX = theStartX;
-    m_startY = theStartY;
-    m_width = theWidth;
-    m_height = theHeight;
+    m_startX = startX;
+    m_startY = startY;
+    m_width = width;
+    m_height = height;
 }

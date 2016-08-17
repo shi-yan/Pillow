@@ -16,7 +16,7 @@ public:
     int m_clone;
 
 public:
-    Edge(int theStart = 0, int theEnd = 0);
+    Edge(int start = 0, int end = 0);
     EdgeInfo getEdgeInfo() const;
 
 public:

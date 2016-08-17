@@ -1,4 +1,5 @@
 #include "ThreeView.h"
+#include <Core/Scene.h>
 
 ThreeView::ThreeView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
     :SplitedView(backend, splitX,splitY,width,height)
@@ -162,7 +163,7 @@ bool ThreeView::onAxisDrag(unsigned int x,unsigned int y)
         m_camera[m_selected]->setCamera();
         Vector m((float)((int)x-(int)m_axisDragSX),(float)((int)y-(int)m_axisDragSY),0.0f);
         float work=psVECDOT(m_cursorDir,m);
-        theScene->axisDrag(work,m_cursorMode,m_cursorDir.x,m_cursorDir.y);
+        Scene::scene->axisDrag(work,m_cursorMode,m_cursorDir.x,m_cursorDir.y);
         m_axisDragSX=x;
         m_axisDragSY=y;
         return true;
@@ -178,7 +179,7 @@ bool ThreeView::onAxisRelease()
     if(m_isAxisMode)
     {
         m_isAxisMode=false;
-        theScene->axisRelease();
+        Scene::scene->axisRelease();
         m_axisDragSX=0;
         m_axisDragSY=0;
         return true;
@@ -218,7 +219,7 @@ bool ThreeView::onCtrlDrag(unsigned int x,unsigned int y)
     {
         m_camera[m_selected]->setCamera();
         Vector horizontalDir(m_camera[m_selected]->getHorizontalDir());
-        theScene->ctrlDrag(horizontalDir,m_camera[m_selected]->m_up,x-m_ctrlSX,y-m_ctrlSY,m_isExtrude);
+        Scene::scene->ctrlDrag(horizontalDir,m_camera[m_selected]->m_up,x-m_ctrlSX,y-m_ctrlSY,m_isExtrude);
         m_isExtrude=false;
         m_ctrlSX=x;
         m_ctrlSY=y;
@@ -234,7 +235,7 @@ bool ThreeView::onAxisPress(unsigned int x,unsigned int y)
 {
     m_camera[m_selected]->setCameraForSelectionS();
     m_cursorDir.z=0;
-    bool result=theScene->isAxisSelected(m_camera[m_selected]->m_type._value,m_camera[m_selected]->getEye(),m_height,x,y,m_cursorDir.x,m_cursorDir.y,m_cursorMode);
+    bool result=Scene::scene->isAxisSelected(m_camera[m_selected]->m_type._value,m_camera[m_selected]->getEye(),m_height,x,y,m_cursorDir.x,m_cursorDir.y,m_cursorMode);
     if(result)
     {
         m_axisDragSX=x;
@@ -276,7 +277,7 @@ bool ThreeView::onSingleSideSelectionRelease(bool isAppend)
         unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
         unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionS();
-        theScene->selectSingleSide(x1,y1,x2,y2,m_height,isAppend);
+        Scene::scene->selectSingleSide(x1,y1,x2,y2,m_height,isAppend);
         m_isSelectionMode=false;
         m_selectionSX=0;
         m_selectionSY=0;
@@ -299,7 +300,7 @@ bool ThreeView::onDualSideSelectionRelease(bool isAppend)
         unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
         unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionD(x1,y1,x2,y2,m_height);
-        theScene->selectDualSide(isAppend);
+        Scene::scene->selectDualSide(isAppend);
         m_isSelectionMode=false;
         m_selectionSX=0;
         m_selectionSY=0;

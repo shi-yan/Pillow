@@ -1,5 +1,5 @@
 #include "FourView.h"
-#include "Global.h"
+//#include "Global.h"
 #ifdef __APPLE__
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
@@ -7,6 +7,8 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #endif
+
+#include <Core/Scene.h>
 
 FourView::FourView(OpenGLBackend *backend, unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
     :SplitedView(backend, splitX,splitY,width,height)
@@ -176,7 +178,7 @@ bool FourView::onAxisPress(unsigned int x,unsigned int y)
     //if((selected==0 && x<splitX)||(selected==1 && x>splitX)){
     m_camera[m_selected]->setCameraForSelectionS();
     m_cursorDir.z=0;
-    bool result=theScene->isAxisSelected(m_camera[m_selected]->m_type._value, m_camera[m_selected]->getEye(), m_height, x, y, m_cursorDir.x, m_cursorDir.y, m_cursorMode);
+    bool result=Scene::scene->isAxisSelected(m_camera[m_selected]->m_type._value, m_camera[m_selected]->getEye(), m_height, x, y, m_cursorDir.x, m_cursorDir.y, m_cursorMode);
     if(result)
     {
         m_axisDragSX=x;
@@ -194,7 +196,7 @@ bool FourView::onAxisDrag(unsigned int x,unsigned int y)
         m_camera[m_selected]->setCamera();
         Vector m((float)((int)x-(int)m_axisDragSX),(float)((int)y-(int)m_axisDragSY),0.0f);
         float work=psVECDOT(m_cursorDir,m);
-        theScene->axisDrag(work,m_cursorMode,m_cursorDir.x,m_cursorDir.y);
+        Scene::scene->axisDrag(work,m_cursorMode,m_cursorDir.x,m_cursorDir.y);
         m_axisDragSX=x;
         m_axisDragSY=y;
         return true;
@@ -210,7 +212,7 @@ bool FourView::onAxisRelease()
     if(m_isAxisMode)
     {
         m_isAxisMode=false;
-        theScene->axisRelease();
+        Scene::scene->axisRelease();
         m_axisDragSX=0;
         m_axisDragSY=0;
         return true;
@@ -227,7 +229,7 @@ bool FourView::onCtrlDrag(unsigned int x,unsigned int y)
     {
         m_camera[m_selected]->setCamera();
         Vector horizontalDir(m_camera[m_selected]->getHorizontalDir());
-        theScene->ctrlDrag(horizontalDir,m_camera[m_selected]->m_up,x-m_ctrlSX,y-m_ctrlSY,m_isExtrude);
+        Scene::scene->ctrlDrag(horizontalDir,m_camera[m_selected]->m_up,x-m_ctrlSX,y-m_ctrlSY,m_isExtrude);
         m_isExtrude=false;
         m_ctrlSX=x;
         m_ctrlSY=y;
@@ -322,7 +324,7 @@ bool FourView::onSingleSideSelectionRelease(bool isAppend)
         unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
         unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionS();
-        theScene->selectSingleSide(x1,y1,x2,y2,m_height,isAppend);
+        Scene::scene->selectSingleSide(x1,y1,x2,y2,m_height,isAppend);
         m_isSelectionMode=false;
         m_selectionSX=0;
         m_selectionSY=0;
@@ -345,7 +347,7 @@ bool FourView::onDualSideSelectionRelease(bool isAppend)
         unsigned int x2=(m_selectionSX>m_selectionEX)?m_selectionSX:m_selectionEX;
         unsigned int y2=(m_selectionSY>m_selectionEY)?m_selectionSY:m_selectionEY;
         m_camera[m_selected]->setCameraForSelectionD(x1,y1,x2,y2,m_height);
-        theScene->selectDualSide(isAppend);
+        Scene::scene->selectDualSide(isAppend);
         m_isSelectionMode=false;
         m_selectionSX=0;
         m_selectionSY=0;
@@ -418,12 +420,12 @@ bool FourView::onPanRelease()
     return true;
 }
 
-void FourView::update(unsigned int theSplitX,unsigned int theSplitY,unsigned int theWidth,unsigned int theHeight)
+void FourView::update(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
 {
-    m_splitX=theSplitX;
-    m_splitY=theSplitY;
-    m_width=theWidth;
-    m_height=theHeight;
+    m_splitX=splitX;
+    m_splitY=splitY;
+    m_width=width;
+    m_height=height;
     m_camera[2]->updateSize(0.0f,0.0f,(float)m_splitX,(float)m_splitY);
     m_camera[0]->updateSize(0.0f,(float)m_splitY,(float)m_splitX,(float)(m_height-m_splitY));
     m_camera[3]->updateSize((float)m_splitX,0.0f,(float)(m_width-m_splitX),(float)m_splitY);

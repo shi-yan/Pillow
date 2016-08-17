@@ -24,20 +24,20 @@ END_ENUM()
 class ViewportImage
 {
 public:
-	bool isShow;
-	std::string path;
-	GLuint imageID;
-	GLuint callID;
-    unsigned int width;
-    unsigned int height;
-	CameraMode cameraMode;
-	Vector position;
-    ViewportImage(const char *thePath,GLuint theImageID,unsigned int width,unsigned int height,CameraMode::__Enum theCameraMode,Vector &thePosition);
+    bool m_isShow;
+    std::string m_path;
+    GLuint m_imageID;
+    GLuint m_callID;
+    unsigned int m_width;
+    unsigned int m_height;
+    CameraMode m_cameraMode;
+    Vector m_position;
+    ViewportImage(const char *path, GLuint imageID, unsigned int width, unsigned int height, CameraMode::__Enum cameraMode, Vector &position);
 	void initialize()
 	{
 /*		callID=glGenLists(1);
         glNewList(callID,GL_COMPILE);*/
-		if(cameraMode==CameraMode::Front)
+        if(m_cameraMode==CameraMode::Front)
 		{
         /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
@@ -50,7 +50,7 @@ public:
 			glVertex3f(position.x+width,position.y,position.z);
             glEnd();*/
 		}
-		else if(cameraMode==CameraMode::Back)
+        else if(m_cameraMode==CameraMode::Back)
 		{
         /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
@@ -63,7 +63,7 @@ public:
 			glVertex3f(position.x,position.y,position.z);
             glEnd();	*/
 		}
-		else if(cameraMode==CameraMode::Right)
+        else if(m_cameraMode==CameraMode::Right)
 		{
         /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
@@ -76,7 +76,7 @@ public:
 			glVertex3f(position.x,position.y,position.z);
             glEnd();*/
 		}
-		else if(cameraMode==CameraMode::Left)
+        else if(m_cameraMode==CameraMode::Left)
 		{
         /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
@@ -89,7 +89,7 @@ public:
 			glVertex3f(position.x,position.y+width,position.z);
             glEnd();*/
 		}
-		else if(cameraMode==CameraMode::Top)
+        else if(m_cameraMode==CameraMode::Top)
 		{
         /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);
@@ -102,7 +102,7 @@ public:
 			glVertex3f(position.x,position.y,position.z);
             glEnd();			*/
 		}
-		else if(cameraMode==CameraMode::Bottom)
+        else if(m_cameraMode==CameraMode::Bottom)
 		{
         /*	glBegin(GL_QUADS);
 			glTexCoord2f(0,0);

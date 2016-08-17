@@ -64,18 +64,18 @@ void LeftCamera::setReferenceImage(const char *path,GLuint imageID,Vector &posit
 
         leftReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
         leftReference->initialize();
-        leftReference->isShow=true;
+        leftReference->m_isShow=true;
 }
 
 void LeftCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
 {
     if(leftReference)
     {
-        texID=leftReference->imageID;
-        path=leftReference->path;
-        position=leftReference->position;
-        width=leftReference->width;
-        height=leftReference->height;
+        texID=leftReference->m_imageID;
+        path=leftReference->m_path;
+        position=leftReference->m_position;
+        width=leftReference->m_width;
+        height=leftReference->m_height;
     }
     else
     {
@@ -89,7 +89,7 @@ void LeftCamera::getViewportImage(GLuint &texID,std::string &path,Vector &positi
 
 void LeftCamera::disableReference()
 {
-    leftReference->isShow=false;
+    leftReference->m_isShow=false;
 }
 
 void LeftCamera::drawGird() const

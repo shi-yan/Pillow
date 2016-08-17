@@ -76,18 +76,18 @@ void RightCamera::setCamera()
 
             rightReference=new ViewportImage(path,imageID,m_width,m_height,m_type._value,position);
             rightReference->initialize();
-            rightReference->isShow=true;
+            rightReference->m_isShow=true;
     }
 
     void RightCamera::getViewportImage(GLuint &texID,std::string &path,Vector &position,unsigned int &width,unsigned int &height)
     {
         if(rightReference)
         {
-            texID=rightReference->imageID;
-            path=rightReference->path;
-            position=rightReference->position;
-            width=rightReference->width;
-            height=rightReference->height;
+            texID=rightReference->m_imageID;
+            path=rightReference->m_path;
+            position=rightReference->m_position;
+            width=rightReference->m_width;
+            height=rightReference->m_height;
         }
         else
         {
@@ -101,7 +101,7 @@ void RightCamera::setCamera()
 
         void RightCamera::disableReference()
     {
-        rightReference->isShow=false;
+        rightReference->m_isShow=false;
     }
 
                             void RightCamera::setCameraForSelectionS()

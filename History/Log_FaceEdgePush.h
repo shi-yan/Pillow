@@ -7,11 +7,11 @@ class Log_FaceEdgePush :
 public:
     const unsigned int m_index;
 public:
-    Log_FaceEdgePush(unsigned int theTarget,unsigned int theIndex);
+    Log_FaceEdgePush(unsigned int target,unsigned int theIndex);
     std::string toString()
     {
         char temp[256];
-        sprintf(temp,"\t\t\t<Log Type=\"FaceEdgePush\" Target=\"%d\" Index=\"%d\" />\n",target,index);
+        //sprintf(temp,"\t\t\t<Log Type=\"FaceEdgePush\" Target=\"%d\" Index=\"%d\" />\n",target,index);
         std::string out(temp);
         return out;
     }
