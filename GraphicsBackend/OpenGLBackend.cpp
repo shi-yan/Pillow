@@ -1,7 +1,3 @@
-#include <GL/glew.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-
 #include "OpenGLBackend.h"
 #include <QDebug>
 #include <QImage>
@@ -40,10 +36,12 @@ OpenGLBackend::OpenGLBackend()
      m_objectPolygonVbo(0),
      m_objectPolygonVao(0)
 {
+
 }
 
 void OpenGLBackend::initialize()
 {
+    initializeOpenGLFunctions();
     m_UITextureID = loadTexture("://ui.dat");
 
     const char* vertex_shader_ui =
@@ -65,7 +63,7 @@ void OpenGLBackend::initialize()
     "out vec4 frag_colour;"
     "void main () {"
     "  frag_colour = texture (asset, texCoord);"
-    //"frag_colour = vec4(1.0,0.0,0.0,1.0);"
+  //  "frag_colour = vec4(1.0,0.0,0.0,1.0);"
     "}";
 
    compileShader(m_UIShaderProgram, m_UIVertexShader, m_UIFragmentShader, vertex_shader_ui, fragment_shader_ui);
@@ -170,7 +168,9 @@ void OpenGLBackend::initialize()
     m_objectPhongTransformUniform = glGetUniformLocation(m_objectPhongShaderProgram, "normal");
 
     glGenBuffers (1, &m_objectPolygonVbo);
-    glGenVertexArrays (1, &m_objectPolygonVao);
+    //glGenVertexArrays (1, &m_objectPolygonVao);
+
+
 }
 
 void OpenGLBackend::deinitialize()
@@ -190,11 +190,11 @@ void OpenGLBackend::deinitialize()
     glDeleteTextures(1, &m_UITextureID);
     if (m_objectPolygonVao)
     {
-        glDeleteVertexArrays(1, &m_objectPolygonVao);
+        //glDeleteVertexArrays(1, &m_objectPolygonVao);
     }
     if(m_objectPolygonVbo)
     {
-        glDeleteVertexArrays(1, &m_objectPolygonVbo);
+        //glDeleteVertexArrays(1, &m_objectPolygonVbo);
     }
 }
 
@@ -224,6 +224,8 @@ void OpenGLBackend::beginUI(unsigned int width, unsigned int height)
         m_screenHeight = height;
         glUniform2f(m_UIScreenSizeUniform, m_screenWidth, m_screenHeight);
     }
+
+
 }
 
 void OpenGLBackend::endUI()
@@ -231,7 +233,7 @@ void OpenGLBackend::endUI()
 
 }
 
-GLuint OpenGLBackend::loadTexture(const char *fileName) const
+GLuint OpenGLBackend::loadTexture(const char *fileName)
 {
     GLuint textureId = 0;
     QImage textureImage(fileName);
@@ -260,15 +262,15 @@ OpenGLBackend::RenderableGeometryData::~RenderableGeometryData()
 {
     if (m_vao)
     {
-        glDeleteVertexArrays(1, &m_vao);
+        //glDeleteVertexArrays(1, &m_vao);
     }
     if(m_vbo)
     {
-        glDeleteVertexArrays(1, &m_vbo);
+       // glDeleteVertexArrays(1, &m_vbo);
     }
     if (m_colorVbo)
     {
-        glDeleteVertexArrays(1, &m_colorVbo);
+       // glDeleteVertexArrays(1, &m_colorVbo);
     }
 }
 
@@ -292,26 +294,20 @@ GLuint OpenGLBackend::RenderableGeometryData::getColorVbo() const
     return m_colorVbo;
 }
 
-void OpenGLBackend::updateGeometryWithVertices(void **id, const float * const vertices, unsigned int count, unsigned int size) const
+void OpenGLBackend::updateGeometryWithVertices(void **id, const float * const vertices, unsigned int count, unsigned int size)
 {
     if (*id == nullptr)
     {
         GLuint vbo = 0;
         GLuint vao = 0;
         glGenBuffers (1, &vbo);
-        glGenVertexArrays (1, &vao);
         *id = new RenderableGeometryData(vbo, vao);
+        ((RenderableGeometryData*)(*id))->vao.create();
     }
-
     RenderableGeometryData *renderableData = (RenderableGeometryData*)(*id);
 
     glBindBuffer (GL_ARRAY_BUFFER, renderableData->getVbo());
     glBufferData (GL_ARRAY_BUFFER, count * sizeof (float), vertices, GL_STATIC_DRAW);
-
-    glBindVertexArray (renderableData->getVao());
-    glEnableVertexAttribArray (0);
-    glBindBuffer (GL_ARRAY_BUFFER, renderableData->getVbo());
-    glVertexAttribPointer (0, size, GL_FLOAT, GL_FALSE, 0, NULL);
 }
 
 void OpenGLBackend::deleteRenderableGeometryData(const void *id) const
@@ -320,19 +316,41 @@ void OpenGLBackend::deleteRenderableGeometryData(const void *id) const
     delete renderableData;
 }
 
-void OpenGLBackend::drawToolStripGeometry(const void * const id) const
+void OpenGLBackend::drawToolStripGeometry(const void * const id)
 {
+  //  qDebug() << glGetError();
+glUseProgram(m_UIShaderProgram);
     glUniform2f(m_UIOffsetUniform, 0, 0);
     RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
-    glBindVertexArray (renderableData->getVao());
+    qDebug() << "uniform"<< glGetError();
+    glBindBuffer( GL_ARRAY_BUFFER, renderableData->getVbo());
+
+    GLuint _positionSlot = glGetAttribLocation(m_UIShaderProgram, "vp");
+    qDebug() << glGetError();
+    renderableData->vao.bind();
+
+    glEnableVertexAttribArray (_positionSlot);
+    qDebug() << glGetError();
+
+    qDebug() << "bind"<< glGetError();
+
+
+    //glVertexAttribPointer (0, renderableData->, GL_FLOAT, GL_FALSE, 0, NULL);
+    //glBindVertexArray (renderableData->getVao());
+   // glEnableVertexAttribArray (0);
+    glVertexAttribPointer (_positionSlot, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    qDebug() << glGetError();
+
     glDrawArrays (GL_TRIANGLE_STRIP, 0, 8);
+    qDebug() << glGetError();
+
 }
 
-void OpenGLBackend::drawButtonStripGeometry(const void * const id, int offsetX, int offsetY) const
+void OpenGLBackend::drawButtonStripGeometry(const void * const id, int offsetX, int offsetY)
 {
     glUniform2f(m_UIOffsetUniform, offsetX, offsetY);
     const RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
-    glBindVertexArray (renderableData->getVao());
+    //glBindVertexArray (renderableData->getVao());
     glDrawArrays (GL_TRIANGLE_FAN, 0, 4);
 }
 
@@ -360,16 +378,18 @@ void OpenGLBackend::setProjectionMatrix(const Matrix &in)
     glUniformMatrix4fv(m_objectPhongProjectionUniform, 1, false, &m_projection.m[0][0]);
 }
 
-void OpenGLBackend::updateGeometryWithVerticesAndColors(void **id, const std::vector<float> &vertices, const std::vector<unsigned char> &colors) const
+void OpenGLBackend::updateGeometryWithVerticesAndColors(void **id, const std::vector<float> &vertices, const std::vector<unsigned char> &colors)
 {
     if (*id == nullptr)
     {
         GLuint vbo = 0;
         GLuint vao = 0;
         glGenBuffers (1, &vbo);
-        glGenVertexArrays (1, &vao);
+        //glGenVertexArrays (1, &vao);
+
         *id = new RenderableGeometryData(vbo, vao);
 
+        ((RenderableGeometryData*)(*id))->vao.create();
         GLuint colorVbo = 0;
 
         glGenBuffers(1, &colorVbo);
@@ -380,7 +400,7 @@ void OpenGLBackend::updateGeometryWithVerticesAndColors(void **id, const std::ve
 
     RenderableGeometryData *renderableData = (RenderableGeometryData*)(*id);
 
-    glBindVertexArray (renderableData->getVao());
+    //glBindVertexArray (renderableData->getVao());
 
     glBindBuffer (GL_ARRAY_BUFFER, renderableData->getVbo());
     glBufferData (GL_ARRAY_BUFFER, vertices.size() * sizeof (float), &vertices[0], GL_STATIC_DRAW);
@@ -394,44 +414,44 @@ void OpenGLBackend::updateGeometryWithVerticesAndColors(void **id, const std::ve
     glEnableVertexAttribArray(1);
 }
 
-void OpenGLBackend::drawGridGeometry(const void * const id) const
+void OpenGLBackend::drawGridGeometry(const void * const id)
 {
     RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
     glUseProgram (m_gridShaderProgram);
-    glBindVertexArray (renderableData->getVao());
+    //glBindVertexArray (renderableData->getVao());
     glDrawArrays (GL_LINES, 0, 252);
 }
 
-void OpenGLBackend::drawAxisCursorMove(const void * const id, const Matrix &transform, const Vector &color) const
+void OpenGLBackend::drawAxisCursorMove(const void * const id, const Matrix &transform, const Vector &color)
 {
     RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
     glUseProgram (m_axisCursorShaderProgram);
     glUniformMatrix4fv(m_axisCursorTransformUniform, 1, false, &transform.m[0][0]);
     glUniform3f(m_axisCursorColorUniform, color.x, color.y, color.z);
-    glBindVertexArray (renderableData->getVao());
+    //glBindVertexArray (renderableData->getVao());
     glDrawArrays (GL_TRIANGLES, 0, 12);
     glDrawArrays (GL_TRIANGLE_FAN, 12, 4);
     glDrawArrays(GL_LINES, 16, 2);
 }
 
-void OpenGLBackend::drawAxisCursorRotate(const void * const id, const Matrix &transform, const Vector &color) const
+void OpenGLBackend::drawAxisCursorRotate(const void * const id, const Matrix &transform, const Vector &color)
 {
     RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
     glUseProgram (m_axisCursorShaderProgram);
     glUniformMatrix4fv(m_axisCursorTransformUniform, 1, false, &transform.m[0][0]);
     glUniform3f(m_axisCursorColorUniform, color.x, color.y, color.z);
-    glBindVertexArray (renderableData->getVao());
+    //glBindVertexArray (renderableData->getVao());
     glDrawArrays (GL_TRIANGLES, 0, 21);
     glDrawArrays(GL_LINES, 21, 2);
 }
 
-void OpenGLBackend::drawAxisCursorScale(const void * const id, const Matrix &transform, const Vector &color) const
+void OpenGLBackend::drawAxisCursorScale(const void * const id, const Matrix &transform, const Vector &color)
 {
     RenderableGeometryData *renderableData = (RenderableGeometryData*)(id);
     glUseProgram (m_axisCursorShaderProgram);
     glUniformMatrix4fv(m_axisCursorTransformUniform, 1, false, &transform.m[0][0]);
     glUniform3f(m_axisCursorColorUniform, color.x, color.y, color.z);
-    glBindVertexArray (renderableData->getVao());
+    //glBindVertexArray (renderableData->getVao());
     glDrawArrays (GL_TRIANGLE_FAN, 0, 4);
     glDrawArrays (GL_TRIANGLE_FAN, 4, 4);
     glDrawArrays (GL_TRIANGLE_FAN, 8, 4);
@@ -484,13 +504,13 @@ void OpenGLBackend::compileShader(GLuint &programId, GLuint &vertexShaderId, GLu
     }
 }
 
-void OpenGLBackend::drawObjectPolygon(const std::vector<float> &vertices) const
+void OpenGLBackend::drawObjectPolygon(const std::vector<float> &vertices)
 {
     glEnable(GL_DEPTH_TEST);
     glUseProgram (m_objectPhongShaderProgram);
     glBindBuffer (GL_ARRAY_BUFFER, m_objectPolygonVbo);
     glBufferData (GL_ARRAY_BUFFER, vertices.size() * sizeof (float), &vertices[0], GL_DYNAMIC_DRAW);
-    glBindVertexArray (m_objectPolygonVao);
+    //glBindVertexArray (m_objectPolygonVao);
     glEnableVertexAttribArray (0);
     glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE,  6*sizeof(float),(void*) (3*sizeof(float)));
     glEnableVertexAttribArray (1);

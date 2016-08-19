@@ -133,7 +133,7 @@ void ToolStrip::updatePosition(int x, int y)
 {
     m_x = x;
     m_y = y;
-    updateButtonPosition();
+    //updateButtonPosition();
     updateGeometry();
 }
 
@@ -170,10 +170,10 @@ void ToolStrip::updateGeometry()
         m_backend->updateGeometryWithVertices(&m_renderable, vertices, 32, 4);
     }
 
-    for(unsigned int i = 0; i < m_buttonSet.size(); ++i)
+   /* for(unsigned int i = 0; i < m_buttonSet.size(); ++i)
     {
         m_buttonSet[i]->updateGeometry();
-    }
+    }*/
 }
 
 void ToolStrip::onPaint() const

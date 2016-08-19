@@ -156,10 +156,11 @@ SOURCES += \
     Dialog/NewCylinderDialog.cpp \
     GraphicsBackend/OpenGLBackend.cpp \
     Core/Scene_Draw.cpp \
-    Core/Scene_File.cpp
+    Core/Scene_File.cpp \
+    Core/Scene_Create.cpp
 
 unix:!mac {
-LIBS += -lGLU -lGLEW
+LIBS += -lGL
 }
 
 macx {

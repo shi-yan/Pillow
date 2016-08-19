@@ -9,7 +9,7 @@ public:
 public:
     const unsigned int right;
 public:
-    Log_EdgeRightChange(unsigned int target,unsigned int theIndex,unsigned int theRight);
+    Log_EdgeRightChange(unsigned int target,unsigned int index,unsigned int right);
     std::string toString()
     {
         char temp[256];

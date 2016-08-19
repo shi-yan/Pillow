@@ -210,13 +210,13 @@ void UILayer::updateFileStrip()
 void UILayer::onPaint()
 {
     m_modifyModeStrip->onPaint();
-    m_layoutModeStrip->onPaint();
+   /* m_layoutModeStrip->onPaint();
     m_shadeModeStrip->onPaint();
     m_fileStrip->onPaint();
     m_createStrip->onPaint();
     m_modifyStrip->onPaint();
     m_helpStrip->onPaint();
-    m_cameraStrip->onPaint();
+    m_cameraStrip->onPaint();*/
 }
 
 void UILayer::updateSize(unsigned int width, unsigned int height)
@@ -225,13 +225,13 @@ void UILayer::updateSize(unsigned int width, unsigned int height)
     m_height=height;
 
     updateModifyModeStrip();
-    updateLayoutModeStrip();
+ /*   updateLayoutModeStrip();
     updateShadeModeStrip();
     updateFileStrip();
     updateCreateStrip();
     updateModifyStrip();
     updateHelpStrip();
-    updateCameraStrip();
+    updateCameraStrip();*/
 }
 
 UILayer::~UILayer(void)

@@ -12,7 +12,11 @@
 #include <vector>
 #include "Core/Matrix.h"
 
-class OpenGLBackend
+#include <QtOpenGL/QGLFunctions>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLBuffer>
+
+class OpenGLBackend : public QOpenGLFunctions
 {
 private:
     GLuint m_UITextureID;
@@ -53,7 +57,7 @@ private:
     GLuint m_objectPolygonVbo;
     GLuint m_objectPolygonVao;
 
-    GLuint loadTexture(const char *fileName) const;
+    GLuint loadTexture(const char *fileName);
 
 public:
     class RenderableGeometryData
@@ -61,6 +65,7 @@ public:
         GLuint m_vbo;
         GLuint m_vao;
         GLuint m_colorVbo;
+
 
     public:
         RenderableGeometryData(GLuint vbo, GLuint vao);
@@ -72,6 +77,7 @@ public:
         void setColorVbo(GLuint vbo);
 
         GLuint getColorVbo() const;
+        QOpenGLVertexArrayObject vao;
     };
 
     OpenGLBackend();
@@ -81,24 +87,24 @@ public:
     void beginUI(unsigned int width, unsigned int height);
     void endUI();
 
-    void updateGeometryWithVertices(void **id, const float * const vertices, unsigned int count, unsigned int size = 4) const;
+    void updateGeometryWithVertices(void **id, const float * const vertices, unsigned int count, unsigned int size = 4);
     void deleteRenderableGeometryData(const void *id) const;
 
-    void drawToolStripGeometry(const void * const id) const;
-    void drawButtonStripGeometry(const void * const id, int offsetX = 0, int offsetY = 0) const;
+    void drawToolStripGeometry(const void * const id);
+    void drawButtonStripGeometry(const void * const id, int offsetX = 0, int offsetY = 0);
 
     void setModelViewMatrix(const Matrix &in);
     void setProjectionMatrix(const Matrix &in);
 
-    void updateGeometryWithVerticesAndColors(void **id, const std::vector<float> &vertices, const std::vector<unsigned char> &colors) const;
-    void drawGridGeometry(const void * const id) const;
+    void updateGeometryWithVerticesAndColors(void **id, const std::vector<float> &vertices, const std::vector<unsigned char> &colors);
+    void drawGridGeometry(const void * const id);
 
-    void drawAxisCursorMove(const void * const id, const Matrix &transform, const Vector &color) const;
-    void drawAxisCursorRotate(const void * const id, const Matrix &transform, const Vector &color) const;
-    void drawAxisCursorScale(const void * const id, const Matrix &transform, const Vector &color) const;
+    void drawAxisCursorMove(const void * const id, const Matrix &transform, const Vector &color);
+    void drawAxisCursorRotate(const void * const id, const Matrix &transform, const Vector &color);
+    void drawAxisCursorScale(const void * const id, const Matrix &transform, const Vector &color);
 
     void setObjectMaterialAndTransform(const Matrix &transform);
-    void drawObjectPolygon(const std::vector<float> &vertices) const;
+    void drawObjectPolygon(const std::vector<float> &vertices);
 
     ~OpenGLBackend();
 

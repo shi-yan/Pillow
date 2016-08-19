@@ -650,7 +650,7 @@ public:
     void redo()
     {
         HistoryRecord &record=historyManager->redoBegin();
-        historyManager->recordBeginR(record.name);
+        historyManager->recordBeginR(record.m_name);
         unsigned int recordSize=record.size();
         for(int i=recordSize-1;i>-1;--i)
         {
@@ -663,7 +663,7 @@ public:
     void undo()
     {
         HistoryRecord &record=historyManager->undoBegin();
-        historyManager->redoRecordBegin(record.name);
+        historyManager->redoRecordBegin(record.m_name);
         unsigned int recordSize=record.size();
         for(int i=recordSize-1;i>-1;--i)
         {
@@ -679,13 +679,13 @@ public:
             if(log->m_type==LogType::Vertex_Position_Change)
             {
                 Log_VertexPositionChange *original((Log_VertexPositionChange*)log);
-                m_objectList[original->m_target]->vertexPositionChangeA(original->m_index,original->x,original->y,original->z);
+                m_objectList[original->m_target]->vertexPositionChangeA(original->m_index,original->m_x,original->m_y,original->m_z);
             }
             else
             if(log->m_type==LogType::Vertex_Normal_Change)
             {
                 Log_VertexNormalChange *original((Log_VertexNormalChange*)log);
-                m_objectList[original->m_target]->vertexNormalChange(original->m_index,original->x,original->y,original->z);
+                m_objectList[original->m_target]->vertexNormalChange(original->m_index,original->m_x,original->m_y,original->m_z);
             }
             else
             if(log->m_type==LogType::Vertex_Adjacent_Push)
@@ -703,13 +703,13 @@ public:
             if(log->m_type==LogType::Vertex_Adjacent_Pop)
             {
                 Log_VertexAdjacentPop *original((Log_VertexAdjacentPop*)log);
-                m_objectList[original->m_target]->vertexAdjacentPush(original->m_index,original->o);
+                m_objectList[original->m_target]->vertexAdjacentPush(original->m_index, original->o);
             }
             else
             if(log->m_type==LogType::Vertex_Adjacent_Swap)
             {
                 Log_VertexAdjacentSwap *original((Log_VertexAdjacentSwap*)log);
-                m_objectList[original->m_target]->vertexAdjacentSwap(original->m_index,original->tIndex,original->oIndex);
+                m_objectList[original->m_target]->vertexAdjacentSwap(original->m_index, original->m_tIndex, original->m_oIndex);
             }
             else
             if(log->m_type==LogType::Vertex_Adjacent_Remove)

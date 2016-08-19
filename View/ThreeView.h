@@ -47,7 +47,7 @@ public:
 
     bool onPanRelease() override;
 
-    void update(unsigned int theSplitX,unsigned int theSplitY,unsigned int theWidth,unsigned int theHeight) override;
+    void update(unsigned int splitX, unsigned int splitY, unsigned int width, unsigned int height) override;
 
     ~ThreeView(void) override;
 };

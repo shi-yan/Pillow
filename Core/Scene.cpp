@@ -6,6 +6,7 @@ Scene *Scene::scene = nullptr;
 
 void Scene::initialize()
 {
+    m_backend->initialize();
     m_isInCache.reserve(1000);
     m_axisCursor = new AxisCursor(m_backend);
     m_axisCursor->initialize();

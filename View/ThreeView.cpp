@@ -365,12 +365,12 @@ bool ThreeView::onPanRelease()
     return true;
 }
 
-void ThreeView::update(unsigned int theSplitX,unsigned int theSplitY,unsigned int theWidth,unsigned int theHeight)
+void ThreeView::update(unsigned int splitX, unsigned int splitY, unsigned int width, unsigned int height)
 {
-    m_splitX=theSplitX;
-    m_splitY=theSplitY;
-    m_width=theWidth;
-    m_height=theHeight;
+    m_splitX = splitX;
+    m_splitY = splitY;
+    m_width = width;
+    m_height = height;
     m_camera[0]->updateSize(0.0f,0.0f,(float)m_splitX,(float)m_height);
     m_camera[2]->updateSize((float)m_splitX,0.0,(float)(m_width-m_splitX),(float)m_splitY);
     m_camera[1]->updateSize((float)m_splitX,(float)m_splitY,(float)(m_width-m_splitX),(float)(m_height-m_splitY));

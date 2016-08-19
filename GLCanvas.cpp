@@ -1,5 +1,5 @@
 #include "GLCanvas.h"
-
+#include <QOpenGLContext>
 #include <QDebug>
 
 GLCanvas::GLCanvas(QWidget *parent) : QOpenGLWidget(parent),isDragging(false)
@@ -10,9 +10,10 @@ GLCanvas::GLCanvas(QWidget *parent) : QOpenGLWidget(parent),isDragging(false)
 
 void GLCanvas::initializeGL()
 {
+    qDebug() << this->context()->isOpenGLES();
     Screen::screen = new Screen();
     Scene::scene=new Scene(Screen::screen->m_graphicsBackend);
-    Scene::scene->initialize();
+   // Scene::scene->initialize();
     Screen::screen->initialize();
     int w = 800, h = 600;
 

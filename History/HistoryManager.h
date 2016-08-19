@@ -6,186 +6,187 @@
 class HistoryManager
 {
 private:
-    std::deque<HistoryRecord *> undoList;
-    std::vector<HistoryRecord *> redoList;
-    bool recordLock;
-    unsigned int capacity;
-    HistoryRecord *currentRecord;
+    std::deque<HistoryRecord *> m_undoList;
+    std::vector<HistoryRecord *> m_redoList;
+    bool m_recordLock;
+    unsigned int m_capacity;
+    HistoryRecord *m_currentRecord;
 public:
-    HistoryManager(unsigned int theCapacity=20):capacity(theCapacity),recordLock(false),currentRecord(NULL)
+    HistoryManager(unsigned int capacity=20)
+        :m_capacity(capacity),
+          m_recordLock(false),
+          m_currentRecord(NULL)
     {
-        redoList.reserve(capacity);
+        m_redoList.reserve(capacity);
     }
 
-    void recordBegin(std::string theName)
+    void recordBegin(const std::string &name)
     {
-        if(!redoList.empty())
+        if(!m_redoList.empty())
         {
             releaseRedo();
         }
-        recordLock=true;
-        currentRecord=new HistoryRecord(theName);
+        m_recordLock=true;
+        m_currentRecord=new HistoryRecord(name);
         //currentRecord->reserve(1000);
-        if(undoList.size()<capacity)
+        if(m_undoList.size()<m_capacity)
         {
-            undoList.push_back(currentRecord);
+            m_undoList.push_back(m_currentRecord);
         }
         else
         {
             releaseUndo(0);
-            undoList.pop_front();
-            undoList.push_back(currentRecord);
+            m_undoList.pop_front();
+            m_undoList.push_back(m_currentRecord);
         }
     }
 
-    void recordBeginR(std::string &theName)
+    void recordBeginR(const std::string &name)
     {
-        recordLock=true;
-        currentRecord=new HistoryRecord(theName);
-        undoList.push_back(currentRecord);
+        m_recordLock=true;
+        m_currentRecord=new HistoryRecord(name);
+        m_undoList.push_back(m_currentRecord);
     }
 
     void recordEnd()
     {
-        recordLock=false;
-        currentRecord=NULL;
+        m_recordLock=false;
+        m_currentRecord=NULL;
     }
 
-    bool record(HistoryLog *theLog)
+    bool record(HistoryLog *log)
     {
-        //delete theLog;
-        if(recordLock)
+        if(m_recordLock)
         {
-            currentRecord->push(theLog);
+            m_currentRecord->push(log);
             return true;
         }
         else
         {
-            delete theLog;
+            delete log;
             return false;
         }
-        //return false;
     }
 
     HistoryRecord & undoBegin()
     {
-        return *undoList[undoList.size()-1];
+        return *m_undoList[m_undoList.size()-1];
     }
 
     HistoryRecord & redoBegin()
     {
-        return *redoList[redoList.size()-1];
+        return *m_redoList[m_redoList.size()-1];
     }
 
-    void redoRecordBegin(std::string &theName)
+    void redoRecordBegin(const std::string &name)
     {
-        recordLock=true;
-        currentRecord=new HistoryRecord(theName);
-        redoList.push_back(currentRecord);
+        m_recordLock=true;
+        m_currentRecord=new HistoryRecord(name);
+        m_redoList.push_back(m_currentRecord);
     }
 
     void redoRecordEnd()
     {
-        recordLock=false;
-        currentRecord=NULL;
+        m_recordLock=false;
+        m_currentRecord=NULL;
     }
 
     void redoEnd()
     {
-        delete redoList[redoList.size()-1];
-        redoList.pop_back();
+        delete m_redoList[m_redoList.size()-1];
+        m_redoList.pop_back();
     }
 
     void undoEnd()
     {
-        delete undoList[undoList.size()-1];
-        undoList.pop_back();
+        delete m_undoList[m_undoList.size()-1];
+        m_undoList.pop_back();
     }
 
     void releaseRedo()
     {
-        unsigned int redoSize=redoList.size();
+        unsigned int redoSize=m_redoList.size();
         for(unsigned int i=0;i<redoSize;++i)
         {
-            redoList[i]->clear();
-            delete redoList[i];
+            m_redoList[i]->clear();
+            delete m_redoList[i];
         }
     }
 
     void releaseUndo()
     {
-        unsigned int undoSize=undoList.size();
+        unsigned int undoSize=m_undoList.size();
         for(unsigned int i=0;i<undoSize;++i)
         {
-            undoList[i]->clear();
-            delete undoList[i];
+            m_undoList[i]->clear();
+            delete m_undoList[i];
         }
     }
 
     void releaseUndo(unsigned int i)
     {
-        undoList[i]->clear();
-        delete undoList[i];
+        m_undoList[i]->clear();
+        delete m_undoList[i];
     }
 
     unsigned int undoSize()
     {
-        return undoList.size();
+        return m_undoList.size();
     }
 
     unsigned int redoSize()
     {
-        return  redoList.size();
+        return  m_redoList.size();
     }
 
     void testOut()
     {
         std::cout<<"<History>"<<std::endl;
-        unsigned int undoSize=undoList.size();
+        unsigned int undoSize=m_undoList.size();
         if(undoSize)
         {
             std::cout<<"\t<Undo>"<<std::endl;
             for(unsigned int i=0;i<undoSize;i++)
             {
-                std::cout<<undoList[i]->toString()<<std::endl;
+                std::cout<<m_undoList[i]->toString()<<std::endl;
             }
             std::cout<<"\t</UnDo>"<<std::endl;
         }
-        unsigned int redoSize=redoList.size();
+        unsigned int redoSize=m_redoList.size();
         if(redoSize)
         {
             std::cout<<"\t<Redo>"<<std::endl;
             for(unsigned int i=0;i<redoSize;i++)
             {
-                std::cout<<redoList[i]->toString()<<std::endl;
+                std::cout<<m_redoList[i]->toString()<<std::endl;
             }
             std::cout<<"\t</Redo>"<<std::endl;
         }
         std::cout<<"</History>"<<std::endl;
     }
 
-    void testOut(char *fileName)
+    void testOut(const char *fileName)
     {
         FILE *fp;
         fp = fopen(fileName,"w");
         fprintf(fp,"<History>\n");
-        unsigned int undoSize=undoList.size();
+        unsigned int undoSize=m_undoList.size();
         if(undoSize)
         {
             fprintf(fp,"\t<Undo>\n");
             for(unsigned int i=0;i<undoSize;i++)
             {
-                fprintf(fp,"%s",undoList[i]->toString().c_str());
+                fprintf(fp,"%s",m_undoList[i]->toString().c_str());
             }
             fprintf(fp,"\t</Undo>\n");
         }
-        unsigned int redoSize=redoList.size();
+        unsigned int redoSize=m_redoList.size();
         if(redoSize)
         {
             fprintf(fp,"\t<Redo>\n");
             for(unsigned int i=0;i<redoSize;i++)
             {
-                fprintf(fp,redoList[i]->toString().c_str());
+                fprintf(fp,m_redoList[i]->toString().c_str());
             }
             fprintf(fp,"\t</Redo>\n");
         }

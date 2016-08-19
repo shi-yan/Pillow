@@ -1,10 +1,10 @@
 #include "Log_VertexAdjacentSwap.h"
 
-Log_VertexAdjacentSwap::Log_VertexAdjacentSwap(unsigned int theTarget,unsigned int theIndex,unsigned int theOIndex,unsigned int theTIndex)
-    :HistoryLog(LogType::Vertex_Adjacent_Swap,theTarget),
-      m_index(theIndex),
-      oIndex(theOIndex),
-      tIndex(theTIndex)
+Log_VertexAdjacentSwap::Log_VertexAdjacentSwap(unsigned int target, unsigned int index, unsigned int oIndex, unsigned int tIndex)
+    :HistoryLog(LogType::Vertex_Adjacent_Swap, target),
+      m_index(index),
+      m_oIndex(oIndex),
+      m_tIndex(tIndex)
 {
 }
 

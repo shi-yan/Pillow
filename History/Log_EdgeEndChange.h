@@ -11,7 +11,7 @@ public:
     const int end;
 
 public:
-    Log_EdgeEndChange(unsigned int target,unsigned int theIndex,int theEnd);
+    Log_EdgeEndChange(unsigned int target,unsigned int index,int end);
     std::string toString()
     {
         char temp[256];

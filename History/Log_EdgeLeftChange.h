@@ -11,7 +11,7 @@ public:
     const unsigned int left;
 
 public:
-    Log_EdgeLeftChange(unsigned int target,unsigned int theIndex,unsigned int theLeft);
+    Log_EdgeLeftChange(unsigned int target,unsigned int index,unsigned int left);
     std::string toString()
     {
         char temp[256];

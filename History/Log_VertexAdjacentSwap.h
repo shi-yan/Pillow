@@ -8,11 +8,11 @@ public:
     const unsigned int m_index;
 
 public:
-    const unsigned int oIndex;
-    const unsigned int tIndex;
+    const unsigned int m_oIndex;
+    const unsigned int m_tIndex;
 
 public:
-    Log_VertexAdjacentSwap(unsigned int theTarget,unsigned int theIndex,unsigned int theOIndex,unsigned int theTIndex);
+    Log_VertexAdjacentSwap(unsigned int target, unsigned int index, unsigned int oIndex, unsigned int tIndex);
     std::string toString()
     {
         char temp[256];

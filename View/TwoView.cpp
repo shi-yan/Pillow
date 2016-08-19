@@ -330,12 +330,12 @@ bool TwoView::onPanRelease()
     return true;
 }
 
-void TwoView::update(unsigned int theSplitX,unsigned int theSplitY,unsigned int theWidth,unsigned int theHeight)
+void TwoView::update(unsigned int splitX,unsigned int splitY,unsigned int width,unsigned int height)
 {
-    m_splitX=theSplitX;
-    m_splitY=theSplitY;
-    m_width=theWidth;
-    m_height=theHeight;
+    m_splitX = splitX;
+    m_splitY = splitY;
+    m_width = width;
+    m_height = height;
     m_camera[0]->updateSize(0.0f,0.0f,(float)m_splitX,(float)m_height);
     m_camera[1]->updateSize((float)m_splitX,0.0f,(float)(m_width-m_splitX),(float)m_height);
 }

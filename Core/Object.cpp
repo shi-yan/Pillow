@@ -533,8 +533,8 @@ void Object::subdivideFace(Face *face)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
                 edge->m_subdivideId=m_subdivideId;
-                Vector theN=m_vertexArray[edge->m_start]->m_position+m_vertexArray[edge->m_end]->m_position;
-                edge->m_middle=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex(theN));
+                Vector center=m_vertexArray[edge->m_start]->m_position+m_vertexArray[edge->m_end]->m_position;
+                edge->m_middle=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex(center));
                 //m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.clear();
                 m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.reserve(4);
                 if(edge->m_left && edge->m_right)
@@ -572,8 +572,8 @@ void Object::subdivideFace(Face *face)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
                 edge->m_subdivideId=m_subdivideId;
-                Vector theN=m_vertexArray[edge->m_start]->m_position+m_vertexArray[edge->m_end]->m_position;
-                edge->m_middle=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex(theN));
+                Vector center=m_vertexArray[edge->m_start]->m_position+m_vertexArray[edge->m_end]->m_position;
+                edge->m_middle=m_subdivideLevel[0]->m_vertex.add(new SubdivideVertex(center));
                 //m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.clear();
                 m_subdivideLevel[0]->m_vertex[edge->m_middle]->m_adjacentEdgeList.reserve(4);
                 if(edge->m_left!=0 && edge->m_right!=0)
@@ -745,8 +745,8 @@ void Object::subdivideFace(SubdivideFace *face)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
                 edge->m_subdivideId=m_subdivideId;
-                Vector theN=original->m_vertex[edge->m_start]->m_position+original->m_vertex[edge->m_end]->m_position;
-                edge->m_middle=target->m_vertex.add(new SubdivideVertex(theN));
+                Vector center=original->m_vertex[edge->m_start]->m_position+original->m_vertex[edge->m_end]->m_position;
+                edge->m_middle=target->m_vertex.add(new SubdivideVertex(center));
                 //target->m_vertex[edge->m_middle]->m_adjacentEdgeList.clear();
                 target->m_vertex[edge->m_middle]->m_adjacentEdgeList.reserve(4);
                 if(edge->m_left && edge->m_right)
@@ -784,8 +784,8 @@ void Object::subdivideFace(SubdivideFace *face)
             {
                 //Èç¹ûÊÇµÚÒ»´Î´¦ÀíÕâ¸ö±ß
                 edge->m_subdivideId=m_subdivideId;
-                Vector theN=original->m_vertex[edge->m_start]->m_position+original->m_vertex[edge->m_end]->m_position;
-                edge->m_middle=target->m_vertex.add(new SubdivideVertex(theN));
+                Vector center=original->m_vertex[edge->m_start]->m_position+original->m_vertex[edge->m_end]->m_position;
+                edge->m_middle=target->m_vertex.add(new SubdivideVertex(center));
                 //target->m_vertex[edge->m_middle]->m_adjacentEdgeList.clear();
                 target->m_vertex[edge->m_middle]->m_adjacentEdgeList.reserve(4);
                 if(edge->m_left && edge->m_right)
@@ -892,10 +892,10 @@ void Object::clearPSCache()
     }
 }
 
-void Object::mirror(MirrorMode type,Vector &them_mirrorPosition)
+void Object::mirror(MirrorMode type,Vector &mirrorPosition)
 {
     m_mirrorMode=type;
-    m_mirrorPosition=them_mirrorPosition;
+    m_mirrorPosition=mirrorPosition;
     m_isMirror=true;
 }
 

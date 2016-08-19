@@ -8,12 +8,12 @@ public:
     const unsigned int m_index;
 
 public:
-    const float x;
-    const float y;
-    const float z;
+    const float m_x;
+    const float m_y;
+    const float m_z;
 
 public:
-    Log_VertexPositionChange(unsigned int theTarget,unsigned int theIndex,float theX,float theY,float theZ);
+    Log_VertexPositionChange(unsigned int target, unsigned int index, float x, float y, float z);
     std::string toString()
     {
         char temp[256];

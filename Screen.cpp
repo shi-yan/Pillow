@@ -27,17 +27,18 @@ Screen::Screen()
 
 void Screen::initialize()
 {
-    Grid::grid=new Grid(m_graphicsBackend);
-    Grid::grid->initialize();
-    Scene::scene->initialize();
-
     m_graphicsBackend->initialize();
+
+    //Grid::grid=new Grid(m_graphicsBackend);
+    //Grid::grid->initialize();
+    //Scene::scene->initialize();
+
     glClearColor(128.0f/255.0f, 128.0f/255.0f, 128.0f/255.0f, 1.0f);
 
-    m_fourView=new FourView(m_graphicsBackend, 2, 2, 4, 4);
-    m_threeView=new ThreeView(m_graphicsBackend, 2, 2, 4, 4);
-    m_currentView=m_singleView=new SingleView(m_graphicsBackend, 2, 2, 4, 4);
-    m_twoView=new TwoView(m_graphicsBackend, 2, 2, 4, 4);
+    //m_fourView=new FourView(m_graphicsBackend, 2, 2, 4, 4);
+    //m_threeView=new ThreeView(m_graphicsBackend, 2, 2, 4, 4);
+    //m_currentView=m_singleView=new SingleView(m_graphicsBackend, 2, 2, 4, 4);
+    //m_twoView=new TwoView(m_graphicsBackend, 2, 2, 4, 4);
     m_uiLayer=new UILayer(m_graphicsBackend, m_width, m_height);
 }
 
@@ -45,10 +46,10 @@ void Screen::updateScreenSize(unsigned int width, unsigned int height)
 {
     m_width = width;
     m_height = height;
-    m_singleView->update(m_width/2, m_height/2, m_width, m_height);
+    /*m_singleView->update(m_width/2, m_height/2, m_width, m_height);
     m_fourView->update(m_width/2, m_height/2, m_width, m_height);
     m_threeView->update(m_width/2, m_height/2, m_width, m_height);
-    m_twoView->update(m_width/2, m_height/2, m_width, m_height);
+    m_twoView->update(m_width/2, m_height/2, m_width, m_height);*/
     m_uiLayer->updateSize(m_width, m_height);
 }
 
@@ -115,14 +116,14 @@ void Screen::screenShot(const char *fileName)
 void Screen::onPaint()
 { 
     glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-    glViewport(0,0,(GLint) m_width*2, (GLint) m_height*2);
+    glViewport(0,0,(GLint) m_width, (GLint) m_height);
 
-    for(int i=0;i<(int)m_currentView->m_viewCount;i++)
+    /*for(int i=0;i<(int)m_currentView->m_viewCount;i++)
     {
         CameraMode::__Enum cameraMode = m_currentView->setView(i);
         Scene::scene->onPaint();
         Scene::scene->drawCursor(cameraMode,m_currentView->getEye(i));
-    }
+    }*/
 
     m_graphicsBackend->beginUI(m_width, m_height);
 //    glLineWidth(3);
