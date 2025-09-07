@@ -1,15 +1,17 @@
 # Pillow
 ![screenshot](OldScreenshots/anim.gif)
 
-Pillow is a light-weight 3D modeler that tries to mimic what Silo is. http://www.nevercenter.com/silo/
+Pillow is a lightweight 3D polygon modeler inspired by [Silo](http://www.nevercenter.com/silo/).
 
-In 2003, there was this SARS epidemic outbreak in Beijing. Schools were shut down and we had a really long summer. I got bored and decided to learn 3D Studio Max myself. And then for the following few years, all I wanted to do was computer graphics.
+Back in 2003, during the SARS outbreak in Beijing, schools shut down and I suddenly had a very long summer break. Out of boredom, I picked up 3D Studio Max and quickly fell in love with computer graphics.
 
-Pillow was a program I wrote during 2006. A project I was really proud of. I didn't know about half-edge or winged-edge at the time, so I made up my own datastructure. The UI was based on WxWidget. I tried to update it during graduate school with Qt and a more mature datastructure, but I couldn't finish. Today, I found the old source code from a dusty harddrive and I decided to uploaded it here and if I have time, I will modernize it with Qt and OpenSubdiv.
+A few years later, in 2006, I wrote Pillow — a project I was very proud of at the time. I didn’t know about half-edge or winged-edge data structures, so I invented my own. The first version was built with wxWidgets, and during graduate school I even attempted a rewrite with Qt and a more mature data structure. That effort was never finished, but the original code survived on an old hard drive.
 
-I was asked why call it Pillow. Well, I didn't have a good name for it. Initially it was named Cedar for some reason I can't remember. But while working on it, I always used a cube shape to test subdivision. After applying subdivision several times, the shape looks like a pillow, thus I got this name.
+I’ve uploaded it here for nostalgia’s sake, and maybe one day I’ll modernize it with WASM and WebGPU.
 
-Here are some of the old screenshots:
+As for the name: at first I called it Cedar (for reasons I can’t remember). But while testing subdivision, I always started with a cube. After several iterations, the cube would round out into something soft and pillow-like. The name stuck.
+
+Here are some of the original screenshots:
 
 ![screenshot](OldScreenshots/psi4.jpg)
 
